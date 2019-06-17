@@ -316,4 +316,5 @@ footer p {
   font-weight: bold;
   color: white;
   display: inline-block;
+  margin: 0;
 }
