@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Bootstrap, css flex, jquery practice for client layout">
+  <meta name="author" content="Stefani Kwan, Hacktiv8 contributors, and Bootstrap contributors">
+
+  <title>Mini Wordpress by StefKwan</title>
+
+  <!-- Bootstrap core CSS and JS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <!-- own css -->
+  <link rel="stylesheet" type="text/css" href="./main.css">
+
+  <!-- Jquery -->
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+  <!-- Popper -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+  <!-- favicon -->
+  <link rel="favicon" href="./favicon.html">
+
+  </head>
+
+  <body>
+
+  <header>
+  <nav class="navbar navbar-light bg-light">
+    <button id="toggleSidebar"></button>
+    <ul class="navbar-nav bd-navbar-nav flex-row">
+      <li class="nav-item">
+        <a class="nav-link " href="#">Home</a>
+      </li>
+    </ul>
+  </nav>
+
+  </header>
+
+  <script>
+    const button = document.getElementById('toggleSidebar');
+
+    button.addEventListener('click', _ => {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    })
+  </script>
+  <div id="sidebar" class="collapsed">
+    <ul>
+      <li>item 1</li>
+    </ul>
+  </div>
+  <div id="content">
+    
+  </div>
+
+  </body>
+</html>
