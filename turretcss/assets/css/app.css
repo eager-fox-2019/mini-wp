@@ -97,6 +97,11 @@ html, body {
   justify-items: center;
 }
 
+.grid-card-title {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
