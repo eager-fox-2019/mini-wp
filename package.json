@@ -1,0 +1,22 @@
+{
+  "name": "mini-wp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch-css": "cd turretcss && npm run watch",
+    "start": "live-server --host=localhost",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khasburrahman/mini-wp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khasburrahman/mini-wp/issues"
+  },
+  "homepage": "https://github.com/khasburrahman/mini-wp#readme"
+}
