@@ -59,8 +59,21 @@ h3 {
 }
 
 #sidebar li{
+  padding-top: 1rem;
   height: 3rem;
   list-style: none;
+}
+
+#sidebar li a{
+  color: darkgray;
+}
+
+#sidebar li a:hover{
+  color: black;
+}
+
+#postForm{
+  margin-top: 1rem;
 }
 
 #postArticle{
