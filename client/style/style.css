@@ -288,7 +288,13 @@ ul {
   font-size: 1.5rem;
 }
 
+#input-image {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
 #button-add {
+  display: block;
   margin-top: 20px;
   margin-left: 20px;
 }
