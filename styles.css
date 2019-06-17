@@ -1,13 +1,7 @@
-.article .col a {
+.row-list .col a {
   text-decoration: none
 }
 
-.article:nth-child(odd) {
+.row-list:nth-child(odd) {
   background-color: lightgray
-}
-
-.sidebar-nav {
-  display: flex;
-  width: 100%;
-  align-items: stretch;
 }
