@@ -1,6 +1,7 @@
 # mini-wp
 
 ### how to
+- install turret dependencies: `cd turretcss` kemudian `npm install`
 - watch-build css: `npm run watch-css`
 - run dummy server: `npm start`
 
