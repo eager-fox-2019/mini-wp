@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Client Side</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Google Sign In -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <meta name="google-signin-client_id" content="601985090513-h9v7e5bhnotafuifg59a3c1vf90gqrub.apps.googleusercontent.com">
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/cab1ba56dd.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .nav {
+        min-width: 1000px;
+        max-width: 1500px;
+      }
+      .nav-size{
+        width: 30%;
+      }
+      .container{
+        max-width: 100%;
+        margin-top: 20px;
+      }
+      .form-user {
+        width: 30%;
+        border-color: grey;
+        border-width: 2px !important;
+        -webkit-box-shadow: 10px 10px 11px -3px rgba(107,107,107,1);
+        -moz-box-shadow: 10px 10px 11px -3px rgba(107,107,107,1);
+        box-shadow: 10px 10px 11px -3px rgba(107,107,107,1);
+      }
+      .form-article {
+        width: 50%;
+      }
+      .center {
+        margin: 0px auto;
+      }
+      .register {
+        display: none;
+      }
+      .home {
+        display: none;
+      }
+      .logged-in {
+        display: none;
+      }
+      #user {
+        color: black;
+      }
+      .menu a {
+        font-size: 20px;
+        color: black;
+      }
+      .menu-active {
+        background-color: rgba(202, 202, 202, 0.596);
+      }
+      .menu-active a {
+        color: #006bc3;
+      }
+      .menu:hover > a {
+        text-decoration: none;
+        opacity: 0.6;
+      }
+      .menu:hover {
+        cursor: pointer;
+      }
+      .disabled:hover > a {
+        cursor: default;
+        opacity: 1;
+      }
+      .disabled a:hover {
+        text-decoration: none;
+        opacity: 1;
+        cursor: default;
+      }
+      .disabled:hover {
+        cursor: default;
+      }
+      hr {
+        border-width: 3px;
+        border-color: rgb(73, 73, 73); 
+      }
+      .card:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+<body>
+  <nav class="navbar navbar-expand navbar-light justify-content-between border" style="min-height: 50px; max-height: 60px; background-color: #c1e2fa;">
+      <div class="nav-size">
+        <a class="navbar-item" href="#">
+          <img src="https://s.w.org/style/images/about/WordPress-logotype-wmark.png" width="40" height="40" alt="logo">
+        </a>
+      </div>
+      <div class="nav-size d-flex justify-content-center">
+          <h1>My Wordpress</h1>
+      </div>
+      <div class="nav-size d-flex justify-content-end">
+        <div>
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link logged-out register-button" href="#">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link logged-out login-button" href="#">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled logged-in" id="user"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link logged-in" href="#" id="logoff" onclick="signOut()">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+  </nav>
+
+  <div class="container register">
+    <h2 class="text-center">Register Form</h2>
+    <form class="form-user center border border-secondary p-3 rounded" id="register-form">
+      <div class="form-group">
+        <label for="nameR">Name</label>
+        <input type="text" class="form-control" id="nameR" placeholder="Enter name" required>
+      </div>
+      <div class="form-group">
+        <label for="emailR">Email address</label>
+        <input type="email" class="form-control" id="emailR" aria-describedby="emailHelp" placeholder="Enter email" required>
+      </div>
+      <div class="form-group">
+        <label for="passwordR">Password</label>
+        <input type="password" class="form-control" id="passwordR" placeholder="Password" required>
+      </div>
+      <div class="form-group">
+        <p>Already have an account? <a href="#" class="login-button">Login Here</a></p>
+      </div>
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary center">Submit</button>
+      </div>
+    </form>
+    <br>
+  </div>
+
+  <div class="container login">
+      <h2 class="text-center">Login Form</h2>
+      <form class="form-user center p-3 border border-secondary rounded" id="login-form">
+        <div class="form-group">
+          <label for="emailL">Email address</label>
+          <input type="email" class="form-control" id="emailL" aria-describedby="emailHelp" placeholder="Enter email" required>
+        </div>
+        <div class="form-group">
+          <label for="passwordL">Password</label>
+          <input type="password" class="form-control" id="passwordL" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+          <p>Don't have an account? <a href="#" class="register-button">Register Here</a></p>
+        </div>
+        <p>Or login with:</p>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+              <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            </div>
+        </div>
+        <div class="col text-center">
+          <br>
+          <button type="submit" class="btn btn-primary center" data-toggle="modal" data-target="#notification">Submit</button>
+        </div>
+      </form>
+      <br>
+    </div>
+
+  <div class="container home" style="margin: 0">
+    <div class="row" style="height: 92vh">
+      <div class="col-2 p-0" style="border-right-width: 3px; border-right-color: rgba(202, 202, 202, 0.596); border-right-style: solid">
+        <h3 class="pt-3 pl-3 pr-3">Menu bar</h3>
+        <div class="pl-3 pr-3">
+        <hr/>
+        </div>
+        <div id="menu-bar">
+          <div class="menu pl-3 pr-3 pt-2 pb-2" id="add-article-menu">
+            <a href="#" class="menu"><i class="fas fa-feather-alt"></i> Add Article</a>
+          </div>
+          <div class="menu pl-3 pr-3 pt-2 pb-2 menu-active" id="list-article-menu">
+            <a href="#" class="menu"><i class="fas fa-bars"></i> List Article</a>
+          </div>
+          <div class="menu pl-3 pr-3 pt-2 pb-2 disabled" id="edit-article-menu">
+              <a href="#" class="menu"><i class="fas fa-edit"></i> Edit Article</a>
+            </div>
+        </div>
+      </div>
+      <div class="col" id="content">
+        <div id="add-article">
+          <div class="center d-flex justify-content-center pt-3">
+            <h2>Article Form</h2>
+          </div>
+          <div class="center" style="width: 50%">
+            <hr>
+          </div>
+          <form class="form-article center">
+              <div class="form-group">
+                <label for="titleC">Title</label>
+                <input type="text" class="form-control" id="titleC" placeholder="Enter Article Title" required>
+              </div>
+              <div class="form-group">
+                <label for="contentC">Content</label>
+                <textarea class="form-control" id="contentC" cols="30" rows="10" placeholder="Enter Article Content" required></textarea>
+              </div>
+              <div class="col text-center">
+                <button type="submit" class="btn btn-primary center">Submit</button>
+              </div>
+          </form>
+        </div>
+        <div id="edit-article">
+            <div class="center d-flex justify-content-center pt-3">
+              <h2>Edit Article Form</h2>
+            </div>
+            <div class="center" style="width: 50%">
+              <hr>
+            </div>
+            <form class="form-article center">
+                <div class="form-group">
+                  <label for="titleC">Title</label>
+                  <input type="text" class="form-control" id="titleC" placeholder="Enter Article Title" required>
+                </div>
+                <div class="form-group">
+                  <label for="contentC">Content</label>
+                  <textarea class="form-control" id="contentC" cols="30" rows="10" placeholder="Enter Article Content" required></textarea>
+                </div>
+                <div class="col text-center">
+                  <button type="submit" class="btn btn-primary center">Submit</button>
+                </div>
+            </form>
+          </div>
+        <div id="list-article">
+            <div class="center d-flex justify-content-center pt-3">
+              <h2>List Article</h2>
+            </div>
+            <div class="center" style="width: 90%">
+              <hr>
+            </div>
+            <div class="center align-items-center d-flex flex-column" id="article-list" style="overflow: scroll; height: 73vh">
+              <div class="card mb-3 article" style="width: 70vw; height: 150px">
+                <div class="row no-gutters">
+                  <div class="col">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center">
+              <div style="width: 42.5%">
+                <hr>
+              </div>
+              <div style="width: 5%" class="d-flex justify-content-center">
+                <img src="https://s.w.org/style/images/about/WordPress-logotype-wmark.png" width="40" height="40" alt="logo">
+              </div>
+              <div  style="width: 42.5%">
+                <hr>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="article-detail" aria-hidden="true" id="article">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="article-title">Article title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Article Content
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success edit" data-dismiss="modal">Edit</button>
+          <button type="button" class="btn btn-danger delete" data-dismiss="modal">Delete</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="notification" aria-hidden="true" id="notification">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Notification</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="notif-alert">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</body>
+<!-- Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- JQuery Script -->
+<script src="./query.js"></script>
+</html>
