@@ -14,10 +14,84 @@
 @import './_form';
 @import './_element';
 
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+}
+
+#sidebar, #content {
+  height: 100%;
+  overflow:auto;
+  float:left;
+  transition: width .35s;
+}
+
+#sidebar {
+  margin:0;
+  padding:0;
+  background:white;
+  width: 18%;
+  height: 100%;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.5);
+}
+
+.sidebar-content { 
+    height: 100%;
+}
+
+#sidebar.collapsed {
+  width: 0%;
+}
+
+#sidebar.collapsed + #content {
+  width: 100%;
+}
+
+#content {
+  background:grey;
+  width: 82%;
+}
 
 .nav-miniwp {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;
+    color: white;
+}
+
+.nav-miniwp-sidebar {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;
+    color: white;
+    width: 100%;
+}
+
+.nav-miniwp-control {
+    font-size: 56rem;
+}
+
+.branding {
+    margin-top: 0;
+    margin-left: 20px; 
+    font-weight: 400;
+}
+
+.align-left {
+    text-align: left
+}
+
+#sidebar button i {
+    margin-right: 15px;
 }
