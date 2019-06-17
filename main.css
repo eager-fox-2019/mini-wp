@@ -28,6 +28,7 @@ html, body {
 #content {
   background:gray;
   width: 70%;
+  height: 80%;
 }
 
 #toggleSidebar {
@@ -60,4 +61,31 @@ h3 {
 #sidebar li{
   height: 3rem;
   list-style: none;
+}
+
+#postArticle{
+  padding: 1rem;
+}
+
+#postArticle button {
+  margin-left: 2px;
+}
+
+#articleHeaderContainer{
+  background: lightgrey;
+  margin-top: 1rem;
+}
+
+#articleHeaderContainer div {
+  margin-left: 10px;
+}
+
+.card{
+  margin: 1em;
+}
+
+footer{
+  padding: 1em;
+  color: gray;
+  background: black;
 }
