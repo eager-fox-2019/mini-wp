@@ -8,21 +8,11 @@
 
   <title>Mini Wordpress by StefKwan</title>
 
-  <!-- Bootstrap core CSS and JS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
   <!-- own css -->
   <link rel="stylesheet" type="text/css" href="./main.css">
 
-  <!-- Jquery -->
-  <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-
-  <!-- Popper -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <!-- bootstrap -->
+  <link rel="import" href="./bootstrap.html">
 
   <!-- favicon -->
   <link rel="favicon" href="./favicon.html">
@@ -32,11 +22,20 @@
   <body>
 
   <header>
-  <nav class="navbar navbar-light bg-light">
+  <nav class="navbar navbar-dark bg-dark">
     <button id="toggleSidebar"></button>
-    <ul class="navbar-nav bd-navbar-nav flex-row">
-      <li class="nav-item">
+    <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-around">
+      <li id="homeNav" class="nav-item col-3">
         <a class="nav-link " href="#">Home</a>
+      </li>
+      <li class="nav-item col-3">
+        <button class="btn btn-primary btn-md">Post</button>
+      </li>
+      <li class="nav-item col-3">
+        <a class="nav-link " href="#">User</a>
+      </li>
+      <li class="nav-item col-3">
+        <a class="nav-link " href="#">Logout</a>
       </li>
     </ul>
   </nav>
@@ -44,19 +43,32 @@
   </header>
 
   <script>
-    const button = document.getElementById('toggleSidebar');
+    const toggleSidebarButton = document.getElementById('toggleSidebar');
 
-    button.addEventListener('click', _ => {
+    toggleSidebarButton.addEventListener('click', _ => {
       document.getElementById('sidebar').classList.toggle('collapsed');
     })
   </script>
   <div id="sidebar" class="collapsed">
     <ul>
       <li>item 1</li>
+      <li>item 2</li>
+      <li>item 3</li>
     </ul>
   </div>
+
   <div id="content">
-    
+    <script src="https://cdn.tiny.cloud/1/9mkhnm26fjqe5fdpy6ewfsnhcy5vrts624vxr42ffw5eunpd/tinymce/5/tinymce.min.js"></script>
+    <script>
+    tinymce.init({
+      selector: '#mytextarea'
+    });
+    </script>
+    <h3>Post an Article</h3>
+      <form method="post">
+        <textarea id="mytextarea">Hello, World!</textarea>
+        <button class="btn btn-primary btn-md">Submit</button>
+      </form>
   </div>
 
   </body>

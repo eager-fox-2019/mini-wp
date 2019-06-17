@@ -30,7 +30,7 @@ html, body {
   width: 70%;
 }
 
-button {
+#toggleSidebar {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -45,4 +45,19 @@ h3 {
   font-family: sans-serif;
   color:white;
   text-align:center;
+}
+
+#homeNav {
+  order: -1;
+}
+
+#sidebar{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+}
+
+#sidebar li{
+  height: 3rem;
+  list-style: none;
 }
