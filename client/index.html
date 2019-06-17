@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MiniWP</title>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css">
+  <!--Google Related -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="647749845083-l8k2ne6a9vc8sh103n7lv6ag92obmc11.apps.googleusercontent.com">
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
+  <!-- WYSIWYG -->
+  <script src="https://cdn.ckeditor.com/ckeditor5/12.2.0/classic/ckeditor.js"></script>
+
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+  <header>
+    <div class="navbar-fixed">
+      <nav id="navbar-top" class="top-nav row light-blue">
+        <div class="col s2">
+          <span style="cursor:pointer" onclick="openNav()">☰</span>
+        </div>
+        <div class="col s6">
+          <ul class="row">
+            <li class="col s3">
+              <i id="navbar-logo" class="far fa-smile-wink valign-wrapper"></i>
+              <span href="#" class="">Mini WP</span>
+            </li>
+            <li class="col s9">
+              <a href="#">LogOut</a>
+            </li>
+          </ul>
+        </div>
+        <div id="navbar-username" class="col s4">
+          <a class="col offset-s4" href="#">Robbycp</a>
+        </div>
+      </nav>
+    </div>
+    <div id="mySidenav" class="sidenav sidenav-fixed">
+      <ul class="collection">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <li class="collection-header">
+          <h4>Table Menu</h4>
+        </li>
+        <li class="row valign-wrapper collection-item">
+          <div class="col s4">
+            <i class="fas fa-plus-circle"></i>
+          </div>
+          <a class="col s8" href="sass.html">Add Post</a>
+        </li>
+        <li class="row valign-wrapper collection-item">
+          <div class="col s4">
+            <i class="fas fa-file"></i>
+          </div>
+          <a class="col s8" href="badges.html">Articles</a>
+        </li>
+        <li class="row valign-wrapper collection-item">
+          <div class="col s4">
+            <i class="far fa-file-image"></i>
+          </div>
+          <a class="col s8" href="collapsible.html">Media</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <main id="main">
+    <div class="container">
+      <div class="row">
+        <div id="content" class="col s12">
+          <!-- List of articles -->
+          <!-- <nav>
+            <div class="nav-wrapper orange lighten-1">
+              <form id="search-post">
+                <div class="input-field">
+                  <input id="search" type="search" required>
+                  <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                  <i class="material-icons">close</i>
+                </div>
+              </form>
+            </div>
+          </nav>
+          <nav class="nav-extended orange lighten-1">
+            <div class="nav-content">
+              <ul class="tabs tabs-transparent">
+                <li class="tab"><a class="active" href="#test1">Published</a></li>
+                <li class="tab"><a class="" href="#test2">Drafts</a></li>
+              </ul>
+            </div>
+          </nav>
+          <div class="row" id="list-posts">
+            <ul class="collection">
+              <li class="collection-item avatar">
+                <img class="material-icons circle" src="https://gagaldiett.files.wordpress.com/2018/10/img-1579-1.jpg?w=256&h=256&crop=1" alt="foto bali">
+                <span class="title">Pengalaman liburan ke bali</span>
+                <p>8 minutes ago</p>
+                <a class="secondary-content dropdown-trigger btn light-blue" data-target="dropdown1" href="#"><i class="fas fa-ellipsis-h"></i></a>
+                <ul id='dropdown1' class='dropdown-content'>
+                  <li><a href="#!">Edit</a></li>
+                  <li><a href="#!">Delete</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div> -->
+          <!-- Edit or Add Article -->
+          <form>
+            <div id="title-post row">
+              <h5>Title Post</h5>
+              <div class="input-field">
+                <input id="title-post" type="text">
+                <label for="first_name">Title</label>
+              </div>
+            </div>
+            <div id="detail-post">
+              <h5>Detail Post</h5>
+              <div class="switch">
+                <label>
+                  Draft
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                  Publish
+                </label>
+              </div>
+            </div>
+            <div id="editor-section">
+              <h5>Content Post</h5>
+              <form>
+                <textarea name="content" id="editor"></textarea>
+              </form>
+            </div>
+            <div id="editor-section">
+              <h5>File Post</h5>
+              <div class="file-field input-field">
+                <div class="btn orange lighten-1">
+                  <span>File</span>
+                  <input type="file" multiple>
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                </div>
+              </div>
+            </div>
+            <button class="btn waves-effect orange lighten-1" type="submit" onsubmit="">Submit</button>
+          </form>
+          <!-- Login Register Form -->
+          <!-- <div id="registration-form" class="row">
+            <div class="col offset-s2 s8 offset-s2">
+              <ul id="tabs-swipe-login" class="tabs row light-blue lighten-5">
+                <li class="tab col s6"><a class="active" href="#login-swipe">Login</a></li>
+                <li class="tab col s6"><a href="#register-swipe">Register</a></li>
+              </ul>
+              <div id="login-swipe" class="">
+                <form class="col s12">
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="login-username" type="text">
+                      <label for="username">Username</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="login-password" type="password">
+                      <label for="password">Password</label>
+                    </div>
+                  </div>
+                  <button class="btn waves-effect light-blue darken-1" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                  </button>
+                </form>
+                <br>
+                <div>
+                  <div class="row"></div>
+                  <span>Or Sign in using google</span>
+                  <div class="row"></div>
+                  <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                </div>
+              </div>
+              <div id="register-swipe" class="">
+                <form class="">
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="register-first_name" type="text">
+                      <label for="first_name">Full Name</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="register-username" type="text">
+                      <label for="username">Username</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="register-password" type="password">
+                      <label for="password">Password</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="register-email" type="email" class="validate">
+                      <label for="email">Email</label>
+                      <span class="helper-text" data-error="wrong" data-success="right"></span>
+                    </div>
+                  </div>
+                  <button class="btn waves-effect light-blue darken-1" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                  </button>
+                </form>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="./js/wysiwyg.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
