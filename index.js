@@ -49,6 +49,7 @@ function addArticle(title, body){
 	document.location.href = '#articlesContainer'
 }
 
+
 //filter article cards by title/name
 function myFunction() {
   // Declare variables
