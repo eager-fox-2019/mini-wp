@@ -7,6 +7,10 @@ toggleSidebarButton.addEventListener('click', _ => {
 const togglePostButton = document.getElementById('togglePostButton')
 
 togglePostButton.addEventListener('click', () => {
+	togglePostArticleForm()
+})
+
+function togglePostArticleForm(){
 	let textIs = $("#togglePostButton").text()
 	if (textIs == "Post") {
 		$("#togglePostButton").text("Cancel")
@@ -14,8 +18,38 @@ togglePostButton.addEventListener('click', () => {
 		$("#togglePostButton").text("Post")
 	}
 	$("#postForm").toggle()
-})
+}
 
+$(document).ready(() => {
+	$('#postArticle').submit( e => {
+		e.preventDefault()
+
+		let title = $(`#postArticle input[name='title']`).val()
+	    let body = $(`#postArticle textarea[name='body']`).val()
+
+	    addArticle(title, body)
+	})
+
+});
+
+//addArticle from title and body input
+function addArticle(title, body){
+	togglePostArticleForm()
+	let articleHtml = `
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">${title}</h5>
+          <div class="card-text">${body}</div><br>
+          <a href="#" class="btn btn-primary">Edit</a>
+          <a href="#" class="btn btn-danger">Delete</a>
+        </div>
+	`
+	$('#articlesContainer').append(articleHtml)
+
+	document.location.href = '#articlesContainer'
+}
+
+//filter article cards by title/name
 function myFunction() {
   // Declare variables
   let input, filter, div, card, title, body, i, txtTitle, txtBody;
