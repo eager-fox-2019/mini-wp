@@ -1,0 +1,126 @@
+/**
+ * Turret
+ */
+
+@import 'turretcss/turret/turret';
+
+/**
+ * Definitions
+ */
+
+@import './_color';
+@import './_base';
+@import './_typography';
+@import './_form';
+@import './_element';
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+}
+
+#sidebar, #content {
+  height: 100%;
+  overflow:auto;
+  float:left;
+  transition: width .35s;
+}
+
+#sidebar {
+  margin:0;
+  padding:0;
+  background:white;
+  width: 18%;
+  height: 100%;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.5);
+}
+
+.sidebar-content { 
+}
+
+#sidebar.collapsed {
+  width: 0%;
+}
+
+#sidebar.collapsed + #content {
+  width: 100%;
+}
+
+#content {
+  background: #dddddd;;
+  width: 82%;
+}
+
+.nav-miniwp {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;
+    color: white;
+}
+
+.nav-miniwp-sidebar {
+    padding: 0;
+    margin: 0;
+    height: 80px;
+    width: 100%;
+}
+
+.nav-miniwp-control {
+    font-size: 56rem;
+}
+
+.branding {
+    margin-top: 0;
+    margin-left: 20px; 
+    font-weight: 400;
+}
+
+.align-left {
+    text-align: left
+}
+
+#sidebar button i {
+    margin-right: 15px;
+}
+
+.grid-card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+}
+
+.grid-card-title {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  max-width: 400px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+footer {
+  background-color: grey;
+  height: 100px;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+}
+
+footer + #sidebar.collapsed  {
+  width: 82%;
+}
+

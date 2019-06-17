@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Mini WP</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/bundle.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+    <style>
+
+      .swatch {
+        display: block;
+        padding: 1em;
+        font-weight: 500;
+        font-size: 0.875rem;
+      }
+
+      .palette {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+      }
+
+    </style>
+  </head>
+  <body>
+      
+      <div id="sidebar" class="collapsed  flex flex-column justify-row-flex-start">
+
+        <div class="nav-miniwp-sidebar background-primary-700" style="height: 80px;"></div>
+        <div class="sidebar-content">
+          <div class="flex flex-column justify-content-flex-start align-items-center padding-left-m padding-right-m padding-bottom-m">
+            <p class="lead padding-top-m">Your Site</p>
+            <button class="button button-block button-text align-left"><i class="fas fa-desktop"></i> View Site</button>
+            <button class="button button-block button-text align-left"><i class="fas fa-chart-bar"></i> Stats</button>
+            <button class="button button-block button-text align-left"><i class="fas fa-hiking"></i> Activity</button>
+            <p class="lead padding-top-m">Manage</p>
+            <button class="button button-block button-text align-left"><i class="fas fa-newspaper"></i> Manage Article</button>
+            <button class="button button-block button-text align-left"><i class="fas fa-comment"></i> Manage Comment</button>
+          </div>
+        </div>
+      </div>
+      <div id="content">
+        <nav>
+          <div class="nav-miniwp background-primary box-shadow-xxl">
+            <div class="padding-xxl flex flex-row justify-content-flex-start align-items-center">
+              <button id="toggle-sidebar" class="button button-white button-border"><i class="fas fa-bars"></i></button>
+              <h2 class="branding">My Site CMS</h2>
+            </div>
+            <div class="nav-miniwp-control padding-xxl flex flex-row justify-content-flex-end align-items-center">
+              <button id="newArticle" class="button button-white button-text margin-m"> <i class="fas fa-feather-alt"></i> New Article</button>
+              <button class="button button-warning"> Logout</button>
+            </div>
+          </div>
+        </nav>
+
+        <div class="margin-s background-white padding-l box-shadow-m grid-card-container">
+          <div class="grid-card-title">
+            <h2 class="padding-m">Your Published Articles</h2>
+          </div>
+
+          <div class="card margin-m">
+            <div class="media media-1 spinner">
+              <img src="assets/img/colors-contemporary-fashion-965324.jpg"/>
+            </div>
+            <p class="padding-left-m padding-top-s lead">Article 1</p>
+            <p class="padding-left-m padding-bottom-m padding-right-m">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates aliquid, magni nostrum aut odio laborum libero earum ipsa excepturi mollitia doloribus repellat fugiat suscipit, eos illum iure qui neque voluptas!...</p>
+            <div class="margin-right-2 button-group button-group-block">
+              <button class="button button-s button-primary">Manage</button>
+            </div>
+          </div>
+
+          <div class="card  margin-m">
+            <div class="media media-1 spinner">
+              <img src="assets/img/colors-contemporary-fashion-965324.jpg"/>
+            </div>
+            <p class="padding-left-m padding-top-s lead">Article 2</p>
+            <p class="padding-left-m padding-bottom-m padding-right-m">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates aliquid, magni nostrum aut odio laborum libero earum ipsa excepturi mollitia doloribus repellat fugiat suscipit, eos illum iure qui neque voluptas!...</p>
+            <div class="margin-right-2 button-group button-group-block">
+              <button class="button button-s button-primary">Manage</button>
+            </div>
+          </div>
+
+          <div class="card  margin-m">
+            <div class="media media-1 spinner">
+              <img src="assets/img/colors-contemporary-fashion-965324.jpg"/>
+            </div>
+            <p class="padding-left-m padding-top-s lead">Article 3</p>
+            <p class="padding-left-m padding-bottom-m padding-right-m">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates aliquid, magni nostrum aut odio laborum libero earum ipsa excepturi mollitia doloribus repellat fugiat suscipit, eos illum iure qui neque voluptas!...</p>
+            <div class="margin-right-2 button-group button-group-block">
+              <button class="button button-s button-primary">Manage</button>
+            </div>
+          </div>
+
+          <div class="card  margin-m">
+            <div class="media media-1 spinner">
+              <img src="assets/img/colors-contemporary-fashion-965324.jpg"/>
+            </div>
+            <p class="padding-left-m padding-top-s lead">Article 4</p>
+            <p class="padding-left-m padding-bottom-m padding-right-m">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates aliquid, magni nostrum aut odio laborum libero earum ipsa excepturi mollitia doloribus repellat fugiat suscipit, eos illum iure qui neque voluptas!...</p>
+            <div class="margin-right-2 button-group button-group-block">
+              <button class="button button-s button-primary">Manage</button>
+            </div>
+          </div>
+
+        </div>
+
+        <footer>
+          <p class="padding-m color-white">MiniWP<br>@hemhem 2020</p>
+        </footer>
+
+      </div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="app.client.js"></script>
+  </body>
+</html>
