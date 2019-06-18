@@ -16,11 +16,12 @@
           <navbar></navbar>
           <div class="margin-s background-white padding-l box-shadow-m grid-card-container">
             <div class="grid-card-title">
-              <h2 class="padding-m">Your Published Articles</h2>
+              <h2 v-if='articles.length > 0' class="padding-m">Your Published Articles</h2>
+              <h2 v-else class="padding-m">No Article</h2>
             </div>
             <card v-for="article in articles" v-bind:title="article.title" v-bind:description="article.description"></card>
           </div>
-          <footer></footer>
+          <footer-component></footer-component>
         </div>
       </div>
 
@@ -28,6 +29,7 @@
   <script src="vue/sidebar.js"></script>
   <script src="vue/navbar.js"></script>
   <script src="vue/card.js"></script>
+  <script src="vue/footer.js"></script>
   <script src="app.client.js"></script>
   </body>
 </html>
