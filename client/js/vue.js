@@ -196,32 +196,26 @@ const vue = new Vue({
             "647848106811-cm0ck452dmhg5b8g38n0dh2bu8ovv7hh.apps.googleusercontent.com",
           cookiepolicy: "single_host_origin"
         });
-      });
-    },
-    initGoogleAuthButton() {
-      gapi.load("auth2", () => {
-        
-        auth2 = gapi.auth2.init({
-          client_id:
-            "647848106811-cm0ck452dmhg5b8g38n0dh2bu8ovv7hh.apps.googleusercontent.com",
-          cookiepolicy: "single_host_origin"
-        });
 
-        auth2.attachClickHandler(
-          "g-signin2",
-          {},
-          googleUser => {
-            document.getElementById("g-signin2").innerText =
-              "Signed in: " + googleUser.getBasicProfile().getName();
-          },
-          error => {
-            console.log(JSON.stringify(error, null, 2));
-          }
-        );
-
+        if (this.isOnPage === "login") {
+          auth2.attachClickHandler(
+            "g-signin2",
+            {},
+            googleUser => {
+              document.getElementById("g-signin2").innerText =
+                "Signed in: " + googleUser.getBasicProfile().getName();
+            },
+            error => {
+              console.log(JSON.stringify(error, null, 2));
+            }
+          );
+        }
         auth2.isSignedIn.listen(this.renderGoogleButton);
       });
-      this.renderbutton();
+
+      if (this.isOnPage === "login") {
+        this.renderGoogleButton();
+      }
     },
     renderGoogleButton() {
       gapi.signin2.render("g-signin2", {
@@ -260,14 +254,14 @@ const vue = new Vue({
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[6];
       setTimeout(() => {
-        this.initGoogleAuthButton();
+        this.loadGAPI();
       }, 100);
     },
     page_login_afterregister() {
       this.r_inputLoginRegister_afterregister();
       this.isOnPage = this.pages[6];
       setTimeout(() => {
-        this.initGoogleAuthButton();
+        this.loadGAPI();
       }, 100);
     },
     page_setting() {
