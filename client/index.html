@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <!--BOOT STRAP-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+    <link href='/css/style.css' rel="stylesheet">  
+
+    <title>Mini Wordpress</title>
+</head>
+<body>
+    <header>
+        <!----------- NAVBAR -------->
+        <nav>
+          <div class="navbar">
+            <div id="mainNav">
+              <a href="#"><img id="logo" src="/css/img/logo.png">Wordpress</a>
+              <a href="#"><img src="/css/img/website.svg">My site</a>
+              <a href="#"><img src="/css/img/book.png">Reader</a>
+            </div>
+            <div id="icons">
+              <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="css/img/profile.svg">
+                </a>
+                
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" href="#">My Profile</a>
+                  <a class="dropdown-item" href="#">Log Out</a>
+              </div>
+                <a class="btn btn-primary" href="#" role="button"><i class="far fa-file"></i>Write</a>
+                <a href='#'><img src="css/img/notification.svg"></a>
+              </div>
+            </div>
+          </div>
+        </nav>
+    </header>
+    <div class="wrapper" id="app">
+
+        <!-- SIDE BAR -->
+        <nav id="sidebar">
+          <div class="list-group">
+            <a href="#" id="add-article" v-on:click.prevent="showPage('article-add')" class="list-group-item">
+                <img src="css/img/article.svg"> Add Article
+            </a>
+            <a href="#" id="list-article" v-on:click.prevent="showPage('article-list')" class="list-group-item">
+                <i class="fa fa-search"></i> List Articles
+            </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-user"></i> Lorem ipsum
+            </a>
+            <a href="#" class="list-group-item">
+                <i class="fa fa-envelope"></i> Lorem ipsum
+            </a>
+          </div>   
+        </nav>
+      
+        
+        <div id="content">
+            <!-- ADD ARTICLE -->
+            <div id="article-add" v-if="page === 'article-add'" class="hidden">
+                <h2>Add an article</h2>
+                <form method="post" v-on:submit.prevent="addArticle">
+                    <label for="article-title">Title: </label>
+                    <input 
+                      id="article-title" 
+                      type="text" 
+                      placeholder="insert title here..."
+                      v-model="newTitle"
+                      autocomplet="off"
+                      >
+
+                    <editor 
+                    api-key="4o69cwguzy6y8pni5lbrjf7oue82f6k5b47n0vpde54ogjpy" 
+                    :init="{plugins: 'wordcount'}"
+                    v-model="newContent"
+                    ></editor>
+
+                    <button id="btnAddArticle" type="submit" class="btn btn-secondary">Add article</button>
+                </form>
+            </div>
+
+            <!-- EDIT ARTICLE -->
+            <div id="article-edit" v-if="page === 'article-edit'" class="hidden">
+              <h2>Edit your article</h2>
+                <form method="post" v-on:submit.prevent="editArticle(editedArticle._id)">
+                    <label for="article-title">Title: </label>
+                    <input 
+                      id="article-title" 
+                      type="text" 
+                      v-model="newTitle"
+                      autocomplet="off"
+                      >
+
+                    <editor 
+                    api-key="4o69cwguzy6y8pni5lbrjf7oue82f6k5b47n0vpde54ogjpy" 
+                    :init="{plugins: 'wordcount'}"
+                    v-model="newContent"
+                    ></editor>
+
+                    <button id="btnEditArticle" type="submit" class="btn btn-secondary">Edit article</button>
+                </form>
+            </div>
+            <!-- DISPLAY ARTICLE -->
+            <div id="article-display" v-if="page === 'article-display'">
+              <div class ="panel panel-default">
+                <div class="panel-heading">
+                  <h2>{{selectedArticle.title}}</h2>
+                </div>
+                <div class="panel-body" v-html="selectedArticle.content">
+                </div>
+              </div>
+            </div>
+
+            <!-- ARTICLE LIST-->
+            <div id="article-list"  v-if="page === 'article-list'">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#" class ="article-heading">
+                            <h4>Published <span class="badge badge-secondary">{{this.articles.length}}</span></h4>
+                        </a>
+                        <a href="#" class ="article-heading">
+                            <h4>Drafts <span class="badge badge-secondary">0</span></h4>
+                        </a>
+                            
+                    </div>
+                    <div class="panel-body">
+                        <div id="body-header">
+                            <input 
+                              type="text"
+                              placeholder="Search article by title"
+                              v-model="searchTitle"
+                            >
+                            <p>{{searchTitle}}</p>
+                            <button type="button" class="btn btn-primary" v-on:click.prevent="page = 'article-add'">Add new post</button>
+                        </div>
+
+
+                        <div id="body-content">
+                          
+                            <div class="body-content-main" v-for="article in filterTitle">
+                                <div class="content-title">
+                                    <a href="#" @click="displayArticle(article._id)">{{article.title}}</a>
+                                    <p>Created At: {{article.createdAt}}</p>
+                                </div>
+                                <div class="content-icon">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <i class="fas fa-bars" style="margin-right: 2px;"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <button class="dropdown-item" type="button" @click="displayEdit(article._id)">Edit</button>
+                                            <button class="dropdown-item" type="button">View</button>
+                                            <button class="dropdown-item" type="button">Stats</button>
+                                            <button class="dropdown-item" type="button">Comments</button>
+                                            <button class="dropdown-item" type="button" @click="deleteArticle(article._id)">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+                        </div>
+                    </div>           
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <footer>
+        <p>Made by Shandi Yuwono</p>
+    </footer> 
+
+    <!--BOOTSTRAP-->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="node_modules/@tinymce/tinymce-vue/lib/browser/tinymce-vue.min.js"></script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
