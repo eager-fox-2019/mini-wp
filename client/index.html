@@ -35,7 +35,8 @@
               <a class="nav-link " href="#">Home</a>
             </li>
             <li class="nav-item ">
-              <button id="togglePostButton" class="btn btn-primary btn-md" v-on:click="togglePost">Post</button>
+              <button v-if="postArea === false" id="togglePostButton" class="btn btn-primary btn-md" v-on:click="togglePost">Post</button>
+              <button v-else="" id="togglePostButton2" class="btn btn-secondary btn-md" v-on:click="togglePost">Cancel</button>
             </li>
             <li class="nav-item ">
               <a class="nav-link " href="#">User</a>
@@ -77,7 +78,6 @@
           <div class="p-2">
             <button class="btn btn-info btn-md ">Drafts</button></div>
           <div id="filterBar" class="ml-auto p-2">
-            <!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for article..."> -->
             <input type="text" v-model="search" placeholder="Search title.."/>
             <span> <i class="fas fa-search"></i> </span>
           </div>
@@ -90,8 +90,8 @@
               <div v-html="article.content" class="card-text"></div><br>
               <div class="card-text">published on {{new Date(article.created_at).toDateString()}}</div>
               <br>
-              <a href="#" class="btn btn-primary" @click="editArticle(article.id)">Edit</a>
-              <a href="#" class="btn btn-danger" @click="delArticle(article.id)">Delete</a>
+              <a href="#" class="btn btn-primary" @click="editArticle(article._id)">Edit</a>
+              <a href="#" class="btn btn-danger" @click="delArticle(article._id)">Delete</a>
             </div>
           </div>
         </div>

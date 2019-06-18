@@ -1,8 +1,10 @@
 Vue.config.devtools = true
-new Vue({
+
+let baseUrl = "http://localhost:3000"
+
+var app = new Vue({
   el: '#app',
   data: {
-    test: "testData",
     postArea: false,
     sidebarArea: true,
     articles: [],
@@ -13,12 +15,12 @@ new Vue({
     currentArticle: {}
   },
   components: {
-    'editor': Editor // <- Important part
+    'editor': Editor // <- Important to load wysiwyg api tiny.mce
   },
   created(){
       axios({
         method: "GET",
-        url: "http://localhost:3000/articles"
+        url: baseUrl+"/articles"
       })
       .then(({data}) => {
         this.articles = data;
@@ -63,19 +65,19 @@ new Vue({
         content: this.newContent,
         created_at: (new Date()).toDateString()
       }
-      //PATCH  /articles/{id}
+      //PATCH  /api/todos/update/:userId/:todoId
       axios({
         method: "PATCH",
-        url: "http://localhost:3000/articles/"+currentArticle.id,
+        url: `${baseUrl}/articles/0/${currentArticle._id}`,
         data: newInput
       })
       .then(({data}) => {
         console.log("updated an article")
         this.cancelEdit()
-        
+
         let updatedList = []
         this.articles.forEach(article => {
-          if (article.id === data.id){
+          if (article._id === data._id){
             article = data;
           }
           updatedList.push(article)
@@ -88,13 +90,13 @@ new Vue({
     },
     editArticle(articleId){
       this.editArticleArea = true;
-      this.editArticleId = articleId;
 
       axios({
         method: "GET",
-        url: "http://localhost:3000/articles/"+articleId
+        url: baseUrl+"/articles/"+articleId
       })
       .then(({data}) => {
+        console.log("get one article,",data)
         console.log("selected an article")
         this.currentArticle = data
         this.newTitle = data.title
@@ -107,18 +109,17 @@ new Vue({
     cancelEdit(){
       this.currentArticle = {}
       this.editArticleArea = false;
-      this.editArticleId = null;
       this.newTitle = "";
       this.newContent = "";
     },
     delArticle(articleId){
       axios({
         method: "DELETE",
-        url: "http://localhost:3000/articles/"+articleId
+        url: baseUrl+"/articles/0/"+articleId
       })
       .then(({data}) => {
         console.log("deleted an article")
-        this.articles = this.articles.filter(article => article.id !== articleId)
+        this.articles = this.articles.filter(article => article._id !== articleId)
       })
       .catch(err => {
         console.log("created error:",err)
@@ -130,7 +131,7 @@ new Vue({
       
       axios({
         method: "POST",
-        url: "http://localhost:3000/articles",
+        url: baseUrl+"/articles",
         data: newArticle
       })
       .then(({data}) => {
