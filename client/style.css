@@ -10,9 +10,12 @@ html{
 body{
     margin:0;
     height: 100%;
-    display: flex;
 }
 
+#app{
+    display: flex;
+    flex-flow: column nowrap;
+}
 
 .article-container{ 
     height:100%;
@@ -31,6 +34,7 @@ body{
     padding: 10px;
     background-color: white;
     display: flex;
+    justify-content: space-between;
 }
 
 .container-nav-link{
@@ -40,6 +44,15 @@ body{
     width: 100px;
     line-height: 50px;
     padding-left: 20px;
+}
+
+.container-nav-search{
+    display: inline-block;
+    height: 50px;
+    width: 90%;
+    line-height: 50px;
+    padding-left: 20px;
+    flex-grow: 8;
 }
 
 .container-nav-link :hover{
@@ -103,6 +116,10 @@ nav{
 
 .card-img-top{
     height: 500px;
+}
+
+.card{
+    margin-bottom: 40px;
 }
 
 .fa {

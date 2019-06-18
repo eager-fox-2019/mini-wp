@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+        
+        <!-- Load required Bootstrap and BootstrapVue CSS -->
+        <!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" /> -->
+
+        <!-- Load polyfills to support older browsers -->
+        <!-- <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script> -->
+
+        <!-- Load Vue followed by BootstrapVue -->
+        <!-- <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+        <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script> -->
+
+        <link rel="stylesheet" href="./style.css">
+        <title>Blog Posts</title>
+
+    </head>
+    <body>
+        <div id="app">
+            <header>
+                <nav class="navbar navbar-dark fixed-top" style="background-color:#0073aa; padding: 0;">
+                    <div class="nav-elm">
+                        <a class="navbar-brand" href="#" style="background-color:#22344B; padding:10px;">
+                            <img src="/assets/logo-wp.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                            My Sites
+                        </a>
+                        <a class="navbar-brand" href="#">
+                            <img src="/assets/dashicons-welcome-widgets-menus.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                            Reader
+                        </a>
+                    </div>
+                    <div class="nav-elm">
+                        <button @click.prevent="toDraftPage" type="button" class="btn btn-light" style="color:#0073aa; margin-right: 10px;"><img src="/assets/dashicons-welcome-add-page.png" width="30" height="30" class="d-inline-block align-top" alt=""> Write</button>
+                        <a class="navbar-brand" href="#">
+                            <img src="https://0.gravatar.com/avatar/0d268b07588c38410c771a2056d120ae?s=96&d=mm" width="25" height="25" class="d-inline-block align-top" alt="" style="border-radius: 50%">
+                        </a>
+                        <a class="navbar-brand" href="#">
+                            <img src="/assets/gridicons-bell.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                        </a>
+                    </div>
+                </nav>
+            </header>
+
+            <div class="middle">
+                <div class="sidenav">
+                    <a href="#"><i class="fas fa-chart-bar"></i>Stats</a>
+                    <a href="#"><i class="fas fa-columns"></i>Plan</a>
+                    <a href="#" data-toggle="collapse" data-target="#site-side"><i class="fas fa-pencil-alt"></i>Site</a>
+                    <div id="site-side" class="collapse">
+                        <ul>
+                            <li><a href="#">Pages</a></li>
+                            <li><a href="#" id="posts" @click="toPublishedPage">Posts</a></li>
+                            <li><a href="#">Media</a></li>
+                            <li><a href="#">Comments</a></li>
+                            <li><a href="#">Feedback</a></li>
+                        </ul>
+                    </div>
+                    <a href="#" data-toggle="collapse" data-target="#design-side"><i class="fas fa-signature"></i>Design</a>
+                    <div id="design-side" class="collapse">
+                        <ul>
+                            <li><a href="#">Customize</a></li>
+                            <li><a href="#">Themes</a></li>
+                        </ul>
+                    </div> 
+                    <a href="#" data-toggle="collapse" data-target="#tools-side"><i class="fas fa-wrench"></i>Tools</a>
+                    <div id="tools-side" class="collapse">
+                        <ul>
+                            <li><a href="#">Plugins</a></li>
+                            <li><a href="#">Import</a></li>
+                            <li><a href="#">Export</a></li>
+                            <li><a href="#">Marketing</a></li>
+                            <li><a href="#">Earn</a></li>
+                            <li><a href="#">Activity</a></li>
+                        </ul>
+                    </div>
+                    <a href="#" data-toggle="collapse" data-target="#manage-side"><i class="fas fa-cog"></i>Manage</a>
+                    <div id="manage-side" class="collapse">
+                        <ul>
+                            <li><a href="#">Domains</a></li>
+                            <li><a href="#">People</a></li>
+                            <li><a href="#">Settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="article-container d-flex justify-content-center align-items-center">
+                    <div v-show="loadPage === 'published'">
+                        <div class="container-nav">
+                            <div v-show="onSearch === false" style="display: flex">
+                                <div>
+                                    <div class="container-nav-link">
+                                        <a @click.prevent="toPublishedPage">Published</a>
+                                    </div>
+                                    <div class="container-nav-link">
+                                        <a @click.prevent="toDraftPage">Drafts</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-show="onSearch">
+                                <div class="md-form mt-0">
+                                    <input v-model="searchText" class="form-control" type="text" placeholder="Search" aria-label="Search">
+                                </div>
+                            </div>
+                            <div class="container-nav-link">
+                                <i @click="changeSearch" class="fas fa-search" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="container-post">
+                            <div class="articles">
+                                <div class="card align-items-*-center" v-for="post in filteredList">
+                                    <img class="card-img-top" v-bind:src="post.imgUrl" alt="Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ post.title }}</h5>
+                                        <div class="card-text" v-html="post.content"></div>
+                                        <button @click="readMore(post.id)" class="btn btn-primary">Read more</button>   <button @click="deleteArticle(post.id)" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-show="loadPage === 'draft'">
+                        <form style="height: 80%; width:80%">
+                            <p>Title: {{newTitle}}</p>
+                            <label for="title"><b>Title</b></label>
+                            <input v-model="newTitle" type="text" class="form-control" placeholder="Enter title" name="title" id="title" required><br>
+                            <label for="imgUrl"><b>Image Url</b></label>
+                            <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br>
+                            
+                            <p>Post: {{ newPost }}</p>
+                            <editor v-model="newPost" api-key="5t9c5vfi2kk6s9yazv87rfciyj6b720adar1ephqweq14uhp" :init="{plugins: 'wordcount'}">Write here</editor>
+                            <br>
+                            <button @click.prevent="postArticle" class="btn btn-primary">Publish</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="page-footer font-small cyan darken-3 fixed-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 py-5 d-flex justify-content-center">
+                            <div class="flex-center">
+                                <a class="fb-ic" href="https://www.facebook.com/MelinA.Dew1" target="blank">
+                                    <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                                </a>
+                                <a class="li-ic" href="https://id.linkedin.com/in/melina-dewi-murjadi-097605142" target="blank">
+                                    <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                                </a>
+                                <a class="ins-ic" href="https://www.instagram.com/melinadm57/" target="blank">
+                                    <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-copyright text-center py-3">
+                        © 2019 Copyright tidak sama dengan Copyleft
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Optional JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="./assets/tinymce-vue.min.js"></script>
+        <script src="./main.js"></script>
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>
