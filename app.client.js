@@ -4,6 +4,12 @@ var vueApp = new Vue({
     data: {
         articles: [
             
-        ]
+        ],
+        sidebarOpen: true
+    }, 
+    methods: {
+        toggleSidebar() {
+            this.sidebarOpen = !this.sidebarOpen
+        }
     }
 })

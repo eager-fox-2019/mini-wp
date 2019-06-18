@@ -11,7 +11,7 @@
   <body>
       
       <div id="app">
-        <sidebar></sidebar>
+        <sidebar v-bind:sidebar-open="sidebarOpen"></sidebar>
         <div id="content">
           <navbar></navbar>
           <div class="margin-s background-white padding-l box-shadow-m grid-card-container">
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="vue/vue.js"></script>
   <script src="vue/sidebar.js"></script>
   <script src="vue/navbar.js"></script>
   <script src="vue/card.js"></script>

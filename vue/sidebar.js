@@ -1,16 +1,14 @@
 Vue.component('sidebar', {
-    data: function () {
-        return {
-            collapsed: true
-        }
-    },
+    props: [
+        'sidebarOpen'
+    ],
     methods: {
         toggleSidebar() {
             this.collapsed = !this.collapsed
         }
     },
     template: `
-    <div id="sidebar" class="{{(collapsed? 'collapsed' : '')}}  flex flex-column justify-row-flex-start">
+    <div id="sidebar" v-bind:class="{ collapsed: !sidebarOpen }" class="flex flex-column justify-row-flex-start">
         <div class="nav-miniwp-sidebar background-primary-700" style="height: 80px;"></div>
         <div class="sidebar-content">
           <div class="flex flex-column justify-content-flex-start align-items-center padding-left-m padding-right-m padding-bottom-m">
