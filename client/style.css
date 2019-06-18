@@ -118,6 +118,11 @@ nav{
     height: 500px;
 }
 
+.card-img-top-display{
+    height: 100%;
+    width: 100%;
+}
+
 .card{
     margin-bottom: 40px;
 }

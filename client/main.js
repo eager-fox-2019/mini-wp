@@ -12,7 +12,7 @@ var app = new Vue({
         newImgUrl: "",
         onSearch: false,
         searchText: "",
-        displayArticles: null
+        selectedArticle: {}
     },
     created(){
         axios({
@@ -20,7 +20,6 @@ var app = new Vue({
             url: `http://localhost:3000/posts`
         })
         .then(({data})=>{
-            console.log("Get data:", data)
             this.listArticles = data
         })
         .catch(err => {
@@ -89,12 +88,20 @@ var app = new Vue({
             })
             .then(({data})=>{
                 console.log("Get data:", data)
-                this.displayArticles = data
+                this.selectedArticle = data
+                this.loadPage = 'read-more'
             })
             .catch(err => {
                 console.log("Error from read more button")
                 console.log(err)
             })
+        },
+        shortText(text){
+            return text.split(' ').slice(0,2).join(' ')
+            // let shortTextArr = text.split(' ')
+            // shortTextArr =  shortTextArr.slice(0,2)
+            // let shortText = shortTextArr.join(' ')
+            // return shortText
         }
     },
     computed: {

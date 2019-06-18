@@ -120,7 +120,7 @@
                                     <img class="card-img-top" v-bind:src="post.imgUrl" alt="Image">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ post.title }}</h5>
-                                        <div class="card-text" v-html="post.content"></div>
+                                        <div class="card-text" v-html="shortText(post.content)"></div>
                                         <button @click="readMore(post.id)" class="btn btn-primary">Read more</button>   <button @click="deleteArticle(post.id)" class="btn btn-danger">Delete</button>
                                     </div>
                                 </div>
@@ -142,11 +142,26 @@
                             <button @click.prevent="postArticle" class="btn btn-primary">Publish</button>
                         </form>
                     </div>
+
+                    <div v-show="loadPage === 'read-more'">
+                        <div class="container-post">
+                            <div class="articles">
+                                <div class="card align-items-*-center">
+                                    <img class="card-img-top-display" v-bind:src="selectedArticle.imgUrl" alt="Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ selectedArticle.title }}</h5>
+                                        <div class="card-text" v-html="selectedArticle.content"></div>
+                                        <button @click.prevent="toPublishedPage" class="btn btn-primary">Close</button>   <button @click="deleteArticle(post.id)" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
-            <footer class="page-footer font-small cyan darken-3 fixed-bottom">
+            <!-- <footer class="page-footer font-small cyan darken-3 fixed-bottom">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 py-5 d-flex justify-content-center">
@@ -167,7 +182,7 @@
                         © 2019 Copyright tidak sama dengan Copyleft
                     </div>
                 </div>
-            </footer>
+            </footer> -->
         </div>
 
         <!-- Optional JavaScript -->
