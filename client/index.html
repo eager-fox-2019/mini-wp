@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Bootstrap, css flex, jquery practice for client layout">
+    <meta name="author" content="Stefani Kwan, Hacktiv8 contributors, and Bootstrap contributors">
+
+    <title>Mini Wordpress by StefKwan</title>
+
+    <!-- own css -->
+    <link rel="stylesheet" type="text/css" href="./main.css">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="manifest" href="favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+
+    <!-- Vue JS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <header>
+        <nav class="navbar navbar-dark bg-dark">
+          <button id="toggleSidebar" v-on:click="toggleSidebar"></button>
+          <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-around col-6">
+            <li id="homeNav" class="nav-item ">
+              <a class="nav-link " href="#">Home</a>
+            </li>
+            <li class="nav-item ">
+              <button id="togglePostButton" class="btn btn-primary btn-md" v-on:click="togglePost">Post</button>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link " href="#">User</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link " href="#">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <div id="sidebar" v-bind:class="{ collapsed: sidebarArea }">
+        <ul>
+          <li><a class="nav-link " href="#"><i class="fas fa-home"></i> Home</a></li>
+          <li><a class="nav-link " href="#"><i class="fas fa-pen"></i> Post</a></li>
+          <li><a class="nav-link " href="#"><i class="fas fa-print"></i> Print</a></li>
+        </ul>
+      </div>
+
+      <div id="content">
+        <div id="postForm" v-show="postArea === true" >
+          
+          <h3>Post an Article</h3>
+          <form id="postArticle" method="post">
+            <span class="col">
+              <label>Title: </label>
+              <input v-model="newTitle" type="text" name="title"></input>
+            </span>
+            <!-- <input v-model="newContent" id="postArticletextarea" name="body"></input> -->
+            <editor api-key="9mkhnm26fjqe5fdpy6ewfsnhcy5vrts624vxr42ffw5eunpd" :init="{plugins: 'wordcount'}" v-model="newContent" id="postArticletextarea" name="body"></editor>
+            <div class="d-flex justify-content-end">
+              <button v-on:click.prevent="addArticle" class="btn btn-primary btn-md d-flex">Submit</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="articleHeaderContainer"  class="d-flex p-2 flex-row align-items-center col-12">
+          <div class="p-2">
+            <button class="btn btn-success btn-md">Published</button></div>
+          <div class="p-2">
+            <button class="btn btn-info btn-md ">Drafts</button></div>
+          <div id="filterBar" class="ml-auto p-2">
+            <!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for article..."> -->
+            <input type="text" v-model="search" placeholder="Search title.."/>
+            <span> <i class="fas fa-search"></i> </span>
+          </div>
+        </div>
+
+        <div id="articlesContainer" >
+          <div class="card" v-for="article in filteredArticles">
+            <div class="card-body">
+              <h5 class="card-title">{{article.title}}</h5>
+              <div v-html="article.content" class="card-text"></div>
+              <br>
+              <a href="#" class="btn btn-primary">Edit</a>
+              <a href="#" class="btn btn-danger">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span id="scripts">
+        <!-- tiny textArea api -->
+        <script src="./tinymce-vue.min.js"></script>
+
+        <!-- Jquery -->
+        <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+        <script src="./index.js"></script>
+
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <!-- fontawesome -->
+        <script src="https://kit.fontawesome.com/ecee750dca.js"></script>
+
+        <!-- Popper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      </span>
+    </div>
+  </body>
+
+  <footer>
+    <div id="footerContent">
+    <p>Git for the class: <a href="https://github.com/eager-fox-2019">
+    Eager Fox 2019 - Hacktiv8</a>.</p>
+    <p>Posted by: Stefani Kwan | Last Updated: Tue 18 June 2019</p>
+    </div>
+  </footer>
+</html>

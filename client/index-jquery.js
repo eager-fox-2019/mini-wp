@@ -25,9 +25,9 @@ $(document).ready(() => {
 		e.preventDefault()
 
 		let title = $(`#postArticle input[name='title']`).val()
-	    let body = $(`#postArticle textarea[name='body']`).val()
+    let body = $(`#postArticle textarea[name='body']`).val()
 
-	    addArticle(title, body)
+    addArticle(title, body)
 	})
 
 });

@@ -1,0 +1,28 @@
+{
+  "name": "mini-wp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefkwan/mini-wp-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stefkwan/mini-wp-1/issues"
+  },
+  "homepage": "https://github.com/stefkwan/mini-wp-1#readme",
+  "dependencies": {
+    "@tinymce/tinymce-vue": "^2.1.0",
+    "axios": "^0.19.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.24",
+    "jquery": "^3.4.1",
+    "json-server": "^0.15.0",
+    "vue": "^2.6.10"
+  }
+}
