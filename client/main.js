@@ -17,7 +17,7 @@ var app = new Vue({
     created(){
         axios({
             method: "GET",
-            url: `http://localhost:3000/posts`
+            url: `http://localhost:3000/article`
         })
         .then(({data})=>{
             this.listArticles = data
@@ -31,19 +31,37 @@ var app = new Vue({
         getArticle(){
             axios({
                 method: "GET",
-                url: `http://localhost:3000/posts`
+                url: `http://localhost:3000/article`
             })
             .then(({data})=>{
+                data.sort(function(a,b){
+                    return new Date(a.updatedAt) - new Date(b.updatedAt);
+                });
                 this.listArticles = data
             })
             .catch(err => {
                 console.log("Error from getArticle: ", err)
             })
         },
+        getPersonalArticle(){
+            axios({
+                method: "GET",
+                url: `http://localhost:3000/article/my-post`
+            })
+            .then(({data})=>{
+                data.sort(function(a,b){
+                    return new Date(a.updatedAt) - new Date(b.updatedAt);
+                });
+                this.listArticles = data
+            })
+            .catch(err => {
+                console.log("Error from getPersonalArticle: ", err)
+            })
+        },
         postArticle(){
             axios({
                 method: "POST",
-                url: `http://localhost:3000/posts`,
+                url: `http://localhost:3000/article/create`,
                 data: {
                     id: this.listArticles[this.listArticles.length - 1].id + 1,
                     title: this.newTitle,
@@ -51,8 +69,9 @@ var app = new Vue({
                     content: this.newPost
                 }
             })
-            .then(({data}) => {
-                this.listArticles.push(data)
+            .then(() => {
+                console.log("postArticle success")
+                this.getPersonalArticle()
                 this.newTitle = ""
                 this.newImgUrl = ""
                 this.newPost = ""
@@ -65,11 +84,11 @@ var app = new Vue({
         deleteArticle(id){
             axios({
                 method: "DELETE",
-                url: `http://localhost:3000/posts/${id}`
+                url: `http://localhost:3000/article/${id}`
             })
             .then(() => {
                 console.log("Delete success")
-                this.getArticle()
+                this.getPersonalArticle()
                 this.loadPage = 'published'
             })
             .catch(err => {
@@ -93,7 +112,7 @@ var app = new Vue({
         readMore(id){
             axios({
                 method: "GET",
-                url: `http://localhost:3000/posts/${id}`
+                url: `http://localhost:3000/article/${id}`
             })
             .then(({data})=>{
                 console.log("Get data:", data)
@@ -105,12 +124,12 @@ var app = new Vue({
             })
         },
         shortText(text){
-            return text.split(' ').slice(0,2).join(' ')
+            return text.split(' ').slice(0,10).join(' ')
         },
         beforeEdit(id){
             axios({
                 method: "GET",
-                url: `http://localhost:3000/posts/${id}`
+                url: `http://localhost:3000/article/${id}`
             })
             .then(({data})=>{
                 console.log("Get data:", data)
@@ -127,7 +146,7 @@ var app = new Vue({
         afterEdit(id){
             axios({
                 method: "PATCH",
-                url: `http://localhost:3000/posts/${this.selectedArticle.id}`,
+                url: `http://localhost:3000/article/${this.selectedArticle.id}`,
                 data: {
                     title: this.newTitle,
                     imgUrl: this.newImgUrl,
@@ -135,7 +154,7 @@ var app = new Vue({
                 }
             })
             .then(() => {
-                this.getArticle()
+                this.getPersonalArticle()
                 this.newTitle = ""
                 this.newImgUrl = ""
                 this.newPost = ""

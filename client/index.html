@@ -132,13 +132,10 @@
 
                     <div v-show="loadPage === 'draft' || loadPage === 'edit-mode'">
                         <form style="height: 80%; width:80%">
-                            <p>Title: {{newTitle}}</p>
                             <label for="title"><b>Title</b></label>
                             <input v-model="newTitle" type="text" class="form-control" placeholder="Enter title" name="title" id="title" required><br>
                             <label for="imgUrl"><b>Image Url</b></label>
                             <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br>
-                            
-                            <p>Post: {{ newPost }}</p>
                             <editor v-model="newPost" api-key="5t9c5vfi2kk6s9yazv87rfciyj6b720adar1ephqweq14uhp" :init="{plugins: 'wordcount'}">Write here</editor>
                             <br>
                             <div v-show="loadPage === 'draft'">
@@ -146,6 +143,7 @@
                             </div>
                             <div v-show="loadPage === 'edit-mode'">
                                 <button @click.prevent="afterEdit" class="btn btn-primary">Update</button>
+                                <button @click="deleteArticle(selectedArticle.id)" class="btn btn-danger">Delete</button>
                             </div>
                         </form>
                     </div>
