@@ -60,7 +60,6 @@ h3 {
   box-shadow: 2px 0 4px rgba(0,0,0,0.5);
   display: flex;
   flex-flow: column nowrap;
-  align-content: 
   overflow: auto;
 }
 

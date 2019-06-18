@@ -5,14 +5,7 @@ new Vue({
     test: "testData",
     postArea: false,
     sidebarArea: true,
-    articles: [
-      { title:"Lorem Ipsum", 
-        content:"<strong>Dolor</strong><p> is not just any random string</p>"
-      },
-      { title:"Why we use Lorem Ipsum", 
-        content:"Well, because <strong>research</strong> shows that:<p> readable text distracts readers who are looking at the layout.</p>"
-      }
-    ],
+    articles: [],
     newTitle: "",
     newContent: "",
     search: ""
@@ -20,9 +13,22 @@ new Vue({
   components: {
     'editor': Editor // <- Important part
   },
+  created(){
+      axios({
+        method: "GET",
+        url: "http://localhost:3000/articles"
+      })
+      .then(({data}) => {
+        this.articles = data;
+      })
+      .catch(err => {
+        console.log("created error:",err)
+      })
+  },
   computed: {
     filteredArticles(){
       let filtered = [];
+
       this.articles.forEach(article => {
         let strArticle = article.title;
         if (strArticle.includes(this.search)) {
@@ -39,7 +45,7 @@ new Vue({
       } else {
         this.sidebarArea = true;
       }
-      //document.getElementById('sidebar').classList.toggle('collapsed');
+      
     },
     togglePost(){
       if(this.postArea) {
@@ -48,9 +54,37 @@ new Vue({
         this.postArea = true
       }
     },
+    delArticle(articleId){
+      axios({
+        method: "DELETE",
+        url: "http://localhost:3000/articles/"+articleId
+      })
+      .then(({data}) => {
+        console.log("deleted an article")
+        this.articles = this.articles.filter(article => article.id !== articleId)
+      })
+      .catch(err => {
+        console.log("created error:",err)
+      })
+    },
     addArticle(){
       this.togglePost()
-      this.articles.push({title:this.newTitle, content:this.newContent})
-    }
+      let newArticle = {title:this.newTitle, content:this.newContent, created_at: (new Date()).toDateString()}
+      
+      axios({
+        method: "POST",
+        url: "http://localhost:3000/articles",
+        data: newArticle
+      })
+      .then(({data}) => {
+        console.log("created an artcle")
+        this.articles.push(data)
+        this.newTitle = "";
+        this.newContent = "";
+      })
+      .catch(err => {
+        console.log("created error:",err)
+      })
+    },
   }
 })

@@ -29,7 +29,7 @@
     <div id="app">
       <header>
         <nav class="navbar navbar-dark bg-dark">
-          <button id="toggleSidebar" v-on:click="toggleSidebar"></button>
+          <div class="d-flex align-items-center"><button id="toggleSidebar" v-on:click="toggleSidebar"></button><label>Mini WP</label></div>
           <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-around col-6">
             <li id="homeNav" class="nav-item ">
               <a class="nav-link " href="#">Home</a>
@@ -64,7 +64,6 @@
               <label>Title: </label>
               <input v-model="newTitle" type="text" name="title"></input>
             </span>
-            <!-- <input v-model="newContent" id="postArticletextarea" name="body"></input> -->
             <editor api-key="9mkhnm26fjqe5fdpy6ewfsnhcy5vrts624vxr42ffw5eunpd" :init="{plugins: 'wordcount'}" v-model="newContent" id="postArticletextarea" name="body"></editor>
             <div class="d-flex justify-content-end">
               <button v-on:click.prevent="addArticle" class="btn btn-primary btn-md d-flex">Submit</button>
@@ -91,7 +90,7 @@
               <div v-html="article.content" class="card-text"></div>
               <br>
               <a href="#" class="btn btn-primary">Edit</a>
-              <a href="#" class="btn btn-danger">Delete</a>
+              <a href="#" class="btn btn-danger" @click="delArticle(article.id)">Delete</a>
             </div>
           </div>
         </div>
@@ -100,6 +99,9 @@
       <span id="scripts">
         <!-- tiny textArea api -->
         <script src="./tinymce-vue.min.js"></script>
+
+        <!-- axios -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
         <!-- Jquery -->
         <script
