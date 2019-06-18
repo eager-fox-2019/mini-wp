@@ -36,11 +36,13 @@
             <br/>
             <button v-on:click="viewList" class="button button-m button-primary">Article List</button>
           </div>
-          
-          <div v-if='currentPage === "pageArticleDetail"' class="main-content margin-s background-white padding-l box-shadow-m">
-            Test Halaman Detail {{pageArticleDetail.indexArticle}}
-            <br/>
-            <button v-on:click="viewList" class="button button-m button-primary">Article List</button>
+
+          <div v-if='currentPage === "pageFormArticle"' class="main-content margin-s background-white padding-l box-shadow-m">
+            <h3 v-if='pageFormArticle.edit'>Edit Article</h3>
+            <h3 v-else>Add New Article</h3>
+            <input v-model='pageFormArticle.title' type="text" placeholder="Title">
+            <textarea v-model='pageFormArticle.content' placeholder="content"></textarea>
+            <button v-on:click="viewList" class="button button-m button-error">Cancel</button>
           </div>
 
 

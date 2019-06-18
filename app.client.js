@@ -28,9 +28,10 @@ var vueApp = new Vue({
         pageArticleDetail: {
             indexArticle: null,
         },
-        pageformArticle: {
+        pageFormArticle: {
+            edit: false,
             title: '',
-            description: '',
+            content: '',
         },
     }, 
     methods: {
@@ -42,14 +43,20 @@ var vueApp = new Vue({
             this.currentPage = 'pageArticleDetail'
         }, 
         addForm() {
-
+            this.pageFormArticle.edit = false
+            this.pageFormArticle.title = ''
+            this.pageFormArticle.content = ''
+            this.currentPage = 'pageFormArticle'
         },
         viewList() {
             this.pageArticleDetail.indexArticle = null
             this.currentPage = 'pageArticleList'
         },
         editForm(i) {
-
+            this.pageFormArticle.edit = true,
+            this.pageFormArticle.title = this.articles[i].title
+            this.pageFormArticle.content = this.articles[i].content
+            this.currentPage = 'pageFormArticle'
         }
     },
     computed: {
