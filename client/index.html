@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-  <!-- CKE editor -->
-  <script src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
+  <!-- AXIOS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
@@ -41,7 +41,7 @@
       </div>
     </nav>
   </header>
-  <main>
+  <main id="app">
     <div id="main-page">
       <section id="menu-section">
         <div id="user-profile">
@@ -49,27 +49,29 @@
           <p id="user-name">John Doe</p>
         </div>
         <form id="search-form" class="form-inline my-2 my-lg-0">
-          <input id="search-input" class="form-control" type="search" placeholder="Search" aria-label="Search">
+          <input v-model='articleSearchTitle' id="search-input" class="form-control" type="search" placeholder="Search"
+            aria-label="Search">
         </form>
         <div class="menu-container">
-          <a class="menu-list" href="" onclick="showArticleList()"><span class="menu-icon"><i
+          <a v-on:click.prevent="changePage('articleList')" class="menu-list" href=""><span class="menu-icon"><i
                 class="fas fa-list"></i></span> Blog Posts</a>
         </div>
         <div class="menu-container">
-          <a class="menu-list" href="" onclick="showAddContainer()"><span><i class="fas fa-folder-plus"></i></span> Add
+          <a v-on:click.prevent="changePage('addArticle')" class="menu-list" href=""><span class="menu-icon"><i
+                class="fas fa-folder-plus"></i></span> Add
             Article</a>
         </div>
         <div class="menu-container">
-          <a class="menu-list" href=""><span><i class="fas fa-edit"></i></span> Edit Article</a>
+          <a class="menu-list" href=""><span class="menu-icon"><i class="fas fa-edit"></i></span> Edit Article</a>
         </div>
         <div class="menu-container">
-          <a class="menu-list" href=""><span><i class="fas fa-trash"></i></span> Delete Article</a>
+          <a class="menu-list" href=""><span class="menu-icon"><i class="fas fa-trash"></i></span> Delete Article</a>
         </div>
         <div class="menu-container">
           <a class="menu-list" href=""><span><i class="fas fa-file-alt"></i></span> Drafts</a>
         </div>
       </section>
-      <section id="content-section-article">
+      <section v-if="page === 'articleList' && isLogin" id="content-section-article">
         <div id="content-section-header">
           <div class="content-section-header-link">
             <a href="">Published</a>
@@ -79,36 +81,21 @@
           </div>
         </div>
         <div id="content-section-body">
-          <div class="article-container">
+          <div class="article-container" v-for="article in filteredArticle">
             <div id="article-image-1">
-
             </div>
-            <h3 id="article-title">Bacon Ipsum</h3>
-
-            <p class="article-author-text">Article by: John Doe</p>
+            <h3 id="article-title">{{article.title}}</h3>
+            <p class="article-author-text">Article by: {{article.author}}</p>
             <p class="article-footer-text">May 12 - 6 min read - <i class="fas fa-star"></i></p>
-          </div>
-          <div class="article-container">
-            <div id="article-image-2">
-
-            </div>
-            <h3 id="article-title">Lorem Ipsum</h3>
-
-            <p class="article-author-text">Article by: Kimi Raikkonen</p>
-            <p class="article-footer-text">May 23 - 4 min read - <i class="fas fa-star"></i></p>
           </div>
         </div>
       </section>
-      <section id="content-section-add">
-        <input type="text" id="title" placeholder="Title">
-        <textarea name="description" id="description" placeholder="Description"></textarea>
-        <script>
-          // Replace the <textarea id="editor1"> with a CKEditor
-          // instance, using default configuration.
-          CKEDITOR.replace('description');
-        </script>
+      <section v-else-if="page === 'addArticle' && isLogin" id="content-section-add">
+        <input type="text" id="title" v-model="articleTitle" placeholder="Title">
+        <!-- <textarea name="description" id="description" v-model="articleDescription" placeholder="Description"></textarea> -->
+        <editor api-key="kosnqtstdfirzhy3ne6no7y71apm80cc9p3nlh3xb89b6vxo" v-model="articleDescription" :init="{plugins: 'wordcount'}"></editor>
         <input id="input-image" type="file" name="myFile">
-        <button id="button-add" class="btn btn-primary">Add</button>
+        <button id="button-add" class="btn btn-primary" v-on:click.prevent="addArticle()">Add</button>
       </section>
     </div>
   </main>
@@ -117,9 +104,11 @@
   </footer>
 
   <!-- Javascript -->
-  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-    crossorigin="anonymous">
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+  <script src="./node_modules/@tinymce/tinymce-vue/lib/browser/tinymce-vue.min.js"></script>
+
   <script src="./main.js"></script>
 </body>
 
