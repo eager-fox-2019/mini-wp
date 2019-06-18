@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Mini WP</title>
+</head>
+<body>
+  <div id="app">
+    <div id="outside" v-if="!loggedIn">
+      <div id="title">
+        Mini WP
+      </div>
+      <div id="subtitle">
+        Register for a new account / login to an existing account.
+      </div>
+      <div id="front-forms">
+        <div style="display: flex; justify-content: center;">
+          <form id="register-form" class="form1" @submit.prevent="sendRegister" autocomplete="off">
+            <p class="form1title">Register</p>
+            <input class="input1" type="text" placeholder="New Email" name="email" required><br>
+            <input class="input1" type="password" placeholder="New Password" name="password" required><br>
+            <button class="button1" type="submit">Register</button>
+          </form>
+          <form id="login-form" class="form1" action="/" method="POST" autocomplete="off">
+            <p class="form1title">Login</p>
+            <input class="input1" type="text" placeholder="Email" name="email" required><br>
+            <input class="input1" type="password" placeholder="Password" name="password" required><br>
+            <button class="button1" type="submit">Login</button>
+          </form>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 0.8rem; position: relative;">
+          <p style="margin-bottom: 0.7rem; color: #ccc">Or sign in with Google:</p>
+          <div id="btn-overlay"></div>
+          <div id="my-signin2"></div>
+        </div>
+      </div>
+      <div id="reg-message">
+        <p>Successfully Registered</p>
+        <button id="ok1" class="button1">Return</button>
+      </div>
+    </div>
+    <div id="inside" v-if="loggedIn">
+      <nav>
+        <a class="navitem" id="logo" href="#">Mini WP</a>
+        <div id="navcenter">
+          <button id="articlesbutton" class="button">Articles</button>
+          <button id="writebutton" class="button">Write</button>
+          <button id="accountbutton" class="button">Account</button>
+        </div>
+        <div id="navright" style="display: flex; align-items: center;">
+          <img class="navitem" id="userimg" src="./icons/user/default.png" alt="">
+          <a class="navitem" id="logout" href="">Log out</a>
+        </div>
+      </nav>
+      <div style="min-height: 5rem; max-width: 50rem; margin: 0 auto 0 auto; padding: 1rem; background-color: #fff5ee;">
+        <tiptap></tiptap>
+        <button>Save</button>
+      </div>
+    </div>
+  </div>
+  <script src="./dist/bundle.js"></script>
+</body>
+</html>
+<body>
+</body>
+</html>
+
+<img src="">
