@@ -10,6 +10,10 @@ label {
   color: lightgrey;
 }
 
+form{
+  padding: 1em;
+}
+
 #app, #content, #sidebar{
   min-height: 300px;
 }
@@ -102,12 +106,20 @@ h3 {
   margin-left: 2px;
 }
 
+#editArticleContainer{
+  padding-top: 1em;
+}
+
+#editArticleContainer button{
+  margin-left: 0.5em;
+}
+
 #articleHeaderContainer{
   background: lightgrey;
   margin-top: 1rem;
 }
 
-#articleHeaderContainer div {
+#articleHeaderContainer div{
   margin-left: 10px;
 }
 

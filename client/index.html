@@ -56,7 +56,7 @@
       </div>
 
       <div id="content">
-        <div id="postForm" v-show="postArea === true" >
+        <div id="postForm" v-show="postArea === true && editArticleArea === false" >
           
           <h3>Post an Article</h3>
           <form id="postArticle" method="post">
@@ -71,7 +71,7 @@
           </form>
         </div>
 
-        <div id="articleHeaderContainer"  class="d-flex p-2 flex-row align-items-center col-12">
+        <div id="articleHeaderContainer"  v-if="editArticleArea === false" class="d-flex p-2 flex-row align-items-center col-12">
           <div class="p-2">
             <button class="btn btn-success btn-md">Published</button></div>
           <div class="p-2">
@@ -83,16 +83,32 @@
           </div>
         </div>
 
-        <div id="articlesContainer" >
+        <div v-if="editArticleArea === false" id="articlesContainer" >
           <div class="card" v-for="article in filteredArticles">
             <div class="card-body">
               <h5 class="card-title">{{article.title}}</h5>
-              <div v-html="article.content" class="card-text"></div>
+              <div v-html="article.content" class="card-text"></div><br>
+              <div class="card-text">published on {{new Date(article.created_at).toDateString()}}</div>
               <br>
-              <a href="#" class="btn btn-primary">Edit</a>
+              <a href="#" class="btn btn-primary" @click="editArticle(article.id)">Edit</a>
               <a href="#" class="btn btn-danger" @click="delArticle(article.id)">Delete</a>
             </div>
           </div>
+        </div>
+
+        <div v-show="editArticleArea === true" id="editArticleContainer">
+
+          <h3>Edit Article</h3>
+          <form id="editArticleForm" method="post">
+            <span class="col">
+              <label>Title: </label>
+              <input v-model="newTitle" type="text" name="title"></input>
+            </span>
+            <editor api-key="9mkhnm26fjqe5fdpy6ewfsnhcy5vrts624vxr42ffw5eunpd" :init="{plugins: 'wordcount'}" v-model="newContent" id="editArticletextarea" name="body"></editor>
+            <div class="d-flex justify-content-end align-items-center">
+              <a class="btn btn-secondary" href="#" @click.prevent="cancelEdit">cancel edit</a><button v-on:click.prevent="updateArticle" class="btn btn-primary btn-md d-flex">Submit</button>
+            </div>
+          </form>          
         </div>
       </div>
 

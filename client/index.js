@@ -8,7 +8,9 @@ new Vue({
     articles: [],
     newTitle: "",
     newContent: "",
-    search: ""
+    search: "",
+    editArticleArea: false,
+    currentArticle: {}
   },
   components: {
     'editor': Editor // <- Important part
@@ -53,6 +55,53 @@ new Vue({
       } else {
         this.postArea = true
       }
+    },
+    updateArticle(){
+      let currentArticle = this.currentArticle
+      let newInput = {
+        title: this.newTitle,
+        content: this.newContent,
+        created_at: (new Date()).toDateString()
+      }
+      //PATCH  /articles/{id}
+      axios({
+        method: "PATCH",
+        url: "http://localhost:3000/articles/"+currentArticle.id,
+        data: newInput
+      })
+      .then(({data}) => {
+        console.log("updated an article")
+        this.cancelEdit()
+        this.articles = this.articles.filter(article => article.title !== "")
+      })
+      .catch(err => {
+        console.log("created error:",err)
+      })
+    },
+    editArticle(articleId){
+      this.editArticleArea = true;
+      this.editArticleId = articleId;
+
+      axios({
+        method: "GET",
+        url: "http://localhost:3000/articles/"+articleId
+      })
+      .then(({data}) => {
+        console.log("selected an article")
+        this.currentArticle = data
+        this.newTitle = data.title
+        this.newContent = data.content
+      })
+      .catch(err => {
+        console.log("created error:",err)
+      })
+    },
+    cancelEdit(){
+      this.currentArticle = {}
+      this.editArticleArea = false;
+      this.editArticleId = null;
+      this.newTitle = "";
+      this.newContent = "";
     },
     delArticle(articleId){
       axios({

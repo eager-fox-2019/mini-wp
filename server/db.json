@@ -2,9 +2,9 @@
   "articles": [
     {
       "id": 1,
-      "title": "hello",
-      "content": "this is the content of first post",
-      "created_at": "2019-06-23T18:25:43.511Z"
+      "title": "Hi there",
+      "content": "<p>this is the content of first post&nbsp;<strong><em>now edited</em></strong></p>\n<p>edit</p>",
+      "created_at": "Tue Jun 18 2019"
     },
     {
       "id": 2,
