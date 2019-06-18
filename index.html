@@ -14,7 +14,8 @@
         <sidebar v-bind:sidebar-open="sidebarOpen"></sidebar>
         <div id="content" class="flex flex-column justify-content-space-between">
           <navbar></navbar>
-          <div class="main-content margin-s background-white padding-l box-shadow-m grid-card-container">
+          
+          <div v-if='currentPage === "pageArticleList"' class="main-content margin-s background-white padding-l box-shadow-m grid-card-container">
             <div></div>
             <div class="grid-card-title">
               <h2 v-if='filteredArticle.length > 0' class="padding-m">Your Published Articles</h2>
@@ -23,8 +24,28 @@
             <div class='grid-card-input-search padding-m'>
               <input v-if='articles.length > 0' class="input-m" autocomplete="off" placeholder="search by title" v-model="pageArticleList.searchTitle" />
             </div>
-            <card v-for="article in filteredArticle" v-bind:title="article.title" v-bind:description="article.description"></card>
+            <card 
+              v-for="(article, i) in filteredArticle" 
+              v-bind:title="article.title" 
+              v-bind:description="article.description"
+              v-bind:index="i"></card>
           </div>
+
+          <div v-if='currentPage === "pageArticleDetail"' class="main-content margin-s background-white padding-l box-shadow-m">
+            Test Halaman Detail {{pageArticleDetail.indexArticle}}
+            <br/>
+            <button v-on:click="viewList" class="button button-m button-primary">Article List</button>
+          </div>
+          
+          <div v-if='currentPage === "pageArticleDetail"' class="main-content margin-s background-white padding-l box-shadow-m">
+            Test Halaman Detail {{pageArticleDetail.indexArticle}}
+            <br/>
+            <button v-on:click="viewList" class="button button-m button-primary">Article List</button>
+          </div>
+
+
+
+
           <footer-component></footer-component>
         </div>
       </div>

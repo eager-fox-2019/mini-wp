@@ -21,7 +21,7 @@ var vueApp = new Vue({
             },
         ],
         sidebarOpen: true,
-        currentPage: 'main',
+        currentPage: 'pageArticleList',
         pageArticleList: {
             searchTitle: ''
         },
@@ -37,8 +37,19 @@ var vueApp = new Vue({
         toggleSidebar() {
             this.sidebarOpen = !this.sidebarOpen
         },
-        searchArticle() {
-            
+        viewArticle(i) {
+            this.pageArticleDetail.indexArticle = i
+            this.currentPage = 'pageArticleDetail'
+        }, 
+        addForm() {
+
+        },
+        viewList() {
+            this.pageArticleDetail.indexArticle = null
+            this.currentPage = 'pageArticleList'
+        },
+        editForm(i) {
+
         }
     },
     computed: {
