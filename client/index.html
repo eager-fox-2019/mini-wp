@@ -20,15 +20,12 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
-
-    <!-- Vue JS -->
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
-    <!-- voicer -->
-    <script src='voicerss-tts.min.js'></script>
   </head>
 
   <body>
+    <!-- Vue JS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
     <div id="app">
       <header>
         <nav class="navbar navbar-dark bg-dark">
@@ -38,8 +35,8 @@
               <a class="nav-link " href="#">Home</a>
             </li>
             <li class="nav-item ">
-              <button v-if="postArea === false" id="togglePostButton" class="btn btn-primary btn-md" v-on:click="togglePost">Post</button>
-              <button v-else="" id="togglePostButton2" class="btn btn-secondary btn-md" v-on:click="togglePost">Cancel</button>
+              <button v-if="postArea === false" id="togglePostButton" class="btn btn-primary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Post</button>
+              <button v-else="" id="togglePostButton2" class="btn btn-secondary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Cancel</button>
             </li>
             <li class="nav-item ">
               <a class="nav-link " href="#">User</a>
@@ -93,9 +90,9 @@
               <div v-html="article.content" class="card-text"></div><br>
               <div class="card-text">published on {{new Date(article.created_at).toDateString()}}</div>
               <br>
-              <a href="#" class="btn btn-primary" @click="editArticle(article._id)">Edit</a>
-              <a href="#" class="btn btn-info" @click="readArticle(article._id)">Read</a>
-              <a href="#" class="btn btn-danger" @click="delArticle(article._id)">Delete</a>
+              <button class="btn btn-primary" @click="editArticle(article._id)" v-bind:disabled="postArea">Edit</button>
+              <a href="#" class="btn btn-info" @click.prevent="readArticle(article._id)">Read</a>
+              <a href="#" class="btn btn-danger" @click.prevent="delArticle(article._id)">Delete</a>
             </div>
           </div>
         </div>
@@ -117,8 +114,11 @@
       </div>
 
       <span id="scripts">
-        <!-- tiny textArea api -->
+        <!-- tiny.mce wysiwyg api -->
         <script src="./tinymce-vue.min.js"></script>
+
+        <!-- voice rss text-to-voice api -->
+        <script src="voicerss-tts.min.js"></script>
 
         <!-- axios -->
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -133,11 +133,11 @@
         <!-- Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-        <!-- fontawesome -->
-        <script src="https://kit.fontawesome.com/ecee750dca.js"></script>
-
         <!-- Popper -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+        <!-- fontawesome -->
+        <script src="https://kit.fontawesome.com/ecee750dca.js"></script>
       </span>
     </div>
   </body>
