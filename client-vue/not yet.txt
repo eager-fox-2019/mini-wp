@@ -1,0 +1,6 @@
+//create login page & related functional
+//complete user page management
+//alert message on all required method
+//wysiwyg correct format
+//change text on edit
+//add time to date
