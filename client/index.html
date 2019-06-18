@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id"
+        content="926460289834-0lu5gc8pbf5hjrmqkaf94l5je7nfs91e.apps.googleusercontent.com">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css" />
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <title>Mini Wordpress</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container" v-if="pageStatus === 'login' || pageStatus === 'regis'">
+            <div class="row" style=" margin-top: 50px; height: 85vh">
+                <div class="col card" style="margin-right: 10px;">
+                    <div style="margin-top: 50px; font-size: 40px">
+                        <div class="row justify-content-center">
+                            <b>Hacktiv Wordpress</b>
+                        </div>
+                        <div class="row justify-content-center">
+                            <img src="./assets/animation.gif" alt="animation.png" style="width: 320px">
+                        </div>
+                        <div class="row justify-content-center">
+                            <p style="font-size: 20px; width: 500px; margin-top: 10px">
+                                <i>
+                                    “Start writing, no matter what.
+                                    The water does not flow until the faucet is turned on.”
+                                </i>
+                            </p>
+                            <p style="font-size: 18px; width: 500px;">
+                                — Louis L’Amour
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 card">
+                    <div v-if="pageStatus === 'login'">
+                        <div class="justify-content-center d-flex" style="margin-top: 120px;">
+                            <form>
+                                <h2 style="text-align: center"><b>Login</b></h2>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email</label>
+                                    <input type="email" class="form-control" aria-describedby="emailHelp"
+                                        placeholder="Enter email">
+                                    <small class="form-text text-muted">We'll never share your email with anyone
+                                        else.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-dark">Login</button>
+                                    <button class="g-signin2" data-onsuccess="onSignIn"></button>
+                                </div>
+                                <div class="form-group" style="margin-top:10px">
+                                    Or
+                                    <a href="" @click.prevent="toRegis">Register</a>
+                                    if you don't have any account
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div v-if="pageStatus === 'regis'">
+                        <div class="justify-content-center d-flex" style="margin-top: 80px;">
+                            <form>
+                                <h2 style="text-align: center"><b>Register</b></h2>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">User Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter User Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email</label>
+                                    <input type="email" class="form-control" aria-describedby="emailHelp"
+                                        placeholder="Enter Email">
+                                    <small class="form-text text-muted">We'll never share your email with anyone
+                                        else.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" placeholder="Enter Password">
+                                </div>
+                                <button type="submit" class="btn btn-dark" >Register</button>
+                                <div class="form-group" style="margin-top:10px">
+                                    Or
+                                    <a href="" @click.prevent="toLogin">Login</a>
+                                    if you already have account
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="nav navbar-dark bg-dark navbar" v-if="pageStatus === 'home'">
+            <a href="#" style="color: white;" @click.prevent="articleList">
+                <h3>
+                    Hacktiv Wordpress
+                </h3>
+            </a>
+            <div class="d-flex">
+                <input type="search" class="form-control" placeholder="Search" style="margin-right: 20px; width: 300px"  v-if="search">
+                <a href="#" style="color: white;margin-right: 20px">
+                    <h5 style="margin-top: 5px">
+                        <i class="fas fa-search" @click.prevent="searchButton"></i>
+                    </h5>
+                </a>
+                <a href="#" style="color: white;margin-right: 20px">
+                    <h5 style="margin-top: 5px">
+                        <i class="fas fa-user"></i>
+                    </h5>
+                </a>
+                <a href="#" style="color: white;">
+                    <h5 style="margin-top: 5px">
+                        <i class="fas fa-power-off"></i>
+                    </h5>
+                </a>
+            </div>
+        </nav>
+        <div class="container-fluid" v-if="pageStatus === 'home'">
+            <div class="row justify-content-center" style="margin-top: 50px; font-size: 70px;">
+                    <a href="" style="color: lightgray;" @click.prevent="articleList"><b>Hacktiv Wordpress</b></a>
+            </div>
+            <div class="row justify-content-center">
+                <div class="card" style="width: 90%; margin-top: 50px; background-color:lightgray; margin-bottom: 50px;">
+                    <div class="row" style="margin: 10px">
+                        <div class="col">
+                            <div class="row justify-content-center" id="maincard">
+                                <div id="userArticle" style="margin-top: 20px; margin-bottom: 20px;" v-if="mainStatus === 'userArticle'">
+                                    <div style="font-size: 35px; margin-bottom: 20px; margin-left: 10px">
+                                        <b>
+                                            Article List
+                                        </b>
+                                    </div>
+                                    <div>
+                                        <div class="card" style="width: 750px; background-color:lightgray; margin-top: 10px; font-size: 25px;">
+                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px">
+                                                <b style="margin-left: 30px;">test</b>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px; margin-left: 350px">View</button>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Edit</button>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Delete</button>
+                                            </div>
+                                        </div>
+                                        <div class="card" style="width: 750px; background-color:lightgray; margin-top: 10px; font-size: 25px;">
+                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px">
+                                                <b style="margin-left: 30px;">test</b>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px; margin-left: 350px">View</button>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Edit</button>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Delete</button>
+                                            </div>
+                                        </div>
+                                        <div class="card" style="width: 750px; background-color:lightgray; margin-top: 10px; font-size: 25px;">
+                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px">
+                                                <b style="margin-left: 30px;">test</b>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px; margin-left: 350px">View</button>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Edit</button>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Delete</button>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div id="detailArticle" v-if="mainStatus === 'detailArticle'">
+                                    <div style="font-size: 50px; margin-top: 30px; text-align: center">
+                                        <b>Article Title</b>
+                                        <img src="./assets/bg.png" alt="" style="width: 800px; margin-top: 20px;">
+                                    </div>
+                                    <div style="font-size: 20px; margin-bottom: 20px; margin-left: 50px; margin-top: 10px;">
+                                        <small>
+                                            <i>Created At</i>
+                                        </small>
+                                    </div>
+                                    <div style="font-size: 20px; margin-left: 50px; width: 750px">
+                                        <p>
+                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                                            Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+                                            unknown printer took a galley of type and scrambled it to make a type specimen
+                                            book. It has survived not only five centuries, but also the leap into electronic
+                                            typesetting, remaining essentially unchanged. It was popularised in the 1960s
+                                            with the release of Letraset sheets containing Lorem Ipsum passages, and more
+                                            recently with desktop publishing software like Aldus PageMaker including
+                                            versions of Lorem Ipsum.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div id="newArticle" v-if="mainStatus === 'newArticle'" style="margin-bottom: 20px">
+                                    <div style="font-size: 30px; margin-bottom: 20px; margin-top: 20px; text-align: center">
+                                        <b>New Article</b>
+                                    </div>
+                                    <div style="width: 800px">
+                                        <form>
+                                            <input type="text" class="form-control" id="articleTitle" placeholder="Title" style="margin-bottom: 20px">
+                                            <textarea class="form-control" id="articleDesc" cols="30" rows="10" style="margin-bottom: 20px"></textarea>
+                                            <div class="form-group" style="margin-left: 10px">
+                                                <label for="upload">Upload Picture</label>
+                                                <input type="file" class="form-control-file" id="upload">
+                                            </div>
+                                            <div style="margin-left: 10px">
+                                                <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-right: 10px">Submit</button>
+                                                <button type="button" class="btn btn-outline-secondary" style="width: 180px;" @click.prevent="articleList">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="articleList" v-if="mainStatus === 'articleList'"  style="margin-bottom: 20px">
+                                    <div class="card mb-3" style="margin-top: 50px; width: 700px">
+                                        <img class="card-img-top" src="./assets/bg.png" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a natural
+                                                lead-in to additional content. This content is a little bit longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px">Read More</button>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-3" style="margin-top: 50px; width: 700px">
+                                        <img class="card-img-top" src="./assets/bg.png" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a natural
+                                                lead-in to additional content. This content is a little bit longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px">Read More</button>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-3" style="margin-top: 50px; width: 700px">
+                                        <img class="card-img-top" src="./assets/bg.png" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a natural
+                                                lead-in to additional content. This content is a little bit longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px">Read More</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div id="accordion" style="margin-top: 15px;">
+                                <div class="card" style="text-align: center; background-color:#2A292B" data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="card-header" id="headingOne">
+                                        <h3 style="color: white">
+                                            <b>Menu</b>
+                                        </h3>
+                                    </div>
+                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body" style="background-color:#363636">
+                                            <button type="button" class="btn btn-outline-light btn-lg" style="width: 180px; margin-bottom: 15px" @click.prevent="newArticle">Write+</button>
+                                            <button type="button" class="btn btn-outline-light btn-lg" style="width: 180px; margin-bottom: 0px" @click.prevent="userArticle">Article List</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center" style="margin-top: 30px; margin-bottom: 30px; position:unset">
+                                <img src="./assets/animation.gif" alt="animation.png" style="width: 200px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
