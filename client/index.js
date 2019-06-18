@@ -72,7 +72,15 @@ new Vue({
       .then(({data}) => {
         console.log("updated an article")
         this.cancelEdit()
-        this.articles = this.articles.filter(article => article.title !== "")
+        
+        let updatedList = []
+        this.articles.forEach(article => {
+          if (article.id === data.id){
+            article = data;
+          }
+          updatedList.push(article)
+        })
+        this.articles = updatedList
       })
       .catch(err => {
         console.log("created error:",err)
