@@ -121,14 +121,16 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ post.title }}</h5>
                                         <div class="card-text" v-html="shortText(post.content)"></div>
-                                        <button @click="readMore(post.id)" class="btn btn-primary">Read more</button>   <button @click="deleteArticle(post.id)" class="btn btn-danger">Delete</button>
+                                        <button @click="readMore(post.id)" class="btn btn-primary">Read more</button>
+                                        <button @click="beforeEdit(post.id)" class="btn btn-warning">Edit</button>
+                                        <button @click="deleteArticle(post.id)" class="btn btn-danger">Delete</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div v-show="loadPage === 'draft'">
+                    <div v-show="loadPage === 'draft' || loadPage === 'edit-mode'">
                         <form style="height: 80%; width:80%">
                             <p>Title: {{newTitle}}</p>
                             <label for="title"><b>Title</b></label>
@@ -139,7 +141,12 @@
                             <p>Post: {{ newPost }}</p>
                             <editor v-model="newPost" api-key="5t9c5vfi2kk6s9yazv87rfciyj6b720adar1ephqweq14uhp" :init="{plugins: 'wordcount'}">Write here</editor>
                             <br>
-                            <button @click.prevent="postArticle" class="btn btn-primary">Publish</button>
+                            <div v-show="loadPage === 'draft'">
+                                <button @click.prevent="postArticle" class="btn btn-primary">Publish</button>
+                            </div>
+                            <div v-show="loadPage === 'edit-mode'">
+                                <button @click.prevent="afterEdit" class="btn btn-primary">Update</button>
+                            </div>
                         </form>
                     </div>
 
