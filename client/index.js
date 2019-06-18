@@ -1,7 +1,7 @@
 Vue.config.devtools = true
 
 let baseUrl = "http://localhost:3000"
-
+//read/:userId/:id
 var app = new Vue({
   el: '#app',
   data: {
@@ -23,6 +23,11 @@ var app = new Vue({
         url: baseUrl+"/articles"
       })
       .then(({data}) => {
+
+        data.sort( function(a,b){
+          return new Date(a.created_at) - new Date(b.created_at)
+        })
+
         this.articles = data;
       })
       .catch(err => {
@@ -58,6 +63,31 @@ var app = new Vue({
         this.postArea = true
       }
     },
+    readArticle(articleId){
+      axios({
+        method: "GET",
+        url: `${baseUrl}/articles/read/0/${articleId}`
+      })
+      .then(({data}) => {
+        console.log("read an article,",data)
+
+        let [api_key, readStr] = data
+
+        VoiceRSS.speech({
+            key: api_key,
+            src: readStr,
+            hl: 'en-us',
+            r: 0, 
+            c: 'mp3',
+            f: '44khz_16bit_stereo',
+            ssml: false
+        });
+
+      })
+      .catch(err => {
+        console.log("created error:",err)
+      })
+    },
     updateArticle(){
       let currentArticle = this.currentArticle
       let newInput = {
@@ -65,7 +95,7 @@ var app = new Vue({
         content: this.newContent,
         created_at: (new Date()).toDateString()
       }
-      //PATCH  /api/todos/update/:userId/:todoId
+
       axios({
         method: "PATCH",
         url: `${baseUrl}/articles/0/${currentArticle._id}`,
@@ -82,6 +112,11 @@ var app = new Vue({
           }
           updatedList.push(article)
         })
+
+        updatedList.sort(function(a,b){
+          return new Date(a.created_at) - new Date(b.created_at)
+        })
+
         this.articles = updatedList
       })
       .catch(err => {

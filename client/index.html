@@ -23,6 +23,9 @@
 
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <!-- voicer -->
+    <script src='voicerss-tts.min.js'></script>
   </head>
 
   <body>
@@ -91,6 +94,7 @@
               <div class="card-text">published on {{new Date(article.created_at).toDateString()}}</div>
               <br>
               <a href="#" class="btn btn-primary" @click="editArticle(article._id)">Edit</a>
+              <a href="#" class="btn btn-info" @click="readArticle(article._id)">Read</a>
               <a href="#" class="btn btn-danger" @click="delArticle(article._id)">Delete</a>
             </div>
           </div>

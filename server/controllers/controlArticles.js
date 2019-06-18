@@ -20,12 +20,10 @@ class ControllerArticle {
 	}
 
 	static read(req, res, next){
-		let readStr
-
 		Article.findOne({_id: req.params.id})
 		.then(article => {
 			//http://api.voicerss.org/?key=<API key>&hl=en-us&src=Hello, world!
-			readStr += article.title+"."+article.content.replace(/<[^>]*>?/gm, '')
+			let readStr = article.title+"."+article.content.replace(/<[^>]*>?/gm, '')
 			let link = `https://api.voicerss.org?key=${process.env.VOICE_API}&hl=en-us&src=${readStr}`
 			res.json([process.env.VOICE_API, readStr])
 		})

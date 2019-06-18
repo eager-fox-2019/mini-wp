@@ -3,7 +3,7 @@ const ControllerArticles = require('../controllers/controlArticles')
 const isAuthenticated = require('../middleware/auth.js').authentication
 const isAuthorized = require('../middleware/auth.js').authorization
 
-// /api/articles
+// /articles
 router.use(isAuthenticated)
 router.get('/', ControllerArticles.findAll)
 router.get('/:id', ControllerArticles.findOne)
