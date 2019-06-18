@@ -7,7 +7,8 @@ var app = new Vue({
     articleTitle: '',
     articleDescription: '',
     articleSearchTitle: '',
-    articles: []
+    articles: [],
+    selectedArticle: {}
   },
   components: {
     'editor': Editor // <- Important part
@@ -59,6 +60,14 @@ var app = new Vue({
           console.log(err);
         })
     },
+    displayArticle(id) {
+      for (let article of this.articles) {
+        if (article._id == id) {
+          this.selectedArticle = article;
+        }
+      }
+      this.page = 'displayArticle';
+    }
   },
   computed: {
     filteredArticle() {

@@ -245,9 +245,15 @@ ul {
   border-radius: 5px;
 }
 
-#article-title {
+.article-title {
   margin-top: 10px;
   font-weight: bold;
+  text-decoration: none;
+  color: #222;
+}
+
+.article-container a:hover {
+  text-decoration: none;
 }
 
 .article-author-text {
@@ -299,6 +305,41 @@ ul {
   display: block;
   margin-top: 20px;
   margin-left: 20px;
+}
+
+/* -------- Display Article Section setup --------  */
+
+#display-article-section{
+  margin-top: 60px;
+  margin-left: 20%;
+  min-height: 100vh;
+  background-color: #eee;
+  padding: 80px 150px 80px 150px;
+}
+
+#display-article-section-title-container {
+  height: 15vh;
+  text-align: center;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+#display-article-section-title {
+  font-weight: bold;
+  font-size: 2.5rem;
+  height: 15vh;
+  line-height: 15vh;
+}
+
+#display-article-section-content {
+  height: 85vh;
+  font-size: 1.2rem;
+  margin-top: 30px;
+  padding: 50px 80px 50px 80px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #ddd;
 }
 
 /* --------------------- Footer setup ---------------------  */

@@ -84,7 +84,7 @@
           <div class="article-container" v-for="article in filteredArticle">
             <div id="article-image-1">
             </div>
-            <h3 id="article-title">{{article.title}}</h3>
+            <a v-on:click.prevent="displayArticle(article._id)" href=""><h3 class="article-title">{{article.title}}</h3></a>
             <p class="article-author-text">Article by: {{article.author}}</p>
             <p class="article-footer-text">May 12 - 6 min read - <i class="fas fa-star"></i></p>
           </div>
@@ -92,12 +92,19 @@
       </section>
       <section v-else-if="page === 'addArticle' && isLogin" id="content-section-add">
         <input type="text" id="title" v-model="articleTitle" placeholder="Title">
-        <!-- <textarea name="description" id="description" v-model="articleDescription" placeholder="Description"></textarea> -->
         <editor api-key="kosnqtstdfirzhy3ne6no7y71apm80cc9p3nlh3xb89b6vxo" v-model="articleDescription" :init="{plugins: 'wordcount'}"></editor>
         <input id="input-image" type="file" name="myFile">
         <button id="button-add" class="btn btn-primary" v-on:click.prevent="addArticle()">Add</button>
       </section>
     </div>
+    <section id="display-article-section" v-if="page === 'displayArticle'">
+      <div id="display-article-section-title-container">
+        <h2 id="display-article-section-title">{{selectedArticle.title}}</h2>
+      </div>
+      <div id="display-article-section-content" v-html="selectedArticle.content">
+        
+      </div>
+    </section>
   </main>
   <footer>
     <p>Dibuat oleh Made Aryadi <i class="fas fa-smile"></i></p>
