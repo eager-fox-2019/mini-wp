@@ -12,14 +12,18 @@
       
       <div id="app">
         <sidebar v-bind:sidebar-open="sidebarOpen"></sidebar>
-        <div id="content">
+        <div id="content" class="flex flex-column justify-content-space-between">
           <navbar></navbar>
-          <div class="margin-s background-white padding-l box-shadow-m grid-card-container">
+          <div class="main-content margin-s background-white padding-l box-shadow-m grid-card-container">
+            <div></div>
             <div class="grid-card-title">
-              <h2 v-if='articles.length > 0' class="padding-m">Your Published Articles</h2>
+              <h2 v-if='filteredArticle.length > 0' class="padding-m">Your Published Articles</h2>
               <h2 v-else class="padding-m">No Article</h2>
             </div>
-            <card v-for="article in articles" v-bind:title="article.title" v-bind:description="article.description"></card>
+            <div class='grid-card-input-search padding-m'>
+              <input v-if='articles.length > 0' class="input-m" autocomplete="off" placeholder="search by title" v-model="pageArticleList.searchTitle" />
+            </div>
+            <card v-for="article in filteredArticle" v-bind:title="article.title" v-bind:description="article.description"></card>
           </div>
           <footer-component></footer-component>
         </div>
