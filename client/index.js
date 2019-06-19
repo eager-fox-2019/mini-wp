@@ -1,12 +1,17 @@
 Vue.config.devtools = true
 
-let baseUrl = "http://localhost:3000"
-//read/:userId/:id
+let baseUrl = "http://localhost:3000/api"
+
 var app = new Vue({
   el: '#app',
   data: {
+    isLoggedin: false,
+    loginArea: true,
+    registerArea: false,
     postArea: false,
     sidebarArea: true,
+    userEmail: "",
+    userPassword: "",
     articles: [],
     newTitle: "",
     newContent: "",
@@ -48,13 +53,35 @@ var app = new Vue({
     }
   },
   methods: {
+    toggleLoginArea(){
+      if (this.loginArea){
+        this.loginArea = false;
+      } else {
+        this.loginArea = true;
+      }
+    },
+    loginUser(){
+
+    },
+    registerUser(){
+
+    },
+    logoutUser(){
+
+    },
+    toggleRegister(){
+      if (this.registerArea){
+        this.registerArea = false;
+      } else {
+        this.registerArea = true;
+      }
+    },
     toggleSidebar(){
       if (this.sidebarArea){
         this.sidebarArea = false;
       } else {
         this.sidebarArea = true;
       }
-      
     },
     togglePost(){
       if(this.postArea) {

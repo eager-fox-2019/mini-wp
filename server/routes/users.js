@@ -11,8 +11,8 @@ router.post('/googleSignin', controllerUser.googleSignin)
 router.post('/fblogin', controllerUser.fbSignin)
 
 router.get('/current', isAuthenticated, controllerUser.current)
-router.patch('/update', isAuthenticated, controllerUser.update)
-router.delete('/delete', isAuthenticated, controllerUser.delete)
+router.patch('/', isAuthenticated, controllerUser.update)
+router.delete('/', isAuthenticated, controllerUser.delete)
 
 // router.delete('/forceDelete/:userId', controllerUser.delById)
 

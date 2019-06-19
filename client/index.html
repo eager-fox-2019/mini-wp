@@ -29,20 +29,25 @@
     <div id="app">
       <header>
         <nav class="navbar navbar-dark bg-dark">
-          <div class="d-flex align-items-center"><button id="toggleSidebar" v-on:click="toggleSidebar"></button><label>Mini WP</label></div>
-          <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-around col-6">
-            <li id="homeNav" class="nav-item ">
+          <div class="d-flex align-items-center col-4">
+            <button id="toggleSidebar" v-on:click="toggleSidebar"></button>
+            <label>Mini WP</label>
+          </div>
+          <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-end col-8">
+            <li id="homeNav" class="nav-item col-2">
               <a class="nav-link " href="#">Home</a>
             </li>
-            <li class="nav-item ">
+            <li v-show="isLoggedin" class="nav-item col-2">
               <button v-if="postArea === false" id="togglePostButton" class="btn btn-primary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Post</button>
               <button v-else="" id="togglePostButton2" class="btn btn-secondary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Cancel</button>
             </li>
-            <li class="nav-item ">
+            <li v-show="isLoggedin" class="nav-item col-2">
               <a class="nav-link " href="#">User</a>
             </li>
-            <li class="nav-item ">
-              <a class="nav-link " href="#">Logout</a>
+            <li class="nav-item col-2">
+              <a v-if="isLoggedin" class="nav-link " href="#">Logout</a>
+
+              <a v-if="isLoggedin === false" class="btn btn-info" href="#" @click.prevent="toggleLoginArea">Login</a>
             </li>
           </ul>
         </nav>
@@ -57,6 +62,24 @@
       </div>
 
       <div id="content">
+
+        <div id="loginArea" v-if="loginArea" class="d-inline-flex">
+          <form method="post" class="d-flex align-items-center">
+            <span><label>User E-mail: </label></span>
+            <span><input v-model="userEmail" type="text" name="userEmail"></input></span>
+            <span><label>Password: </label></span>
+            <span><input v-model="userPassword" type="text" name="userPassword"></input></span>
+            <span v-if="registerArea===false">
+              <button @click.prevent="loginUser" class="btn btn-primary btn-md">Login</button></span>
+            <span v-if="registerArea===false">
+              <a href="#" @click.prevent="toggleRegister">Register</a></span>
+            <span v-if="registerArea">
+              <button @click.prevent="registerUser" class="btn btn-primary btn-md">Register</button></span>
+            <span v-if="registerArea">
+              <a href="#" @click.prevent="toggleRegister">Cancel</a></span>
+          </form>
+        </div>
+
         <div id="postForm" v-show="postArea === true && editArticleArea === false" >
           
           <h3>Post an Article</h3>

@@ -75,6 +75,23 @@ h3 {
   width: 100%;
 }
 
+#loginArea{
+  padding-top: 0;
+  margin-bottom: 1em;
+  float: right;
+}
+
+#loginArea form, #loginArea label{
+  margin: 0;
+  color: gray;
+  background: white;
+  border-radius: 0 0 0 10px;
+}
+
+#loginArea span{
+  padding-right: 1em;
+}
+
 #content {
   background:gray;
   width: 70%;
