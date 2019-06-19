@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <!-- bootstrap 4.0 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- WYSIWYG --- summernote -->
+    <!-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet"> -->
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/summernote-bs4.css"> -->
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Contrail+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <title>My-ni-WP</title>
+</head>
+<body>
+    <div id="app">
+            <nav class="navbar navbar-expand-md">
+                <a class="navbar-brand" href="#" v-on:click="selectPage('Landing')">My-ni-WP</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button> 
+                        
+                <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item" v-for="menu in menus">
+                            <a class="nav-link" href="#" v-on:click="selectPage(menu)">{{ menu }}</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item" v-for="menu in endMenus">
+                            <a class="nav-link" href="#" v-on:click="selectPage(menu)">{{ menu }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid" >
+
+                <div class="main" v-if="selectedPage === 'Home'">
+                    <h1>home</h1>
+                    <div class="d-flex justify-content-center" id="home">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                Featured
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                2 days ago
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center" id="home">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                Featured
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                2 days ago
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center" id="home">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                Featured
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                2 days ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main2" v-else-if="selectedPage === 'Article'">
+                    <h1>article</h1>
+                    <div class="container" id="article">
+
+                    </div>
+                </div>
+                <div class="main3" v-else-if="selectedPage === 'Create'">
+                    <h1>create</h1>
+                    <div class="container" id="create">
+                        <!-- <form method="post">
+                            <textarea id="summernote" name="editordata"></textarea>
+                        </form> -->
+                        
+                        <h1>TinyMCE Quick Start Guide</h1>
+                        <form method="post">
+                            <span>Title :</span><br>
+                            <input type="text"><br>
+                            <span>Tags :</span><br>
+                            <input type="text" v-model="tagInputed" > <br>
+                            <div id="tagsIputed" v-for="tag in tagInputed">
+                                <li style="display:inline-block; list-style-type :none"> {{tag}} </li>
+                            </div>
+                            <span>Description :</span><br> 
+                            <textarea id="mytextarea">Hello, World!</textarea>
+                        </form>
+                    </div>
+                </div>
+                <div class="main5" v-else-if="selectedPage === 'Sign in'">
+                    <h1>sign in</h1>
+                </div>
+                <div class="main6" v-else-if="selectedPage === 'Sign up'">
+                        <h1>sign up</h1>
+                </div>
+                <div class="main4" v-else="selectedPage === 'Landing'">
+                    <div class="container " id="main4Con">
+                        <div class="col-6 mt-9">
+                            <h1>Create anything, for anyone.</h1>
+                            <p> WordPress.com allows you to build a website that meets your unique needs. Start a          blog, business site, portfolio, online store, or anything else you can imagine.</p>
+                                    
+                            <p>With built‑in optimization and responsive, mobile‑ready themes, there’s no limit to who you can reach with your new website. Create a simple website for your family or sell products around the world—it’s up to you.</p>
+                        </div>
+                        <div class="col-6"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- footer -->
+                <div class="footer-copyright text-center py-3 fixed-bottom" >
+                    <p class="footer-p">© 2018 Copyright: <a href="https://www.instagram.com/yudawardana/">@Yudawardana</a></p>
+                </div>
+    </div>
+
+    <!-- js-aku -->
+    <script src="js/main.js"></script>
+    <!-- <script src="js/summernote-bs4.js"></script> -->
+    <!-- bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- WYSAIWYG --- summernote -->
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script> -->
+    <script src='https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+</body>
+</html>
