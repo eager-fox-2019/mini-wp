@@ -15,8 +15,8 @@ const articleSchema = new Schema({
 		default: "draft"
 	},
 	created_at: {
-		type: String,
-		default: (new Date()).toDateString()
+		type: Date,
+		default: new Date()
 	},
 	owner: { 
 		type: Schema.Types.ObjectId, 

@@ -1,4 +1,5 @@
 const User = require('../models/').User
+const Article = require('../models/').Article
 const verifyToken = require('../helpers/jwt.js').verifyToken
 
 const authentication = (req, res, next) => {
@@ -23,14 +24,40 @@ const authentication = (req, res, next) => {
 	}
 }
 
-const authorization = (req, res, next) => {
-	let userId = req.params.userId
+//authorization article doang
+const authArticle = (req, res, next) => {
+	let articleId = req.params.id
+
+	if (articleId){
+		Article.findOne({_id: articleId})
+			.then(found => {
+				if (!found) {
+					throw ({status: 404}) //article not found
+				} else if (found.owner == req.decode.id){
+					//token's data matches userId params sent
+					next()
+				} else {
+					//wrong user
+					throw ({status:401}) //unauthorized
+				}
+			})
+			.catch(next)
+	} else {
+		//no article id parameters
+		next({status: 404}) //page not found
+	}
+}
+
+//authorization user doang
+const authUser = (req, res, next) => {
+	let userId = req.params.id
+
 	if (userId){
 		User.findOne({_id: userId})
 			.then(found => {
 				if (!found) {
-					throw ({status: 404}) //user not found
-				} else if (found.email == req.decode){
+					throw ({status: 404}) //article not found
+				} else if (found._id == req.decode.id){
 					//token's data matches userId params sent
 					next()
 				} else {
@@ -47,5 +74,6 @@ const authorization = (req, res, next) => {
 
 module.exports = {
 	authentication: authentication,
-	authorization: authorization
+	authArticle: authArticle,
+	authUser: authUser
 }

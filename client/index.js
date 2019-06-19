@@ -26,28 +26,7 @@ var app = new Vue({
     'editor': Editor // <- Important to load wysiwyg api tiny.mce
   },
   created(){
-    if (localStorage.getItem("access_token")){
-      this.isLoggedin = true;
-      this.loginArea = false;
-      axios({
-        method: "GET",
-        url: baseUrl+"/articles",
-        headers:{
-          access_token: localStorage.getItem("access_token")
-        }
-      })
-      .then(({data}) => {
-
-        data.sort( function(a,b){
-          return new Date(b.created_at) - new Date(a.created_at)
-        })
-
-        this.articles = data;
-      })
-      .catch(err => {
-        console.log("created error:",err)
-      })
-    }
+    this.populateArticles()
   },
   computed: {
     filteredArticles(){
@@ -63,6 +42,30 @@ var app = new Vue({
     }
   },
   methods: {
+    populateArticles(){
+      if (localStorage.getItem("access_token")){
+        this.isLoggedin = true;
+        this.loginArea = false;
+        axios({
+          method: "GET",
+          url: baseUrl+"/articles",
+          headers:{
+            access_token: localStorage.getItem("access_token")
+          }
+        })
+        .then(({data}) => {
+
+          data.sort( function(a,b){
+            return new Date(b.created_at) - new Date(a.created_at)
+          })
+
+          this.articles = data;
+        })
+        .catch(err => {
+          console.log("created error:",err)
+        })
+      }
+    },
     toggleLoginArea(){
       if (this.loginArea){
         this.loginArea = false;
@@ -87,6 +90,7 @@ var app = new Vue({
         this.showMsg("Successfully logged in")
         this.clearLogin()
         this.isLoggedin = true;
+        this.populateArticles()
 
       })
       .catch(err => {
@@ -110,14 +114,13 @@ var app = new Vue({
         this.showMsg("Successfully registered")
       })
       .catch(err => {
-        console.log("created error at register:")
-        console.log(err)
-        this.showError(JSON.stringify(err))
+        console.log("registerUser error:", err)
+        this.showError(err)
       })
 
     },
     showError(err){
-      this.errorMessage = err.message
+      this.errorMessage = err.response.data
     },
     clearError(){
       this.errorMessage = ""
@@ -135,7 +138,11 @@ var app = new Vue({
       this.userName = ""
     },
     logoutUser(){
-
+      localStorage.clear()
+      this.isLoggedin = false;
+      this.clearLogin()
+      this.clearMsg()
+      this.articles = []
     },
     toggleRegister(){
       if (this.registerArea){
@@ -189,6 +196,7 @@ var app = new Vue({
     },
     updateArticle(){
       let currentArticle = this.currentArticle
+      console.log(currentArticle)
       let newInput = {
         title: this.newTitle,
         content: this.newContent,
@@ -222,7 +230,7 @@ var app = new Vue({
         this.articles = updatedList
       })
       .catch(err => {
-        console.log("created error:",err)
+        console.log("updateArticle error:",err)
         this.showError(err)
       })
     },
@@ -244,7 +252,7 @@ var app = new Vue({
         this.newContent = data.content
       })
       .catch(err => {
-        console.log("created error:",err)
+        console.log("editArticle error:",err)
         this.showError(err)
       })
     },
@@ -267,13 +275,16 @@ var app = new Vue({
         this.articles = this.articles.filter(article => article._id !== articleId)
       })
       .catch(err => {
-        console.log("created error:",err)
+        console.log("delArticle error:",err)
         this.showError(err)
       })
     },
     addArticle(){
       this.togglePost()
-      let newArticle = {title:this.newTitle, content:this.newContent, created_at: (new Date()).toDateString()}
+      let newArticle = {
+        title:this.newTitle, 
+        content:this.newContent
+      }
       
       axios({
         method: "POST",

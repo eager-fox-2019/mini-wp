@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const ControllerArticles = require('../controllers/controlArticles')
 const isAuthenticated = require('../middleware/auth.js').authentication
-const isAuthorized = require('../middleware/auth.js').authorization
+const isAuthorized = require('../middleware/auth.js').authArticle
 
 // /articles
 router.use(isAuthenticated)
@@ -10,8 +10,8 @@ router.get('/:id', ControllerArticles.findOne)
 router.get('/read/:id', ControllerArticles.read)
 router.post('/', ControllerArticles.create)
 
-router.patch('/:userId/:id', isAuthorized, ControllerArticles.update)
-router.delete('/:userId/:id', isAuthorized, ControllerArticles.delete)
+router.patch('/:id', isAuthorized, ControllerArticles.update)
+router.delete('/:id', isAuthorized, ControllerArticles.delete)
 
 
 module.exports = router

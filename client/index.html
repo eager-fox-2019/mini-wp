@@ -45,7 +45,7 @@
               <a class="nav-link " href="#">User</a>
             </li>
             <li class="nav-item col-2">
-              <a v-if="isLoggedin" class="nav-link " href="#">Logout</a>
+              <a v-if="isLoggedin" class="nav-link " href="#" @click.prevent="logoutUser">Logout</a>
 
               <a v-if="isLoggedin === false" class="btn btn-info" href="#" @click.prevent="toggleLoginArea">Login</a>
             </li>

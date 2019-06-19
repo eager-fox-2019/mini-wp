@@ -33,12 +33,12 @@ class ControllerArticle {
 
 	static update(req, res, next){
 		console.log("at update ControllerArticle")
-		Article.findOne({_id:req.params.id})//, req.body, {new: true})
+		Article.findOne({_id:req.params.id})
 		.populate('owner')
 		.exec((err, article) => {
 			if (err) throw err;
 			console.log(article)
-			if (article.owner.email == req.decode){
+			if (article.owner == req.decode.id){
 				return Article.update({_id:req.params.id}, req.body, {new:true})
 			} else {
 				let err = new Error()
@@ -54,6 +54,7 @@ class ControllerArticle {
 	}
 
 	static delete(req, res, next){
+		console.log("controller delete")
 		Article.findOneAndDelete({_id:req.params.id})
 		.then(deleted => {
 			res.json(deleted)
@@ -63,6 +64,7 @@ class ControllerArticle {
 
 	static create(req, res, next){
 	    let articleInput = req.body //should have title and content
+	    articleInput.owner = req.decode.id //add owner id
 	    Article.create(articleInput)
 	      .then(createdArticle => {
 	        res.json(createdArticle)
