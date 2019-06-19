@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 app.use("/", routes);
 app.use(errorHandler)
 
-const PORT = 3000;
+const PORT = process.env.PORT|| 3000;
 app.listen(PORT, ()=> {
     console.log(`connected to localhost ${PORT}`);
 });
