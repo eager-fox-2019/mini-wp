@@ -1,9 +1,9 @@
-const todo = require('./todo.route')
+const article = require('./article.route')
 const user = require('./user.route')
 const router = require('express').Router() 
 const authMiddleware = require('../middlewares/authentication.middleware')
 
 router.use('/user', user)
-router.use('/todo', todo)
+router.use('/article', authMiddleware, article)
 
 module.exports = router

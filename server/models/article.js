@@ -17,5 +17,5 @@ ModelSchema.pre('save', function (next) {
     next()
 });
 
-const Model = mongoose.model('Todos', ModelSchema)
+const Model = mongoose.model('Article', ModelSchema)
 module.exports = Model
