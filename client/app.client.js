@@ -32,8 +32,11 @@ var vueApp = new Vue({
             edit: false,
             title: '',
             content: '',
-        },
+        }
     }, 
+    created() {
+        
+    },
     methods: {
         toggleSidebar() {
             this.sidebarOpen = !this.sidebarOpen
@@ -67,6 +70,12 @@ var vueApp = new Vue({
             } else {
                 return this.articles.filter(article => article.title.includes(filter))
             }
+        },
+        loginData() {
+            return {
+                email: window.localStorage.getItem('miniwp-email'),
+                token: window.localStorage.getItem('miniwp-token')
+            }  
         }
     }
 })
