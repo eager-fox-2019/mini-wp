@@ -10,12 +10,35 @@ class ArticleController{
     }
 
     static findPersonal(req, res, next){
+        console.log("Masuk ke find personal")
         Article.find({author: req.decode.id})
             .then(articles => {
+                console.log("Find personal function", articles)
                 articles.sort(function(a,b){
-                    return new Date(a.due_date) - new Date(b.due_date);
+                    return new Date(a.updatedAt) - new Date(b.updatedAt);
                 });
                 res.json(articles)
+            })
+            .catch(next)
+    }
+
+    static readOne(req, res, next){
+        Article.findOne({
+            _id: req.params.articleId
+        })
+            .then(article => {
+                res.json(article)
+            })
+            .catch(next)
+    }
+
+    static findOne(req, res, next){
+        Article.findOne({
+            _id: req.params.articleId,
+            author: req.decode.id
+        })
+            .then(article => {
+                res.json(article)
             })
             .catch(next)
     }
@@ -33,7 +56,7 @@ class ArticleController{
 
     static update(req, res, next){
         let searchObj = {
-            _id: req.params.ArticleId,
+            _id: req.params.articleId,
             author: req.decode.id
         }
         let updateObj = {}
@@ -57,7 +80,7 @@ class ArticleController{
 
     static delete(req, res, next){
         let searchObj = {
-            _id: req.params.ArticleId,
+            _id: req.params.articleId,
             author: req.decode.id
         }
         Article.deleteOne(searchObj)

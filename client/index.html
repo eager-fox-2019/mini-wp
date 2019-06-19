@@ -46,7 +46,7 @@
                             <a class="navbar-brand nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="https://0.gravatar.com/avatar/0d268b07588c38410c771a2056d120ae?s=96&d=mm" width="25" height="25" class="d-inline-block align-top" alt="" style="border-radius: 50%">
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="left: auto; right: 0;">
                                 <a v-show="usersign === 'logout'" @click.prevent="userLogout" class="dropdown-item" href="#">Log out</a>
                             </div>
                             <a class="navbar-brand" href="#">
@@ -58,14 +58,14 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Register/Login
                             </a>                            
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="padding:20px 30px; left: auto; right: 0;">
                                 <form v-show="usersign === 'login'" id="login-form">
                                     <div class="form-group">
-                                        <label for="log-email"><b>Email</b></label>
+                                        <label for="log-email"><b>Email</b></label><br>
                                         <input v-model="userEmail" type="text" placeholder="Enter your email" name="email" id="log-email" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="log-psw"><b>Password</b></label>
+                                        <label for="log-psw"><b>Password</b></label><br>
                                         <input v-model="userPsw" type="password" placeholder="Enter your password" name="password" id="log-psw" required>
                                     </div>
                                     <button @click.prevent="userLogin" type="submit" class="btn btn-primary" style="width: 100%" id="login">Login</button>
@@ -110,8 +110,8 @@
                     <a href="#" data-toggle="collapse" data-target="#site-side"><i class="fas fa-pencil-alt"></i>Site</a>
                     <div id="site-side" class="collapse">
                         <ul>
-                            <li><a href="#">Pages</a></li>
-                            <li><a href="#" id="posts" @click="toPublishedPage">Posts</a></li>
+                            <li><a href="#" @click="toPublishedPage">Pages</a></li>
+                            <li><a href="#" id="posts" @click="toPersonalPostPage">Posts</a></li>
                             <li><a href="#">Media</a></li>
                             <li><a href="#">Comments</a></li>
                             <li><a href="#">Feedback</a></li>
@@ -174,9 +174,44 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ post.title }}</h5>
                                         <div class="card-text" v-html="shortText(post.content)"></div>
-                                        <button @click="readMore(post.id)" class="btn btn-primary">Read more</button>
-                                        <button @click="beforeEdit(post.id)" class="btn btn-warning">Edit</button>
-                                        <button @click="deleteArticle(post.id)" class="btn btn-danger">Delete</button>
+                                        <button @click="readMore(post._id)" class="btn btn-primary">Read more</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-show="loadPage === 'privatepost'">
+                        <div class="container-nav">
+                            <div v-show="onSearch === false" style="display: flex">
+                                <div>
+                                    <div class="container-nav-link">
+                                        <a @click.prevent="toPublishedPage">Published</a>
+                                    </div>
+                                    <div class="container-nav-link">
+                                        <a @click.prevent="toDraftPage">Drafts</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-show="onSearch">
+                                <div class="md-form mt-0">
+                                    <input v-model="searchText" class="form-control" type="text" placeholder="Search" aria-label="Search">
+                                </div>
+                            </div>
+                            <div class="container-nav-link">
+                                <i @click="changeSearch" class="fas fa-search" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="container-post">
+                            <div class="articles">
+                                <div class="card align-items-*-center" v-for="post in privateFilteredList">
+                                    <img class="card-img-top" v-bind:src="post.imgUrl" alt="Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ post.title }}</h5>
+                                        <div class="card-text" v-html="shortText(post.content)"></div>
+                                        <button @click="readMore(post._id)" class="btn btn-primary">Read more</button>
+                                        <button @click="beforeEdit(post._id)" class="btn btn-warning">Edit</button>
+                                        <button @click="deleteArticle(post._id)" class="btn btn-danger">Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +231,7 @@
                             </div>
                             <div v-show="loadPage === 'edit-mode'">
                                 <button @click.prevent="afterEdit" class="btn btn-primary">Update</button>
-                                <button @click="deleteArticle(selectedArticle.id)" class="btn btn-danger">Delete</button>
+                                <button @click="deleteArticle(selectedArticle._id)" class="btn btn-danger">Delete</button>
                             </div>
                         </form>
                     </div>
@@ -209,7 +244,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ selectedArticle.title }}</h5>
                                         <div class="card-text" v-html="selectedArticle.content"></div>
-                                        <button @click.prevent="toPublishedPage" class="btn btn-primary">Close</button>   <button @click="deleteArticle(post.id)" class="btn btn-danger">Delete</button>
+                                        <button @click.prevent="toPublishedPage" class="btn btn-primary">Close</button>
                                     </div>
                                 </div>
                             </div>
@@ -219,10 +254,10 @@
 
             </div>
 
-            <!-- <footer class="page-footer font-small cyan darken-3 fixed-bottom">
+            <footer class="page-footer font-small cyan darken-3 fixed-bottom">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-12 py-5 d-flex justify-content-center">
+                        <div class="col-md-12 d-flex justify-content-center">
                             <div class="flex-center">
                                 <a class="fb-ic" href="https://www.facebook.com/MelinA.Dew1" target="blank">
                                     <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
@@ -240,7 +275,7 @@
                         © 2019 Copyright tidak sama dengan Copyleft
                     </div>
                 </div>
-            </footer> -->
+            </footer>
         </div>
 
         <!-- Optional JavaScript -->

@@ -12,6 +12,7 @@ var app = new Vue({
         userPsw: '',
         loadPage: "published",
         listArticles: [],
+        listPersonalArticles: [],
         newTitle: "",
         newPost: "",
         newImgUrl: "",
@@ -26,6 +27,7 @@ var app = new Vue({
         })
         .then(({data})=>{
             this.listArticles = data
+            console.log(data)
         })
         .catch(err => {
             console.log("Error from created")
@@ -41,11 +43,11 @@ var app = new Vue({
         },
         toRegister(){
             this.usersign = 'register'
-            this.clearUserForm
+            this.clearUserForm()
         },
         toLogin(){
             this.usersign = 'login'
-            this.clearUserForm
+            this.clearUserForm()
         },
         userRegister(){
             axios({
@@ -59,7 +61,7 @@ var app = new Vue({
             })
                 .then(() => {
                     console.log("New Account Created")
-                    this.clearUserForm
+                    this.clearUserForm()
                 })
                 .catch(err => {
                     console.log("Error from userRegister: ", err)
@@ -74,22 +76,22 @@ var app = new Vue({
                 },
                 url: `http://localhost:3000/user/login`
             })
-                .then(function(res) {
-                    localStorage.setItem("token", res.token)
-                    localStorage.setItem("username", res.username)
-                    this.clearUserForm
-                    isLogin = true
-                    console.log("this.isLogin sekarang: ",this.isLogin);
+                .then(({data})=> {
+                    console.log("Berhasil login")
+                    localStorage.setItem("token", data.token)
+                    localStorage.setItem("username", data.username)
+                    this.clearUserForm()
+                    this.isLogin = true
                     this.usersign = 'logout'
+                    this.getPersonalArticle()
                 })
                 .catch(err => {
                     console.log(err)
                 })
         },
         userLogout(){
-            localStorage.removeItem("token")
-            localStorage.removeItem("username")
-            googleSignOut()
+            localStorage.clear()
+            // googleSignOut()
             this.isLogin = false
             this.usersign = 'login'
         },
@@ -101,7 +103,7 @@ var app = new Vue({
             })
                 .then(({data})=>{
                     data.sort(function(a,b){
-                        return new Date(a.updatedAt) - new Date(b.updatedAt);
+                        return new Date(b.updatedAt) - new Date(a.updatedAt);
                     });
                     this.listArticles = data
                 })
@@ -112,13 +114,17 @@ var app = new Vue({
         getPersonalArticle(){
             axios({
                 method: "GET",
-                url: `http://localhost:3000/article/my-post`
+                url: `http://localhost:3000/article/mypost`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
             })
                 .then(({data})=>{
+                    console.log("Get personal article", data)
                     data.sort(function(a,b){
-                        return new Date(a.updatedAt) - new Date(b.updatedAt);
+                        return new Date(b.updatedAt) - new Date(a.updatedAt);
                     });
-                    this.listArticles = data
+                    this.listPersonalArticles = data
                 })
                 .catch(err => {
                     console.log("Error from getPersonalArticle: ", err)
@@ -129,14 +135,16 @@ var app = new Vue({
                 method: "POST",
                 url: `http://localhost:3000/article/create`,
                 data: {
-                    id: this.listArticles[this.listArticles.length - 1].id + 1,
                     title: this.newTitle,
                     imgUrl: this.newImgUrl,
                     content: this.newPost
+                },
+                headers: {
+                    token: localStorage.getItem('token')
                 }
             })
                 .then(() => {
-                    console.log("postArticle success")
+                    this.getArticle()
                     this.getPersonalArticle()
                     this.newTitle = ""
                     this.newImgUrl = ""
@@ -150,10 +158,14 @@ var app = new Vue({
         deleteArticle(id){
             axios({
                 method: "DELETE",
-                url: `http://localhost:3000/article/${id}`
+                url: `http://localhost:3000/article/${id}`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
             })
                 .then(() => {
                     console.log("Delete success")
+                    this.getArticle()
                     this.getPersonalArticle()
                     this.loadPage = 'published'
                 })
@@ -167,6 +179,9 @@ var app = new Vue({
         toPublishedPage(){
             this.loadPage = 'published'
         },
+        toPersonalPostPage(){
+            this.loadPage = 'privatepost'
+        },
         changeSearch(){
             if(this.onSearch === false){
                 this.onSearch = true
@@ -178,7 +193,7 @@ var app = new Vue({
         readMore(id){
             axios({
                 method: "GET",
-                url: `http://localhost:3000/article/${id}`
+                url: `http://localhost:3000/article/read/${id}`
             })
                 .then(({data})=>{
                     console.log("Get data:", data)
@@ -190,12 +205,21 @@ var app = new Vue({
                 })
         },
         shortText(text){
-            return text.split(' ').slice(0,10).join(' ')
+            // return text.split(' ').slice(0,10).join(' ')
+            let data = text.split(' ')
+            let data1 = data.slice(0,10).join(' ')
+            if(data.length > 10){
+                return data1 + ' ...'
+            }
+            return data1
         },
         beforeEdit(id){
             axios({
                 method: "GET",
-                url: `http://localhost:3000/article/${id}`
+                url: `http://localhost:3000/article/edit/${id}`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
             })
                 .then(({data})=>{
                     console.log("Get data:", data)
@@ -212,14 +236,18 @@ var app = new Vue({
         afterEdit(id){
             axios({
                 method: "PATCH",
-                url: `http://localhost:3000/article/${this.selectedArticle.id}`,
+                url: `http://localhost:3000/article/${this.selectedArticle._id}`,
                 data: {
                     title: this.newTitle,
                     imgUrl: this.newImgUrl,
                     content: this.newPost
+                },
+                headers: {
+                    token: localStorage.getItem('token')
                 }
             })
                 .then(() => {
+                    this.getArticle()
                     this.getPersonalArticle()
                     this.newTitle = ""
                     this.newImgUrl = ""
@@ -234,6 +262,12 @@ var app = new Vue({
     computed: {
         filteredList() {
             return this.listArticles.filter(post => {
+                let onlist = `${post.title} ${post.content}`
+                return onlist.toLowerCase().includes(this.searchText.toLowerCase())
+            })
+        },
+        privateFilteredList() {
+            return this.listPersonalArticles.filter(post => {
                 let onlist = `${post.title} ${post.content}`
                 return onlist.toLowerCase().includes(this.searchText.toLowerCase())
             })
