@@ -12,13 +12,19 @@ $(document).ready(function() {
   });
 
   $("#g-signin2").change(function() {
-    vue.googlelogin()
+    vue.googlelogin();
   });
 
   $("form").on("submit", function(event) {
     event.preventDefault();
   });
+
+  // $(window).on("beforeunload", function() {
+  //   console.log(vue.isOnPage);
+  //   if (vue.isOnPage === "login" || vue.isOnPage === "register") {
+  //   } else {
+  //     alert(vue.data.isOnPage);
+  //     return "Refresh Page? Your written data that you have not submintted would not be saved.";
+  //   }
+  // });
 });
-
-
-

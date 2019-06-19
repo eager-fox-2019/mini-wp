@@ -176,6 +176,11 @@ const vue = new Vue({
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
           console.log("mau check login");
+          swal(
+            "Logged In",
+            "If this is your first time log in, change your password by accessing Account tab above!",
+            "info"
+          );
           this.checkLogin();
           this.checkUser();
         })
@@ -405,7 +410,6 @@ const vue = new Vue({
         [{ align: [] }],
         ["clean"] // remove formatting button
       ];
-
       if (document.querySelector("#editor")) {
         var quill = new Quill("#editor", {
           theme: "snow",
@@ -416,6 +420,10 @@ const vue = new Vue({
           vue.inputArticle.content = quill.getText();
           vue.inputArticle.rawHTML = quill.root.innerHTML;
         });
+
+        if (this.inputArticle.rawHTML) {
+          quill.root.innerHTML = this.inputArticle.rawHTML;
+        }
       }
     },
 
@@ -436,7 +444,21 @@ const vue = new Vue({
         if (this.inputArticle.tags.length >= 5) {
           swal("you can only add 5 tags per article");
         } else {
-          this.inputArticle.tags.push(this.inputTag);
+          let tags = this.inputArticle.tags;
+          let input = this.inputTag;
+          if (input.match(/^[A-Za-z]+$/)) {
+            if (tags.indexOf(input) === -1) {
+              if (input.length > 12 || input.length < 3) {
+                swal("Tags should consists of 3 - 12 characters");
+              } else {
+                this.inputArticle.tags.push(input.toLowerCase());
+              }
+            }
+          } else {
+            swal(
+              "Tags shouldnt contain any number, special character, and spaces!"
+            );
+          }
         }
         this.inputTag = "";
       }
