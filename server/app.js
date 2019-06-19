@@ -10,6 +10,7 @@ const morgan = require('morgan');
 const app = express();
 const errorHandler = require('./helpers/error-handler.js');
 
+//'mongodb://localhost/mini-wp'
 let uri = 'mongodb+srv://admin:admin@cluster0-ezblw.gcp.mongodb.net/mini-wp-db?retryWrites=true&w=majority'
 mongoose.connect(uri, {useNewUrlParser: true});
 
