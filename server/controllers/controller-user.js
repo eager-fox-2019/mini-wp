@@ -1,7 +1,7 @@
-const User = require('../models/modelUser')
-const Token = require('../models/modelBlacklistToken')
-const { compareHash } = require('../helpers/hashHelpers')
-const { generateToken, decodeToken } = require('../helpers/jwtHelper')
+const User = require('../models/model-user')
+const Token = require('../models/model-blacklist-token')
+const { compareHash } = require('../helpers/hash-helpers')
+const { generateToken, decodeToken } = require('../helpers/jwt-helper')
 
 class ControllerUser {
   static login(req, res, next) {

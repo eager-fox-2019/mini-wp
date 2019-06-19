@@ -1,5 +1,5 @@
 'use strict';
-const { generateHash } = require('../helpers/hashHelpers')
+const { generateHash } = require('../helpers/hash-helpers')
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

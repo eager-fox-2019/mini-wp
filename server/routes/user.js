@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const ControllerUser = require('../controllers/controllerUser')
-const { authentication } = require('../middlewares/author_authen')
+const ControllerUser = require('../controllers/controller-user')
+const { authentication } = require('../middlewares/author-authen')
 
 router.post('/login', ControllerUser.login)
 router.post('/logout', ControllerUser.logout)

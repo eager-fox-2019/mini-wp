@@ -18,9 +18,15 @@ module.exports = {
       res.send(err)
     }
   } else {
-    console.log(err);
-    res.status(err.code).json({
-      message: err.message
-    })
+    if (err.name === 'ValidationError') {
+      res.status(400).json({
+        message: err.message
+      })
+    } else {
+      console.log(err);
+      res.status(500).json({
+        message: err.message
+      })
+    }
   }
 }}

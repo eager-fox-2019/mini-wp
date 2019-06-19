@@ -7,8 +7,8 @@
   <title>MiniWP</title>
 
   <!--Google Related -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <meta name="google-signin-client_id" content="647749845083-l8k2ne6a9vc8sh103n7lv6ag92obmc11.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 
   <!-- Fontawesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -170,38 +170,42 @@
         <!-- Login Register Form -->
         <v-layout row v-if="currentPage == 'content-registration'">
           <v-flex xs12 sm8 offset-sm2>
-            <v-tabs v-model="logRegForm.activeTab" color="cyan" dark slider-color="yellow">
-              <v-tab key="login" ripple>Login</v-tab>
-              <v-tab key="registration" ripple>Registration</v-tab>
-              <v-tab-item key="login">
-                <v-card flat>
-                  <form>
-                    <v-text-field v-model="logRegForm.loginUser.username" label="Username" required></v-text-field>
-                    <v-text-field v-model="logRegForm.loginUser.password" :type="'password'" label="Password" required></v-text-field>
-                    <v-btn @click="defaultLogin()">Login</v-btn>
-                    <p>Or sign in using Google</p>
-                    <div class="g-signin2" @done="onSignIn"></div>
-                  </form>
-                </v-card>
-              </v-tab-item>
-              <v-tab-item key="registration">
-                <v-card flat>
-                  <form>
-                    <v-text-field v-model="logRegForm.registerUser.full_name" label="Full Name" required></v-text-field>
-                    <v-text-field v-model="logRegForm.registerUser.username" label="Username" required></v-text-field>
-                    <v-text-field v-model="logRegForm.registerUser.password" label="Password" :type="'password'" required></v-text-field>
-                    <v-text-field v-model="logRegForm.registerUser.email" label="Email" required></v-text-field>
-                    <v-btn @click="sendRegisterUser()">Register</v-btn>
-                  </form>
-                </v-card>
-              </v-tab-item>
-            </v-tabs>
+            <v-card xs6 offset-xs3>
+              <v-tabs v-model="logRegForm.activeTab" color="cyan" dark slider-color="yellow">
+                <v-tab key="login" ripple>Login</v-tab>
+                <v-tab key="registration" ripple>Registration</v-tab>
+                <v-tab-item key="login">
+                  <v-card flat>
+                    <form>
+                      <v-text-field v-model="logRegForm.loginUser.username" label="Username" required></v-text-field>
+                      <v-text-field v-model="logRegForm.loginUser.password" :type="'password'" label="Password" required></v-text-field>
+                      <v-btn @click="defaultLogin()">Login</v-btn>
+                      <p>Or sign in using Google</p>
+                      <!-- <div id="google-signin-button"></div>
+                      <div id="my-signin2"></div> -->
+                      <div class="g-signin2" @done="onSignIn"></div>
+                    </form>
+                  </v-card>
+                </v-tab-item>
+                <v-tab-item key="registration">
+                  <v-card flat>
+                    <form>
+                      <v-text-field v-model="logRegForm.registerUser.full_name" label="Full Name" required></v-text-field>
+                      <v-text-field v-model="logRegForm.registerUser.username" label="Username" required></v-text-field>
+                      <v-text-field v-model="logRegForm.registerUser.password" label="Password" :type="'password'" required></v-text-field>
+                      <v-text-field v-model="logRegForm.registerUser.email" label="Email" required></v-text-field>
+                      <v-btn @click="sendRegisterUser()">Register</v-btn>
+                    </form>
+                  </v-card>
+                </v-tab-item>
+              </v-tabs>
+            </v-card>
           </v-flex>
         </v-layout>
         <!-- Home Page -->
         <v-container id="content-home" v-if="currentPage == 'content-home'">
           <v-layout row wrap>
-            <v-flex v-for="article in allArticlesPublished" :key="article._id">
+            <v-flex xs6 v-for="article in allArticlesPublished" :key="article._id">
               <v-card>
                 <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
                 <v-card-title primary-title>
@@ -237,6 +241,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/en-gb.js"></script>
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
   <script src="./js/wysiwyg.js"></script>
   <script src="./js/main.js"></script>
 </body>

@@ -1,4 +1,4 @@
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
 
@@ -8,9 +8,10 @@ const express = require('express')
 const multer = require('multer')
 const app = express()
 
-const { errorHandler } = require('./middlewares/errorHandlers')
+const { errorHandler } = require('./middlewares/error-handlers')
 const routeIndex = require('./routes')
-const Port = 3000
+const Port = process.env.PORT
+const mongoUrl = process.env.ATLAS_CONNECT
 
 // connect mongodb
 mongoose.connect('mongodb://localhost:27017/mini_wp_db', { useNewUrlParser: true })

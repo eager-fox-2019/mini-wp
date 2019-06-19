@@ -1,14 +1,13 @@
-const Article = require('../models/modelArticle')
-const { decodeToken } = require('../helpers/jwtHelper')
+const Article = require('../models/model-article')
+const { decodeToken } = require('../helpers/jwt-helper')
 
 class ControllerArticle {
   static create(req, res, next) {
-    let payload = decodeToken(req.headers.token)
     let newArticle = {
       title: req.body.title,
       content: req.body.content,
-      published: req.body.published,
-      user_id: payload.userId,
+      published: req.body.published || false,
+      user_id: req.userId,
     }
     Article.create(newArticle)
       .then((createdArticle) => {
@@ -18,23 +17,12 @@ class ControllerArticle {
   }
 
   static readAllwFilter(req, res, next) {
-    let payload = (req.headers.token) ? decodeToken(req.headers.token) : ''
     let schemaField = Object.keys(Article.prototype.schema.paths)
     let filteredField = Object.keys(req.body).filter((x) => schemaField.indexOf(x) > -1)
     let query = filteredField.reduce((acc, el) => Object.assign(acc, {[el]: req.body[el]}), {})
+
     Article.find(query).populate('user_id').lean()
       .then((articles) => {
-        articles = articles.map((article) => {
-          article.permission = {admin: false}
-          if (payload) {
-            if (article.user_id._id == payload.userId) {
-              article.permission = {admin:true}
-            }
-          }
-          return article
-        })
-        console.log(articles);
-        
         res.json(articles)
       })
       .catch(next)
@@ -61,12 +49,6 @@ class ControllerArticle {
     let filteredField = Object.keys(req.body).filter((x) => schemaField.indexOf(x) > -1)
     let updatedArticle = filteredField.reduce((acc, el) => Object.assign(acc, {[el]: req.body[el]}), {})
     Article.findByIdAndUpdate({_id: req.params.id}, updatedArticle)
-      // .then((article) => {
-      //   if (!article) throw { code: 404 }
-      //   else {
-      //     return Article.updateOne({_id: req.params.id}, updatedArticle)
-      //   } 
-      // })
       .then((article) => {
         res.status(201).json(article)
       })

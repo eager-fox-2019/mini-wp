@@ -9,6 +9,8 @@ Afternoon
 - DONE dapetin currentLoginUser data
 - DONE tag published dan drafts
   - DONE filter di home yang published aja
+- SUDAH DICOBA GAGAL google sign in kadang muncul kadang ga
+- DONE benerin authentication
 - baca content di wysiwyg
 - belum ada modal konfirmasi
   - login
@@ -17,3 +19,5 @@ Afternoon
   - delete post
 - SETENGAH Template home masih memanjang
 - login registration form mepet
+- timestamp di post format jelek
+- upload file

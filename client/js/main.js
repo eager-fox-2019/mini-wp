@@ -10,7 +10,6 @@ var app = new Vue({
     },
     currentPage: 'content-home',
     articles: [],
-    articlesAuthor: [],
     selectedArticle: {
       title: '',
       published: null,
@@ -76,7 +75,7 @@ var app = new Vue({
         headers: {
           token: JSON.parse(localStorage.token).token,
         },
-        url: `${this.url_server}/user/myprofile`
+        url: `${this.url_server}/users/myprofile`
       })
         .then(({ data }) => {
           this.currentLoginUser = {
@@ -95,7 +94,7 @@ var app = new Vue({
         username: this.logRegForm.loginUser.username,
         password: this.logRegForm.loginUser.password
       }
-      axios.post(`${this.url_server}/user/login`, sendLoginUser)
+      axios.post(`${this.url_server}/users/login`, sendLoginUser)
         .then(({ data }) => {
           if (data.token) {
             let token = {
@@ -123,7 +122,7 @@ var app = new Vue({
       axios({
         method: 'POST',
         data: sendRegisterUser,
-        url: `${this.url_server}/user/register`,
+        url: `${this.url_server}/users/register`,
       })
         .then(({ data }) => {
           console.log('Successfully register data');
@@ -135,7 +134,7 @@ var app = new Vue({
     },
     onSignIn(googleUser) {
       var id_token = googleUser.getAuthResponse().id_token;
-      axios.post(`${this.url_server}/user/login`, {
+      axios.post(`${this.url_server}/users/login`, {
         google_id_token: id_token
       })
         .then(({ data }) => {
@@ -158,7 +157,7 @@ var app = new Vue({
         headers: {
           token: localStorage.token
         },
-        url: `${this.url_server}/user/logout`
+        url: `${this.url_server}/users/logout`
       })
         .then(({ data }) => {
           localStorage.removeItem("token");
@@ -179,16 +178,25 @@ var app = new Vue({
           console.log(err);
         })
     },
+    clearSelectedArticle() {
+      this.selectedArticle = {
+        title: '', 
+        published: null,
+        content: ''
+      }
+    },
     changePage(inputPage, id) {
       if (id) {
-        this.selectedArticle = this.articles.filter((article) => article._id == id)[0]
+        this.selectedArticle = Object.assign({},this.articles.filter((article) => article._id == id)[0])
+      } else {
+        this.clearSelectedArticle()
       }
       this.currentPage = inputPage
     },
     getListArticles() {
       axios({
         method: 'GET',
-        url: `${this.url_server}/article`
+        url: `${this.url_server}/articles`
       })
         .then(({ data }) => {
           this.articles = data
@@ -199,12 +207,12 @@ var app = new Vue({
     },
     sendArticle(val) {
       event.preventDefault()
-      console.log('masuk sendNewaArticle');
-      
       let method
       if (val) {
+        val = `/${val}`
         method = 'PUT'        
       } else {
+        val = ''
         method = 'POST'
       }
 
@@ -213,30 +221,18 @@ var app = new Vue({
         published: this.selectedArticle.published,
         content: this.selectedArticle.content,
       }
-      console.log(sendArticle);
-      console.log('method used', method);
-      console.log('ini nilai val', val);
-      
-      
+
       axios({
         method: method,
         headers: {
           token: JSON.parse(localStorage.token).token
         },
         data: sendArticle,
-        url: `${this.url_server}/article/${val}`
+        url: `${this.url_server}/articles${val}`
       })
         .then(({ data }) => {
-          console.log('get data', data);
+          this.clearSelectedArticle()
           this.getListArticles()
-          // if (method == 'PUT') {
-          //   let indexChanged = this.articles.findIndex(article => article._id === val);
-          //   console.log('ini nilai indexchanged', indexChanged);
-          //   this.articles.splice(indexChanged, 1, data)
-          //   console.log('hasil splice', this.articles);
-          // } else {
-          //   this.articles.push(data)
-          // }
           this.currentPage = "content-list-articles"
         })
         .catch((err) => {
@@ -249,7 +245,7 @@ var app = new Vue({
         headers: {
           token: JSON.parse(localStorage.token).token
         },
-        url: `${this.url_server}/article/${id}`
+        url: `${this.url_server}/articles/${id}`
       })
         .then(({ data }) => {
           this.articles = this.articles.filter((article) => article._id !== id)
@@ -258,7 +254,7 @@ var app = new Vue({
         .catch((err) => {
           console.log(err);
         })
-    },
+    }
   },
   created() {
     if (localStorage.token) {

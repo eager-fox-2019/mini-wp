@@ -1,12 +1,13 @@
-const { decodeToken } = require('../helpers/jwtHelper')
-const User = require('../models/modelUser')
-const Token = require('../models/modelBlacklistToken')
-const Article = require('../models/modelArticle')
+const { decodeToken } = require('../helpers/jwt-helper')
+const User = require('../models/model-user')
+const Token = require('../models/model-blacklist-token')
+const Article = require('../models/model-article')
 const ObjectId = require('mongoose').Types.ObjectId; 
 
 module.exports = {
   authentication: (req, res, next) => {
     try {
+      console.log('########## Checking authentication');
       let payload = decodeToken(req.headers.token)
       Promise.all([User.findOne({_id: payload.userId}), Token.findOne({token: req.headers.token})])
         .then(result => {
@@ -20,7 +21,7 @@ module.exports = {
             next({ code: 404, message: 'Please logout and login again'})
           }
           console.log('authentication done');
-          
+          req.userId = payload.userId
           next()
         })
         .catch(next)
@@ -33,9 +34,10 @@ module.exports = {
     console.log('########## Checking authorization');
     try {
       let articleId = req.params.id
-      Promise.all([decodeToken(req.headers.token), Article.findById(articleId)])
-        .then((values) => {
-          if (values[0].userId !== values[1].user_id.toString()) {
+      let loginUserId = req.userId
+      Article.findById(articleId)
+        .then((article) => {
+          if (loginUserId !== article.user_id.toString()) {
             console.log('unauthorized');
             next({ code: 404 })
           } else {

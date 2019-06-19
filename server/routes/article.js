@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const ControllerArticle = require('../controllers/controllerArticle')
-const { authentication, authorization } = require('../middlewares/author_authen')
+const ControllerArticle = require('../controllers/controller-article')
+const { authentication, authorization } = require('../middlewares/author-authen')
 
 router.get('/', ControllerArticle.readAllwFilter)
 router.use(authentication)
