@@ -7,9 +7,12 @@ var app = new Vue({
   data: {
     isLoggedin: false,
     loginArea: true,
-    registerArea: false,
+    registerArea: true,
     postArea: false,
     sidebarArea: true,
+    errorMessage: "",
+    successMessage: "",
+    userName: "",
     userEmail: "",
     userPassword: "",
     articles: [],
@@ -30,7 +33,7 @@ var app = new Vue({
       .then(({data}) => {
 
         data.sort( function(a,b){
-          return new Date(a.created_at) - new Date(b.created_at)
+          return new Date(b.created_at) - new Date(a.created_at)
         })
 
         this.articles = data;
@@ -61,10 +64,55 @@ var app = new Vue({
       }
     },
     loginUser(){
+      axios({
+        method: "POST",
+        url: baseUrl+"/users/login",
+        data: {
+          email: this.userEmail,
+          password: this.userPassword
+        }
+      })
+      .then(({data}) => {
 
+      })
+      .catch(err => {
+        console.log("created error:",err)
+        this.showError(err)
+      })
     },
     registerUser(){
+      axios({
+        method: "POST",
+        url: baseUrl+"/users/register",
+        data: {
+          name: this.userName,
+          email: this.userEmail,
+          password: this.userPassword
+        }
+      })
+      .then(({data}) => {
+        this.clearError()
+        this.registerArea = false
+        this.showMsg("Successfully registered", this.userEmail)
+      })
+      .catch(err => {
+        console.log("created error at register:")
+        console.log(err)
+        this.showError(JSON.stringify(err))
+      })
 
+    },
+    showError(err){
+      this.errorMessage = err
+    },
+    clearError(){
+      this.errorMessage = ""
+    },
+    showMsg(msg){
+      this.successMessage = msg
+    },
+    clearMsg(){
+      this.successMessage = ""
     },
     logoutUser(){
 
@@ -113,6 +161,7 @@ var app = new Vue({
       })
       .catch(err => {
         console.log("created error:",err)
+        this.showError(err)
       })
     },
     updateArticle(){
@@ -141,13 +190,14 @@ var app = new Vue({
         })
 
         updatedList.sort(function(a,b){
-          return new Date(a.created_at) - new Date(b.created_at)
+          return new Date(b.created_at) - new Date(a.created_at)
         })
 
         this.articles = updatedList
       })
       .catch(err => {
         console.log("created error:",err)
+        this.showError(err)
       })
     },
     editArticle(articleId){
@@ -166,6 +216,7 @@ var app = new Vue({
       })
       .catch(err => {
         console.log("created error:",err)
+        this.showError(err)
       })
     },
     cancelEdit(){
@@ -185,6 +236,7 @@ var app = new Vue({
       })
       .catch(err => {
         console.log("created error:",err)
+        this.showError(err)
       })
     },
     addArticle(){
@@ -204,6 +256,7 @@ var app = new Vue({
       })
       .catch(err => {
         console.log("created error:",err)
+        this.showError(err)
       })
     },
   }

@@ -86,10 +86,11 @@ h3 {
   color: gray;
   background: white;
   border-radius: 0 0 0 10px;
+  padding: 0.5em;
 }
 
 #loginArea span{
-  padding-right: 1em;
+  padding: 0.5em;
 }
 
 #content {

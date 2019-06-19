@@ -1,7 +1,7 @@
 module.exports = function(err){
-	let errorDetail = {status: 400, message: "Invalid access token"}
-	if(err.status) {
-		errorDetail.status = err.status
+	if (err.status == null) err.status = 400
+	let errorDetail = {status: err.status, message: err.message}
+	if (err.message == null){
 		switch (err.status){
 			case (401):
 				errorDetail.message = 'Unauthorized access'

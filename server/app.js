@@ -16,7 +16,9 @@ app.use('/api', routes);
 
 const errHandler = require('./helpers/errHandler.js')
 app.use((err, req, res, next) => {
+	// console.log("error ar server",err)
 	let errorDetail = errHandler(err)
+	// console.log("errorDetail.message:",errorDetail.message)
 	res.status(errorDetail.status).json(errorDetail.message)
 })
 

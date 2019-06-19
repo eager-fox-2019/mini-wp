@@ -63,22 +63,37 @@
 
       <div id="content">
 
-        <div id="loginArea" v-if="loginArea" class="d-inline-flex">
-          <form method="post" class="d-flex align-items-center">
-            <span><label>User E-mail: </label></span>
-            <span><input v-model="userEmail" type="text" name="userEmail"></input></span>
-            <span><label>Password: </label></span>
-            <span><input v-model="userPassword" type="text" name="userPassword"></input></span>
-            <span v-if="registerArea===false">
-              <button @click.prevent="loginUser" class="btn btn-primary btn-md">Login</button></span>
-            <span v-if="registerArea===false">
-              <a href="#" @click.prevent="toggleRegister">Register</a></span>
-            <span v-if="registerArea">
-              <button @click.prevent="registerUser" class="btn btn-primary btn-md">Register</button></span>
-            <span v-if="registerArea">
-              <a href="#" @click.prevent="toggleRegister">Cancel</a></span>
+        <div id="errorArea" v-if="errorMessage != ''" class="alert alert-danger d-flex justify-content-between align-items-center">
+          <span v-html="errorMessage" ></span>
+          <button class="btn btn-secondary" @click.prevent="clearError">close</button>
+        </div>
+        <!-- alert alert-success -->
+        <div id="successArea" v-if="successMessage != ''" class="alert alert-success d-flex justify-content-between align-items-center">
+          <span v-html="successMessage" ></span>
+          <button class="btn btn-secondary" @click.prevent="clearMsg">close</button>
+        </div>
+
+        <div id="loginArea" v-if="loginArea">
+          <form method="post" class="d-flex flex-wrap">
+            <span v-if="registerArea"><label>Name:</label>
+              <input v-model="userName" type="text" name="userName"></input></span>
+            <span><label>User E-mail: </label>
+              <input v-model="userEmail" type="text" name="userEmail"></input></span>
+            <span><label>Password: </label>
+              <input v-model="userPassword" type="text" name="userPassword"></input></span>
+            <span>
+              <span v-if="registerArea===false">
+                <button @click.prevent="loginUser" class="btn btn-primary btn-md">Login</button></span>
+              <span v-if="registerArea===false">
+                <a href="#" @click.prevent="toggleRegister">Register</a></span>
+              <span v-if="registerArea">
+                <button @click.prevent="registerUser" class="btn btn-primary btn-md">Register</button></span>
+              <span v-if="registerArea">
+                <a href="#" @click.prevent="toggleRegister">Cancel</a></span>
+            </span>
           </form>
         </div>
+
 
         <div id="postForm" v-show="postArea === true && editArticleArea === false" >
           
