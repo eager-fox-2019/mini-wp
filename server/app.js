@@ -5,6 +5,7 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const route = require('./routes')
+const errHandler = require('./helpers/errHandler')
 const app = express()
 
 const port = process.env.PORT
@@ -20,7 +21,7 @@ app.use(express.json())
 
 app.use('/',route)
 
-// app.use(errHandler)
+app.use(errHandler)
 
 app.listen(port,(()=> {
     console.log (`Connected to server on port ${port}!!`)
