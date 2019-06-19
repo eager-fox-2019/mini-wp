@@ -26,6 +26,21 @@
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
+    <!-- fb login -->
+    <div id="fb-root"></div>
+    <script src="https://apis.google.com/js/platform.js" defer></script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '311623876391404',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v3.3'
+        });
+      };
+    </script>
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+
     <div id="app">
       <header>
         <nav class="navbar navbar-dark bg-dark">
@@ -50,7 +65,7 @@
             <li class="nav-item col-2">
               <a v-if="isLoggedin" class="nav-link " href="#" @click.prevent="logoutUser">Logout</a>
 
-              <a v-if="isLoggedin === false" class="btn btn-info" href="#" @click.prevent="toggleLoginArea">Login</a>
+              <a v-if="isLoggedin === false" class="btn btn-info" href="#" @click.prevent="toggleLoginArea">Account</a>
             </li>
           </ul>
         </nav>
@@ -65,7 +80,6 @@
       </div>
 
       <div id="content">
-
         <!-- alert alert-error -->
         <div id="errorArea" v-if="errorMessage != ''" class="alert alert-danger d-flex justify-content-between align-items-center">
           <span v-html="errorMessage" ></span>
@@ -80,15 +94,18 @@
         <!-- user login/register and edit -->
         <div id="loginArea" v-if="loginArea || editUserArea">
           <form method="post" class="d-flex flex-wrap">
-            <span v-if="registerArea || editUserArea && loginArea == false"><label>Name:</label>
+            <span v-if="registerArea || editUserArea && loginArea == false">
+              <label>Name:</label>
               <input v-model="userName" type="text" name="userName"></input></span>
-            <span v-if="registerArea || loginArea && editUserArea == false"><label>E-mail: </label>
+            <span v-if="registerArea || loginArea && editUserArea == false">
+              <label>E-mail: </label>
               <input v-model="userEmail" type="text" name="userEmail"></input></span>
-            <span><label>Password: </label>
-              <input v-model="userPassword" type="password" name="userPassword"></input></span>
             <span>
-
-              <span v-if="registerArea === false && editUserArea === false">
+              <label>Password: </label>
+              <input v-model="userPassword" type="password" name="userPassword"></input></span>
+            
+            <span>
+              <span v-if="registerArea === false && editUserArea === false && loginArea == true">
                 <button @click.prevent="loginUser" class="btn btn-primary btn-md">Login</button></span>
               <span v-if="registerArea === false && editUserArea === false">
                 <a href="#" @click.prevent="toggleRegister">Register</a></span>
@@ -104,8 +121,14 @@
                 <button @click.prevent="delUser" class="btn btn-danger btn-md">Delete Account</button></span>
               <span v-if="editUserArea">
                 <a href="#" @click.prevent="toggleEditUser">Cancel</a></span>
+
+
             </span>
           </form>
+
+          <!-- fb login button -->
+          <div v-if="registerArea === false && editUserArea === false && loginArea == true" class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"  @click.event=""></div>
+<!-- data-onlogin="checkLoginState()" -->
         </div>
 
         <div id="postForm" v-show="postArea === true && editArticleArea === false" >
@@ -165,6 +188,7 @@
       </div>
 
       <span id="scripts">
+
         <!-- tiny.mce wysiwyg api -->
         <script src="./tinymce-vue.min.js"></script>
 

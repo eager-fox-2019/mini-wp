@@ -114,7 +114,6 @@ var app = new Vue({
         console.log("updateArticle error:",err)
         this.showError(err)
       })
-
     },
     toggleLoginArea(){
       if (this.loginArea){
