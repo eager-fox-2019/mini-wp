@@ -2,24 +2,7 @@ const BASE_URL = `http://localhost:3000`
 var vueApp = new Vue({
     el: '#app',
     data: {
-        articles: [
-            {
-                title: 'test0',
-                description: 'yowww'
-            },
-            {
-                title: 'test1',
-                description: 'yowww'
-            },
-            {
-                title: 'test2',
-                description: 'yowww'
-            },
-            {
-                title: 'test3',
-                description: 'yowww'
-            },
-        ],
+        articles: [],
         sidebarOpen: true,
         currentPage: 'pageArticleList',
         pageArticleList: {
@@ -40,17 +23,42 @@ var vueApp = new Vue({
         loginData: {
             loggedIn: false,
             email: '',
+            token: '',
         },
-        axiosConfig: {
-            token: ''
-        }
     }, 
     created() {
         this.loginData.loggedIn = window.localStorage.getItem('loggedIn')
         this.loginData.email = window.localStorage.getItem('miniwp-email')
-        this.axiosConfig.token = window.localStorage.getItem('miniwp-token')
+        this.loginData.token = window.localStorage.getItem('miniwp-token')
+        if (this.loginData.loggedIn) {
+            toast_success('Welcome back!')
+        }
+        this.fetchArticles() 
     },
     methods: {
+        axiosConfig() {
+            return {
+                headers: {
+                    token: this.loginData.token
+                }
+            }
+        },
+        fetchArticles() {
+            axios.get(`${BASE_URL}/article`, this.axiosConfig())
+                .then(res => {
+                    let { data } = res
+                    this.articles = data.map(article => {
+                        article.description = article.content.substring(0, 100) + '...'
+                    })
+                })
+                .catch(toast_error)
+        },
+        postArticle() {
+            axios.post(`${BASE_URL}/article`, this.axiosConfig())
+        },
+        updateArticle() {
+
+        },
         toggleSidebar() {
             this.sidebarOpen = !this.sidebarOpen
         },
@@ -82,15 +90,16 @@ var vueApp = new Vue({
                 {
                     email,
                     password
-                }, this.axiosConfig)
+                }, this.axiosConfig())
                 .then(res => {
                     let {data} = res
                     this.loginData.loggedIn = true
                     this.loginData.email = data.email
-                    this.axiosConfig.token = data.access_token
+                    this.loginData.token = data.access_token
                     window.localStorage.setItem('loggedIn', 'true')
                     window.localStorage.setItem('miniwp-email', data.email)
                     window.localStorage.setItem('miniwp-token', data.access_token)
+                    toast_success("Login berhasil")
                 })
                 .catch(toast_error) 
         },
@@ -102,7 +111,7 @@ var vueApp = new Vue({
                 {
                     email,
                     password
-                }, this.axiosConfig)
+                }, this.axiosConfig())
                 .then(() => {
                     toast_success('Register Berhasil')
                 })
@@ -114,7 +123,7 @@ var vueApp = new Vue({
             window.localStorage.removeItem('miniwp-token')
             this.loginData.loggedIn = false
             this.loginData.email = ''
-            this.axiosConfig.token = ''
+            this.loginData.token = ''
         }
     },
     computed: {

@@ -1,5 +1,4 @@
 function toast_error(err) {
-    debugger
     let msg
     if (typeof (err) === 'string') {
         msg = err
