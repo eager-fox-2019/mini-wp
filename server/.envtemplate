@@ -1,0 +1,6 @@
+PORT=3000
+SECRET=RAHASIA
+GOOGLE_CLIENT_ID=329419294434-eurdatplfe2uglb5q3t1qfps7s3mns36.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=FxFBaU8dUGXepdlfa4LOsRRD
+ATLAS_CLIENT_ID=mongodb://localhost:27017/Mini-WP
+
