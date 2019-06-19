@@ -10,13 +10,11 @@ class ArticleCont {
       content: req.body.content,
       created_at: new Date(),
     }
-    console.log(newArticle)
-    console.log(req.body)
-    // Article.create(newArticle)
-    //   .then(article => {
-    //     res.status(201).json(article)
-    //   })
-    //   .catch(next)
+    Article.create(newArticle)
+      .then(article => {
+        res.status(201).json(article)
+      })
+      .catch(next)
   }
 
   static list (req, res, next) {
