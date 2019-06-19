@@ -31,7 +31,7 @@ const vue = new Vue({
       email: "",
       password: ""
     },
-    inputArticles: {
+    inputArticle: {
       title: "",
       content: "",
       rawHTML: "",
@@ -39,6 +39,7 @@ const vue = new Vue({
       tags: []
     },
     inputFilter: "",
+    inputTag: "",
     userChange: {
       name: "",
       password: "",
@@ -46,6 +47,7 @@ const vue = new Vue({
     },
     editor: ""
   },
+
   created() {
     this.checkUser();
     this.checkLogin();
@@ -55,8 +57,11 @@ const vue = new Vue({
       this._getAllTags();
     }
   },
+
   mounted() {},
+
   methods: {
+    // GET DATA FROM DATABASE
     _getUserArticles() {},
     _getAllArticles() {},
     _getAllTags() {},
@@ -74,7 +79,7 @@ const vue = new Vue({
       this.inputLoginRegister.password = "";
     },
     r_inputArticle() {
-      this.inputArticles = {
+      this.inputArticle = {
         title: "",
         content: "",
         snippet: "",
@@ -185,6 +190,7 @@ const vue = new Vue({
         .signOut()
         .then(() => {
           localStorage.clear();
+          this.r_inputArticle();
           this.checkLogin();
           swal("Logged Out", `success logged out!`, "success");
         })
@@ -340,7 +346,7 @@ const vue = new Vue({
       console.log(this.userChange);
     },
     selectArticlePic(event) {
-      this.inputArticles.picture = event.target.files[0];
+      this.inputArticle.picture = event.target.files[0];
     },
 
     // GOOGLE API FUNCTION
@@ -406,39 +412,57 @@ const vue = new Vue({
           toolbar: toolbarOptions
         });
         this.editor = quill;
+        quill.on("text-change", function(delta, oldDelta, source) {
+          vue.inputArticle.content = quill.getText();
+          vue.inputArticle.rawHTML = quill.root.innerHTML;
+        });
       }
     },
-    r_editor() {
-      // if (this.editor !== "") {
-      //   let e = this.editor;
-      //   e.destroy();
-      // }
-      // if (this.editor_2 !== "") {
-      //   let e = this.editor;
-      //   e.destroy();
-      // }
-      // this.editor = "";
-      // this.editor_2 = "";
+
+    // ARTICLE RELATED FUNCTION
+    newArticle(type) {
+      console.log(type, "new article");
+      let quill = this.editor;
+      let text = quill.getText();
+      console.log(text, "TEXT ===========================");
+      let rawHTML = quill.root.innerHTML;
+      console.log(rawHTML, "HTML ===========================");
+    },
+    addTag() {
+      if (this.inputTag !== "") {
+        if (!this.inputArticle.tags) {
+          this.inputArticle.tags = [];
+        }
+        if (this.inputArticle.tags.length >= 5) {
+          swal("you can only add 5 tags per article");
+        } else {
+          this.inputArticle.tags.push(this.inputTag);
+        }
+        this.inputTag = "";
+      }
+    },
+    removeTag(tag) {
+      let tags = this.inputArticle.tags;
+      let index = tags.indexOf(tag);
+      if (index >= 0) {
+        tags.splice(index, 1);
+      }
     },
 
     // MOVING BETWEEN PAGE FUNCTION
     page_articles() {
-      this.r_editor();
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[0];
       this.loadGAPI();
     },
     page_detailarticles() {
-      this.r_editor();
       this.isOnPage = this.pages[1];
     },
     page_myarticles() {
-      this.r_editor();
       this.isOnPage = this.pages[2];
       this.loadGAPI();
     },
     page_newarticle() {
-      this.r_editor();
       this.isOnPage = this.pages[3];
       this.loadGAPI();
       setTimeout(() => {
@@ -446,7 +470,6 @@ const vue = new Vue({
       }, 100);
     },
     page_editarticle() {
-      this.r_editor();
       this.isOnPage = this.pages[4];
       this.loadGAPI();
       setTimeout(() => {
@@ -458,7 +481,6 @@ const vue = new Vue({
       this.isOnPage = this.pages[5];
     },
     page_login() {
-      this.r_editor();
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[6];
       setTimeout(() => {
@@ -473,7 +495,6 @@ const vue = new Vue({
       }, 100);
     },
     page_setting() {
-      this.r_editor();
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[7];
       this.loadGAPI();

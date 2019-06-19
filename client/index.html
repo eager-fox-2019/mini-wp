@@ -239,15 +239,13 @@
                 href=""
                 @click.prevent="page_setting"
                 v-if="isOnPage !== 'setting'"
-                ><i class="fa fa-user-circle" aria-hidden="true"></i><br />{{
-                  loggedInUser.name
-                }}</a
-              >
+                ><i class="fa fa-user-circle" aria-hidden="true"></i><br />
+                Account
+              </a>
               <a class="nav-link" href="" v-if="isOnPage === 'setting'"
-                ><i class="fa fa-user-circle" aria-hidden="true"></i><br />{{
-                  loggedInUser.name
-                }}</a
-              >
+                ><i class="fa fa-user-circle" aria-hidden="true"></i><br />
+                Account
+              </a>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -286,28 +284,87 @@
       </div>
 
       <!-- ========================================================================================================== WRITE ARTICLE -->
-      <div v-if="isLogin === true && isOnPage =='newarticle'" class="p-5">
-        <div class="container">
-          <h3 class="text-center">Write New Article</h3>
-          <div id="editor">
-            <p>Hello World!</p>
-            <p>Some initial <strong>bold</strong> text</p>
-            <p><br /></p>
+      <div v-if="isLogin === true && isOnPage =='newarticle'" class="px-5 pt-5">
+        <div class="container-fluid row w-100 px-0 mx-0">
+          <div class="col-9 p-3">
+            <h3 class="text-center mb-4">Write New Article</h3>
+            <input
+              type="text"
+              v-model="inputArticle.title"
+              placeholder="Article Title"
+              class="form-control"
+            />
+            <div id="editor"></div>
+            <div>
+              <label for="selectedPicture">Upload Featured Image</label>
+              <small class="text-danger"> Required</small>
+              <input
+                @change="selectArticlePic"
+                id="selectedPicture"
+                type="file"
+                class="form-control-file"
+                placeholder="Profile Picture"
+              />
+            </div>
           </div>
-          <div class="col p-3">
-            <div class="d-flex align-items-end">
-              <div>
-                <label for="selectedPicture">Upload Featured Image</label>
-                <small class="text-danger"> Required</small>
+          <div class="col-2 p-3 d-flex">
+            <div class="row p-3 d-flex">
+              <div class="col-12 align-self-start">
+                <form @submit.prevent="addTag">
+                  <label for="tags">Tags</label>
+                  <input
+                    id="tags"
+                    type="text"
+                    placeholder="Add Article Tag"
+                    v-model="inputTag"
+                  />
+                </form>
+                <div>
+                  <div class="border rounded mt-3 p-3">
+                    <small>
+                      <p>
+                        Hint :<br>
+                        Add tags for your article by typing on the field above and
+                        press enter. To delete the tag, just click the tag that
+                        you have entered below.
+                      </p>
+                    </small>
+                  </div>
+                </div>
+                <div class="p-3" v-if="inputArticle.tags.length > 0">
+                  <div class="row">
+                    <div v-for="tag in inputArticle.tags">
+                      <a
+                        class="mx-2 custom-hov-red"
+                        href=""
+                        @click.prevent="removeTag(tag)"
+                      >
+                        <span class="badge badge-secondary">
+                          <i class="fa fa-tags"></i> {{ tag }}
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 align-self-end">
+                <div class="row">
+                  <button
+                    class="btn btn-block btn-success mx-auto my-3"
+                    @click="newArticle('post')"
+                  >
+                    <i class="fa fa-paper-plane fa-1x" aria-hidden="true"></i>
+                    POST
+                  </button>
+                  <button
+                    class="btn btn-block btn-warning mx-auto mt-3"
+                    @click="newArticle('save')"
+                  >
+                    <i class="fa fa-floppy-o fa-1x" aria-hidden="true"></i> SAVE
+                  </button>
+                </div>
               </div>
             </div>
-            <input
-              @change="selectArticlePic"
-              id="selectedPicture"
-              type="file"
-              class="form-control-file"
-              placeholder="Profile Picture"
-            />
           </div>
         </div>
       </div>
