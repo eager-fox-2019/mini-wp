@@ -5,16 +5,18 @@ class ArticleCont {
   static create (req, res, next) {
     let newArticle = {
       user : req.decoded._id,
-      img : req.body.img,
+      img : req.file.gcsUrl,
       title : req.body.title,
       content: req.body.content,
-      created_at: req.body.created_at,
+      created_at: new Date(),
     }
-    Article.create(newArticle)
-      .then(article => {
-        res.status(201).json(article)
-      })
-      .catch(next)
+    console.log(newArticle)
+    console.log(req.body)
+    // Article.create(newArticle)
+    //   .then(article => {
+    //     res.status(201).json(article)
+    //   })
+    //   .catch(next)
   }
 
   static list (req, res, next) {
@@ -85,7 +87,7 @@ class ArticleCont {
         next({code: 500, message: err.message})
       } else {
         article.title = req.body.title
-        article.img = req.body.img
+        article.img = req.file.gcsUrl
         article.content = req.body.content
         article.save()
           .then (article => {
