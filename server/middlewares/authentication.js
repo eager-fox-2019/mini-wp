@@ -4,12 +4,11 @@ const User = require('../models/user')
 module.exports = (req, res, next) => {
     if (req.headers.hasOwnProperty('token')) {
         req.decoded = verify(req.headers.token)
-        console.log(req.decoded, 'authen decoded')
         User.findOne({
                 email: req.decoded.email
             })
             .then(user => {
-                if (user) {
+                if (user) {             
                     next()
                 } else {
                     throw({

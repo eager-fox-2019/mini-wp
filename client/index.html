@@ -12,7 +12,8 @@
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css" />
     <link rel="stylesheet" href="./css/style.css">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="./css/vueWysiwyg.css">
+    <script src="https://apis.google.com/js/platform.js"></script>
     <title>Mini Wordpress</title>
 </head>
 
@@ -42,23 +43,23 @@
                     </div>
                 </div>
                 <div class="col-5 card">
-                    <div v-if="pageStatus === 'login'">
+                    <div v-show="pageStatus === 'login'">
                         <div class="justify-content-center d-flex" style="margin-top: 120px;">
                             <form>
                                 <h2 style="text-align: center"><b>Login</b></h2>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email</label>
                                     <input type="email" class="form-control" aria-describedby="emailHelp"
-                                        placeholder="Enter email">
+                                        placeholder="Enter email" v-model="user.email">
                                     <small class="form-text text-muted">We'll never share your email with anyone
                                         else.</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" placeholder="Password">
+                                    <input type="password" class="form-control" placeholder="Enter Password" v-model="user.password">
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-dark">Login</button>
+                                    <button type="submit" class="btn btn-dark" @click.prevent="login">Login</button>
                                     <button class="g-signin2" data-onsuccess="onSignIn"></button>
                                 </div>
                                 <div class="form-group" style="margin-top:10px">
@@ -69,26 +70,26 @@
                             </form>
                         </div>
                     </div>
-                    <div v-if="pageStatus === 'regis'">
+                    <div v-show="pageStatus === 'regis'">
                         <div class="justify-content-center d-flex" style="margin-top: 80px;">
                             <form>
                                 <h2 style="text-align: center"><b>Register</b></h2>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">User Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter User Name">
+                                    <input type="text" class="form-control" placeholder="Enter User Name" v-model="user.userName">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email</label>
                                     <input type="email" class="form-control" aria-describedby="emailHelp"
-                                        placeholder="Enter Email">
+                                        placeholder="Enter Email" v-model="user.email">
                                     <small class="form-text text-muted">We'll never share your email with anyone
                                         else.</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" placeholder="Enter Password">
+                                    <input type="password" class="form-control" placeholder="Enter Password" v-model="user.password">
                                 </div>
-                                <button type="submit" class="btn btn-dark" >Register</button>
+                                <button type="submit" class="btn btn-dark" @click.prevent="register">Register</button>
                                 <div class="form-group" style="margin-top:10px">
                                     Or
                                     <a href="" @click.prevent="toLogin">Login</a>
@@ -107,7 +108,9 @@
                 </h3>
             </a>
             <div class="d-flex">
-                <input type="search" class="form-control" placeholder="Search" style="margin-right: 20px; width: 300px"  v-if="search">
+                <form v-if="search" @submit.prevent="searchArticle">
+                    <input type="search" class="form-control" placeholder="Search" style="margin-right: 20px; width: 300px" v-model="searchInput">
+                </form>
                 <a href="#" style="color: white;margin-right: 20px">
                     <h5 style="margin-top: 5px">
                         <i class="fas fa-search" @click.prevent="searchButton"></i>
@@ -115,19 +118,21 @@
                 </a>
                 <a href="#" style="color: white;margin-right: 20px">
                     <h5 style="margin-top: 5px">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-user" @click.prevent="userData"></i>
                     </h5>
                 </a>
                 <a href="#" style="color: white;">
                     <h5 style="margin-top: 5px">
-                        <i class="fas fa-power-off"></i>
+                        <i class="fas fa-power-off" @click.prevent="logout"></i>
                     </h5>
                 </a>
             </div>
         </nav>
         <div class="container-fluid" v-if="pageStatus === 'home'">
             <div class="row justify-content-center" style="margin-top: 50px; font-size: 70px;">
-                    <a href="" style="color: lightgray;" @click.prevent="articleList"><b>Hacktiv Wordpress</b></a>
+                <div class="card" style="width: 650px; text-align: center; color:lightgrey">
+                    <a href="" style="color: orange;" @click.prevent="articleList"><b>Hacktiv Wordpress</b></a>
+                </div>
             </div>
             <div class="row justify-content-center">
                 <div class="card" style="width: 90%; margin-top: 50px; background-color:lightgray; margin-bottom: 50px;">
@@ -141,53 +146,39 @@
                                         </b>
                                     </div>
                                     <div>
-                                        <div class="card" style="width: 750px; background-color:lightgray; margin-top: 10px; font-size: 25px;">
+                                        <div class="card bg-light" style="width: 750px; background-color:lightgray; margin-top: 10px; font-size: 25px;" v-for="articleUser in listArticlesUser">
                                             <div class="row" style="margin-top: 10px; margin-bottom: 10px">
-                                                <b style="margin-left: 30px;">test</b>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px; margin-left: 350px">View</button>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Edit</button>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Delete</button>
+                                                <div class="col-6" id="hehehe">
+                                                    <b style="margin-left: 30px;">{{articleUser.title}}</b>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px; margin-left: 40px" @click.prevent="viewArticle(articleUser._id)">View</button>
+                                                        <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px" @click.prevent="getEditArticle(articleUser._id)">Edit</button>
+                                                        <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px" @click.prevent="confirmDeleteArticle(articleUser._id)">Delete</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card" style="width: 750px; background-color:lightgray; margin-top: 10px; font-size: 25px;">
-                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px">
-                                                <b style="margin-left: 30px;">test</b>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px; margin-left: 350px">View</button>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Edit</button>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Delete</button>
-                                            </div>
-                                        </div>
-                                        <div class="card" style="width: 750px; background-color:lightgray; margin-top: 10px; font-size: 25px;">
-                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px">
-                                                <b style="margin-left: 30px;">test</b>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px; margin-left: 350px">View</button>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Edit</button>
-                                                <button type="button" class="btn btn-outline-dark" style="width: 100px; margin-right: 10px">Delete</button>
-                                            </div>
-                                        </div>  
                                     </div>
                                 </div>
                                 <div id="detailArticle" v-if="mainStatus === 'detailArticle'">
-                                    <div style="font-size: 50px; margin-top: 30px; text-align: center">
-                                        <b>Article Title</b>
-                                        <img src="./assets/bg.png" alt="" style="width: 800px; margin-top: 20px;">
-                                    </div>
-                                    <div style="font-size: 20px; margin-bottom: 20px; margin-left: 50px; margin-top: 10px;">
-                                        <small>
-                                            <i>Created At</i>
-                                        </small>
-                                    </div>
-                                    <div style="font-size: 20px; margin-left: 50px; width: 750px">
-                                        <p>
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                            Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                            unknown printer took a galley of type and scrambled it to make a type specimen
-                                            book. It has survived not only five centuries, but also the leap into electronic
-                                            typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                                            with the release of Letraset sheets containing Lorem Ipsum passages, and more
-                                            recently with desktop publishing software like Aldus PageMaker including
-                                            versions of Lorem Ipsum.
-                                        </p>
+                                    <div style="width:800px">
+                                        <div style="text-align: center; margin-top: 30px">
+                                            <img :src="article.img" alt="" style="width: 650px; margin-top: 20px;">
+                                        </div>
+                                        <div style="font-size: 40px; margin-top: 30px; text-align: center">
+                                            <b>{{article.title}}</b>
+                                        </div>
+                                        <div style="font-size: 20px; margin-bottom: 20px; margin-left: 50px; margin-top: 10px;">
+                                            <small>
+                                                <i>Created At {{article.createdAt}}</i>
+                                            </small>
+                                        </div>
+                                        <div style="font-size: 20px; margin-left: 50px; width: 750px">
+                                            <p v-html="article.content">
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="newArticle" v-if="mainStatus === 'newArticle'" style="margin-bottom: 20px">
@@ -195,49 +186,57 @@
                                         <b>New Article</b>
                                     </div>
                                     <div style="width: 800px">
-                                        <form>
-                                            <input type="text" class="form-control" id="articleTitle" placeholder="Title" style="margin-bottom: 20px">
-                                            <textarea class="form-control" id="articleDesc" cols="30" rows="10" style="margin-bottom: 20px"></textarea>
+                                        <form enctype="multipart/form-data">
+                                            <input type="text" class="form-control" id="articleTitle" placeholder="Title" style="margin-bottom: 20px" v-model="article.title">
+                                            <!-- <textarea class="form-control" id="articleDesc" cols="30" rows="10" style="margin-bottom: 20px" v-model="article.content"></textarea> -->
+                                            <div style="margin-bottom: 20px; background-color: white">
+                                                <wysiwyg v-model="article.content"></wysiwyg>
+                                            </div>
                                             <div class="form-group" style="margin-left: 10px">
                                                 <label for="upload">Upload Picture</label>
-                                                <input type="file" class="form-control-file" id="upload">
+                                                <input type="file" class="form-control-file" id="upload" v-on:change="selectImage">
                                             </div>
                                             <div style="margin-left: 10px">
-                                                <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-right: 10px">Submit</button>
+                                                <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-right: 10px" @click.prevent="createArticle">Submit</button>
                                                 <button type="button" class="btn btn-outline-secondary" style="width: 180px;" @click.prevent="articleList">Cancel</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
+                                <div id="editArticle" v-if="mainStatus === 'editArticle'" style="margin-bottom: 20px">
+                                    <div style="font-size: 30px; margin-bottom: 20px; margin-top: 20px; text-align: center">
+                                        <b>Edit Article</b>
+                                    </div>
+                                    <div style="width: 800px">
+                                        <form enctype="multipart/form-data">
+                                            <input type="text" class="form-control" id="articleTitle" placeholder="Title" style="margin-bottom: 20px" v-model="article.title">
+                                            <!-- <textarea class="form-control" id="articleDesc" cols="30" rows="10" style="margin-bottom: 20px" v-model="article.content"></textarea> -->
+                                            <div style="margin-bottom: 20px; background-color: white">
+                                                <wysiwyg v-model="article.content"></wysiwyg>
+                                            </div>
+                                            <!-- <div class="form-group" style="margin-left: 10px">
+                                                <label for="upload">Upload Picture</label>
+                                                <input type="file" class="form-control-file" id="upload" v-model="article.img">
+                                            </div> -->
+                                            <div class="form-group" style="margin-left: 10px">
+                                                <label for="upload">Upload Picture</label>
+                                                <input type="file" class="form-control-file" id="upload" v-on:change="selectImage">
+                                            </div>
+                                            <div style="margin-left: 10px">
+                                                <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-right: 10px" @click.prevent="editArticle(article.id)">Edit</button>
+                                                <button type="button" class="btn btn-outline-secondary" style="width: 180px;" @click.prevent="userArticle">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div id="articleList" v-if="mainStatus === 'articleList'"  style="margin-bottom: 20px">
-                                    <div class="card mb-3" style="margin-top: 50px; width: 700px">
-                                        <img class="card-img-top" src="./assets/bg.png" alt="Card image cap">
+                                    <div class="card mb-3 bg-light" style="margin-top: 50px; width: 700px" v-for="article in listArticles">
+                                        <img class="card-img-top" :src="article.img" alt="Card image cap" height="300px">
                                         <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px">Read More</button>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-3" style="margin-top: 50px; width: 700px">
-                                        <img class="card-img-top" src="./assets/bg.png" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px">Read More</button>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-3" style="margin-top: 50px; width: 700px">
-                                        <img class="card-img-top" src="./assets/bg.png" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px">Read More</button>
+                                            <h2 class="card-title">{{article.title}}</h2>
+                                            <p class="card-text" v-html="article.content" style="line-break: 20px"></p>
+                                            <p class="card-text"><small class="text-muted">Created At {{article.createdAt}}</small></p>
+                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px" @click.prevent="viewArticle(article._id)">Read More</button>
                                         </div>
                                     </div>
                                 </div>
@@ -269,7 +268,8 @@
             </div>
         </div>
     </div>
-
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -281,6 +281,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./js/vueWysiwyg.js"></script>
     <script src="./js/main.js"></script>
 </body>
 
