@@ -6,43 +6,43 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const randomPass = require('../helpers/randomPass')
 
 class UserCont {
-  // static GoogleSignIn(req, res, next) {
-  //   let payload = null
-  //   let newPass = null
-  //   client.verifyIdToken({
-  //     idToken: req.body.token,
-  //     audience: process.env.GOOGLE_CLIENT_ID
-  //   })
-  //     .then((ticket) => {
-  //       payload = ticket.getPayload();
-  //       return User.findOne({ email: payload.email })
-  //     })
-  //     .then((user) => {
-  //       if (!user) {
-  //         newPass = randomPass()
-  //         return User.create({
-  //           name: payload.name,
-  //           email: payload.email,
-  //           password: newPass
-  //         })
-  //       } else {
-  //         return user
-  //       }
-  //     })
-  //     .then(user => {
-  //       let { name } = user
-  //       let payload = {
-  //         _id: user._id,
-  //         name: user.name,
-  //         email: user.email
-  //       }
-  //       let token = jwt.sign(payload)
-  //       let data = { token, name }
-  //       if (newPass) data.newPass = newPass
-  //       res.status(201).json(data)
-  //     })
-  //     .catch(next)
-  // }
+  static GoogleSignIn(req, res, next) {
+    let payload = null
+    let newPass = null
+    client.verifyIdToken({
+      idToken: req.body.token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    })
+      .then((ticket) => {
+        payload = ticket.getPayload();
+        return User.findOne({ email: payload.email })
+      })
+      .then((user) => {
+        if (!user) {
+          newPass = randomPass()
+          return User.create({
+            name: payload.name,
+            email: payload.email,
+            password: newPass
+          })
+        } else {
+          return user
+        }
+      })
+      .then(user => {
+        let { name, email } = user
+        let payload = {
+          _id: user._id,
+          name: user.name,
+          email: user.email
+        }
+        let token = jwt.sign(payload)
+        let data = { token, name, email }
+        if (newPass) data.newPass = newPass
+        res.status(201).json(data)
+      })
+      .catch(next)
+  }
 
   static register(req, res, next) {
     User.create({

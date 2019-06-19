@@ -5,6 +5,7 @@ class ArticleCont {
   static create (req, res, next) {
     let newArticle = {
       user : req.decoded._id,
+      img : req.body.img,
       title : req.body.title,
       content: req.body.content,
       created_at: req.body.created_at,
@@ -25,6 +26,7 @@ class ArticleCont {
         for (let i = 0; i < articles.length; i++){
           let article = {
             _id: articles[i]._id,
+            img : articles[i].img,
             title : articles[i].title,
             content: articles[i].content,
             created_at: articles[i].created_at,
@@ -65,6 +67,7 @@ class ArticleCont {
         for (let i = 0; i < articles.length; i++){
           let article = {
             _id: articles[i]._id,
+            img : articles[i].img,
             title : articles[i].title,
             content: articles[i].content,
             created_at: articles[i].created_at,
@@ -82,6 +85,7 @@ class ArticleCont {
         next({code: 500, message: err.message})
       } else {
         article.title = req.body.title
+        article.img = req.body.img
         article.content = req.body.content
         article.save()
           .then (article => {
