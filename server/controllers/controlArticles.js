@@ -32,21 +32,7 @@ class ControllerArticle {
 	}
 
 	static update(req, res, next){
-		console.log("at update ControllerArticle")
-		Article.findOne({_id:req.params.id})
-		.populate('owner')
-		.exec((err, article) => {
-			if (err) throw err;
-			console.log(article)
-			if (article.owner == req.decode.id){
-				return Article.update({_id:req.params.id}, req.body, {new:true})
-			} else {
-				let err = new Error()
-				err.status = 403
-				err.message = "You are not the author of this article"
-				throw err
-			}
-		})
+		Article.findOneAndUpdate({_id:req.params.id}, req.body, {new:true})
 		.then(updated => {
 			res.json(updated)
 		})
@@ -54,7 +40,6 @@ class ControllerArticle {
 	}
 
 	static delete(req, res, next){
-		console.log("controller delete")
 		Article.findOneAndDelete({_id:req.params.id})
 		.then(deleted => {
 			res.json(deleted)

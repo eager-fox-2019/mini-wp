@@ -205,7 +205,7 @@ var app = new Vue({
 
       axios({
         method: "PATCH",
-        url: baseUrl+"/articles/"+currentArticle.owner+"/"+currentArticle._id,
+        url: baseUrl+"/articles/"+currentArticle._id,
         data: newInput,
         headers:{
           access_token: localStorage.getItem("access_token")
