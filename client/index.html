@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <title>MiniWP</title>
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css">
+
   <!--Google Related -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <meta name="google-signin-client_id" content="647749845083-l8k2ne6a9vc8sh103n7lv6ag92obmc11.apps.googleusercontent.com">
 
+  <!-- Fontawesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 
   <!-- WYSIWYG -->
@@ -18,247 +18,225 @@
 
   <!-- Vuetify -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.css" rel="stylesheet">
 
+  <!-- Internal resources -->
   <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
   <div id="app">
-    <header>
-      <div class="navbar-fixed">
-        <nav id="navbar-top" class="top-nav row light-blue">
-          <div class="col s2">
-            <span v-if="isLogin" style="cursor:pointer" @click="openNav()">☰</span>
-          </div>
-          <div class="col s6">
-            <ul class="row">
-              <li class="col s3">
-                <i id="navbar-logo" class="far fa-smile-wink valign-wrapper"></i>
-                <span href="#" class="">Mini WP</span>
-              </li>
-              <li class="col s9">
-                <a v-if="isLogin" @click="logout()">LogOut</a>
-              </li>
-            </ul>
-          </div>
-          <div id="navbar-username" class="col s4">
-            <a class="col offset-s4" v-if="isLogin">Robbycp</a>
-          </div>
-        </nav>
-      </div>
-      <div id="mySidenav" class="sidenav sidenav-fixed" v-if="isLogin">
-        <ul class="collection">
-          <a href="javascript:void(0)" class="closebtn" @click="closeNav()">×</a>
-          <li class="collection-header">
-            <h4>Table Menu</h4>
-          </li>
-          <li class="row valign-wrapper collection-item">
-            <div class="col s4">
-              <i class="fas fa-home"></i>
-            </div>
-            <a class="col s8" @click="changePage('content-home')">Home</a>
-          </li>
-          <li class="row valign-wrapper collection-item">
-            <div class="col s4">
-              <i class="fas fa-plus-circle"></i>
-            </div>
-            <a class="col s8" @click="changePage('content-edit-article')">Add article</a>
-          </li>
-          <li class="row valign-wrapper collection-item">
-            <div class="col s4">
-              <i class="fas fa-file"></i>
-            </div>
-            <a class="col s8" @click="changePage('content-list-articles')">Articles</a>
-          </li>
-          <li class="row valign-wrapper collection-item">
-            <div class="col s4">
-              <i class="far fa-file-image"></i>
-            </div>
-            <a class="col s8" href="collapsible.html">Media</a>
-          </li>
-        </ul>
-      </div>
-    </header>
-    <main>
-      <div class="container">
-        <div class="row">
-          <div id="content" class="col s12">
-            <!-- List of articles -->
-            <div id="content-articles" v-if="isLogin && currentPage == 'content-list-articles'">
-              <nav>
-                <div class="nav-wrapper orange lighten-1">
-                  <form id="search-article">
-                    <div class="input-field">
-                      <input id="search" type="search" required>
-                      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                      <i class="material-icons">close</i>
-                    </div>
-                  </form>
-                </div>
-              </nav>
-              <nav class="nav-extended orange lighten-1">
-                <div class="nav-content">
-                  <ul class="tabs tabs-transparent">
-                    <li class="tab"><a class="active" href="#test1">Published</a></li>
-                    <li class="tab"><a class="" href="#test2">Drafts</a></li>
-                  </ul>
-                </div>
-              </nav>
-              <div class="row" id="list-articles">
-                <!-- <ul class="collection">
-                  <li class="collection-item avatar">
-                    <img class="material-icons circle" src="https://gagaldiett.files.wordpress.com/2018/10/img-1579-1.jpg?w=256&h=256&crop=1" alt="foto bali">
-                    <span class="title">Pengalaman liburan ke bali</span>
-                    <p>8 minutes ago</p>
-                    <a class="secondary-content dropdown-trigger btn light-blue" data-target="dropdown1" href="#"><i class="fas fa-ellipsis-h"></i></a>
-                    <ul id='dropdown1' class='dropdown-content'>
-                      <li><a href="#!">Edit</a></li>
-                      <li><a href="#!">Delete</a></li>
-                    </ul>
-                  </li>
-                </ul> -->
-                <ul class="collection">
-                  <li v-for="article in articles" class="collection-item avatar">
-                    <img class="material-icons circle" src="https://gagaldiett.files.wordpress.com/2018/10/img-1579-1.jpg?w=256&h=256&crop=1" alt="foto bali">
-                    <span class="title">{{ article.title }}</span>
-                    <p>8 minutes ago</p>
-                    <a class="secondary-content dropdown-trigger btn light-blue" :data-target="'dropdown-' + article._id"><i class="fas fa-ellipsis-h"></i></a>
-                    <ul :id="'dropdown-' + article._id" class='dropdown-content'>
-                      <li><a @click="changePage('content-edit-article')">Edit</a></li>
-                      <li><a @click="">Delete</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <!-- Edit or Add Article -->
-            <div id="add-edit-article" v-if="isLogin && currentPage == 'content-edit-article'">
-              <form>
-                <div id="title-article row">
-                  <h5>Title article</h5>
-                  <div class="input-field">
-                    <input id="title-article" v-model="selectedArticle.title" type="text">
-                    <label for="first_name">Title</label>
-                  </div>
-                </div>
-                <div id="detail-article">
-                  <h5>Detail article</h5>
-                  <div class="switch">
-                    <label>
-                      Draft
-                      <input type="checkbox" v-model="selectedArticle.published">
-                      <span class="lever"></span>
-                      Publish
-                    </label>
-                  </div>
-                </div>
-                <div id="editor-section">
-                  <h5>Content article</h5>
+    <v-app>
+      <v-toolbar app color="primary" dark fixed>
+        <v-toolbar-side-icon v-if="isLogin" @click.stop="navTab.drawer = !navTab.drawer"></v-toolbar-side-icon>
+        <v-toolbar-title href="#" @click="changePage('content-home')">
+          <i id="navbar-logo" class="far fa-smile-wink valign-wrapper"></i>
+          <span>Mini WP</span>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items class="">
+          <v-btn v-if="!isLogin" flat @click="changePage('content-registration')">Login</v-btn>
+          <v-btn v-if="isLogin" flat @click="logout()">Logout</v-btn>
+          <v-btn v-if="isLogin" flat>{{ currentLoginUser.full_name }}</v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+      <!-- List Articles Dashboard -->
+      <v-content>
+        <v-layout v-if="isLogin">
+          <v-navigation-drawer v-model="navTab.drawer" absolute temporary>
+            <v-list class="pa-1">
+              <v-list-tile>
+                <v-list-tile-title class="title">
+                  Mini WP
+                </v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+      
+            <v-list class="pt-0" dense>
+              <v-divider></v-divider>
+              <v-list-tile v-for="menu in navTab.menus" :key="menu.title" @click="changePage(menu.pageName)">
+                <v-list-tile-action>
+                  <v-icon>{{ menu.icon }}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ menu.title }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-navigation-drawer>
+        </v-layout>
+        <v-layout row v-if="isLogin && currentPage == 'content-list-articles'">
+          <v-flex xs12 sm10 offset-sm1>
+            <v-toolbar color="cyan" dark>
+              <v-text-field v-model="searchArticle" label="Search Post Title"></v-text-field>
+            </v-toolbar>
+            <v-tabs v-model="articlesPage.activeTab" color="cyan" dark slider-color="yellow">
+              <v-tab key="all-article" ripple>All Articles</v-tab>
+              <v-tab key="published" ripple>Published</v-tab>
+              <v-tab key="drafts" ripple>Drafts</v-tab>
+              <v-tab-item key="all-article">
+                <v-card flat>
+                  <v-list two-line>
+                    <template v-for="(item, index) in filteredArticlesAuthorAll">
+                      <v-list-tile :key="item.title" avatar @click="">
+                        <v-list-tile-avatar>
+                          <img src="https://gagaldiett.files.wordpress.com/2018/10/img-1579-1.jpg?w=256&h=256&crop=1">
+                        </v-list-tile-avatar>
+                        <v-list-tile-content>
+                          <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                          <v-list-tile-sub-title v-html="item.content"></v-list-tile-sub-title>
+                        </v-list-tile-content>
+                        <v-list-tile-action @click="changePage('content-edit-article', item._id)">
+                          <v-btn icon>
+                            <v-icon color="grey lighten-1">edit</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                        <v-list-tile-action @click="deleteArticle(item._id)">
+                          <v-btn icon>
+                            <v-icon color="grey lighten-1">delete</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                      </v-list-tile>
+                    </template>
+                  </v-list>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item key="published">
+                <v-card flat>
+                  <v-list two-line>
+                    <template v-for="(item, index) in filteredArticlesAuthorPublished">
+                      <v-list-tile :key="item.title" avatar @click="">
+                        <v-list-tile-avatar>
+                          <img src="https://gagaldiett.files.wordpress.com/2018/10/img-1579-1.jpg?w=256&h=256&crop=1">
+                        </v-list-tile-avatar>
+                        <v-list-tile-content>
+                          <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                          <v-list-tile-sub-title v-html="item.content"></v-list-tile-sub-title>
+                        </v-list-tile-content>
+                        <v-list-tile-action @click="changePage('content-edit-article', item._id)">
+                          <v-btn icon>
+                            <v-icon color="grey lighten-1">edit</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                        <v-list-tile-action @click="deleteArticle(item._id)">
+                          <v-btn icon>
+                            <v-icon color="grey lighten-1">delete</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                      </v-list-tile>
+                    </template>
+                  </v-list>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item key="drafts">
+                <v-card flat>
+                    <v-list two-line>
+                      <template v-for="(item, index) in filteredArticlesAuthorDraft">
+                        <v-list-tile :key="item.title" avatar @click="">
+                          <v-list-tile-avatar>
+                            <img src="https://gagaldiett.files.wordpress.com/2018/10/img-1579-1.jpg?w=256&h=256&crop=1">
+                          </v-list-tile-avatar>
+                          <v-list-tile-content>
+                            <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                            <v-list-tile-sub-title v-html="item.content"></v-list-tile-sub-title>
+                          </v-list-tile-content>
+                          <v-list-tile-action @click="changePage('content-edit-article', item._id)">
+                            <v-btn icon>
+                              <v-icon color="grey lighten-1">edit</v-icon>
+                            </v-btn>
+                          </v-list-tile-action>
+                          <v-list-tile-action @click="deleteArticle(item._id)">
+                            <v-btn icon>
+                              <v-icon color="grey lighten-1">delete</v-icon>
+                            </v-btn>
+                          </v-list-tile-action>
+                        </v-list-tile>
+                      </template>
+                    </v-list>
+                </v-card>
+              </v-tab-item>
+            </v-tabs>
+          </v-flex>
+        </v-layout>
+        <!-- Edit or Add Article -->
+        <v-layout row v-if="isLogin && currentPage == 'content-edit-article'">
+          <v-flex xs12 sm10 offset-sm1>
+            <v-text-field v-model="selectedArticle.title" label="Title" required></v-text-field>
+            <v-switch v-model="selectedArticle.published" :label="`Published: ${(selectedArticle.published) ? 'Published' : 'Drafts'}`"></v-switch>
+            <textarea name="content" id="editor" v-model="selectedArticle.content"></textarea>
+            <v-btn color="success" @click="sendArticle(selectedArticle._id)">Submit</v-btn>
+            <v-btn color="error" @click="changePage('content-list-articles')">Cancel</v-btn>
+          </v-flex>
+        </v-layout>
+        <!-- Login Register Form -->
+        <v-layout row v-if="currentPage == 'content-registration'">
+          <v-flex xs12 sm8 offset-sm2>
+            <v-tabs v-model="logRegForm.activeTab" color="cyan" dark slider-color="yellow">
+              <v-tab key="login" ripple>Login</v-tab>
+              <v-tab key="registration" ripple>Registration</v-tab>
+              <v-tab-item key="login">
+                <v-card flat>
                   <form>
-                    <textarea name="content" id="editor" v-model="selectedArticle.content"></textarea>
-                  </form>
-                </div>
-                <div id="editor-section">
-                  <h5>File article</h5>
-                  <div class="file-field input-field">
-                    <div class="btn orange lighten-1">
-                      <span>File</span>
-                      <input type="file" multiple>
-                    </div>
-                    <div class="file-path-wrapper">
-                      <input class="file-path validate" type="text" placeholder="Upload one or more files">
-                    </div>
-                  </div>
-                </div>
-                <button class="btn waves-effect orange lighten-1" type="submit" @click="sendNewArticle()">Submit</button>
-              </form>
-            </div>
-            <!-- Login Register Form -->
-            <div id="registration-form" class="row" v-if="!isLogin">
-              <div class="col offset-s2 s8 offset-s2">
-                <ul id="tabs-swipe" class="tabs row light-blue lighten-5">
-                  <li class="tab col s6"><a class="active" href="#login-swipe">Login</a></li>
-                  <li class="tab col s6"><a href="#register-swipe">Register</a></li>
-                </ul>
-                <div id="login-swipe">
-                  <form class="col s12">
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <input id="login-username" v-model="loginUser.username" type="text">
-                        <label for="username">Username</label>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <input id="login-password" v-model="loginUser.password" type="password">
-                        <label for="password">Password</label>
-                      </div>
-                    </div>
-                    <button class="btn waves-effect light-blue darken-1" @click.prevent="defaultLogin()" type="submit" name="action">Submit
-                      <i class="material-icons right">send</i>
-                    </button>
-                  </form>
-                  <br>
-                  <div>
-                    <div class="row"></div>
-                    <span>Or Sign in using google</span>
-                    <div class="row"></div>
+                    <v-text-field v-model="logRegForm.loginUser.username" label="Username" required></v-text-field>
+                    <v-text-field v-model="logRegForm.loginUser.password" :type="'password'" label="Password" required></v-text-field>
+                    <v-btn @click="defaultLogin()">Login</v-btn>
+                    <p>Or sign in using Google</p>
                     <div class="g-signin2" @done="onSignIn"></div>
-                  </div>
-                </div>
-                <div id="register-swipe">
-                  <form class="">
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <input id="register-full_name" v-model="registerUser.full_name" type="text" required>
-                        <label for="full_name">Full Name</label>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <input id="register-username" v-model="registerUser.username" type="text" required>
-                        <label for="username">Username</label>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <input id="register-password" v-model="registerUser.password" type="password" required>
-                        <label for="password">Password</label>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <input id="register-email" v-model="registerUser.email" type="email" class="validate" required>
-                        <label for="email">Email</label>
-                        <span class="helper-text" data-error="wrong" data-success="right"></span>
-                      </div>
-                    </div>
-                    <button class="btn waves-effect light-blue darken-1" @click="sendRegisterUser()" type="submit" name="action">Submit
-                      <i class="material-icons right">send</i>
-                    </button>
                   </form>
-                </div>
-              </div>
-            </div>
-            <!-- Home Page -->
-            <div id="content-home" v-if="currentPage == 'content-home'">
-              Ini homepage
-            </div>
-            <!-- Detail Page -->
-            <div id="content-detail-page" v-if="currentPage == 'content-detail-page'">
-              Ini Detail page
-            </div>
-          </div>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item key="registration">
+                <v-card flat>
+                  <form>
+                    <v-text-field v-model="logRegForm.registerUser.full_name" label="Full Name" required></v-text-field>
+                    <v-text-field v-model="logRegForm.registerUser.username" label="Username" required></v-text-field>
+                    <v-text-field v-model="logRegForm.registerUser.password" label="Password" :type="'password'" required></v-text-field>
+                    <v-text-field v-model="logRegForm.registerUser.email" label="Email" required></v-text-field>
+                    <v-btn @click="sendRegisterUser()">Register</v-btn>
+                  </form>
+                </v-card>
+              </v-tab-item>
+            </v-tabs>
+          </v-flex>
+        </v-layout>
+        <!-- Home Page -->
+        <v-container id="content-home" v-if="currentPage == 'content-home'">
+          <v-layout row wrap>
+            <v-flex v-for="article in allArticlesPublished" :key="article._id">
+              <v-card>
+                <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
+                <v-card-title primary-title>
+                  <div>
+                    <v-card-title> 
+                      <h3 class="headline mb-0">{{ article.title }}</h3>
+                    </v-card-title>
+                    <v-card-text> {{ article.content }} </v-card-text>
+                    <v-card-text>
+                      <small> By: {{ article.user_id.full_name }} </small>
+                      <small> {{ article.createdAt }} </small>
+                    </v-card-text>
+                  </div>
+                </v-card-title>
+        
+                <v-card-actions>
+                  <v-btn flat color="orange">Share</v-btn>
+                  <v-btn flat color="orange">Explore</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <!-- Detail Page -->
+        <div id="content-detail-page" v-if="currentPage == 'content-detail-page'">
+          Ini Detail page
         </div>
-      </div>
-    </main>
+      </v-content>
+    </v-app>
   </div>
   <!-- Compiled and minified JavaScript -->
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/en-gb.js"></script>
   <script src="./js/wysiwyg.js"></script>
   <script src="./js/main.js"></script>
 </body>

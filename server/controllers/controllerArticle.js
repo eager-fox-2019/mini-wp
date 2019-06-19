@@ -7,7 +7,8 @@ class ControllerArticle {
     let newArticle = {
       title: req.body.title,
       content: req.body.content,
-      user_id: payload.userId
+      published: req.body.published,
+      user_id: payload.userId,
     }
     Article.create(newArticle)
       .then((createdArticle) => {
@@ -56,19 +57,18 @@ class ControllerArticle {
   }
   
   static update(req, res, next) {
-    let updatedArticle
-    Article.findOne({_id: req.params.id})
+    let schemaField = Object.keys(Article.prototype.schema.paths)
+    let filteredField = Object.keys(req.body).filter((x) => schemaField.indexOf(x) > -1)
+    let updatedArticle = filteredField.reduce((acc, el) => Object.assign(acc, {[el]: req.body[el]}), {})
+    Article.findByIdAndUpdate({_id: req.params.id}, updatedArticle)
+      // .then((article) => {
+      //   if (!article) throw { code: 404 }
+      //   else {
+      //     return Article.updateOne({_id: req.params.id}, updatedArticle)
+      //   } 
+      // })
       .then((article) => {
-        if (!article) throw { code: 404 }
-        else {
-          let schemaField = Object.keys(Article.prototype.schema.paths)
-          let filteredField = Object.keys(req.body).filter((x) => schemaField.indexOf(x) > -1)
-          updatedArticle = filteredField.reduce((acc, el) => Object.assign(acc, {[el]: req.body[el]}), {})
-          return Article.updateOne({_id: req.params.id}, updatedArticle)
-        } 
-      })
-      .then((article) => {
-        res.status(201).json(updatedArticle)
+        res.status(201).json(article)
       })
       .catch(next)
   }

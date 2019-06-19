@@ -2,31 +2,98 @@ var app = new Vue({
   el: '#app',
   data: {
     isLogin: false,
-    currentPage: '',
-    articles: [],
-    registerUser: {},
-    loginUser: {
+    currentLoginUser: {
+      id: '',
       username: '',
-      password: ''
+      full_name: '',
+      email: '',
     },
-    selectedArticle: {},
-    url_server: 'http://localhost:3000'
+    currentPage: 'content-home',
+    articles: [],
+    articlesAuthor: [],
+    selectedArticle: {
+      title: '',
+      published: null,
+      content: '',
+    },
+    url_server: 'http://localhost:3000',
+    navTab: {
+      drawer: null,
+      menus: [
+        { title: 'Home', icon: 'home', pageName: 'content-home' },
+        { title: 'Add Article', icon: 'add_box', pageName: 'content-edit-article' },
+        { title: 'All Articles', icon: 'dashboard', pageName: 'content-list-articles' },
+      ],
+    },
+    right: null,
+    logRegForm: {
+      activeTab: null,
+      registerUser: {},
+      loginUser: {
+        username: '',
+        password: ''
+      },
+    },
+    articlesPage: {
+      activeTab: null,
+    },
+    searchArticle: "",
+  },
+  computed: {
+    filteredArticlesAuthorAll() {
+      return this.articles.filter(article => {
+        let search = article.title.toLowerCase().includes(this.searchArticle.toLowerCase())
+        let articlesAuthor = article.user_id._id == this.currentLoginUser.id
+        return search && articlesAuthor
+      })
+    },
+    filteredArticlesAuthorPublished() {
+      return this.articles.filter(article => {
+        let search = article.title.toLowerCase().includes(this.searchArticle.toLowerCase())
+        let articlesAuthor = article.user_id._id == this.currentLoginUser.id
+        let articlesPublished = article.published == true
+        return search && articlesAuthor && articlesPublished
+      })
+    },
+    filteredArticlesAuthorDraft() {
+      return this.articles.filter(article => {
+        let search = article.title.toLowerCase().includes(this.searchArticle.toLowerCase())
+        let articlesAuthor = article.user_id._id == this.currentLoginUser.id
+        let articlesDraft = article.published == false
+        return search && articlesAuthor && articlesDraft
+      })
+    },
+    allArticlesPublished() {
+      return this.articles.filter((article) => {
+        return article.published == true
+      })
+    }
   },
   methods: {
-    openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
-      document.getElementById("app").style.marginLeft = "250px";
-      document.getElementById("navbar-top").style.marginLeft = "0px";
-    },
-    closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-      document.getElementById("app").style.marginLeft= "0";
-      document.getElementById("navbar-top").style.marginLeft = "0";
+    getUserProfile() {
+      axios({
+        method: 'GET',
+        headers: {
+          token: JSON.parse(localStorage.token).token,
+        },
+        url: `${this.url_server}/user/myprofile`
+      })
+        .then(({ data }) => {
+          this.currentLoginUser = {
+            id: data.id,
+            username: data.username,
+            full_name: data.full_name,
+            email: data.email,
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     },
     defaultLogin() {
       let sendLoginUser = {
-        username: this.loginUser.username,
-        password: this.loginUser.password
+        username: this.logRegForm.loginUser.username,
+        password: this.logRegForm.loginUser.password
       }
       axios.post(`${this.url_server}/user/login`, sendLoginUser)
         .then(({ data }) => {
@@ -37,6 +104,7 @@ var app = new Vue({
             }
             localStorage.setItem('token', JSON.stringify(token))
             this.getListArticles()
+            this.getUserProfile()
             this.isLogin = true
             this.currentPage = "content-list-articles"
           }
@@ -47,10 +115,10 @@ var app = new Vue({
     },
     sendRegisterUser() {
       let sendRegisterUser = {
-        full_name: this.registerUser.full_name,
-        username: this.registerUser.username,
-        password: this.registerUser.password,
-        email: this.registerUser.email,
+        full_name: this.logRegForm.registerUser.full_name,
+        username: this.logRegForm.registerUser.username,
+        password: this.logRegForm.registerUser.password,
+        email: this.logRegForm.registerUser.email,
       }
       axios({
         method: 'POST',
@@ -59,7 +127,7 @@ var app = new Vue({
       })
         .then(({ data }) => {
           console.log('Successfully register data');
-          this.registerUser = { full_name: '', username: '', password: '', email: ''}
+          this.logRegForm.registerUser = { full_name: '', username: '', password: '', email: ''}
         })
         .catch((err) => {
           console.log(err);
@@ -76,7 +144,7 @@ var app = new Vue({
             token_type: 'google'
           }
           localStorage.setItem('token', JSON.stringify(token))
-          this.loginUser = { username: '', password: ''}    
+          this.logRegForm.loginUser = { username: '', password: ''}    
           this.isLogin = true
           this.currentPage = "content-list-articles"   
         })
@@ -100,6 +168,12 @@ var app = new Vue({
           });
           this.isLogin = false
           this.currentPage = ""
+          this.currentLoginUser = {
+            id: '',
+            username: '',
+            email: '',
+            full_name: '',
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -107,7 +181,7 @@ var app = new Vue({
     },
     changePage(inputPage, id) {
       if (id) {
-        this.selectedArticle = articles.filter((article) => article._id == id)[0]
+        this.selectedArticle = this.articles.filter((article) => article._id == id)[0]
       }
       this.currentPage = inputPage
     },
@@ -123,7 +197,7 @@ var app = new Vue({
           console.log(err);
         })
     },
-    sendNewArticle(val) {
+    sendArticle(val) {
       event.preventDefault()
       console.log('masuk sendNewaArticle');
       
@@ -141,6 +215,8 @@ var app = new Vue({
       }
       console.log(sendArticle);
       console.log('method used', method);
+      console.log('ini nilai val', val);
+      
       
       axios({
         method: method,
@@ -148,16 +224,36 @@ var app = new Vue({
           token: JSON.parse(localStorage.token).token
         },
         data: sendArticle,
-        url: `${this.url_server}/article`
+        url: `${this.url_server}/article/${val}`
       })
         .then(({ data }) => {
           console.log('get data', data);
-          if (method == 'PUT') {
-
-          } else {
-            this.articles.push(data)
-          }
+          this.getListArticles()
+          // if (method == 'PUT') {
+          //   let indexChanged = this.articles.findIndex(article => article._id === val);
+          //   console.log('ini nilai indexchanged', indexChanged);
+          //   this.articles.splice(indexChanged, 1, data)
+          //   console.log('hasil splice', this.articles);
+          // } else {
+          //   this.articles.push(data)
+          // }
           this.currentPage = "content-list-articles"
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+    deleteArticle(id) {
+      axios({
+        method: 'DELETE',
+        headers: {
+          token: JSON.parse(localStorage.token).token
+        },
+        url: `${this.url_server}/article/${id}`
+      })
+        .then(({ data }) => {
+          this.articles = this.articles.filter((article) => article._id !== id)
+          console.log('Berhasil delete');
         })
         .catch((err) => {
           console.log(err);
@@ -166,36 +262,10 @@ var app = new Vue({
   },
   created() {
     if (localStorage.token) {
-      axios({
-        method: 'GET',
-        url: `${this.url_server}/article`,
-      })
-        .then(({ data }) => {
-          this.isLogin = true
-          this.articles = data
-          this.currentPage = "content-list-articles"
-        })
-        .catch((err) => {
-          console.log(err);
-        })
+      this.isLogin = true
+      this.currentPage = "content-list-articles"
+      this.getUserProfile()
     }
-  },
-  mounted() {
-    var tabs = document.querySelectorAll('#tabs-swipe');
-    tabs.forEach((tab) => M.Tabs.init(tab))
-    var sidenavs = document.querySelectorAll('.sidenav')
-    sidenavs.forEach(sidenav => {
-      M.Sidenav.init(sidenav);
-    })
-    var dropdowns = document.querySelectorAll('.dropdown-trigger')
-    dropdowns.forEach((dropdown) => {
-      M.Dropdown.init(dropdown);
-    })
+    this.getListArticles()
   },
 })
-
-
-
-
-
-
