@@ -10,6 +10,7 @@ var app = new Vue({
     registerArea: false,
     postArea: false,
     sidebarArea: true,
+    editUserArea: false,
     errorMessage: "",
     successMessage: "",
     userName: "",
@@ -33,8 +34,8 @@ var app = new Vue({
       let filtered = [];
 
       this.articles.forEach(article => {
-        let strArticle = article.title;
-        if (strArticle.includes(this.search)) {
+        let strArticle = article.title.toLowerCase();
+        if (strArticle.includes(this.search.toLowerCase())) {
           filtered.push(article)
         }
       })
@@ -66,6 +67,55 @@ var app = new Vue({
         })
       }
     },
+    toggleEditUser(){
+      if (this.editUserArea){
+        this.editUserArea = false;
+      } else {
+        this.editUserArea = true;
+      }
+    },
+    editUser(){
+      axios({
+        method: "PATCH",
+        url: baseUrl+"/users",
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        },
+        data: {
+          name: this.userName,
+          password: this.userPassword
+        }
+      })
+      .then(({data}) => {
+        console.log("updated a user:",data)
+        this.showMsg("updated a user")
+        this.toggleEditUser()
+      })
+      .catch(err => {
+        console.log("updateArticle error:",err)
+        this.showError(err)
+      })
+    },
+    delUser(){
+      axios({
+        method: "DELETE",
+        url: baseUrl+"/users",
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
+      })
+      .then(({data}) => {
+        console.log("deleted a user:",data)
+        this.showMsg("deleted a user")
+        this.toggleRegister()
+        this.logoutUser()
+      })
+      .catch(err => {
+        console.log("updateArticle error:",err)
+        this.showError(err)
+      })
+
+    },
     toggleLoginArea(){
       if (this.loginArea){
         this.loginArea = false;
@@ -79,16 +129,15 @@ var app = new Vue({
         url: baseUrl+"/users/login",
         data: {
           email: this.userEmail,
-          password: this.userPassword
+          password: this.userPassword//50 20 30 10
         }
       })
       .then(({data}) => {
         localStorage.setItem("access_token", data)
 
         this.clearMsg()
-        this.loginArea = false;
+        this.toggleLoginArea()
         this.showMsg("Successfully logged in")
-        this.clearLogin()
         this.isLoggedin = true;
         this.populateArticles()
 
@@ -117,10 +166,10 @@ var app = new Vue({
         console.log("registerUser error:", err)
         this.showError(err)
       })
-
     },
     showError(err){
       this.errorMessage = err.response.data
+      window.scrollTo(0,0)
     },
     clearError(){
       this.errorMessage = ""
@@ -136,6 +185,7 @@ var app = new Vue({
       this.userEmail = ""
       this.userPassword = ""
       this.userName = ""
+      this.editUserArea = false;
     },
     logoutUser(){
       localStorage.clear()

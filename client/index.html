@@ -37,13 +37,16 @@
             <li id="homeNav" class="nav-item col-2">
               <a class="nav-link " href="#">Home</a>
             </li>
+
             <li v-show="isLoggedin" class="nav-item col-2">
               <button v-if="postArea === false" id="togglePostButton" class="btn btn-primary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Post</button>
               <button v-else="" id="togglePostButton2" class="btn btn-secondary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Cancel</button>
             </li>
+
             <li v-show="isLoggedin" class="nav-item col-2">
-              <a class="nav-link " href="#">User</a>
+              <a class="nav-link " href="#" @click.prevent="toggleEditUser">User</a>
             </li>
+
             <li class="nav-item col-2">
               <a v-if="isLoggedin" class="nav-link " href="#" @click.prevent="logoutUser">Logout</a>
 
@@ -74,27 +77,36 @@
           <button class="btn btn-secondary" @click.prevent="clearMsg">close</button>
         </div>
 
-        <div id="loginArea" v-if="loginArea">
+        <!-- user login/register and edit -->
+        <div id="loginArea" v-if="loginArea || editUserArea">
           <form method="post" class="d-flex flex-wrap">
-            <span v-if="registerArea"><label>Name:</label>
+            <span v-if="registerArea || editUserArea && loginArea == false"><label>Name:</label>
               <input v-model="userName" type="text" name="userName"></input></span>
-            <span><label>User E-mail: </label>
+            <span v-if="registerArea || loginArea && editUserArea == false"><label>E-mail: </label>
               <input v-model="userEmail" type="text" name="userEmail"></input></span>
             <span><label>Password: </label>
-              <input v-model="userPassword" type="text" name="userPassword"></input></span>
+              <input v-model="userPassword" type="password" name="userPassword"></input></span>
             <span>
-              <span v-if="registerArea===false">
+
+              <span v-if="registerArea === false && editUserArea === false">
                 <button @click.prevent="loginUser" class="btn btn-primary btn-md">Login</button></span>
-              <span v-if="registerArea===false">
+              <span v-if="registerArea === false && editUserArea === false">
                 <a href="#" @click.prevent="toggleRegister">Register</a></span>
-              <span v-if="registerArea">
+
+              <span v-if="registerArea && editUserArea==false">
                 <button @click.prevent="registerUser" class="btn btn-primary btn-md">Register</button></span>
-              <span v-if="registerArea">
+              <span v-if="registerArea && editUserArea==false">
                 <a href="#" @click.prevent="toggleRegister">Cancel</a></span>
+
+              <span v-if="editUserArea">
+                <button @click.prevent="editUser" class="btn btn-primary btn-md">Edit</button></span>
+              <span v-if="editUserArea">
+                <button @click.prevent="delUser" class="btn btn-danger btn-md">Delete Account</button></span>
+              <span v-if="editUserArea">
+                <a href="#" @click.prevent="toggleEditUser">Cancel</a></span>
             </span>
           </form>
         </div>
-
 
         <div id="postForm" v-show="postArea === true && editArticleArea === false" >
           

@@ -8,7 +8,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 class ControllerUser {
   static update(req, res, next){
-    let userEmail = req.decode
+    let userEmail = req.decode.email
     let {name, password} = req.body
     let input = {name, password} //user cannot change email
 
@@ -21,7 +21,7 @@ class ControllerUser {
   }
 
   static delete(req, res, next){
-    let userEmail = req.decode
+    let userEmail = req.decode.email
     User.findOneAndDelete({email: userEmail})
     .then(deleted => {
       res.json(deleted)
@@ -40,7 +40,7 @@ class ControllerUser {
   }
 
   static current(req, res, next){
-    let userEmail = req.decode
+    let userEmail = req.decode.email
     User.findOne({email: userEmail})
     .then(found => {
       if (found) {

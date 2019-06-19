@@ -3,12 +3,12 @@ const User = require('../models/').User
 
 class ControllerArticle {
 	static findAll(req, res, next){
-	    // let userEmail = req.decode
 	    Article.find()
-		.then(articleList => {
-			res.json(articleList)
+	    .populate('owner')
+		.exec((err, articleList) => {
+			if (err) next(err);
+			res.json(articleList);
 		})
-	    .catch(next)
 	}
 
 	static findOne(req, res, next){
