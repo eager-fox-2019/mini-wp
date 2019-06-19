@@ -11,10 +11,10 @@ const app = express()
 const { errorHandler } = require('./middlewares/error-handlers')
 const routeIndex = require('./routes')
 const Port = process.env.PORT
-const mongoUrl = process.env.ATLAS_CONNECT
+const mongoDbUrl = process.env.DATABASE_CONNECTION
 
 // connect mongodb
-mongoose.connect('mongodb://localhost:27017/mini_wp_db', { useNewUrlParser: true })
+mongoose.connect(mongoDbUrl, { useNewUrlParser: true })
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
