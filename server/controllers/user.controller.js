@@ -10,7 +10,7 @@ class Controller {
             let user = await User.findOne({email}).exec()
             if (user && match(password, user.password)) {
                 let token = jwt.sign({user: user._id})
-                res.json({access_token: token})
+                res.json({access_token: token, email: user.email})
             } else {
                 next(errMsg)
             }

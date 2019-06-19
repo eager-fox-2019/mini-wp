@@ -9,7 +9,7 @@ Vue.component('navbar', {
                 <div class="nav-miniwp-control padding-xxl flex flex-row justify-content-flex-end align-items-center">
                 <button v-on:click="this.$root.addForm" id="newArticle" class="button button-white button-text margin-m"> <i class="fas fa-feather-alt"></i> New
                     Article</button>
-                <button class="button button-warning"> Logout</button>
+                <button v-on:click="this.$root.logout" class="button button-warning"> Logout</button>
                 </div>
             </div>
         </nav>
