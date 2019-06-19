@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<head>
+    <title>Mini WordPress</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <div v-if="islogin">
+            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+                <a class="navbar-brand" style="cursor:pointer" v-on:click="showHome">Mini WordPress</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" style="cursor:pointer" v-on:click="showArticle">Article</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="cursor:pointer" v-on:click="showCreate">Create</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                    </form>
+                    <a class="nav-link disabled" style="cursor:pointer" v-on:click="logout">Logout</a>
+                </div>
+            </nav>
+        </div>
+
+        <div v-if="!islogin">
+            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+                <a class="navbar-brand" style="cursor:pointer" v-on:click="showLogin">Mini WordPress</a>
+
+                </button>
+            </nav>
+        </div>
+
+
+        <div id="page" style="display:flex">
+
+            <div class="container" v-if="!islogin">
+                <div class="row">
+
+                    <div class="col-sm" style="margin:80px">
+                        <h3>Register</h3>
+                        <form @submit.prevent="userRegister">
+                            <div class="form-group">
+                                <label for="registerEmail">Email address</label>
+                                <input v-model="register.email" type="email" class="form-control" id="registerEmail"
+                                    aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="registerPassword">Password</label>
+                                <input v-model="register.password" type="password" class="form-control"
+                                    id="registerPassword" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                        <br>
+                        <div id="errorRegister">
+                            <p class="error" style="color:red;">
+                                {{ error.register }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm" style="margin:80px">
+                        <h3>Login</h3>
+                        <form @submit.prevent="userLogin">
+                            <div class="form-group">
+                                <label for="loginEmail">Email address</label>
+                                <input v-model="login.email" type="email" class="form-control" id="loginEmail"
+                                    aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password</label>
+                                <input v-model="login.password" type="password" class="form-control" id="loginPassword"
+                                    placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                        <br>
+                        <div id="errorLogin">
+                            <p class="error" style="color:red;">
+                                {{ error.login }}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id=home v-if="home">
+                HOME
+            </div>
+
+            <div id="create" style="margin:60px;width:900px" v-if="create">
+                <h3>Create Article</h3>
+                <form @submit.prevent="createArticle">
+                    <div class="form-group">
+                        <label for="titleForm">Title </label>
+                        <input v-model="article.title" type="text" class="form-control" id="titleForm"
+                            placeholder="Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="imageForm">Image</label>
+                        <input v-model="article.image" type="text" class="form-control" id="imageForm"
+                            placeholder="Image"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentForm">Content</label>
+                        <textarea v-model="article.content" class="form-control" id="contentForm" rows="6"
+                            placeholder="Content"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tagForm">Tag </label>
+                        <input v-model="article.tag" type="text" class="form-control" id="tagForm" placeholder="Tag">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+
+            <div id="articleList" style="margin:60px;width:900px" v-if="articleStats">
+                <div v-for="data in articles">
+                    <div class="card" style="margin-bottom: 30px;">
+                        <h5 class="card-header">{{data.UserId.email}}</h5>
+                        <div style="display:flex;flex-direction: row;align-items:center">
+                            <div class="card-body">
+                                <h5 class="card-title">{{data.title}}</h5>
+                                <p class="card-text">content: {{data.content}} <br> date: {{data.created_at}} <br> tag: {{data.tag}} <br> image: {{data.image}}
+                                </p>
+                                <a href="#" class="btn btn-primary">Detail</a>
+                            </div>
+
+                            <div>
+                                <img style="margin-right: 60px;height: 100px;width:160px;"
+                                    src="https://img.buzzfeed.com/buzzfeed-static/static/2016-06/28/11/campaign_images/buzzfeed-prod-fastlane03/can-you-guess-the-90s-cartoon-from-the-house-2-8284-1467126699-17_dblbig.jpg"
+                                    alt="Card image cap">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./javascript/vue.js"></script>
+</body>
+
+</html>
