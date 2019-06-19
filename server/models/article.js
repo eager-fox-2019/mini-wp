@@ -17,6 +17,10 @@ const articleSchema = new Schema({
 	created_at: {
 		type: String,
 		default: (new Date()).toDateString()
+	},
+	owner: { 
+		type: Schema.Types.ObjectId, 
+		ref: 'User' 
 	}
 });
 

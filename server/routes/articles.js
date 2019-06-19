@@ -7,11 +7,11 @@ const isAuthorized = require('../middleware/auth.js').authorization
 router.use(isAuthenticated)
 router.get('/', ControllerArticles.findAll)
 router.get('/:id', ControllerArticles.findOne)
+router.get('/read/:id', ControllerArticles.read)
 router.post('/', ControllerArticles.create)
 
 router.patch('/:userId/:id', isAuthorized, ControllerArticles.update)
 router.delete('/:userId/:id', isAuthorized, ControllerArticles.delete)
 
-router.get('/read/:userId/:id', isAuthorized, ControllerArticles.read)
 
 module.exports = router

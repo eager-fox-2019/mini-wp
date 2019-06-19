@@ -3,11 +3,12 @@ const User = require('../models/').User
 
 class ControllerArticle {
 	static findAll(req, res, next){
-	   	Article.find()
+	    // let userEmail = req.decode
+	    Article.find()
 		.then(articleList => {
 			res.json(articleList)
 		})
-		.catch(next)
+	    .catch(next)
 	}
 
 	static findOne(req, res, next){
@@ -31,7 +32,21 @@ class ControllerArticle {
 	}
 
 	static update(req, res, next){
-		Article.findOneAndUpdate({_id:req.params.id}, req.body, {new: true})
+		console.log("at update ControllerArticle")
+		Article.findOne({_id:req.params.id})//, req.body, {new: true})
+		.populate('owner')
+		.exec((err, article) => {
+			if (err) throw err;
+			console.log(article)
+			if (article.owner.email == req.decode){
+				return Article.update({_id:req.params.id}, req.body, {new:true})
+			} else {
+				let err = new Error()
+				err.status = 403
+				err.message = "You are not the author of this article"
+				throw err
+			}
+		})
 		.then(updated => {
 			res.json(updated)
 		})

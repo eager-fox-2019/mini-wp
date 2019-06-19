@@ -10,6 +10,7 @@ router.post('/login', controllerUser.login)
 router.post('/googleSignin', controllerUser.googleSignin)
 router.post('/fblogin', controllerUser.fbSignin)
 
+// router.use(isAuthenticated)
 router.get('/current', isAuthenticated, controllerUser.current)
 router.patch('/', isAuthenticated, controllerUser.update)
 router.delete('/', isAuthenticated, controllerUser.delete)

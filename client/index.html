@@ -63,6 +63,7 @@
 
       <div id="content">
 
+        <!-- alert alert-error -->
         <div id="errorArea" v-if="errorMessage != ''" class="alert alert-danger d-flex justify-content-between align-items-center">
           <span v-html="errorMessage" ></span>
           <button class="btn btn-secondary" @click.prevent="clearError">close</button>

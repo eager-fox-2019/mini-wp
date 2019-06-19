@@ -7,14 +7,14 @@ var app = new Vue({
   data: {
     isLoggedin: false,
     loginArea: true,
-    registerArea: true,
+    registerArea: false,
     postArea: false,
     sidebarArea: true,
     errorMessage: "",
     successMessage: "",
     userName: "",
-    userEmail: "",
-    userPassword: "",
+    userEmail: "b@b.com",
+    userPassword: "123456",
     articles: [],
     newTitle: "",
     newContent: "",
@@ -26,9 +26,15 @@ var app = new Vue({
     'editor': Editor // <- Important to load wysiwyg api tiny.mce
   },
   created(){
+    if (localStorage.getItem("access_token")){
+      this.isLoggedin = true;
+      this.loginArea = false;
       axios({
         method: "GET",
-        url: baseUrl+"/articles"
+        url: baseUrl+"/articles",
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
       })
       .then(({data}) => {
 
@@ -41,6 +47,7 @@ var app = new Vue({
       .catch(err => {
         console.log("created error:",err)
       })
+    }
   },
   computed: {
     filteredArticles(){
@@ -73,6 +80,13 @@ var app = new Vue({
         }
       })
       .then(({data}) => {
+        localStorage.setItem("access_token", data)
+
+        this.clearMsg()
+        this.loginArea = false;
+        this.showMsg("Successfully logged in")
+        this.clearLogin()
+        this.isLoggedin = true;
 
       })
       .catch(err => {
@@ -91,9 +105,9 @@ var app = new Vue({
         }
       })
       .then(({data}) => {
-        this.clearError()
+        this.clearMsg()
         this.registerArea = false
-        this.showMsg("Successfully registered", this.userEmail)
+        this.showMsg("Successfully registered")
       })
       .catch(err => {
         console.log("created error at register:")
@@ -103,7 +117,7 @@ var app = new Vue({
 
     },
     showError(err){
-      this.errorMessage = err
+      this.errorMessage = err.message
     },
     clearError(){
       this.errorMessage = ""
@@ -113,6 +127,12 @@ var app = new Vue({
     },
     clearMsg(){
       this.successMessage = ""
+      this.clearError()
+    },
+    clearLogin(){
+      this.userEmail = ""
+      this.userPassword = ""
+      this.userName = ""
     },
     logoutUser(){
 
@@ -141,7 +161,10 @@ var app = new Vue({
     readArticle(articleId){
       axios({
         method: "GET",
-        url: `${baseUrl}/articles/read/0/${articleId}`
+        url: `${baseUrl}/articles/read/${articleId}`,
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
       })
       .then(({data}) => {
         console.log("read an article,",data)
@@ -174,8 +197,11 @@ var app = new Vue({
 
       axios({
         method: "PATCH",
-        url: `${baseUrl}/articles/0/${currentArticle._id}`,
-        data: newInput
+        url: baseUrl+"/articles/"+currentArticle.owner+"/"+currentArticle._id,
+        data: newInput,
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
       })
       .then(({data}) => {
         console.log("updated an article")
@@ -205,7 +231,10 @@ var app = new Vue({
 
       axios({
         method: "GET",
-        url: baseUrl+"/articles/"+articleId
+        url: baseUrl+"/articles/"+articleId,
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
       })
       .then(({data}) => {
         console.log("get one article,",data)
@@ -228,7 +257,10 @@ var app = new Vue({
     delArticle(articleId){
       axios({
         method: "DELETE",
-        url: baseUrl+"/articles/0/"+articleId
+        url: baseUrl+"/articles/"+articleId,
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
       })
       .then(({data}) => {
         console.log("deleted an article")
@@ -246,11 +278,14 @@ var app = new Vue({
       axios({
         method: "POST",
         url: baseUrl+"/articles",
-        data: newArticle
+        data: newArticle,
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
       })
       .then(({data}) => {
         console.log("created an artcle")
-        this.articles.push(data)
+        this.articles.unshift(data)
         this.newTitle = "";
         this.newContent = "";
       })
