@@ -60,11 +60,22 @@ var app = new Vue({
                 }
             })
                 .then(() => {
-                    console.log("New Account Created")
+                    Swal.fire({
+                        title: 'Success!',
+                        text: `New Account Created`,
+                        type: 'success',
+                        confirmButtonText: 'OK'
+                    })
                     this.clearUserForm()
                 })
                 .catch(err => {
                     console.log("Error from userRegister: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'Cool'
+                    })
                 })
         },
         userLogin(){
@@ -77,7 +88,12 @@ var app = new Vue({
                 url: `http://localhost:3000/user/login`
             })
                 .then(({data})=> {
-                    console.log("Berhasil login")
+                    Swal.fire({
+                        title: 'Success!',
+                        text: `Success login`,
+                        type: 'success',
+                        showConfirmButton: false
+                    })
                     localStorage.setItem("token", data.token)
                     localStorage.setItem("username", data.username)
                     this.clearUserForm()
@@ -86,14 +102,25 @@ var app = new Vue({
                     this.getPersonalArticle()
                 })
                 .catch(err => {
-                    console.log(err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
                 })
         },
         userLogout(){
             localStorage.clear()
-            // googleSignOut()
+            googleSignOut()
             this.isLogin = false
             this.usersign = 'login'
+            Swal.fire({
+                title: 'Success!',
+                text: `Success logout`,
+                type: 'success',
+                showConfirmButton: false
+            })
         },
         // Article
         getArticle(){
@@ -109,6 +136,12 @@ var app = new Vue({
                 })
                 .catch(err => {
                     console.log("Error from getArticle: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
                 })
         },
         getPersonalArticle(){
@@ -120,7 +153,6 @@ var app = new Vue({
                 }
             })
                 .then(({data})=>{
-                    console.log("Get personal article", data)
                     data.sort(function(a,b){
                         return new Date(b.updatedAt) - new Date(a.updatedAt);
                     });
@@ -171,6 +203,12 @@ var app = new Vue({
                 })
                 .catch(err => {
                     console.log("Error from deleteArticle: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
                 })
         },
         toDraftPage(){
@@ -202,6 +240,12 @@ var app = new Vue({
                 })
                 .catch(err => {
                     console.log("Error from readMore: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
                 })
         },
         shortText(text){
@@ -231,6 +275,12 @@ var app = new Vue({
                 })
                 .catch(err => {
                     console.log("Error from beforeEdit: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
                 })
         },
         afterEdit(id){
@@ -256,6 +306,12 @@ var app = new Vue({
                 })
                 .catch(err => {
                     console.log("Error from afterEdit: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
                 })
         }
     },
@@ -281,11 +337,12 @@ function onSignIn(googleUser) {
     axios.post(`http://localhost:3000/user/google`, { idToken:idToken })
         .then(function({ data }) {
             // IMPORTANT! Saves the accessToken from server
+            debugger
             let profile = googleUser.getBasicProfile();
             localStorage.setItem('token', data.token);
-            localStorage.setItem("username", profile.fullName())
-            this.isLogin = true
-            this.usersign = 'logout'     
+            localStorage.setItem("username", profile.getName())
+            app.isLogin = true
+            app.usersign = 'logout'     
         })
         .catch(function(err) {
             console.log(err);

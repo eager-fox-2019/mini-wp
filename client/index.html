@@ -55,10 +55,10 @@
                         </div>
                         
                         <div v-show="!isLogin">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
                                 Register/Login
                             </a>                            
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="padding:20px 30px; left: auto; right: 0;">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="padding:20px 30px; left: auto; right: 0; align-content: center">
                                 <form v-show="usersign === 'login'" id="login-form">
                                     <div class="form-group">
                                         <label for="log-email"><b>Email</b></label><br>
@@ -68,25 +68,25 @@
                                         <label for="log-psw"><b>Password</b></label><br>
                                         <input v-model="userPsw" type="password" placeholder="Enter your password" name="password" id="log-psw" required>
                                     </div>
-                                    <button @click.prevent="userLogin" type="submit" class="btn btn-primary" style="width: 100%" id="login">Login</button>
+                                    <button @click.prevent="userLogin" type="submit" class="btn btn-primary" style="width: 100%">Login</button>
                                     <br>Or sign in with:
                                     <br><div class="g-signin2" data-onsuccess="onSignIn"></div>
                                     <br><small>New user? <a @click.prevent="toRegister" href="#">Register here!</a></small>
                                 </form>
                                 <form v-show="usersign === 'register'" id="register-form">
                                     <div class="form-group">
-                                        <label for="username"><b>Name</b></label>
+                                        <label for="username"><b>Name</b></label><br>
                                         <input v-model="userName" type="text" placeholder="Enter your name" name="username" id="username" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="reg-email"><b>Email</b></label>
+                                        <label for="reg-email"><b>Email</b></label><br>
                                         <input v-model="userEmail" type="text" placeholder="Enter your email" name="email" id="reg-email" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="reg-psw"><b>Password</b></label>
+                                        <label for="reg-psw"><b>Password</b></label><br>
                                         <input v-model="userPsw" type="password" placeholder="Enter your password" name="password" id="reg-psw" required>
                                     </div>
-                                    <button @click.prevent="userRegister" type="submit" class="btn btn-primary" style="width: 100%">Create an account</button>
+                                    <button @click.prevent="userRegister" type="submit" class="btn btn-primary" style="width: 100%">Create an account</button><br>
                                     <small>Already have an account? <a @click.prevent="toLogin" href="#">Login here!</a></small>
                                 </form>
                                 <!-- <form style="padding:10px 20px" method="POST">
@@ -254,7 +254,7 @@
 
             </div>
 
-            <footer class="page-footer font-small cyan darken-3 fixed-bottom">
+            <footer class="page-footer font-small fixed-bottom" style="position: relative; background-color: #22344B; padding: 3rem">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center">
@@ -271,7 +271,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="footer-copyright text-center py-3">
+                    <div class="footer-copyright text-center" style="color: white; margin-top: 10px;">
                         © 2019 Copyright tidak sama dengan Copyleft
                     </div>
                 </div>
@@ -279,6 +279,7 @@
         </div>
 
         <!-- Optional JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

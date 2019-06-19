@@ -9,7 +9,7 @@ const routes = require('./routes')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const url = 'mongodb://localhost:27017/mini-wp'
-const errorHandler = require('./helpers/error-handler')
+const errorHandler = require('./middlewares/error-handler')
 
 mongoose.connect(url, {useNewUrlParser: true}, function(err){
     if(err) console.log('Connection database failed');
