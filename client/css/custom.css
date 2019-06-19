@@ -7,6 +7,12 @@ body {
   height: 100%;
 }
 
-#app{
+#editor {
+  min-height: 300px;
+  height: 500px;
+  max-height: 700px;
+}
+
+#app {
   height: 100%;
 }

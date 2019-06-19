@@ -1,9 +1,13 @@
 const User = require(`../models/user`);
-const { comparePassword } = require(`../helpers/password`);
+const Article = require(`../models/article`);
+const {
+  comparePassword,
+  randomPassword,
+  hashPassword
+} = require(`../helpers/password`);
 const { generateToken } = require(`../helpers/token`);
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
-const { randomPassword } = require("../helpers/password");
 
 class ControllerUser {
   static register(req, res, next) {
@@ -38,8 +42,6 @@ class ControllerUser {
   }
 
   static logingoogle(req, res, next) {
-    console.log(req.body);
-    console.log("disini sist");
     var newUser = {};
     client
       .verifyIdToken({
@@ -63,15 +65,12 @@ class ControllerUser {
       .then(userLogin => {
         console.log("hasil cari");
         if (!userLogin) {
-          console.log("create user");
           return User.create(newUser);
         } else {
-          console.log("login aja");
           return userLogin;
         }
       })
       .then(loggedIn => {
-        console.log("berhasil horeee");
         let { _id, email, name, picture } = loggedIn;
         let user = { _id, email, name, picture };
         let token = generateToken(user);
@@ -81,22 +80,18 @@ class ControllerUser {
   }
 
   static update(req, res, next) {
+    console.log("update mulai");
+    if (req.body.password) {
+      req.body.password = hashPassword(req.body.password);
+    }
     User.findByIdAndUpdate(req.user._id, req.body)
       .then(updated => {
+        console.log("update berhasil");
+        console.log(updated);
+        console.log("\n\n\n\n\\n\n\n");
         res.status(200).json(updated);
       })
       .catch(next);
-  }
-
-  static delete(req, res) {
-    User.findByIdAndDelete(req.user._id)
-      .then(deleted => {
-        res.status(200).json(deleted);
-      })
-      .catch(err => {
-        res.status(500).json({ message: `internal server error` });
-        console.log("delete error => ", err);
-      });
   }
 }
 

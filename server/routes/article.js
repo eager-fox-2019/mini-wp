@@ -7,7 +7,7 @@
 
 // router.get(`/`, controller.all);
 // router.get(`/:id`, controller.detail);
-// router.get(`/user`, controller.alluser);
+// router.get(`/user`, controller.user);
 
 // router.post(`/`, controller.create);
 // router.patch(`/likes/:id`, controller.updatelikes);

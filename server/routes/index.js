@@ -1,11 +1,11 @@
 const router = require(`express`).Router();
-
 const user = require(`./user`);
-// const tag = require(`./tag`);
-// const article = require(`./article`);
+const upload = require(`./uploadtocloud`);
+const article = require(`./article`);
+const tag = require(`./tag`);
 
-router.use(`/users`, user)
-// router.use(`/tags`, tag)
-// router.use(`/articles`, article)
+router.use(`/`, upload);
+
+router.use(`/users`, user);
 
 module.exports = router;

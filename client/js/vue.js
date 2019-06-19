@@ -20,8 +20,8 @@ const vue = new Vue({
       "setting"
     ],
     auth2: {},
-    isOnPage: "login",
-    isLogin: false,
+    isOnPage: undefined,
+    isLogin: undefined,
     loggedInUser: {},
     myarticles: [],
     articles: [],
@@ -38,7 +38,13 @@ const vue = new Vue({
       picture: "",
       tags: []
     },
-    inputFilter: ""
+    inputFilter: "",
+    userChange: {
+      name: "",
+      password: "",
+      image: ""
+    },
+    editor: ""
   },
   created() {
     this.checkUser();
@@ -84,8 +90,8 @@ const vue = new Vue({
       if (localStorage.getItem("user")) {
         let userData = JSON.parse(localStorage.getItem("user"));
         this.loggedInUser._id = userData._id;
+        this.loggedInUser.email = userData.email;
         this.loggedInUser.name = userData.name;
-        this.loggedInUser.image = userData.image;
         this.loggedInUser.picture = userData.picture;
       }
     },
@@ -188,6 +194,155 @@ const vue = new Vue({
         });
     },
 
+    // USER RELATED FUNCTION
+    updateAccount() {
+      console.log("update account");
+      if (
+        !this.userChange.name &&
+        !this.userChange.password &&
+        !this.userChange.picture
+      ) {
+      } else {
+        swal({
+          title: "Confirmation",
+          text: "Update your account detail?",
+          icon: "info",
+          buttons: true,
+          dangerMode: true
+        }).then(confirm => {
+          if (confirm) {
+            var passwordValid = true;
+            var updValue = {};
+            if (this.userChange.name) {
+              if (
+                this.userChange.name == this.loggedInUser.name ||
+                this.userChange.name == ""
+              ) {
+                updValue.name = this.loggedInUser.name;
+              } else {
+                updValue.name = this.userChange.name;
+              }
+            }
+            if (this.userChange.password) {
+              if (this.userChange.password !== "") {
+                if (
+                  this.userChange.password.length < 8 ||
+                  this.userChange.password.length > 16
+                ) {
+                  passwordValid = false;
+                }
+                updValue.password = this.userChange.password;
+              }
+            }
+            if (this.userChange.picture) {
+              updValue.picture = this.userChange.picture;
+            }
+
+            if (updValue.picture) {
+              const blob = new Blob([this.userChange.picture], {
+                type: this.userChange.picture.type
+              });
+
+              const formdata = new FormData();
+              formdata.append("image", blob);
+              ax({
+                method: "POST",
+                url: "/uploadimg",
+                data: formdata,
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  token: localStorage.getItem("token")
+                }
+              })
+                .then(({ data }) => {
+                  this.userChange.picture = data;
+                  updValue.picture = data;
+                  return ax({
+                    method: "PATCH",
+                    url: "/users",
+                    data: updValue
+                  });
+                })
+                .then(({ data }) => {
+                  let { name, picture } = this.userChange;
+                  if (name) {
+                    this.loggedInUser.name = name;
+                  }
+                  if (picture) {
+                    this.loggedInUser.picture = picture;
+                  }
+                  $("#selectedPicture").val("");
+                  console.log(this.loggedInUser);
+                  localStorage.setItem(
+                    "user",
+                    JSON.stringify(this.loggedInUser)
+                  );
+                  this.userChange = {};
+                  this.checkUser();
+                  swal("Success", "Your account has been updated", "success");
+                })
+                .catch(err => {
+                  swal("Sorry", "Problem occured, try again later", "error");
+                  console.log(
+                    "error update akun dengan upload gambar",
+                    JSON.stringify(err, null, 2)
+                  );
+                });
+            } else if (updValue.password && passwordValid == false) {
+              swal(
+                "Attention",
+                "Password should consist of 8-16 character",
+                "info"
+              );
+            } else {
+              if (updValue.name == "" || updValue.password == "") {
+                swal("Fill one of the field that you want to update");
+              } else {
+                console.log("mulai update akun");
+                console.log(updValue, "nilai yang mau di update\n\n\n\n\n");
+                ax({
+                  method: "PATCH",
+                  url: "/users",
+                  data: updValue
+                })
+                  .then(({ data }) => {
+                    console.log("update akun berhasil");
+                    let { name } = this.userChange;
+                    if (name) {
+                      this.loggedInUser.name = name;
+                    }
+                    console.log(this.loggedInUser);
+                    localStorage.setItem(
+                      "user",
+                      JSON.stringify(this.loggedInUser)
+                    );
+                    this.userChange = {};
+                    this.checkUser();
+                    swal("Success", "Your account has been updated", "success");
+                  })
+                  .catch(err => {
+                    swal("Sorry", "Problem occured, try again later", "error");
+                    console.log(
+                      "error update akun tanpa upload gambar",
+                      JSON.stringify(err, null, 2)
+                    );
+                  });
+              }
+            }
+          }
+        });
+      }
+    },
+
+    // UPLOAD PICTURE FUNCTION
+    selectProfilePic(event) {
+      this.userChange.picture = event.target.files[0];
+      console.log(this.userChange);
+    },
+    selectArticlePic(event) {
+      this.inputArticles.picture = event.target.files[0];
+    },
+
     // GOOGLE API FUNCTION
     loadGAPI() {
       gapi.load("auth2", () => {
@@ -216,6 +371,7 @@ const vue = new Vue({
       if (this.isOnPage === "login") {
         this.renderGoogleButton();
       }
+      this.userChange = {};
     },
     renderGoogleButton() {
       gapi.signin2.render("g-signin2", {
@@ -225,32 +381,84 @@ const vue = new Vue({
         onsuccess: this.googlelogin
       });
     },
+
+    // CK EDITOR RELATED
+    load_editor() {
+      var toolbarOptions = [
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        ["blockquote", "code-block"],
+        [{ header: 1 }, { header: 2 }], // custom button values
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ script: "sub" }, { script: "super" }], // superscript/subscript
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ direction: "rtl" }], // text direction
+        [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        [{ font: [] }],
+        [{ align: [] }],
+        ["clean"] // remove formatting button
+      ];
+
+      if (document.querySelector("#editor")) {
+        var quill = new Quill("#editor", {
+          theme: "snow",
+          toolbar: toolbarOptions
+        });
+        this.editor = quill;
+      }
+    },
+    r_editor() {
+      // if (this.editor !== "") {
+      //   let e = this.editor;
+      //   e.destroy();
+      // }
+      // if (this.editor_2 !== "") {
+      //   let e = this.editor;
+      //   e.destroy();
+      // }
+      // this.editor = "";
+      // this.editor_2 = "";
+    },
+
     // MOVING BETWEEN PAGE FUNCTION
     page_articles() {
+      this.r_editor();
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[0];
       this.loadGAPI();
     },
     page_detailarticles() {
+      this.r_editor();
       this.isOnPage = this.pages[1];
     },
     page_myarticles() {
+      this.r_editor();
       this.isOnPage = this.pages[2];
       this.loadGAPI();
     },
     page_newarticle() {
+      this.r_editor();
       this.isOnPage = this.pages[3];
       this.loadGAPI();
+      setTimeout(() => {
+        this.load_editor();
+      }, 100);
     },
     page_editarticle() {
+      this.r_editor();
       this.isOnPage = this.pages[4];
       this.loadGAPI();
+      setTimeout(() => {
+        this.load_editor();
+      }, 100);
     },
     page_register() {
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[5];
     },
     page_login() {
+      this.r_editor();
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[6];
       setTimeout(() => {
@@ -265,6 +473,7 @@ const vue = new Vue({
       }, 100);
     },
     page_setting() {
+      this.r_editor();
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[7];
       this.loadGAPI();

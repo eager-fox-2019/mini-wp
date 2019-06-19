@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { hashPassword } = require("../helpers/password");
+const { toProperCase } = require("../helpers/addition")
 
 const UserSchema = new Schema({
   name : String,
@@ -44,7 +45,10 @@ const UserSchema = new Schema({
   picture : String
 });
 
+
+// ganti nama supaya jadi kaya title case
 UserSchema.pre("save", function(next) {
+  this.name = toProperCase(this.name)
   this.password = hashPassword(this.password);
   next();
 });
