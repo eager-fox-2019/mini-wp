@@ -54,7 +54,6 @@ const vue = new Vue({
     if (this.isLogin) {
       this._getUserArticles();
       this._getAllArticles();
-      this._getAllTags();
     }
   },
 
@@ -137,27 +136,8 @@ const vue = new Vue({
         });
     },
     login() {
-      console.log("login biasa");
-      console.log(this.inputLoginRegister);
-      ax({
-        method: "POST",
-        url: "/users/login",
-        data: this.inputLoginRegister
-      })
-        .then(({ data }) => {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          this.checkLogin();
-          this.checkUser();
-        })
-        .catch(err => {
-          swal({
-            text: err.response.data.message
-          });
-          console.log("error login biasa");
-          console.log(JSON.stringify(err.response, null, 2));
-        });
-      u;
+      this.checkLogin();
+      this.checkUser();
     },
 
     googlelogin(googleUser) {
@@ -593,14 +573,14 @@ const vue = new Vue({
       this.isOnPage = this.pages[6];
       setTimeout(() => {
         this.loadGAPI();
-      }, 100);
+      }, 300);
     },
-    page_login_afterregister() {
+    page_login_afterregister(emit) {
       this.r_inputLoginRegister_afterregister();
       this.isOnPage = this.pages[6];
       setTimeout(() => {
         this.loadGAPI();
-      }, 100);
+      }, 300);
     },
     page_setting() {
       this.r_inputLoginRegister();

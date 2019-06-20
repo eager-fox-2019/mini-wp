@@ -6,11 +6,7 @@ $(document).ready(function() {
   $("button").click(function(event) {
     event.preventDefault();
   });
-
-  $("button").dblclick(function(event) {
-    event.preventDefault();
-  });
-
+  
   $("form").on("submit", function(event) {
     event.preventDefault();
   });
