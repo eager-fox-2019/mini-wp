@@ -12,16 +12,17 @@ const ArticleSchema = new Schema(
     picture: String,
     content: String,
     rawHTML: String,
-    status : String,
-    postedAt : Date,
+    status: String,
+    postedAt: Date,
     likedby: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }]
+    tags: [String]
   },
   { timestamps: true }
 );
 
 ArticleSchema.pre("save", function(next) {
   this.title = toProperCase(this.title);
+  this.status = String(this.status).toLowerCase();
   next();
 });
 

@@ -1,4 +1,4 @@
-const Tag = require(`../models/Tag`);
+const Tag = require(`../models/tag`);
 
 class ControllerTag {
   static create(req, res, next) {
@@ -25,6 +25,14 @@ class ControllerTag {
         } else {
           res.status(400).json({ message: `that is not exists` });
         }
+      })
+      .catch(next);
+  }
+
+  static user(req, res, next) {
+    Tag.find({ userId: req.user._id })
+      .then(founds => {
+        res.status(200).json(founds);
       })
       .catch(next);
   }

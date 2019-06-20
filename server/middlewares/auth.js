@@ -4,12 +4,10 @@ const Article = require(`../models/article`);
 module.exports = {
   authentication: function(req, res, next) {
     try {
-      console.log("disini")
       let decoded = jwt.verify(req.headers.token, process.env.SECRET_JWT);
       req.user = decoded;
       next();
     } catch (err) {
-      console.log("disini 2")
       next({
         code: 401,
         message: `login first!`

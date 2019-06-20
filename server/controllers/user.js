@@ -1,5 +1,4 @@
 const User = require(`../models/user`);
-const Article = require(`../models/article`);
 const {
   comparePassword,
   randomPassword,
@@ -49,7 +48,6 @@ class ControllerUser {
         audience: process.env.CLIENT_ID
       })
       .then(ticket => {
-        console.log("dapat ticket");
         let payload = ticket.getPayload();
 
         newUser = {
@@ -63,7 +61,6 @@ class ControllerUser {
         });
       })
       .then(userLogin => {
-        console.log("hasil cari");
         if (!userLogin) {
           return User.create(newUser);
         } else {
@@ -80,15 +77,11 @@ class ControllerUser {
   }
 
   static update(req, res, next) {
-    console.log("update mulai");
     if (req.body.password) {
       req.body.password = hashPassword(req.body.password);
     }
     User.findByIdAndUpdate(req.user._id, req.body)
       .then(updated => {
-        console.log("update berhasil");
-        console.log(updated);
-        console.log("\n\n\n\n\\n\n\n");
         res.status(200).json(updated);
       })
       .catch(next);

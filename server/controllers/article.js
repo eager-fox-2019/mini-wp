@@ -1,4 +1,4 @@
-const Article = require(`../models/Article`);
+const Article = require(`../models/article`);
 
 class ControllerArticle {
   // POST /articles
@@ -91,16 +91,18 @@ class ControllerArticle {
   static updatelikes(req, res, next) {
     Article.findById(req.params.id)
       .then(found => {
-        let likedby = found.likedby
-        let index = likedby.indexOf(req.user._id)
-        if(index === -1){ // kalau belum di like, maka like
-          likedby.push(req.user._id)
-        } else { // kalau udah di like, maka unlike
-          likedby.splice(index, 1)
+        let likedby = found.likedby;
+        let index = likedby.indexOf(req.user._id);
+        if (index === -1) {
+          // kalau belum di like, maka like
+          likedby.push(req.user._id);
+        } else {
+          // kalau udah di like, maka unlike
+          likedby.splice(index, 1);
         }
-        return Article.findByIdAndUpdate(req.params.id, founds)
+        return Article.findByIdAndUpdate(req.params.id, founds);
       })
-      .then(article=>{
+      .then(article => {
         res.status(200).json(updated);
       })
       .catch(next);
@@ -108,3 +110,5 @@ class ControllerArticle {
 }
 
 module.exports = ControllerArticle;
+
+

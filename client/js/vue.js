@@ -64,7 +64,6 @@ const vue = new Vue({
     // GET DATA FROM DATABASE
     _getUserArticles() {},
     _getAllArticles() {},
-    _getAllTags() {},
 
     // RESET THE INPUT FUNCTION
     r_inputLoginRegister() {
@@ -146,7 +145,6 @@ const vue = new Vue({
         data: this.inputLoginRegister
       })
         .then(({ data }) => {
-          console.log(data);
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
           this.checkLogin();
@@ -154,12 +152,14 @@ const vue = new Vue({
         })
         .catch(err => {
           swal({
-            text: "error login biasa"
+            text: err.response.data.message
           });
-          console.log("error login biasa", err);
-          console.log(JSON.stringify(err, null, 2));
+          console.log("error login biasa");
+          console.log(JSON.stringify(err.response, null, 2));
         });
+      u;
     },
+
     googlelogin(googleUser) {
       console.log(googleUser);
       const idToken = googleUser.getAuthResponse().id_token;
@@ -172,10 +172,8 @@ const vue = new Vue({
         }
       })
         .then(({ data }) => {
-          console.log("berhasil login google");
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
-          console.log("mau check login");
           swal(
             "Logged In",
             "If this is your first time log in, change your password by accessing Account tab above!",
@@ -427,14 +425,102 @@ const vue = new Vue({
       }
     },
 
+    // OTHER FUNCTION
+    toTitleCase(str) {
+      let temp = str.split("");
+      temp[0] = temp[0].toUpperCase();
+      for (let i = 1; i < temp.length; i++) {
+        temp[i] = temp[i].toLowerCase();
+      }
+      str = temp.join("");
+      return str;
+    },
+
     // ARTICLE RELATED FUNCTION
-    newArticle(type) {
-      console.log(type, "new article");
+    newArticle(status) {
       let quill = this.editor;
-      let text = quill.getText();
-      console.log(text, "TEXT ===========================");
+      let content = quill.getText();
       let rawHTML = quill.root.innerHTML;
-      console.log(rawHTML, "HTML ===========================");
+      let { picture, titile, tags } = this.inputArticle;
+      let inputVal = {
+        title: this.inputArticle.title,
+        content,
+        rawHTML,
+        status,
+        tags,
+        picture
+      };
+      if (status.toLowerCase() === "post") {
+        inputVal.postedAt = new Date();
+      }
+
+      let errmsg = "";
+      if (inputVal.rawHTML == "<p><br></p>" || inputVal.content == "\n") {
+        errmsg += "Content of an article should not be empty\n";
+      }
+      if (inputVal.title == "") {
+        errmsg += "Title of an article should not be empty\n";
+      }
+      if (inputVal.tags == "") {
+        errmsg += "Article should have at least one tag\n";
+      }
+      if (inputVal.picture == "") {
+        errmsg += "Article should have a featured picture\n";
+      }
+
+      if (errmsg !== "") {
+        swal("Attention", errmsg, "info");
+      } else {
+        swal({
+          title: "Confirmation",
+          text: `${status} this article?`,
+          icon: "info",
+          buttons: true,
+          dangerMode: true
+        }).then(confirm => {
+          if (confirm) {
+            const blob = new Blob([inputVal.picture], {
+              type: inputVal.picture.type
+            });
+
+            const formdata = new FormData();
+            formdata.append("image", blob);
+
+            ax({
+              method: "POST",
+              url: "/uploadimg",
+              data: formdata,
+              headers: {
+                "Content-Type": "multipart/form-data",
+                token: localStorage.getItem("token")
+              }
+            })
+              .then(({ data }) => {
+                this.inputArticle.picture = data;
+                inputVal.picture = data;
+                return ax({
+                  method: "POST",
+                  url: "/articles",
+                  data: inputVal
+                });
+              })
+              .then(({ data }) => {
+                this.r_inputArticle();
+                quill.setText("");
+                $("#selectedPicture").val("");
+                swal("Yay", `Article ${this.toTitleCase(status)}ed`, "success");
+              })
+              .catch(err => {
+                swal("Sorry", "Problem occured, try again later", "error");
+                console.log(
+                  "error new article dengan upload gambar",
+                  JSON.stringify(err, null, 2)
+                );
+                console.log(err);
+              });
+          }
+        });
+      }
     },
     addTag() {
       if (this.inputTag !== "") {
