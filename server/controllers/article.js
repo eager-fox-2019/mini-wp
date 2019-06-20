@@ -20,13 +20,23 @@ class ControllerArticle{
         .catch(next)
     }
     static create(req, res, next){
-        let input = {
-            userId: req.decoded.id,
-            title: req.body.title,
-            content: req.body.content,
-            img: req.file.cloudStoragePublicUrl
+        console.log(req.body, 'body create')
+        let input = ""
+        if (req.file){
+            input = {
+                userId: req.decoded.id,
+                title: req.body.title,
+                content: req.body.content,
+                img: req.file.cloudStoragePublicUrl
+            }
+        }else{
+            input = {
+                userId: req.decoded.id,
+                title: req.body.title,
+                content: req.body.content,
+                img: req.body.image
+            }
         }
-
         Article
         .create(input)
         .then(data => {
@@ -35,10 +45,21 @@ class ControllerArticle{
         .catch(next)
     }
     static patch(req, res, next){
-        let input = {
-            title: req.body.title,
-            content: req.body.content,
-            img: req.file.cloudStoragePublicUrl
+        let input = ""
+        if (req.file){
+            input = {
+                userId: req.decoded.id,
+                title: req.body.title,
+                content: req.body.content,
+                img: req.file.cloudStoragePublicUrl
+            }
+        }else{
+            input = {
+                userId: req.decoded.id,
+                title: req.body.title,
+                content: req.body.content,
+                img: req.body.img
+            }
         }
 
         Article

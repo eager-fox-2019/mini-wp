@@ -13,7 +13,7 @@ let article = new Schema({
     },
     desc: {
         type: String,
-        required: [true, 'Description cannot be empty']
+        // required: [true, 'Description cannot be empty']
     },
     content: {
         type: String,
@@ -26,8 +26,13 @@ let article = new Schema({
     img: {
         type: String
     },
-    comment: {
+    comments: {
         type: Array,
+        default: []
+    },
+    tags: {
+        type: Array,
+        default: []
     }
 }, {
     timestamps: true

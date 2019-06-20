@@ -21,9 +21,12 @@ var app = new Vue({
         article: {
             id: "",
             title: "",
+            desc: "",
             content: "",
             img: "../assets/miss.jpg",
-            createdAt: ""
+            createdAt: "",
+            comments: [],
+            tags: []
         },
         listArticles: [],
         listArticlesUser: [],
@@ -97,7 +100,7 @@ var app = new Vue({
             })
             .catch(err => {
                 swal({
-                    title: "Register Error",
+                    title: err.response.data.message,
                     icon: "../assets/2.gif",
                 })
             })
@@ -130,7 +133,7 @@ var app = new Vue({
             })
             .catch(err => {
                 swal({
-                    title: "Login Error",
+                    title: err.response.data.message,
                     icon: "../assets/2.gif",
                 })
             })
@@ -233,6 +236,8 @@ var app = new Vue({
             })
         },
         createArticle(){
+            this.mainStatus = "loading"
+
             let input = new FormData()
             input.append("title", this.article.title)
             input.append("content", this.article.content)
@@ -259,6 +264,7 @@ var app = new Vue({
                     title: "Failed Create Article",
                     icon: "../assets/2.gif",
                 })
+                this.mainStatus = "newArticle"
             })
         },
         deleteArticle(id){
@@ -302,6 +308,8 @@ var app = new Vue({
             });
         },
         editArticle(id){
+            this.mainStatus = "loading"
+
             let input = ""
             if (typeof(this.article.img) == "string"){
                 input = {
@@ -326,18 +334,18 @@ var app = new Vue({
                 }
             })
             .then(({data}) => {
-                this.mainStatus = 'userArticle'
                 swal({
                     title: "Success Update Article",
                     icon: "../assets/animation.gif",
                 })
-                this.fetchArticleUser()
+                this.userArticle()
             })
             .catch(err => {
                 swal({
                     title: "Failed Update Article",
                     icon: "../assets/2.gif",
                 })
+                this.mainStatus = "newArticle"
             })
         },
         getEditArticle(id){
@@ -410,6 +418,7 @@ var app = new Vue({
         if(localStorage.getItem('token')){
             this.pageStatus = "home",
             this.articleList()
+            // this.mainStatus = "loading"
         }else{
             // this.mainStatus = "newArticle"
             // this.pageStatus = "home"
