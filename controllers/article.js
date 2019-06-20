@@ -84,14 +84,18 @@ class ArticleCont {
       if (err) {
         next({code: 500, message: err.message})
       } else {
-        article.title = req.body.title
-        article.img = req.file.gcsUrl
-        article.content = req.body.content
-        article.save()
-          .then (article => {
-            res.status(200).json(article)
-          })
-          .catch(next)
+        if (article) {
+          article.title = req.body.title
+          article.img = req.file.gcsUrl
+          article.content = req.body.content
+          article.save()
+            .then (article => {
+              res.status(200).json(article)
+            })
+            .catch(next)
+        } else {
+          next({code: 404, message: `Article with id ${req.params.id} not found!`})
+        }
       }
     })
   }

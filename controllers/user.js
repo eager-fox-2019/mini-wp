@@ -1,9 +1,9 @@
 const User = require('../models/user')
 const { compareSync } = require('../helpers/bcrypt')
 const jwt = require('../helpers/jwt')
+const randomPass = require('../helpers/randomPass')
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const randomPass = require('../helpers/randomPass')
 
 class UserCont {
   static GoogleSignIn(req, res, next) {
