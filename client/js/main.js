@@ -15,7 +15,7 @@ var app = new Vue({
       published: null,
       content: '',
     },
-    url_server: 'http://localhost:3000',
+    url_server: 'http://localhost:3000', //localhost:3000 34.87.23.92:80
     navTab: {
       drawer: null,
       menus: [

@@ -1,5 +1,4 @@
 const Article = require('../models/model-article')
-const { decodeToken } = require('../helpers/jwt-helper')
 
 class ControllerArticle {
   static create(req, res, next) {
