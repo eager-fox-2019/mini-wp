@@ -20,8 +20,6 @@ Vue.component("login-page", {
     login() {
       let { email, password } = this.inputLoginRegister;
       let inputValue = { email, password };
-      console.log(inputValue);
-
       if (inputValue.email !== "" && inputValue.password !== "") {
         ax({
           method: "POST",
@@ -31,6 +29,7 @@ Vue.component("login-page", {
           .then(({ data }) => {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
+            swal("Logged In", `Welcome ${data.user.name}!`, "success");
             this.$emit("berhasil_login");
           })
           .catch(err => {
@@ -40,6 +39,7 @@ Vue.component("login-page", {
               swal("Sorry", "Internal Server Error", "error");
             }
             console.log("error login biasa");
+            console.log(err);
             console.log(JSON.stringify(err.response, null, 2));
           });
       }

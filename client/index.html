@@ -64,7 +64,7 @@
         class="h-100 d-flex align-items-center"
         v-if="isLogin == false && isOnPage == 'login'"
         @pindah_register="page_register"
-        @berhasil_login="login"
+        @berhasil_login="checkLogin"
         @load="page_login"
       ></login-page>
 
@@ -82,7 +82,7 @@
       <navbar
         v-if="isLogin"
         :isOnPage="isOnPage"
-        @pindah_logout="logout"
+        @berhasil_logout="checkLogin"
         @pindah_articles="page_articles"
         @pindah_myarticles="page_myarticles"
         @pindah_setting="page_setting"
@@ -90,7 +90,9 @@
       ></navbar>
 
       <!-- ================================================================================================================== FEEDS -->
-      <div v-if="isLogin === true && isOnPage =='articles'" class="p-5"></div>
+      <articles-page
+        v-if="isLogin === true && isOnPage =='articles'"
+      ></articles-page>
 
       <!-- ============================================================================================================ MY ARTICLES -->
       <myarticles-page
@@ -249,6 +251,7 @@
     <script src="js/components/registerpage.js"></script>
     <script src="js/components/loginpage.js"></script>
     <script src="js/components/myarticles.js"></script>
+    <script src="js/components/articles.js"></script>
 
     <!-- ================================================================================================================== VUE AND MAIN -->
     <script src="js/vue.js"></script>

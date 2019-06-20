@@ -9,7 +9,9 @@ Vue.component("myarticles-page", {
   },
   template: `
   <div class="p-5">
-    MY ARTICLES PAGE COMPONENT
+    <div class="border">
+      MY ARTICLES PAGE COMPONENT
+    </div>
   </div>
   `
 });

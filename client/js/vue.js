@@ -19,10 +19,8 @@ const vue = new Vue({
       "login",
       "setting"
     ],
-    auth2: {},
     isOnPage: undefined,
     isLogin: undefined,
-    myarticles: [],
     articles: [],
     tags: [],
     inputLoginRegister: {
@@ -42,16 +40,16 @@ const vue = new Vue({
     editor: ""
   },
 
-  created() {
+  created() {},
+
+  mounted() {
     this.checkLogin();
+    if (localStorage.getItem("isOnPage")) {
+      this.isOnPage = localStorage.getItem("isOnPage");
+    }
   },
 
-  mounted() {},
-
   methods: {
-    // GET DATA FROM DATABASE
-    _getAllArticles() {},
-
     // RESET THE INPUT FUNCTION
     r_inputLoginRegister() {
       this.inputLoginRegister = {
@@ -77,7 +75,6 @@ const vue = new Vue({
     },
 
     // INITIAL CHECK
-
     checkLogin() {
       console.log("check login");
       if (localStorage.getItem("token")) {
@@ -86,6 +83,8 @@ const vue = new Vue({
           this.isOnPage = localStorage.getItem("isOnPage");
           this.loadGAPI();
         } else {
+          console.log(localStorage.getItem("isOnPage"));
+
           this.page_articles();
         }
       } else {
@@ -94,53 +93,11 @@ const vue = new Vue({
       }
     },
 
-    googlelogin(googleUser) {
-      console.log(googleUser);
-      const idToken = googleUser.getAuthResponse().id_token;
-      console.log(googleUser);
-      ax({
-        method: "POST",
-        url: "/users/logingoogle",
-        data: {
-          idToken
-        }
-      })
-        .then(({ data }) => {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          swal(
-            "Logged In",
-            "If this is your first time log in, change your password by accessing Account tab above!",
-            "info"
-          );
-          this.checkLogin();
-        })
-        .catch(err => {
-          console.log(err, "error login google");
-          console.log(JSON.stringify(err, null, 2));
-        });
-    },
-    logout() {
-      gapi.auth2
-        .getAuthInstance()
-        .signOut()
-        .then(() => {
-          localStorage.clear();
-          this.r_inputArticle();
-          this.checkLogin();
-          swal("Logged Out", `success logged out!`, "success");
-        })
-        .catch(function(err) {
-          console.log(err);
-          swal("google auth error", "please check your connection", "error");
-        });
-    },
-
     selectArticlePic(event) {
       this.inputArticle.picture = event.target.files[0];
     },
 
-    // GOOGLE API FUNCTION
+    // GOOGLE AUTH FUNCTION
     loadGAPI() {
       gapi.load("auth2", () => {
         auth2 = gapi.auth2.init({
@@ -177,6 +134,32 @@ const vue = new Vue({
         onsuccess: this.googlelogin
       });
     },
+    googlelogin(googleUser) {
+      console.log(googleUser);
+      const idToken = googleUser.getAuthResponse().id_token;
+      console.log(googleUser);
+      ax({
+        method: "POST",
+        url: "/users/logingoogle",
+        data: {
+          idToken
+        }
+      })
+        .then(({ data }) => {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          swal(
+            "Logged In",
+            "If this is your first time log in, change your password by accessing Account tab above!",
+            "info"
+          );
+          this.checkLogin();
+        })
+        .catch(err => {
+          console.log(err, "error login google");
+          console.log(JSON.stringify(err, null, 2));
+        });
+    },
 
     // CK EDITOR RELATED
     load_editor() {
@@ -212,7 +195,7 @@ const vue = new Vue({
       }
     },
 
-    // OTHER FUNCTION
+    // HELPERS FUNCTION
     toTitleCase(str) {
       let temp = str.split("");
       temp[0] = temp[0].toUpperCase();
@@ -348,25 +331,28 @@ const vue = new Vue({
     page_articles() {
       this.r_inputLoginRegister();
       this.isOnPage = this.pages[0];
-      this.loadGAPI();
+      localStorage.setItem("isOnPage", this.pages[0]);
     },
     page_detailarticles() {
+      this.r_inputLoginRegister();
       this.isOnPage = this.pages[1];
+      localStorage.setItem("isOnPage", this.pages[1]);
     },
     page_myarticles() {
+      this.r_inputLoginRegister();
       this.isOnPage = this.pages[2];
-      this.loadGAPI();
+      localStorage.setItem("isOnPage", this.pages[2]);
     },
     page_newarticle() {
+      this.r_inputLoginRegister();
       this.isOnPage = this.pages[3];
-      this.loadGAPI();
       setTimeout(() => {
         this.load_editor();
       }, 100);
     },
     page_editarticle() {
+      this.r_inputLoginRegister();
       this.isOnPage = this.pages[4];
-      this.loadGAPI();
       setTimeout(() => {
         this.load_editor();
       }, 100);
@@ -380,19 +366,19 @@ const vue = new Vue({
       this.isOnPage = this.pages[6];
       setTimeout(() => {
         this.loadGAPI();
-      }, 300);
+      }, 200);
     },
     page_login_afterregister(emit) {
       this.r_inputLoginRegister_afterregister();
       this.isOnPage = this.pages[6];
       setTimeout(() => {
         this.loadGAPI();
-      }, 300);
+      }, 200);
     },
     page_setting() {
       this.r_inputLoginRegister();
+      localStorage.setItem("isOnPage", this.pages[7]);
       this.isOnPage = this.pages[7];
-      this.loadGAPI();
     }
   }
 });

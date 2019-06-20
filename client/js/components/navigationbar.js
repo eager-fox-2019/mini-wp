@@ -5,7 +5,25 @@ Vue.component("navbar", {
   },
   methods: {
     logout() {
-      this.$emit("pindah_logout");
+      gapi.load("auth2", () => {
+        auth2 = gapi.auth2.init({
+          client_id:
+            "647848106811-cm0ck452dmhg5b8g38n0dh2bu8ovv7hh.apps.googleusercontent.com",
+          cookiepolicy: "single_host_origin"
+        });
+        gapi.auth2
+          .getAuthInstance()
+          .signOut()
+          .then(() => {
+            localStorage.clear();
+            swal("Logged Out", `Goodbye!`, "success");
+            this.$emit("berhasil_logout");
+          })
+          .catch(function(err) {
+            console.log(err);
+            swal("google auth error", "please check your connection", "error");
+          });
+      });
     },
     page_articles() {
       this.$emit("pindah_articles");

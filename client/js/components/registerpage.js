@@ -23,14 +23,19 @@ Vue.component("register-page", {
           data: inputVal
         })
           .then(({ data }) => {
-            console.log(data);
             this.$emit("pindah_login_afteregister", data.email);
           })
           .catch(err => {
-            swal({
-              text: "error register"
-            });
-            console.log(JSON.stringify(err, null, 2));
+            if (err.response.data.message) {
+              swal("Sorry", err.response.data.message, "error");
+            } else {
+              swal("Sorry", "Problem occured, try again later", "error");
+            }
+            console.log(err);
+            console.log(
+              "error register",
+              JSON.stringify(err, null, 2)
+            );
           });
       }
     },
