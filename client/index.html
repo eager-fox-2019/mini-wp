@@ -49,7 +49,7 @@
 
     <!-- load google platform api -->
     <script src="https://apis.google.com/js/platform.js"></script>
-  
+
     <!-- <meta
       name="google-signin-client_id"
       content="647848106811-cm0ck452dmhg5b8g38n0dh2bu8ovv7hh.apps.googleusercontent.com"
@@ -78,102 +78,24 @@
       ></register-page>
 
       <!-- ========================================================================================================= NAVIGATION BAR -->
-      <nav
-        v-if="isLogin === true"
-        class="navbar navbar-expand-lg navbar-light bg-light text-center"
-      >
-        <a class="navbar-brand" href=""
-          ><i class="fa fa-pencil text-primary fa-2x" aria-hidden="true"></i
-          ><br /><small>MINI WP</small></a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarToggle"
-          aria-controls="navbarToggle"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggle">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item mx-3 text-center">
-              <a
-                @click.prevent="page_articles"
-                v-if="isOnPage !== 'articles'"
-                class="nav-link"
-                href=""
-                ><i class="fa fa-newspaper-o" aria-hidden="true"></i
-                ><br />Feeds</a
-              >
-              <a class="nav-link" v-if="isOnPage === 'articles'" href=""
-                ><i class="fa fa-newspaper-o" aria-hidden="true"></i
-                ><br />Feeds</a
-              >
-            </li>
-            <li class="nav-item mx-3 text-center">
-              <a
-                class="nav-link"
-                href=""
-                @click.prevent="page_myarticles"
-                v-if="isOnPage !== 'myarticles'"
-                ><i class="fa fa-bookmark-o" aria-hidden="true"></i><br />My
-                Articles</a
-              >
-              <a class="nav-link" href="" v-if="isOnPage === 'myarticles'"
-                ><i class="fa fa-bookmark-o" aria-hidden="true"></i><br />My
-                Articles</a
-              >
-            </li>
-            <li class="nav-item mx-3 text-center">
-              <a
-                class="nav-link"
-                href=""
-                @click.prevent="page_setting"
-                v-if="isOnPage !== 'setting'"
-                ><i class="fa fa-user-circle" aria-hidden="true"></i><br />
-                Account
-              </a>
-              <a class="nav-link" href="" v-if="isOnPage === 'setting'"
-                ><i class="fa fa-user-circle" aria-hidden="true"></i><br />
-                Account
-              </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item mx-3 text-center">
-              <a
-                class="nav-link"
-                @click.prevent="page_newarticle"
-                v-if="isOnPage !== 'newarticle'"
-                href=""
-              >
-                <i class="fa fa-plus" aria-hidden="true"></i><br />
-                Write</a
-              >
 
-              <a class="nav-link" v-if="isOnPage === 'newarticle'" href="">
-                <i class="fa fa-plus" aria-hidden="true"></i><br />
-                Write</a
-              >
-            </li>
-            <li class="nav-item mx-3 text-center" @click.prevent="logout">
-              <a class="nav-link" href=""
-                ><i class="fa fa-sign-out" aria-hidden="true"></i><br />Sign
-                Out</a
-              >
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <navbar
+        v-if="isLogin"
+        :isOnPage="isOnPage"
+        @pindah_logout="logout"
+        @pindah_articles="page_articles"
+        @pindah_myarticles="page_myarticles"
+        @pindah_setting="page_setting"
+        @pindah_newarticle="page_newarticle"
+      ></navbar>
 
       <!-- ================================================================================================================== FEEDS -->
       <div v-if="isLogin === true && isOnPage =='articles'" class="p-5"></div>
 
       <!-- ============================================================================================================ MY ARTICLES -->
-      <div v-if="isLogin === true && isOnPage =='myarticles'" class="p-5"></div>
+      <myarticles-page
+        v-if="isLogin === true && isOnPage =='myarticles'"
+      ></myarticles-page>
 
       <!-- ========================================================================================================== WRITE ARTICLE -->
       <div v-if="isLogin === true && isOnPage =='newarticle'" class="px-5 pt-5">
@@ -215,7 +137,7 @@
                 <div class="p-3">
                   <div class="my-5">
                     <h5>Author</h5>
-                    <i class="fa fa-user"></i> {{ loggedInUser.name }}
+                    <i class="fa fa-user"></i>
                   </div>
                   <div class="my-5">
                     <h5>Date</h5>
@@ -286,82 +208,10 @@
       </div>
 
       <!-- =========================================================================================================== SETTING USER -->
-      <div v-if="isLogin === true && isOnPage =='setting'" class="p-5">
-        <div class="container">
-          <div class="container border-top border-left border-right p-3 mx-1">
-            <center class="col-12 my-3">
-              <div class="col-12">
-                <div class="row my-1 justify-content-center">
-                  <img
-                    class="img-thumbnail rounded-circle"
-                    height="140"
-                    width="140"
-                    v-bind:src="loggedInUser.picture"
-                  />
-                </div>
-                <div class="row my-3 justify-content-center">
-                  <div class="col-12">
-                    <h5>
-                      {{ loggedInUser.name }}
-                    </h5>
-                    <small class="text-muted my-3">
-                      user ID : {{ loggedInUser._id }}
-                    </small>
-                    <p class="my-1">
-                      <b>
-                        {{ loggedInUser.email }}
-                      </b>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </center>
-          </div>
-          <div
-            class="container border-bottom border-left border-right p-3 mx-1"
-          >
-            <div class="col-12 my-3">
-              <form class="my-3" @submit.prevent="updateAccount">
-                <div class="form-group">
-                  <label for="changeName">Change Name</label>
-                  <input
-                    v-model="userChange.name"
-                    type="text"
-                    class="form-control"
-                    id="changeName"
-                    placeholder="Name"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="changePassword">Change Password</label>
-                  <input
-                    v-model="userChange.password"
-                    type="password"
-                    class="form-control"
-                    id="changePassword"
-                    placeholder="Password"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="selectedPicture">Profile Picture</label>
-                  <input
-                    @change="selectProfilePic"
-                    id="selectedPicture"
-                    type="file"
-                    class="form-control-file"
-                    placeholder="Profile Picture"
-                  />
-                </div>
-                <center class="mt-5 my-3">
-                  <button type="submit" class="btn btn-lg btn-primary mx-2">
-                    Update Your Account Detail
-                  </button>
-                </center>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <setting-page
+        v-if="isLogin === true && isOnPage =='setting'"
+      ></setting-page>
 
       <!-- CLOSING TAG DIV #APP -->
     </div>
@@ -393,8 +243,14 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
 
+    <!-- ================================================================================================================= COMPONENTS -->
+    <script src="js/components/settingpage.js"></script>
+    <script src="js/components/navigationbar.js"></script>
     <script src="js/components/registerpage.js"></script>
     <script src="js/components/loginpage.js"></script>
+    <script src="js/components/myarticles.js"></script>
+
+    <!-- ================================================================================================================== VUE AND MAIN -->
     <script src="js/vue.js"></script>
     <script src="js/main.js"></script>
   </body>

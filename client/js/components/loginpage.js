@@ -21,20 +21,28 @@ Vue.component("login-page", {
       let { email, password } = this.inputLoginRegister;
       let inputValue = { email, password };
       console.log(inputValue);
-      ax({
-        method: "POST",
-        url: "/users/login",
-        data: inputValue
-      })
-        .then(({ data }) => {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          this.$emit("berhasil_login");
+
+      if (inputValue.email !== "" && inputValue.password !== "") {
+        ax({
+          method: "POST",
+          url: "/users/login",
+          data: inputValue
         })
-        .catch(err => {
-          console.log("error login biasa");
-          console.log(JSON.stringify(err.response, null, 2));
-        });
+          .then(({ data }) => {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            this.$emit("berhasil_login");
+          })
+          .catch(err => {
+            if (err.response.data.message) {
+              swal("attention", err.response.data.message, "error");
+            } else {
+              swal("Sorry", "Internal Server Error", "error");
+            }
+            console.log("error login biasa");
+            console.log(JSON.stringify(err.response, null, 2));
+          });
+      }
     },
     page_register() {
       this.$emit("pindah_register");

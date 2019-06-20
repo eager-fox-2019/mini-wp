@@ -14,23 +14,25 @@ Vue.component("register-page", {
   },
   methods: {
     register() {
-      console.log("register");
-      console.log(this.inputLoginRegister);
-      ax({
-        method: "POST",
-        url: "/users/register",
-        data: this.inputLoginRegister
-      })
-        .then(({ data }) => {
-          console.log(data);
-          this.$emit("pindah_login_afteregister", data.email);
+      let { name, email, password } = this.inputLoginRegister;
+      let inputVal = { name, email, password };
+      if (name !== "" && email !== "" && password !== "") {
+        ax({
+          method: "POST",
+          url: "/users/register",
+          data: inputVal
         })
-        .catch(err => {
-          swal({
-            text: "error register"
+          .then(({ data }) => {
+            console.log(data);
+            this.$emit("pindah_login_afteregister", data.email);
+          })
+          .catch(err => {
+            swal({
+              text: "error register"
+            });
+            console.log(JSON.stringify(err, null, 2));
           });
-          console.log(JSON.stringify(err, null, 2));
-        });
+      }
     },
     page_login() {
       this.$emit("pindah_login");

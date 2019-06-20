@@ -22,7 +22,6 @@ const vue = new Vue({
     auth2: {},
     isOnPage: undefined,
     isLogin: undefined,
-    loggedInUser: {},
     myarticles: [],
     articles: [],
     tags: [],
@@ -40,28 +39,17 @@ const vue = new Vue({
     },
     inputFilter: "",
     inputTag: "",
-    userChange: {
-      name: "",
-      password: "",
-      image: ""
-    },
     editor: ""
   },
 
   created() {
-    this.checkUser();
     this.checkLogin();
-    if (this.isLogin) {
-      this._getUserArticles();
-      this._getAllArticles();
-    }
   },
 
   mounted() {},
 
   methods: {
     // GET DATA FROM DATABASE
-    _getUserArticles() {},
     _getAllArticles() {},
 
     // RESET THE INPUT FUNCTION
@@ -75,6 +63,7 @@ const vue = new Vue({
     r_inputLoginRegister_afterregister() {
       this.inputLoginRegister.name = "";
       this.inputLoginRegister.password = "";
+      swal("Account Created", "Successfully created an account", "success");
     },
     r_inputArticle() {
       this.inputArticle = {
@@ -88,16 +77,7 @@ const vue = new Vue({
     },
 
     // INITIAL CHECK
-    checkUser() {
-      console.log("check user");
-      if (localStorage.getItem("user")) {
-        let userData = JSON.parse(localStorage.getItem("user"));
-        this.loggedInUser._id = userData._id;
-        this.loggedInUser.email = userData.email;
-        this.loggedInUser.name = userData.name;
-        this.loggedInUser.picture = userData.picture;
-      }
-    },
+
     checkLogin() {
       console.log("check login");
       if (localStorage.getItem("token")) {
@@ -110,34 +90,8 @@ const vue = new Vue({
         }
       } else {
         this.isLogin = false;
-        this.loggedInUser = {};
         this.page_login();
       }
-    },
-
-    // LOGIN REGISTER RELATED
-    register() {
-      console.log("register");
-      console.log(this.inputLoginRegister);
-      ax({
-        method: "POST",
-        url: "/users/register",
-        data: this.inputLoginRegister
-      })
-        .then(({ data }) => {
-          console.log(data);
-          this.page_login_afterregister();
-        })
-        .catch(err => {
-          swal({
-            text: "error register"
-          });
-          console.log(JSON.stringify(err, null, 2));
-        });
-    },
-    login() {
-      this.checkLogin();
-      this.checkUser();
     },
 
     googlelogin(googleUser) {
@@ -160,7 +114,6 @@ const vue = new Vue({
             "info"
           );
           this.checkLogin();
-          this.checkUser();
         })
         .catch(err => {
           console.log(err, "error login google");
@@ -183,151 +136,6 @@ const vue = new Vue({
         });
     },
 
-    // USER RELATED FUNCTION
-    updateAccount() {
-      console.log("update account");
-      if (
-        !this.userChange.name &&
-        !this.userChange.password &&
-        !this.userChange.picture
-      ) {
-      } else {
-        swal({
-          title: "Confirmation",
-          text: "Update your account detail?",
-          icon: "info",
-          buttons: true,
-          dangerMode: true
-        }).then(confirm => {
-          if (confirm) {
-            var passwordValid = true;
-            var updValue = {};
-            if (this.userChange.name) {
-              if (
-                this.userChange.name == this.loggedInUser.name ||
-                this.userChange.name == ""
-              ) {
-                updValue.name = this.loggedInUser.name;
-              } else {
-                updValue.name = this.userChange.name;
-              }
-            }
-            if (this.userChange.password) {
-              if (this.userChange.password !== "") {
-                if (
-                  this.userChange.password.length < 8 ||
-                  this.userChange.password.length > 16
-                ) {
-                  passwordValid = false;
-                }
-                updValue.password = this.userChange.password;
-              }
-            }
-            if (this.userChange.picture) {
-              updValue.picture = this.userChange.picture;
-            }
-
-            if (updValue.picture) {
-              const blob = new Blob([this.userChange.picture], {
-                type: this.userChange.picture.type
-              });
-
-              const formdata = new FormData();
-              formdata.append("image", blob);
-              ax({
-                method: "POST",
-                url: "/uploadimg",
-                data: formdata,
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                  token: localStorage.getItem("token")
-                }
-              })
-                .then(({ data }) => {
-                  this.userChange.picture = data;
-                  updValue.picture = data;
-                  return ax({
-                    method: "PATCH",
-                    url: "/users",
-                    data: updValue
-                  });
-                })
-                .then(({ data }) => {
-                  let { name, picture } = this.userChange;
-                  if (name) {
-                    this.loggedInUser.name = name;
-                  }
-                  if (picture) {
-                    this.loggedInUser.picture = picture;
-                  }
-                  $("#selectedPicture").val("");
-                  console.log(this.loggedInUser);
-                  localStorage.setItem(
-                    "user",
-                    JSON.stringify(this.loggedInUser)
-                  );
-                  this.userChange = {};
-                  this.checkUser();
-                  swal("Success", "Your account has been updated", "success");
-                })
-                .catch(err => {
-                  swal("Sorry", "Problem occured, try again later", "error");
-                  console.log(
-                    "error update akun dengan upload gambar",
-                    JSON.stringify(err, null, 2)
-                  );
-                });
-            } else if (updValue.password && passwordValid == false) {
-              swal(
-                "Attention",
-                "Password should consist of 8-16 character",
-                "info"
-              );
-            } else {
-              if (updValue.name == "" || updValue.password == "") {
-                swal("Fill one of the field that you want to update");
-              } else {
-                console.log("mulai update akun");
-                console.log(updValue, "nilai yang mau di update\n\n\n\n\n");
-                ax({
-                  method: "PATCH",
-                  url: "/users",
-                  data: updValue
-                })
-                  .then(({ data }) => {
-                    console.log("update akun berhasil");
-                    let { name } = this.userChange;
-                    if (name) {
-                      this.loggedInUser.name = name;
-                    }
-                    console.log(this.loggedInUser);
-                    localStorage.setItem(
-                      "user",
-                      JSON.stringify(this.loggedInUser)
-                    );
-                    this.userChange = {};
-                    this.checkUser();
-                    swal("Success", "Your account has been updated", "success");
-                  })
-                  .catch(err => {
-                    swal("Sorry", "Problem occured, try again later", "error");
-                    console.log(
-                      "error update akun tanpa upload gambar",
-                      JSON.stringify(err, null, 2)
-                    );
-                  });
-              }
-            }
-          }
-        });
-      }
-    },
-
-    // UPLOAD PICTURE FUNCTION
-    selectProfilePic(event) {
-      this.userChange.picture = event.target.files[0];
-      console.log(this.userChange);
-    },
     selectArticlePic(event) {
       this.inputArticle.picture = event.target.files[0];
     },
@@ -360,7 +168,6 @@ const vue = new Vue({
       if (this.isOnPage === "login") {
         this.renderGoogleButton();
       }
-      this.userChange = {};
     },
     renderGoogleButton() {
       gapi.signin2.render("g-signin2", {
