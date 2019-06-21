@@ -37,7 +37,7 @@ class ArticleCont {
   }
 
   static detail (req, res, next) {
-    Article.findById(req.params.id).populate({path:'user', select: 'name'}).exec(function (err, article) {
+    Article.findById(req.params.id).populate({path:'user', select: ['name', 'email']}).exec(function (err, article) {
       if (err) {
         next ({code: 500, message: err.message})
       } else {
