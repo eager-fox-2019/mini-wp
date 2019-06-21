@@ -2,8 +2,8 @@ const router = require('express').Router()
 const article = require('../controllers/article')
 const auth = require('../middlewares/authenticate')
 const autho = require('../middlewares/authorize')
-const Multer = require('multer');
 const gcsMiddlewares = require("../middlewares/google-cloud-storage")
+const Multer = require('multer');
 
 const multer = Multer({
   storage: Multer.MemoryStorage,

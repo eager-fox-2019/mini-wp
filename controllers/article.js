@@ -5,10 +5,14 @@ class ArticleCont {
   static create (req, res, next) {
     let newArticle = {
       user : req.decoded._id,
-      img : req.file.gcsUrl,
       title : req.body.title,
       content: req.body.content,
       created_at: new Date(),
+    }
+    if (req.file) {
+      newArticle.img = req.file.gcsUrl
+    } else {
+      newArticle.img = req.body.img
     }
     Article.create(newArticle)
       .then(article => {
@@ -86,8 +90,10 @@ class ArticleCont {
       } else {
         if (article) {
           article.title = req.body.title
-          article.img = req.file.gcsUrl
           article.content = req.body.content
+          if (req.file) {
+            article.img = req.file.gcsUrl
+          }
           article.save()
             .then (article => {
               res.status(200).json(article)
