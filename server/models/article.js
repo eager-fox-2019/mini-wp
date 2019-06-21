@@ -21,7 +21,12 @@ const articleSchema = new Schema({
 	owner: { 
 		type: Schema.Types.ObjectId, 
 		ref: 'User' 
-	}
+	},
+	featured_image:{
+		type: String,
+		default: ""
+	},
+	tags:[{type: String}]
 });
 
 const Article = mongoose.model('Article',articleSchema)

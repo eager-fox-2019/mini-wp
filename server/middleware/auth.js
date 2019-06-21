@@ -50,15 +50,15 @@ const authArticle = (req, res, next) => {
 
 //authorization user doang
 const authUser = (req, res, next) => {
-	let userId = req.params.id
+	let userId = req.decode.id //usually from params
 
 	if (userId){
 		User.findOne({_id: userId})
 			.then(found => {
 				if (!found) {
-					throw ({status: 404}) //article not found
+					throw ({status: 404}) //user not found
 				} else if (found._id == req.decode.id){
-					//token's data matches userId params sent
+					//user is registered in our database
 					next()
 				} else {
 					//wrong user
@@ -67,7 +67,7 @@ const authUser = (req, res, next) => {
 			})
 			.catch(next)
 	} else {
-		//no article id parameters
+		//no user id parameters
 		next({status: 404}) //page not found
 	}
 }

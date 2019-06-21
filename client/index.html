@@ -23,30 +23,13 @@
   </head>
 
   <body>
-    <!-- Vue JS -->
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
-    <!-- fb login -->
-    <div id="fb-root"></div>
-    <script src="https://apis.google.com/js/platform.js" defer></script>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId            : '311623876391404',
-          autoLogAppEvents : true,
-          xfbml            : true,
-          version          : 'v3.3'
-        });
-      };
-    </script>
-    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
-
     <div id="app">
       <header>
         <nav class="navbar navbar-dark bg-dark">
           <div class="d-flex align-items-center col-4">
             <button id="toggleSidebar" v-on:click="toggleSidebar"></button>
             <label>Mini WP</label>
+            <label v-if="isLoggedin" v-model="userName"></label>
           </div>
           <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-end col-8">
             <li id="homeNav" class="nav-item col-2">
@@ -82,12 +65,12 @@
       <div id="content">
         <!-- alert alert-error -->
         <div id="errorArea" v-if="errorMessage != ''" class="alert alert-danger d-flex justify-content-between align-items-center">
-          <span v-html="errorMessage" ></span>
+          <span>{{errorMessage}}</span>
           <button class="btn btn-secondary" @click.prevent="clearError">close</button>
         </div>
         <!-- alert alert-success -->
         <div id="successArea" v-if="successMessage != ''" class="alert alert-success d-flex justify-content-between align-items-center">
-          <span v-html="successMessage" ></span>
+          <span>{{successMessage}}</span>
           <button class="btn btn-secondary" @click.prevent="clearMsg">close</button>
         </div>
 
@@ -127,12 +110,12 @@
           </form>
 
           <!-- fb login button -->
-          <div v-if="registerArea === false && editUserArea === false && loginArea == true" class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"  @click.event=""></div>
-<!-- data-onlogin="checkLoginState()" -->
+          <div v-if="registerArea === false && editUserArea === false && loginArea == true" class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"  @click.event="loginFB"></div>
+          <!-- data-onlogin="checkLoginState()" -->
         </div>
 
+        <!-- post new article-->
         <div id="postForm" v-show="postArea === true && editArticleArea === false" >
-          
           <h3>Post an Article</h3>
           <form id="postArticle" method="post">
             <span class="col">
@@ -146,6 +129,7 @@
           </form>
         </div>
 
+        <!-- article header -->
         <div id="articleHeaderContainer"  v-if="editArticleArea === false" class="d-flex p-2 flex-row align-items-center col-12">
           <div class="p-2">
             <button class="btn btn-success btn-md">Published</button></div>
@@ -157,22 +141,15 @@
           </div>
         </div>
 
-        <div v-if="editArticleArea === false" id="articlesContainer" >
+        <!-- list articles -->
+        <div id="articlesContainer" v-if="editArticleArea === false" >
           <div class="card" v-for="article in filteredArticles">
-            <div class="card-body">
-              <h5 class="card-title">{{article.title}}</h5>
-              <div v-html="article.content" class="card-text"></div><br>
-              <div class="card-text">published on {{new Date(article.created_at).toDateString()}}</div>
-              <br>
-              <button class="btn btn-primary" @click="editArticle(article._id)" v-bind:disabled="postArea">Edit</button>
-              <a href="#" class="btn btn-info" @click.prevent="readArticle(article._id)">Read</a>
-              <a href="#" class="btn btn-danger" @click.prevent="delArticle(article._id)">Delete</a>
-            </div>
+            
           </div>
         </div>
 
-        <div v-show="editArticleArea === true" id="editArticleContainer">
-
+        <!-- edit article form-->
+        <div id="editArticleContainer" v-show="editArticleArea === true">
           <h3>Edit Article</h3>
           <form id="editArticleForm" method="post">
             <span class="col">
@@ -187,7 +164,35 @@
         </div>
       </div>
 
+      <footer>
+        <div id="footerContent">
+        <p>Git for the class: <a href="https://github.com/eager-fox-2019">
+        Eager Fox 2019 - Hacktiv8</a>.</p>
+        <p>Posted by: Stefani Kwan | Last Updated: {{today.toDateString()}}</p>
+        </div>
+      </footer>
+
       <span id="scripts">
+        <!-- Vue JS -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+        <!-- Vue components -->
+        <!-- <script src="./assets/components/nav-bar.js"></script> -->
+
+        <!-- fb login -->
+        <div id="fb-root"></div>
+        <script src="https://apis.google.com/js/platform.js" defer></script>
+        <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId            : '311623876391404',
+              autoLogAppEvents : true,
+              xfbml            : true,
+              version          : 'v3.3'
+            });
+          };
+        </script>
+        <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
 
         <!-- tiny.mce wysiwyg api -->
         <script src="./tinymce-vue.min.js"></script>
@@ -215,13 +220,7 @@
         <script src="https://kit.fontawesome.com/ecee750dca.js"></script>
       </span>
     </div>
+  
   </body>
 
-  <footer>
-    <div id="footerContent">
-    <p>Git for the class: <a href="https://github.com/eager-fox-2019">
-    Eager Fox 2019 - Hacktiv8</a>.</p>
-    <p>Posted by: Stefani Kwan | Last Updated: Tue 18 June 2019</p>
-    </div>
-  </footer>
 </html>

@@ -1,4 +1,4 @@
-html, body, nav{
+html, body, nav, #app{
   width: 100%;
   height: 100%;
   margin: 0;
@@ -14,8 +14,8 @@ form{
   padding: 1em;
 }
 
-#app, #content, #sidebar{
-  min-height: 300px;
+#content, #sidebar{
+  min-height: 80%;
 }
 
 header{

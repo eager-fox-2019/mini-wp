@@ -5,6 +5,7 @@ let baseUrl = "http://localhost:3000/api"
 var app = new Vue({
   el: '#app',
   data: {
+    today: new Date(),
     isLoggedin: false,
     loginArea: true,
     registerArea: false,
@@ -21,7 +22,8 @@ var app = new Vue({
     newContent: "",
     search: "",
     editArticleArea: false,
-    currentArticle: {}
+    currentArticle: {},
+    currentUser: {}
   },
   components: {
     'editor': Editor // <- Important to load wysiwyg api tiny.mce
@@ -121,6 +123,9 @@ var app = new Vue({
       } else {
         this.loginArea = true;
       }
+    },
+    loginFB(){
+
     },
     loginUser(){
       axios({
