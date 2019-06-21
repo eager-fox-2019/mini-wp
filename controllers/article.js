@@ -8,6 +8,7 @@ class ArticleCont {
       title : req.body.title,
       content: req.body.content,
       created_at: new Date(),
+      tags: JSON.parse(req.body.tags)
     }
     if (req.file) {
       newArticle.img = req.file.gcsUrl
@@ -22,28 +23,21 @@ class ArticleCont {
   }
 
   static list (req, res, next) {
-    Article.find({user: mongoose.Types.ObjectId(req.decoded._id)}, function (err, articles) {
+    Article.find({}).populate({path:'user', select: 'name'}).exec(function (err, articles) {
       if (err) {
         next ({code: 500, message: err.message})
       } else {
-        let output = []
-        for (let i = 0; i < articles.length; i++){
-          let article = {
-            _id: articles[i]._id,
-            img : articles[i].img,
-            title : articles[i].title,
-            content: articles[i].content,
-            created_at: articles[i].created_at,
-          }
-          output.push(article)
+        if (articles) {
+          res.status(200).json(articles)
+        } else {
+          res.status(200).json([])
         }
-        res.status(200).json(output)
       }
     })
   }
 
   static detail (req, res, next) {
-    Article.findById(req.params.id, function (err, article) {
+    Article.findById(req.params.id).populate({path:'user', select: 'name'}).exec(function (err, article) {
       if (err) {
         next ({code: 500, message: err.message})
       } else {
@@ -63,22 +57,15 @@ class ArticleCont {
     } else {
       where[req.params.field] = req.params.value
     }
-    Article.find(where, function (err, articles) {
+    Article.find(where).populate({path:'user', select: 'name'}).exec(function (err, articles) {
       if (err) {
         next ({code: 500, message: err.message})
       } else {
-        let output = []
-        for (let i = 0; i < articles.length; i++){
-          let article = {
-            _id: articles[i]._id,
-            img : articles[i].img,
-            title : articles[i].title,
-            content: articles[i].content,
-            created_at: articles[i].created_at,
-          }
-          output.push(article)
+        if(articles) {
+          res.status(200).json(articles)
+        } else {
+          res.status(200).json([])
         }
-        res.status(200).json(output)
       }
     })
   }
@@ -94,6 +81,7 @@ class ArticleCont {
           if (req.file) {
             article.img = req.file.gcsUrl
           }
+          article.tags = JSON.parse(req.body.tags)
           article.save()
             .then (article => {
               res.status(200).json(article)

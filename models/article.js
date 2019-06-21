@@ -7,6 +7,7 @@ const articleSchema = new Schema({
     title : String,
     content: String,
     created_at: Date,
+    tags: [{type: String}]
 })
 const Article = mongoose.model('article', articleSchema)
 module.exports = Article
