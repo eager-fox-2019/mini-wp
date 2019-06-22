@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const articleController = require('../controllers/articleController')
 const {authentication} = require('../middlewares/auth')
+const gcsMiddlewares = require('../middlewares/gcs')
 
 const Multer = require('multer');
 const multer = Multer({
