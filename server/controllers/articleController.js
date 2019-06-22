@@ -10,10 +10,9 @@ class ArticleController{
     }
 
     static findPersonal(req, res, next){
-        console.log("Masuk ke find personal")
         Article.find({author: req.decode.id})
             .then(articles => {
-                console.log("Find personal function", articles)
+                // console.log("Find personal function", articles)
                 articles.sort(function(a,b){
                     return new Date(a.updatedAt) - new Date(b.updatedAt);
                 });
@@ -44,14 +43,25 @@ class ArticleController{
     }
 
     static create(req, res, next){
-        const { title, content, imgUrl } = req.body
-        const input = { title, content, imgUrl }
+        const { title, content } = req.body
+        const input = { title, content }
         input.author = req.decode.id
-        Article.create(input)
-            .then(newArticle => {        
-                res.status(201).json(newArticle)
-            })
-            .catch(next)
+        console.log("ini req file", req.file)
+        console.log("ini req files", req.files)
+        // console.log(req)
+        console.log("ini req body", req.body.imgUrl)
+        if (req.file) {
+            input.imgUrl = req.file.gcsUrl
+        } else {
+            input.imgUrl = req.body.imgUrl
+        }
+        console.log("ini input imgUrl", input.imgUrl)
+        // Article.create(input)
+        //     .then(newArticle => {  
+        //         console.log("success created")
+        //         res.status(201).json(newArticle)
+        //     })
+        //     .catch(next)
     }
 
     static update(req, res, next){

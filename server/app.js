@@ -8,7 +8,8 @@ const port = process.env.PORT || 3000
 const routes = require('./routes')
 const cors = require('cors')
 const mongoose = require('mongoose')
-const uri = process.env.MONGO_DB_URI //'mongodb://localhost:27017/mini-wp'
+// const uri = process.env.MONGO_DB_URI 
+const uri = 'mongodb://localhost:27017/mini-wp'
 const errorHandler = require('./middlewares/error-handler')
 
 mongoose.connect(uri, {useNewUrlParser: true}, function(err){

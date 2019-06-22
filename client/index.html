@@ -22,7 +22,7 @@
         <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script> -->
 
         <link rel="stylesheet" href="./style.css">
-        <script>
+        <!-- <script>
             window.fbAsyncInit = function() {
               FB.init({
                 appId            : 'your-app-id',
@@ -32,7 +32,7 @@
               });
             };
         </script>
-        <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+        <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script> -->
         
         <title>Blog Posts</title>
 
@@ -82,8 +82,8 @@
                                     <button @click.prevent="userLogin" type="submit" class="btn btn-primary" style="width: 100%">Login</button>
                                     <br>Or sign in with:
                                     <br><div class="g-signin2" data-onsuccess="onSignIn"></div>
-                                    <div id="fb-root"></div>
-                                    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3&appId=2373734499376645&autoLogAppEvents=1"></script>
+                                    <!-- <div id="fb-root"></div>
+                                    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3&appId=2373734499376645&autoLogAppEvents=1"></script> -->
                                     <br><small>New user? <a @click.prevent="toRegister" href="#">Register here!</a></small>
                                 </form>
                                 <form v-show="usersign === 'register'" id="register-form">
@@ -228,11 +228,16 @@
                     </div>
 
                     <div v-show="loadPage === 'draft' || loadPage === 'edit-mode'">
-                        <form style="height: 80%; width:80%">
+                        <form style="height: 80%; width:80%" enctype="multipart/form-data">
                             <label for="title"><b>Title</b></label>
                             <input v-model="newTitle" type="text" class="form-control" placeholder="Enter title" name="title" id="title" required><br>
-                            <label for="imgUrl"><b>Image Url</b></label>
-                            <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br>
+                            <label for="imgUrl">Choose feature image:</label>
+                            <img id="imgShow" v-bind:src="uploadImg" alt="your image" />
+                            <input type="file" v-model="newImgUrl" class="form-control" placeholder="Browse an image"
+                                id="imgUrl" name="imgUrl" @change="readURL"
+                                accept="image/png, image/jpeg">
+                            <!-- <label for="imgUrl"><b>Image Url</b></label>
+                            <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br> -->
                             <editor v-model="newPost" api-key="5t9c5vfi2kk6s9yazv87rfciyj6b720adar1ephqweq14uhp" :init="{plugins: 'wordcount'}">Write here</editor>
                             <br>
                             <div v-show="loadPage === 'draft'">
@@ -240,7 +245,7 @@
                             </div>
                             <div v-show="loadPage === 'edit-mode'">
                                 <button @click.prevent="afterEdit" class="btn btn-primary">Update</button>
-                                <button @click="deleteArticle(selectedArticle._id)" class="btn btn-danger">Delete</button>
+                                <button @click.prevent="deleteArticle(selectedArticle._id)" class="btn btn-danger">Delete</button>
                             </div>
                         </form>
                     </div>

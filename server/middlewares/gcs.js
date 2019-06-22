@@ -1,5 +1,5 @@
-const gcsHelpers = require('../helpers/gcs');
-const { storage } = gcsHelpers;
+const { storage, getPublicUrl } = require('../helpers/gcs');
+// const { storage } = gcsHelpers;
 const DEFAULT_BUCKET_NAME = process.env.DEFAULT_BUCKET_NAME; // Replace with the name of your bucket
 
 /**
@@ -11,6 +11,7 @@ const DEFAULT_BUCKET_NAME = process.env.DEFAULT_BUCKET_NAME; // Replace with the
  */
 
 exports.sendUploadToGCS = (req, res, next) => {
+    console.log("masuk send upload", req.file)
     if (!req.file) {
         return next();
     }
@@ -30,10 +31,12 @@ exports.sendUploadToGCS = (req, res, next) => {
     });  
 
     stream.on('finish', () => {
+        console.log("masuk send upload finish")
         req.file.cloudStorageObject = gcsFileName;
         return file.makePublic()
             .then(() => {
-                req.file.gcsUrl = gcsHelpers.getPublicUrl(bucketName, gcsFileName);
+                console.log("masuk makepublic")
+                req.file.gcsUrl = getPublicUrl(bucketName, gcsFileName);
                 next();
             });
     });

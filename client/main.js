@@ -18,21 +18,24 @@ var app = new Vue({
         newImgUrl: "",
         onSearch: false,
         searchText: "",
-        selectedArticle: {}
+        selectedArticle: {},
+        uploadImg: "http://www.jaipuriaschoolkanpurroad.in/gorakhpur-website/wp-content/uploads/2016/11/blank-img.jpg"
     },
     created(){
+        if(localStorage.getItem("token")){
+            this.isLogin = true
+        }
         axios({
             method: "GET",
             url: `http://localhost:3000/article`
         })
-        .then(({data})=>{
-            this.listArticles = data
-            console.log(data)
-        })
-        .catch(err => {
-            console.log("Error from created")
-            console.log(err)
-        })
+            .then(({data})=>{
+                this.listArticles = data
+            })
+            .catch(err => {
+                console.log("Error from created")
+                console.log(err)
+            })
     },
     methods: {
         // User
@@ -130,9 +133,10 @@ var app = new Vue({
             })
                 .then(({data})=>{
                     data.sort(function(a,b){
-                        return new Date(b.updatedAt) - new Date(a.updatedAt);
+                        return new Date(a.updatedAt) - new Date(b.updatedAt);
                     });
                     this.listArticles = data
+                    console.log(data[0])
                 })
                 .catch(err => {
                     console.log("Error from getArticle: ", err)
@@ -162,18 +166,45 @@ var app = new Vue({
                     console.log("Error from getPersonalArticle: ", err)
                 })
         },
+        readURL() {
+            let input = this.newImgUrl
+            console.log(input)
+            this.uploadImg = input
+            // if (input.files && input.files[0]) {
+            //     var reader = new FileReader();   
+            //     reader.onload = function(e){
+            //         this.uploadImg = e.target.result
+            //     }
+            //     // reader.onload = function (e) {
+
+            //     //     $('#imgShow')
+            //     //         .attr('src', e.target.result)
+            //     //         .width(150)
+            //     //         .height(200);
+            //     // };
+            //     console.log("MAsuk readurl, input")
+            //     reader.readAsDataURL(input.files[0]);
+            // }
+        },
         postArticle(){
+            // console.log(this.newImgUrl)
+            let formData = new FormData();
+            formData.append("title", this.title);
+            formData.append("imgUrl", this.imgUrl);
+            formData.append("content", this.content);
             axios({
                 method: "POST",
                 url: `http://localhost:3000/article/create`,
-                data: {
-                    title: this.newTitle,
-                    imgUrl: this.newImgUrl,
-                    content: this.newPost
-                },
+                // data: {
+                //     title: this.newTitle,
+                //     imgUrl: this.newImgUrl,
+                //     content: this.newPost
+                // },
+                data: formData,
                 headers: {
                     token: localStorage.getItem('token')
-                }
+                },
+                config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
                 .then(() => {
                     this.getArticle()
