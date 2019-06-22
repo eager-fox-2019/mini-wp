@@ -1,29 +1,29 @@
 <template>
     <header>
         <nav class="navbar navbar-dark bg-dark">
-          <div class="d-flex align-items-center col-4">
+          <div class="d-flex align-items-center">
             <button id="toggleSidebar" v-on:click="toggleSidebar"></button>
-            <label>Mini WP</label>
+            <label v-if="userName==''">Mini WP</label>
           </div>
-          <div class="col-2">
-            <label v-if="userName != ''">{{userName}}</label>
+          <div>
+            <label v-if="userName != ''">{{userName}}'s Mini WP</label>
           </div>
-          <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-end col-6">
-            <li id="homeNav" class="nav-item col-2">
+          <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-end flex-wrap">
+            <li id="homeNav" class="nav-item">
               <a class="nav-link " href="#">Home</a>
             </li>
 
-            <li v-show="isLoggedin" class="nav-item col-2">
+            <li v-show="isLoggedin" class="nav-item">
               <button v-if="postArea === false" class="btn btn-primary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Post</button>
 
               <button v-else="" class="btn btn-secondary btn-md" v-on:click="togglePost" v-bind:disabled="editArticleArea">Cancel</button>
             </li>
 
-            <li v-show="isLoggedin" class="nav-item col-2">
+            <li v-show="isLoggedin" class="nav-item">
               <a class="nav-link " href="#" @click.prevent="toggleEditUser">User</a>
             </li>
 
-            <li class="nav-item col-2">
+            <li class="nav-item">
               <a v-if="isLoggedin" class="nav-link " href="#" @click.prevent="logoutUser">Logout</a>
 
               <a v-if="isLoggedin === false" class="btn btn-info" href="#" @click.prevent="toggleLoginArea">Account</a>
@@ -71,6 +71,10 @@ export default {
     height: 100%;
     padding: 1em;
     background-color: #595959;
+}
+
+.navbar ul li {
+  width: 5em;
 }
 
 button {

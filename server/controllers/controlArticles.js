@@ -50,6 +50,10 @@ class ControllerArticle {
 	static create(req, res, next){
 	    let articleInput = req.body //should have title and content
 	    articleInput.owner = req.decode.id //add owner id
+
+	    //convert image to a google cloud url
+	    let articleImage = req.body.featured_image
+
 	    Article.create(articleInput)
 	      .then(createdArticle => {
 	        res.json(createdArticle)

@@ -9,7 +9,7 @@
         <h5 class="card-title">{{carddetail.title}}</h5>
         <div v-html="carddetail.content" class="card-text"></div><br>
         <div class="card-text">
-          published on {{new Date(carddetail.created_at).toDateString()}}</div>
+          published on {{new Date(carddetail.created_at).toDateString()}} by {{this.userName}}</div>
         <br>
         <button class="btn btn-primary" @click="editArticle" v-bind:disabled="postarea">Edit</button>
         <a href="#" class="btn btn-info" @click.prevent="readArticle">Read</a>
@@ -23,7 +23,23 @@
 export default {
   name: "articlecard",
   props: ['carddetail','postarea'],
+  data() {
+    return {
+      userName: "anonymous",
+      card: this.carddetail
+    }
+  },
+  created(){
+    this.getUserName()
+  },
   methods:{
+    getUserName(){
+      if (this.card.owner){
+        if(this.card.owner.name) {
+          this.userName = this.card.owner.name
+        }
+      }
+    },
     editArticle(){
       this.$emit('edit-article')
     },

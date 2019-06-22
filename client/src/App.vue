@@ -37,7 +37,7 @@
           <form method="post" class="d-flex flex-wrap">
             <span v-if="registerArea || editUserArea && loginArea == false">
               <label>Name:</label>
-              <input v-model="currentUserName" type="text" name="userName"></input></span>
+              <input v-model="currentUserName" type="text" name="currentUserName"></input></span>
             <span v-if="registerArea || loginArea && editUserArea == false">
               <label>E-mail: </label>
               <input v-model="userEmail" type="text" name="userEmail"></input></span>
@@ -124,6 +124,10 @@
               <label>Title: </label>
               <input v-model="newTitle" type="text" name="title"></input>
             </span>
+            <span class="col d-flex align-items-center">
+              <img :src="newImage" height="200" alt="Image preview..." class="imagePreview">
+              <input class="btn btn-secondary" type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
+            </span>
             <editor api-key="9mkhnm26fjqe5fdpy6ewfsnhcy5vrts624vxr42ffw5eunpd" 
             	:init="{plugins: 'wordcount'}" 
             	v-model="newContent" 
@@ -163,7 +167,7 @@ export default {
       message: 'Hello world',
       sidebarArea: true,
       loginArea: false,
-      userName: "",
+      currentUserName: "",
       editArticleArea: false,
       postArticleArea: false,
 			today: new Date(),
@@ -257,6 +261,9 @@ export default {
     toggleLoginArea(){
     	this.loginArea = this.loginArea ? false : true;
     },
+    toggleRegister(){
+    	this.registerArea = this.registerArea ? false : true;
+    },
     toggleEditUserArea(){
     	this.editUserArea = this.editUserArea ? false : true;
     },
@@ -293,7 +300,7 @@ export default {
         method: "POST",
         url: baseUrl+"/users/register",
         data: {
-          name: this.userName,
+          name: this.currentUserName,
           email: this.userEmail,
           password: this.userPassword
         }
@@ -316,7 +323,7 @@ export default {
           access_token: localStorage.getItem("access_token")
         },
         data: {
-          name: this.userName,
+          name: this.currentUserName,
           password: this.userPassword
         }
       })
@@ -324,7 +331,7 @@ export default {
         console.log("updated a user:",data)
         this.showMsg("updated a user")
         this.currentUserName = data.name
-        this.toggleEditUser()
+        this.toggleEditUserArea()
       })
       .catch(err => {
         console.log("updateArticle error:",err)
@@ -367,8 +374,6 @@ export default {
     },
     clearLogin(){
       this.userEmail = ""
-      this.userPassword = ""
-      this.userName = ""
       this.editUserArea = false;
     },
     logout(){
@@ -409,10 +414,11 @@ export default {
     },
     updateArticle(){
       let currentArticle = this.currentArticle
-      console.log(currentArticle)
+      // console.log(currentArticle)
       let newInput = {
         title: this.newTitle,
         content: this.newContent,
+        featured_image: this.newImage,
         created_at: (new Date()).toDateString()
       }
 
@@ -464,6 +470,7 @@ export default {
         this.currentArticle = data
         this.newTitle = data.title
         this.newContent = data.content
+        this.newImage = data.featured_image
       })
       .catch(err => {
         console.log("editArticle error:",err)
