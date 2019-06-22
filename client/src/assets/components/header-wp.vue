@@ -4,9 +4,11 @@
           <div class="d-flex align-items-center col-4">
             <button id="toggleSidebar" v-on:click="toggleSidebar"></button>
             <label>Mini WP</label>
-            <label v-if="isLoggedin" v-model="userName"></label>
           </div>
-          <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-end col-8">
+          <div class="col-2">
+            <label v-if="userName != ''">{{userName}}</label>
+          </div>
+          <ul class="navbar-nav bd-navbar-nav flex-row d-flex justify-content-end col-6">
             <li id="homeNav" class="nav-item col-2">
               <a class="nav-link " href="#">Home</a>
             </li>
@@ -48,7 +50,7 @@ export default {
 
         },
         toggleEditUser(){
-            this.$emit("edit-article-area-state")
+            this.$emit("edit-user-area-state")
 
         },
         logoutUser(){
@@ -80,8 +82,8 @@ button {
 label{
     color: white;
     font-weight: bold;
-    font-size: 2em;
-    margin: 0 1em;
+    font-size: 1.5em;
+    margin-left: 0.5em;
 }
 
 </style>

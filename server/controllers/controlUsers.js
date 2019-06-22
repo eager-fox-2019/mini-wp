@@ -80,7 +80,7 @@ class ControllerUser {
         let check = verifyPassword(input.password, user.password)
         if(check) {
           let token = generateToken({id: user._id, email: user.email})
-          res.json(token)
+          res.json({token: token, name: user.name})
         } else {
           throw {status: 400, message: 'Wrong password'}
         }

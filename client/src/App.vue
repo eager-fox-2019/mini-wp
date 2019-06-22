@@ -3,14 +3,14 @@
 		<headerwp
 			:showSidebarProps="sidebarArea"
 			:isLoggedin="isLoggedin"
-			:userName="userName"
+			:userName="currentUserName"
 			:editArticleArea="editArticleArea"
 			:postArea="postArticleArea"
 			@sidebar-state="toggleSidebar"
-			@post-area-state="togglepostArticleArea"
+			@post-area-state="togglePostArticleArea"
 			@login-area-state="toggleLoginArea"
 			@logout-state="logout"
-			@edit-article-area-state="toggleEditArticleArea">		
+			@edit-user-area-state="toggleEditUserArea">		
 		</headerwp>
 		<div id="sidebar" v-bind:class="sidebarArea? 'collapsed' : ''">
 			<ul>
@@ -37,7 +37,7 @@
           <form method="post" class="d-flex flex-wrap">
             <span v-if="registerArea || editUserArea && loginArea == false">
               <label>Name:</label>
-              <input v-model="userName" type="text" name="userName"></input></span>
+              <input v-model="currentUserName" type="text" name="userName"></input></span>
             <span v-if="registerArea || loginArea && editUserArea == false">
               <label>E-mail: </label>
               <input v-model="userEmail" type="text" name="userEmail"></input></span>
@@ -79,6 +79,10 @@
             <span class="col">
               <label>Title: </label>
               <input v-model="newTitle" type="text" name="title"></input>
+            </span>
+            <span class="col d-flex align-items-center">
+							<img :src="newImage" height="200" alt="Image preview..." class="imagePreview">
+            	<input class="btn btn-secondary" type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
             </span>
             <editor api-key="9mkhnm26fjqe5fdpy6ewfsnhcy5vrts624vxr42ffw5eunpd" :init="{plugins: 'wordcount'}" v-model="newContent" id="postArticletextarea" name="body"></editor>
             <div class="d-flex justify-content-end">
@@ -151,7 +155,7 @@ import articlecard from './assets/components/article-card.vue';
 // es modules for tinymce text editor
 import Editor from '@tinymce/tinymce-vue';
 
-let baseUrl = "http://localhost:3000/api"
+const baseUrl = "http://localhost:3000/api"
 
 export default {
   data() {
@@ -173,12 +177,15 @@ export default {
 			articles: [],
 			newTitle: "",
 			newContent: "",
+			newImage: "",
 			search: "",
-			currentArticle: {}
+			currentArticle: {},
+			currentUserName: ""
     };
   },
   created(){
     this.populateArticles()
+    this.getUser()
   },
   components: {
     headerwp,
@@ -199,6 +206,23 @@ export default {
     }
   },
   methods:{
+  	getUser(){
+  		if (localStorage.getItem("access_token")){
+  			axios({
+          method: "GET",
+          url: baseUrl+"/users/current",
+          headers:{
+            access_token: localStorage.getItem("access_token")
+          }
+        })
+        .then(({data}) => {
+        	this.currentUserName = data.name
+  			})
+  			.catch(err => {
+        	this.showError(err)
+  			})
+  		}
+  	},
     populateArticles(){
       if (localStorage.getItem("access_token")){
         this.isLoggedin = true;
@@ -219,6 +243,7 @@ export default {
           this.articles = data;
         })
         .catch(err => {
+        	this.showError(err)
           console.log("created error:",err)
         })
       }
@@ -226,11 +251,14 @@ export default {
     toggleSidebar(){
         this.sidebarArea = this.sidebarArea ? false : true;
     },
-    togglepostArticleArea(){
+    togglePostArticleArea(){
     	this.postArticleArea =  this.postArticleArea ? false : true;
     },
     toggleLoginArea(){
     	this.loginArea = this.loginArea ? false : true;
+    },
+    toggleEditUserArea(){
+    	this.editUserArea = this.editUserArea ? false : true;
     },
     toggleEditArticleArea(){
     	this.editArticleArea = this.editArticleArea ? false : true;
@@ -245,7 +273,8 @@ export default {
         }
       })
       .then(({data}) => {
-        localStorage.setItem("access_token", data)
+        localStorage.setItem("access_token", data.token)
+        this.currentUserName = data.name
 
         this.clearMsg()
         this.toggleLoginArea()
@@ -276,6 +305,49 @@ export default {
       })
       .catch(err => {
         console.log("registerUser error:", err)
+        this.showError(err)
+      })
+    },
+    editUser(){
+      axios({
+        method: "PATCH",
+        url: baseUrl+"/users",
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        },
+        data: {
+          name: this.userName,
+          password: this.userPassword
+        }
+      })
+      .then(({data}) => {
+        console.log("updated a user:",data)
+        this.showMsg("updated a user")
+        this.currentUserName = data.name
+        this.toggleEditUser()
+      })
+      .catch(err => {
+        console.log("updateArticle error:",err)
+        this.showError(err)
+      })
+    },
+    delUser(){
+      axios({
+        method: "DELETE",
+        url: baseUrl+"/users",
+        headers:{
+          access_token: localStorage.getItem("access_token")
+        }
+      })
+      .then(({data}) => {
+        console.log("deleted a user:",data)
+        this.showMsg("deleted a user")
+        this.currentUserName = ""
+        this.toggleRegister()
+        this.logoutUser()
+      })
+      .catch(err => {
+        console.log("updateArticle error:",err)
         this.showError(err)
       })
     },
@@ -422,10 +494,11 @@ export default {
       })
     },
     addArticle(){
-      this.togglePost()
+      this.togglePostArticleArea()
       let newArticle = {
-        title:this.newTitle, 
-        content:this.newContent
+        title: this.newTitle, 
+        content: this.newContent,
+        featured_image: this.newImage
       }
       
       axios({
@@ -433,23 +506,56 @@ export default {
         url: baseUrl+"/articles",
         data: newArticle,
         headers:{
-          access_token: localStorage.getItem("access_token")
+          access_token: localStorage.getItem("access_token"),
+          // "Content-Type": "multipart/form-data",
         }
       })
       .then(({data}) => {
         console.log("created an artcle")
         this.articles.unshift(data)
+        //clear local data
         this.newTitle = "";
         this.newContent = "";
+        this.newImage = "";
+        localStorage.removeItem("imageToUpload");
       })
       .catch(err => {
         console.log("created error:",err)
         this.showError(err)
       })
     },
+    uploadImage(event) {
+    	const image = event.target.files[0]
+
+	    // let data = new FormData();
+	    // data.append('name', 'my-picture');
+	    // data.append('file', image); 
+	    // console.log("data from image")
+	    // console.log(data)
+	    // console.log("---")
+
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = e =>{
+          this.newImage = e.target.result;
+          localStorage.setItem("imageToUpload", this.newImage)
+          console.log("image at local storage")
+          console.log(localStorage.getItem("imageToUpload"));
+          console.log("-----")
+      };
+
+	  }
   }
 };
 </script>
 
 <style scoped>
+.imagePreview{
+	color: white;
+	background-color: black;
+	border: solid white 0.25em;
+	height: 200px;
+	width: 200px;
+	margin: 0.5em;
+}
 </style>

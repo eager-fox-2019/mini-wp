@@ -1,8 +1,9 @@
 <template>
     <div class="card-body d-flex">
       <div class="card-img-wrapper">
-        <img class="card-img" v-bind:src="carddetail.featured_image" alt="article image" 
-        height="42px" width="42px">
+        <img class="card-img" 
+          v-bind:src="carddetail.featured_image" 
+          alt="article image">
       </div>
       <div class="card-detail">
         <h5 class="card-title">{{carddetail.title}}</h5>
