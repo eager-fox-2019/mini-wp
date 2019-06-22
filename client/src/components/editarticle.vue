@@ -84,7 +84,7 @@
               UPDATE POST
             </button>
             <button
-              v-if="inputArticle.status === 'save'"
+              v-if="selectedArticle.status === 'save'"
               class="btn btn-block btn-success mx-auto mb-3"
               @click="editArticle('post')"
             >
@@ -98,7 +98,7 @@
             >
               <i class="fa fa-floppy-o fa-1x" aria-hidden="true"></i> SAVE
             </button>
-            <button v-if="button" class="btn btn-block btn-danger mx-auto" @click="revertEdit">
+            <button class="btn btn-block btn-danger mx-auto" @click="revertEdit">
               <i class="fa fa-refresh fa-1x" aria-hidden="true"></i> REVERT CHANGES
             </button>
           </div>
@@ -116,8 +116,7 @@ export default {
       inputArticle: {},
       loggedInUser: {},
       inputTag: "",
-      editor: "",
-      button: true
+      editor: ""
     };
   },
   created() {
@@ -152,20 +151,10 @@ export default {
       } else {
         this.inputArticle = this.selectedArticle;
       }
-      if (this.inputArticle == this.selectedArticle) {
-        this.button = false;
-      } else {
-        this.button = true;
-      }
     },
     autosave() {
       let str = this.loggedInUser._id + "_edit_" + this.selectedArticle._id;
       localStorage.setItem(str, JSON.stringify(this.inputArticle));
-      if (this.inputArticle == this.selectedArticle) {
-        this.button = false;
-      } else {
-        this.button = true;
-      }
     },
     selectArticlePic(event) {
       this.inputArticle.picture = event.target.files[0];

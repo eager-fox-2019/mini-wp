@@ -14,6 +14,7 @@ class ControllerArticle {
 
   // DELETE /articles
   static delete(req, res, next) {
+    console.log(req.params.id, "==================== start delete");
     Article.findByIdAndDelete(req.params.id)
       .then(deleted => {
         res.status(200).json(deleted);
@@ -23,9 +24,9 @@ class ControllerArticle {
 
   // GET /articles/:id
   static detail(req, res, next) {
+    console.log(req.params.id, "===================start get detail");
     Article.findById(req.params.id)
       .populate("author")
-      .populate("tags")
       .then(found => {
         if (found) {
           res.status(200).json(found);
@@ -40,6 +41,7 @@ class ControllerArticle {
   static all(req, res, next) {
     Article.find({ status: "post" })
       .populate("author")
+      .populate("likedby")
       .then(founds => {
         if (founds.length >= 1) {
           let asc = founds.sort((a, b) => {
@@ -61,6 +63,7 @@ class ControllerArticle {
   static user(req, res, next) {
     Article.find({ author: req.user._id })
       .populate("author")
+      .populate("likedby")
       .then(founds => {
         if (founds.length >= 1) {
           let asc = founds.sort((a, b) => {
@@ -100,9 +103,9 @@ class ControllerArticle {
           // kalau udah di like, maka unlike
           likedby.splice(index, 1);
         }
-        return Article.findByIdAndUpdate(req.params.id, founds);
+        return Article.findByIdAndUpdate(req.params.id, found);
       })
-      .then(article => {
+      .then(updated => {
         res.status(200).json(updated);
       })
       .catch(next);

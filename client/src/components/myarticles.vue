@@ -73,7 +73,7 @@
                   <i class="fa fa-pencil-square-o fa-2x edit" aria-hidden="true"></i>
                 </a>
                 <a>
-                  <i class="fa fa-heart-o fa-2x love" aria-hidden="true">{{article.likedby.length}}</i>
+                  <i class="fa fa-heart fa-2x love " aria-hidden="true">{{article.likedby.length}}</i>
                 </a>
               </div>
             </div>
@@ -102,9 +102,7 @@
                 >
                 <a href @click.prevent="readArticle(article)">
                   <div class="card-img-overlay h-100 d-flex flex-column justify-content-end">
-                    <div class="card-text border-0 bg-semitransparent text-center">
-                      <b>Read this</b>
-                    </div>
+                    <div class="card-text border-0 bg-semitransparent text-center"></div>
                   </div>
                 </a>
               </div>
@@ -138,7 +136,7 @@
                   <i class="fa fa-pencil-square-o fa-2x edit" aria-hidden="true"></i>
                 </a>
                 <a>
-                  <i class="fa fa-heart-o fa-2x love" aria-hidden="true">{{article.likedby.length}}</i>
+                  <i class="fa fa-heart fa-2x love " aria-hidden="true">{{article.likedby.length}}</i>
                 </a>
               </div>
             </div>
@@ -167,9 +165,7 @@
                 >
                 <a href @click.prevent="readArticle(article)">
                   <div class="card-img-overlay h-100 d-flex flex-column justify-content-end">
-                    <div class="card-text border-0 bg-semitransparent text-center">
-                      <b>Read this</b>
-                    </div>
+                    <div class="card-text border-0 bg-semitransparent text-center"></div>
                   </div>
                 </a>
               </div>
@@ -203,7 +199,7 @@
                   <i class="fa fa-pencil-square-o fa-2x edit" aria-hidden="true"></i>
                 </a>
                 <a>
-                  <i class="fa fa-heart-o fa-2x love" aria-hidden="true">{{article.likedby.length}}</i>
+                  <i class="fa fa-heart fa-2x love " aria-hidden="true">{{article.likedby.length}}</i>
                 </a>
               </div>
             </div>
@@ -218,6 +214,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: ["ax"],
   data() {
@@ -236,16 +233,50 @@ export default {
   methods: {
     readArticle(article) {
       console.log("read");
+      this.$emit("view", article);
     },
     editArticle(article) {
       console.log("edit");
+      this.$emit("edit", article);
     },
     deleteArticle(article) {
-      console.log("delete");
+      swal({
+        title: "Confirmation",
+        text: `Delete this article?`,
+        icon: "info",
+        buttons: true,
+        dangerMode: true
+      }).then(confirm => {
+        if (confirm) {
+          this.ax({
+            method: "DELETE",
+            url: "http://localhost:3000/articles/" + String(article._id),
+            headers: {
+              token: localStorage.token
+            }
+          })
+            .then(({ data }) => {
+              swal(
+                "Article Deleted",
+                "Successfully delete the article",
+                "success"
+              );
+              this._getUserArticles();
+            })
+            .catch(err => {
+              console.log(err);
+              console.log(err.response);
+              swal("Error Occurred", "Please try again later", "error");
+            });
+        }
+      });
     },
     _getUserArticles() {
+      this.articles = [];
+      this.posted = [];
+      this.saved = [];
       this.ax({
-        methods: "GET",
+        method: "GET",
         url: "/articles/all/user?sort=desc"
       })
         .then(({ data }) => {

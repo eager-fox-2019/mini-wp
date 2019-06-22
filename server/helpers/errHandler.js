@@ -7,12 +7,13 @@ module.exports = function(err, req, res, next) {
   } else if (err.name === "ValidationError") {
     // handle error mongoose
     res.status(400).json({ message: `"${err.message}"` });
-  } else if (err.response.status) {
-    // handle error axios
-    res.status(err.response.status).json({ message: err.response.statusText });
-  } else {
+  } 
+  // else if (err.response.status) {
+  //   // handle error axios
+  //   res.status(err.response.status).json({ message: err.response.statusText });
+  // } 
+  else {
     // handle error yang ga diketahui asal muasalnya
     res.status(500).json({ message: "internal server error" });
   }
 };
-

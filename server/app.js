@@ -18,7 +18,7 @@ if (
   app.use(cors());
 }
 
-app.use(morgan("short"));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false, limit: "2mb" }));
 

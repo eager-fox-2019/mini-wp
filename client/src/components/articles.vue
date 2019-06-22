@@ -99,9 +99,9 @@
               </div>
               <div class="p-3 ml-1">
                 <a @click.prevent="like_unlike(article)">
-                  <div v-if="checkLike(article.likedby)">
+                  <div v-if="checkLike(article.likedby) == true">
                     <i
-                      class="fa fa-heart fa-2x love text-error"
+                      class="fa fa-heart fa-2x love text-danger"
                       aria-hidden="true"
                     >&ensp;{{article.likedby.length}}</i>
                   </div>
@@ -228,7 +228,7 @@ export default {
     checkLike(likedby) {
       let status = false;
       likedby.forEach(like => {
-        if (likedby._id == this.loggedInUser._id) {
+        if (like._id == this.loggedInUser._id) {
           status = true;
         }
       });
@@ -240,7 +240,7 @@ export default {
     },
     _getAllArticles() {
       this.ax({
-        methods: "GET",
+        method: "GET",
         url: "/articles?sort=desc"
       })
         .then(({ data }) => {
@@ -251,16 +251,67 @@ export default {
           console.log(err);
         });
     },
-    like_unlike(article) {},
+    like_unlike(article) {
+      // if (this.checkLike(article.likedby)) {
+      //   console.log("udah di like");
+      //   let likedby = article.likedby;
+      //   let index = likedby.indexOf(article._id);
+      //   article.likedby.splice(index, 1);
+      // } else {
+      //   console.log("belum di like");
+      //   article.likedby.push(this.loggedInUser._id);
+      // }
+      this.ax({
+        method: "PATCH",
+        url: "/articles/likes/" + article._id
+      })
+        .then(({ data }) => {
+          this._getAllArticles();
+        })
+        .catch(err => {
+          swal("Sorry", "Problem occured, try again later", "error");
+          console.log("errorlike unlike artikel", JSON.stringify(err, null, 2));
+          console.log(err);
+        });
+    },
     readArticle(article) {
-      console.log("read")
+      console.log("read");
       this.$emit("view", article);
     },
     editArticle(article) {
-      console.log("edit")
+      console.log("edit");
       this.$emit("edit", article);
     },
-    deleteArticle(article) {}
+    deleteArticle(article) {
+      swal({
+        title: "Confirmation",
+        text: `Delete this article?`,
+        icon: "info",
+        buttons: true,
+        dangerMode: true
+      }).then(confirm => {
+        if (confirm) {
+          this.ax({
+            method: "DELETE",
+            url: "/articles/" + String(article._id)
+          })
+            .then(({ data }) => {
+              console.log(data);
+              swal(
+                "Article Deleted",
+                "Successfully delete the article",
+                "success"
+              );
+              this._getAllArticles();
+            })
+            .catch(err => {
+              console.log(err);
+              console.log(err.response);
+              swal("Error Occurred", "Please try again later", "error");
+            });
+        }
+      });
+    }
   }
 };
 </script>
@@ -281,7 +332,7 @@ export default {
   color: grey;
 }
 .delete:hover {
-  color: red;
+  color: orangered;
 }
 
 .edit {
@@ -295,7 +346,7 @@ export default {
   color: grey;
 }
 .love:hover {
-  color: pink;
+  color: rgb(255, 88, 166);
 }
 .read {
   color: grey;
