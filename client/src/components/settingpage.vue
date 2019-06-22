@@ -1,4 +1,77 @@
-Vue.component("setting-page", {
+
+<template>
+  <div class="p-5">
+    <div class="container">
+      <div class="container border-top border-left border-right p-3 mx-1">
+        <center class="col-12 my-3">
+          <div class="col-12">
+            <div class="row my-1 justify-content-center">
+              <img
+                class="img-thumbnail rounded-circle"
+                height="140"
+                width="140"
+                v-bind:src="loggedInUser.picture"
+                style="max-height: 140px; max-width: 140px;"
+              >
+            </div>
+            <div class="row my-3 justify-content-center">
+              <div class="col-12">
+                <h5>{{ loggedInUser.name }}</h5>
+                <small class="text-muted my-3">user ID : {{ loggedInUser._id }}</small>
+                <p class="my-1">
+                  <b>{{ loggedInUser.email }}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </center>
+      </div>
+      <div class="container border-bottom border-left border-right p-3 mx-1">
+        <div class="col-12 my-3">
+          <form class="my-3" @submit.prevent="updateAccount">
+            <div class="form-group">
+              <label for="changeName">Change Name</label>
+              <input
+                v-model="userChange.name"
+                type="text"
+                class="form-control"
+                id="changeName"
+                placeholder="Name"
+              >
+            </div>
+            <div class="form-group">
+              <label for="changePassword">Change Password</label>
+              <input
+                v-model="userChange.password"
+                type="password"
+                class="form-control"
+                id="changePassword"
+                placeholder="Password"
+              >
+            </div>
+            <div class="form-group">
+              <label for="selectedPicture">Profile Picture</label>
+              <input
+                @change="selectProfilePic"
+                id="selectedPicture"
+                type="file"
+                class="form-control-file"
+                placeholder="Profile Picture"
+              >
+            </div>
+            <center class="mt-5 my-3">
+              <button type="submit" class="btn btn-lg btn-primary mx-2">Update Your Account Detail</button>
+            </center>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ["ax"],
   data() {
     return {
       loggedInUser: {},
@@ -11,16 +84,6 @@ Vue.component("setting-page", {
   mounted() {},
   methods: {
     // USER RELATED FUNCTION
-    checkUser() {
-      console.log("check user");
-      if (localStorage.getItem("user")) {
-        let userData = JSON.parse(localStorage.getItem("user"));
-        this.loggedInUser._id = userData._id;
-        this.loggedInUser.email = userData.email;
-        this.loggedInUser.name = userData.name;
-        this.loggedInUser.picture = userData.picture;
-      }
-    },
     updateAccount() {
       if (
         !this.userChange.name &&
@@ -70,7 +133,7 @@ Vue.component("setting-page", {
 
               const formdata = new FormData();
               formdata.append("image", blob);
-              ax({
+              this.ax({
                 method: "POST",
                 url: "/uploadimg",
                 data: formdata,
@@ -82,7 +145,7 @@ Vue.component("setting-page", {
                 .then(({ data }) => {
                   this.userChange.picture = data;
                   updValue.picture = data;
-                  return ax({
+                  return this.ax({
                     method: "PATCH",
                     url: "/users",
                     data: updValue
@@ -125,9 +188,9 @@ Vue.component("setting-page", {
               );
             } else {
               if (updValue.name == "" || updValue.password == "") {
-                swal("Fill one of the field that you want to update");
+                swal("Fill one of the field that you want to update!");
               } else {
-                ax({
+                this.ax({
                   method: "PATCH",
                   url: "/users",
                   data: updValue
@@ -171,84 +234,6 @@ Vue.component("setting-page", {
     selectProfilePic(event) {
       this.userChange.picture = event.target.files[0];
     }
-  },
-  template: `
-  <div class="p-5">
-        <div class="container">
-          <div class="container border-top border-left border-right p-3 mx-1">
-            <center class="col-12 my-3">
-              <div class="col-12">
-                <div class="row my-1 justify-content-center">
-                  <img
-                    class="img-thumbnail rounded-circle"
-                    height="140"
-                    width="140"
-                    v-bind:src="loggedInUser.picture"
-                    style="max-height: 140px; max-width: 140px;"
-                  />
-                </div>
-                <div class="row my-3 justify-content-center">
-                  <div class="col-12">
-                    <h5>
-                      {{ loggedInUser.name }}
-                    </h5>
-                    <small class="text-muted my-3">
-                      user ID : {{ loggedInUser._id }}
-                    </small>
-                    <p class="my-1">
-                      <b>
-                        {{ loggedInUser.email }}
-                      </b>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </center>
-          </div>
-          <div
-            class="container border-bottom border-left border-right p-3 mx-1"
-          >
-            <div class="col-12 my-3">
-              <form class="my-3" @submit.prevent="updateAccount">
-                <div class="form-group">
-                  <label for="changeName">Change Name</label>
-                  <input
-                    v-model="userChange.name"
-                    type="text"
-                    class="form-control"
-                    id="changeName"
-                    placeholder="Name"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="changePassword">Change Password</label>
-                  <input
-                    v-model="userChange.password"
-                    type="password"
-                    class="form-control"
-                    id="changePassword"
-                    placeholder="Password"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="selectedPicture">Profile Picture</label>
-                  <input
-                    @change="selectProfilePic"
-                    id="selectedPicture"
-                    type="file"
-                    class="form-control-file"
-                    placeholder="Profile Picture"
-                  />
-                </div>
-                <center class="mt-5 my-3">
-                  <button type="submit" class="btn btn-lg btn-primary mx-2">
-                    Update Your Account Detail
-                  </button>
-                </center>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-  `
-});
+  }
+};
+</script>

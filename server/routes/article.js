@@ -7,7 +7,7 @@ router.use(authentication);
 
 router.get(`/`, controller.all);
 router.get(`/:id`, controller.detail);
-router.get(`/user`, controller.user);
+router.get(`/all/user`, controller.user);
 
 router.post(`/`, controller.create);
 router.patch(`/likes/:id`, controller.updatelikes);

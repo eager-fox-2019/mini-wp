@@ -7,7 +7,11 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!-- =================================================================================================================== ICON -->
     <link rel="shortcut icon" href="img/icon.ico" />
+
+    <!-- ============================================================================================================== BOOTSTRAP -->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -25,197 +29,37 @@
       integrity="sha384-sZG5VVk41YqhJjYXgJFoRVd3d2AdDgy4oyIytQJMGx/Mizz1N+5bgKQBSCGfKQnP"
       crossorigin="anonymous"
     />
-
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css"
     />
+
+    <!-- ============================================================================================================= FONT AWESOME -->
     <link
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       rel="stylesheet"
       integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
       crossorigin="anonymous"
     />
+
+    <!-- ============================================================================================================ EDITOR WYSIWIG -->
     <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
     />
 
-    <!-- load custom css -->
+    <!-- ================================================================================================================ CSS CUSTOM -->
     <link href="css/custom.css" rel="stylesheet" />
     <link href="css/signin.css" rel="stylesheet" />
 
-    <!-- load vue and bootstrap vue -->
-
-    <!-- load google platform api -->
+    <!-- ======================================================================================================================= GAPI -->
     <script src="https://apis.google.com/js/platform.js"></script>
 
-    <!-- <meta
-      name="google-signin-client_id"
-      content="647848106811-cm0ck452dmhg5b8g38n0dh2bu8ovv7hh.apps.googleusercontent.com"
-    /> -->
     <title>Mini WP</title>
   </head>
   <body>
     <div id="app" class="h-100">
-      <!-- ========================================================================================================= LOGIN PAGE -->
-      <login-page
-        :input="inputLoginRegister"
-        class="h-100 d-flex align-items-center"
-        v-if="isLogin == false && isOnPage == 'login'"
-        @pindah_register="page_register"
-        @berhasil_login="checkLogin"
-        @load="page_login"
-      ></login-page>
 
-      <!-- ========================================================================================================== REGISTER PAGE -->
-      <register-page
-        :input="inputLoginRegister"
-        class="h-100 d-flex align-items-center"
-        v-if="isLogin == false && isOnPage == 'register'"
-        @pindah_login="page_login"
-        @pindah_login_afteregister="page_login_afterregister"
-      ></register-page>
-
-      <!-- ========================================================================================================= NAVIGATION BAR -->
-
-      <navbar
-        v-if="isLogin"
-        :isOnPage="isOnPage"
-        @berhasil_logout="checkLogin"
-        @pindah_articles="page_articles"
-        @pindah_myarticles="page_myarticles"
-        @pindah_setting="page_setting"
-        @pindah_newarticle="page_newarticle"
-      ></navbar>
-
-      <!-- ================================================================================================================== FEEDS -->
-      <articles-page
-        v-if="isLogin === true && isOnPage =='articles'"
-      ></articles-page>
-
-      <!-- ============================================================================================================ MY ARTICLES -->
-      <myarticles-page
-        v-if="isLogin === true && isOnPage =='myarticles'"
-      ></myarticles-page>
-
-      <!-- ========================================================================================================== WRITE ARTICLE -->
-      <div v-if="isLogin === true && isOnPage =='newarticle'" class="px-5 pt-5">
-        <div class="container-fluid row w-100 px-0 mx-0 justify-content-center">
-          <div class="col-lg-9 p-3 d-flex justify-content-center">
-            <div class="row">
-              <div class="col-12">
-                <h3 class="text-center mb-4">Write New Article</h3>
-              </div>
-              <div class="col-12 mt-2" style="margin-bottom: -2px;">
-                <input
-                  type="text"
-                  v-model="inputArticle.title"
-                  placeholder="Article Title"
-                  class="form-control heading"
-                />
-              </div>
-              <div class="col-12">
-                <div id="editor"></div>
-              </div>
-              <div class="col-12 mt-2">
-                <div>
-                  <label for="selectedPicture">Upload Featured Image</label>
-                  <small class="text-danger"> Required</small>
-                  <input
-                    @change="selectArticlePic"
-                    id="selectedPicture"
-                    type="file"
-                    class="form-control-file"
-                    placeholder="Profile Picture"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-2 p-3 d-flex justify-content-center">
-            <div class="row p-3 d-flex">
-              <div class="col-12 align-self-start">
-                <div class="p-3">
-                  <div class="my-5">
-                    <h5>Author</h5>
-                    <i class="fa fa-user"></i>
-                  </div>
-                  <div class="my-5">
-                    <h5>Date</h5>
-                    <i class="fa fa-calendar"></i>
-                    {{ new Date().toDateString() }}
-                  </div>
-                  <form class="mt-5 mb-3" @submit.prevent="addTag">
-                    <label for="tags"><h5>Tags</h5></label>
-                    <input
-                      class="form-control"
-                      id="tags"
-                      type="text"
-                      placeholder="Tag"
-                      v-model="inputTag"
-                    />
-                  </form>
-                  <div v-if="inputArticle.tags.length > 0">
-                    <div class="row mx-1">
-                      <div v-for="tag in inputArticle.tags">
-                        <p
-                          class="mx-2 custom-hov-red"
-                          @click.prevent="removeTag(tag)"
-                        >
-                          <span class="badge badge-secondary">
-                            <i class="fa fa-tags mr-1"></i>
-                            {{ tag }}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 align-self-end">
-                <div class="row">
-                  <button
-                    class="btn btn-block btn-success mx-auto mb-3"
-                    @click="newArticle('post')"
-                  >
-                    <i class="fa fa-paper-plane fa-1x" aria-hidden="true"></i>
-                    POST
-                  </button>
-                  <button
-                    class="btn btn-block btn-warning mx-auto"
-                    @click="newArticle('save')"
-                  >
-                    <i class="fa fa-floppy-o fa-1x" aria-hidden="true"></i> SAVE
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- =========================================================================================================== EDIT ARTICLE -->
-      <div v-if="isLogin === true && isOnPage =='editarticle'" class="p-5">
-        <div class="container">
-          halaman edit artikel/feeds
-        </div>
-      </div>
-
-      <!-- =========================================================================================================== READ ARTICLE -->
-      <div v-if="isLogin === true && isOnPage =='viewarticle'" class="p-5">
-        <div class="container">
-          halaman lihat detail artikel/feeds
-        </div>
-      </div>
-
-      <!-- =========================================================================================================== SETTING USER -->
-
-      <setting-page
-        v-if="isLogin === true && isOnPage =='setting'"
-      ></setting-page>
-
-      <!-- CLOSING TAG DIV #APP -->
     </div>
 
     <!-- =================================================================================================================== OTHERS -->
@@ -241,20 +85,7 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
-    <!-- ======================================================================================================================= VUE -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
-
-    <!-- ================================================================================================================= COMPONENTS -->
-    <script src="js/components/settingpage.js"></script>
-    <script src="js/components/navigationbar.js"></script>
-    <script src="js/components/registerpage.js"></script>
-    <script src="js/components/loginpage.js"></script>
-    <script src="js/components/myarticles.js"></script>
-    <script src="js/components/articles.js"></script>
-
     <!-- ================================================================================================================== VUE AND MAIN -->
-    <script src="js/vue.js"></script>
-    <script src="js/main.js"></script>
+    <script src="./src/main.js"></script>
   </body>
 </html>

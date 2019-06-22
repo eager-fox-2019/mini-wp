@@ -1,8 +1,10 @@
 const Article = require(`../models/article`);
+const { ObjectId } = require(`mongoose`);
 
 class ControllerArticle {
   // POST /articles
   static create(req, res, next) {
+    req.body.author = req.user._id;
     Article.create(req.body)
       .then(created => {
         res.status(201).json(created);
@@ -36,9 +38,8 @@ class ControllerArticle {
 
   // GET /articles
   static all(req, res, next) {
-    Article.find({ status: "posted" })
+    Article.find({ status: "post" })
       .populate("author")
-      .populate("tags")
       .then(founds => {
         if (founds.length >= 1) {
           let asc = founds.sort((a, b) => {
@@ -59,7 +60,6 @@ class ControllerArticle {
   // GET /articles/user
   static user(req, res, next) {
     Article.find({ author: req.user._id })
-      .populate("tags")
       .populate("author")
       .then(founds => {
         if (founds.length >= 1) {
@@ -110,5 +110,3 @@ class ControllerArticle {
 }
 
 module.exports = ControllerArticle;
-
-

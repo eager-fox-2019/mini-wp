@@ -18,8 +18,10 @@ const sendUploadToGCS = (req, res, next) => {
     console.log("req.file kosong");
     return next();
   }
-
-  const gcsname = `upload/${Date.now()}${req.file.originalname}`;
+  console.log(JSON.stringify(req.file));
+  let filetype = req.file.mimetype.split("/")[1];
+  const gcsname = `upload/${Date.now()}${req.file.originalname}.${filetype}`;
+  console.log(gcsname);
   const file = bucket.file(gcsname);
 
   const stream = file.createWriteStream({
