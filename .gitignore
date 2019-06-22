@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
-index-jquery.js
 .env
 keyfile.json
 oldclient
+dist
+.cache
+
