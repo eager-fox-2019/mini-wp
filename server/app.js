@@ -1,12 +1,14 @@
 //Variable Declaration
-require('dotenv').config();
+if (process.env.NODE_ENV === 'development') require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const router = require('./routes')
-const { errHandler } = require('./helpers/errHandlers')
+const errHandler = require('./helpers/errHandler')
 const port = process.env.PORT || 3000;
+const fileUpload = require('express-fileupload')
 
 //Initial middleware
 app.use(express.urlencoded({ extended: false }))
@@ -21,6 +23,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 //Cors, Router, Error Handling
 app.use(cors())
+app.use(fileUpload());
 app.use('/', router)
 app.use(errHandler)
 

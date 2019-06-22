@@ -1,3 +1,4 @@
+// vue
 let vm = new Vue({
   el: "#app",
   data: {
@@ -11,7 +12,8 @@ let vm = new Vue({
     search: "",
     addEdit: "",
     showMessage: false,
-    message: ""
+    message: "",
+    image: 'http://mini-wp.isnanirsyad.online/images/cat.png'
   },
   methods: {
     listArticle() {
@@ -36,6 +38,9 @@ let vm = new Vue({
       this.page='add-edit-article'
       this.$nextTick(() => {
         let quill = new Quill('#article-editor', {
+          // modules: {
+          //   toolbar: toolbarOptions
+          // },
           theme: 'snow'
         });
         quill.on('text-change', () => { this.article.content = quill.getText() } )
@@ -51,6 +56,9 @@ let vm = new Vue({
       this.page = 'add-edit-article'
       this.$nextTick(() => {
         let quill = new Quill('#article-editor', {
+          // modules: {
+          //   toolbar: toolbarOptions
+          // },
           theme: 'snow'
         });
         quill.setText(this.article.content)
@@ -109,3 +117,23 @@ let vm = new Vue({
   },
 })
 
+//quill wysiwyg 
+// const toolbarOptions = [
+//   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+//   ['blockquote', 'code-block'],
+
+//   [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+//   [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+//   [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+//   [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+//   [{ 'direction': 'rtl' }],                         // text direction
+
+//   [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+//   [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+//   [ 'link', 'image', 'video', 'formula' ],          // add's image support
+//   [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+//   [{ 'font': [] }],
+//   [{ 'align': [] }],
+
+//   ['clean'] 
+// ];

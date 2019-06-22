@@ -83,7 +83,7 @@
           </div>
         </template>
 
-        <!-- Add Article -->
+        <!-- Add/Edit Article -->
         <template v-else-if="page === 'add-edit-article'">
             <div class="col-9 m-3">
                 <h3>{{ addEdit }} Article</h3>
@@ -95,6 +95,7 @@
                         <input v-model="article.title" class="col" type="text" placeholder="Title"><br><br>
                         <div id="article-editor"></div>
                       </div><br>
+                      <input type="file">
                       <div class="clearfix">
                         <button type="submit" href="#" class="btn btn-primary float-right">{{ addEdit }}</button>
                       </div>
@@ -130,8 +131,9 @@
         <!-- Read Article -->
         <template v-else-if="page === 'read-article'">
           <div class="col-9 m-3">
-            <h3>{{ article.title }}</h3>
+            <img v-bind:src="image">
             <hr>
+            <h3>{{ article.title }}</h3>
             <p>{{ article.content }}</p>
             <strong>Published: {{ article.createdAt }}</strong>
           </div>
