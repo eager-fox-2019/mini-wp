@@ -13,48 +13,206 @@
     </ul>
     <div class="tab-content border border-top-0">
       <div class="tab-pane fade active show" id="all">
-        <div v-for="article in articles" :key="article._id" class="row mx-3 border-bottom">
-          <div class="col-lg-4 col-md-auto col-sm-auto">
-            <div class="card border p-3 m-3 text-white">
-              <img
-                src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2F4.bp.blogspot.com%2F_8c9El0DZBI8%2FTTQmr8T_LXI%2FAAAAAAAAAQc%2FAa5NbZDAn_A%2Fs1600%2Flake-toba.jpg&f=1"
-                alt="learning"
-                class="img-thumbnail align-self-center"
-                style="max-width:320px; max-height:240px;"
-              >
-              <a href>
-                <div class="card-img-overlay h-100 d-flex flex-column justify-content-end">
-                  <div class="card-text border-0 bg-semitransparent text-center">
-                    <b>Read this</b>
+        <div
+          v-for="article in articles"
+          :key="article._id"
+          class="row mx-3 border-bottom d-flex justify-content-center"
+        >
+          <div class="row container-fluid px-0 d-flex justify-content-center">
+            <div
+              class="col-xl-3 col-lg-6 col-md-12 col-sm-12 p-3 d-flex align-items-center justify-content-center"
+            >
+              <div class="card border-0 p-3 m-3 text-white">
+                <img
+                  :src="article.picture"
+                  :alt="article.title"
+                  class="img-thumbnail align-self-center"
+                  style="max-width:320px; max-height:240px;"
+                >
+                <a href @click.prevent="readArticle(article)">
+                  <div class="card-img-overlay h-100 d-flex flex-column justify-content-end">
+                    <div class="card-text border-0 bg-semitransparent text-center"></div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12 p-3">
+              <div class="row container-fluid px-0 mx-0 read">
+                <div class="col-12 m-0 p-0" href @click="readArticle(article)">
+                  <div class="m-3">
+                    <h1>{{article.title}}</h1>
+                  </div>
+                  <small
+                    class="ml-3"
+                  >created At {{new Date(article.createdAt).toLocaleDateString()}}</small>
+                  <span v-if="article.status == 'post'" class="badge badge-info m-3">
+                    <i class="fa fa-paper-plane mr-1"></i>
+                    {{ article.status }}ed
+                  </span>
+                  <span v-if="article.status == 'save'" class="badge badge-warning m-3">
+                    <i class="fa fa-floppy-o mr-1"></i>
+                    {{ article.status }}d
+                  </span>
+                  <br>
+                  <div class="m-3">
+                    <span v-for="tag in article.tags" :key="tag" class="badge badge-secondary mr-3">
+                      <i class="fa fa-tags mr-1"></i>
+                      {{ tag }}
+                    </span>
+                  </div>
+                  <div class="m-3 mt-0">
+                    <p>{{article.content.split("").splice(0, 200).join("")}} ...</p>
                   </div>
                 </div>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-8 col-md-auto col-sm-auto p-3">
-            <h1 class="m-3">{{article.title}}</h1>
-            <small class="ml-3">created At {{new Date(article.createdAt).toLocaleDateString()}}</small>
-            <br>
-            <div class="m-3">
-              <span v-for="tag in article.tags" :key="tag" class="badge badge-secondary">
-                <i class="fa fa-tags mr-1"></i>
-                {{ tag }}
-              </span>
-            </div>
-            <div class="m-3 mt-0">
-              <p>{{article.content.split("").splice(0, 100).join("")}}</p>
-            </div>
-            <div class="m-3 align-self-end">
-              <div>
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </div>
+              <div class="m-3 align-self-end d-flex justify-content-around">
+                <a href @click.prevent="deleteArticle(article)">
+                  <i class="fa fa-trash fa-2x delete" aria-hidden="true"></i>
+                </a>
+                <a href @click.prevent="editArticle(article)">
+                  <i class="fa fa-pencil-square-o fa-2x edit" aria-hidden="true"></i>
+                </a>
+                <a>
+                  <i class="fa fa-heart-o fa-2x love" aria-hidden="true">{{article.likedby.length}}</i>
+                </a>
               </div>
             </div>
           </div>
         </div>
+        <div v-if="articles.length == 0" class="p-5 text-center">
+          <h1>NO ARTICLES FOUND</h1>
+        </div>
       </div>
-      <div class="tab-pane fade" id="saved">saved</div>
-      <div class="tab-pane fade" id="posted">posted</div>
+      <div class="tab-pane fade" id="saved">
+        <div
+          v-for="article in saved"
+          :key="article._id"
+          class="row mx-3 border-bottom d-flex justify-content-center"
+        >
+          <div class="row container-fluid px-0 d-flex justify-content-center">
+            <div
+              class="col-xl-3 col-lg-6 col-md-12 col-sm-12 p-3 d-flex align-items-center justify-content-center"
+            >
+              <div class="card border-0 p-3 m-3 text-white">
+                <img
+                  :src="article.picture"
+                  :alt="article.title"
+                  class="img-thumbnail align-self-center"
+                  style="max-width:320px; max-height:240px;"
+                >
+                <a href @click.prevent="readArticle(article)">
+                  <div class="card-img-overlay h-100 d-flex flex-column justify-content-end">
+                    <div class="card-text border-0 bg-semitransparent text-center">
+                      <b>Read this</b>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12 p-3">
+              <div class="row container-fluid px-0 mx-0 read">
+                <div class="col-12 m-0 p-0" href @click="readArticle(article)">
+                  <div class="m-3">
+                    <h1>{{article.title}}</h1>
+                  </div>
+                  <small
+                    class="ml-3"
+                  >created At {{new Date(article.createdAt).toLocaleDateString()}}</small>
+                  <br>
+                  <div class="m-3">
+                    <span v-for="tag in article.tags" :key="tag" class="badge badge-secondary mr-3">
+                      <i class="fa fa-tags mr-1"></i>
+                      {{ tag }}
+                    </span>
+                  </div>
+                  <div class="m-3 mt-0">
+                    <p>{{article.content.split("").splice(0, 200).join("")}} ...</p>
+                  </div>
+                </div>
+              </div>
+              <div class="m-3 align-self-end d-flex justify-content-around">
+                <a href @click.prevent="deleteArticle(article)">
+                  <i class="fa fa-trash fa-2x delete" aria-hidden="true"></i>
+                </a>
+                <a href @click.prevent="editArticle(article)">
+                  <i class="fa fa-pencil-square-o fa-2x edit" aria-hidden="true"></i>
+                </a>
+                <a>
+                  <i class="fa fa-heart-o fa-2x love" aria-hidden="true">{{article.likedby.length}}</i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="saved.length == 0" class="p-5 text-center">
+          <h1>NO ARTICLES FOUND</h1>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="posted">
+        <div
+          v-for="article in posted"
+          :key="article._id"
+          class="row mx-3 border-bottom d-flex justify-content-center"
+        >
+          <div class="row container-fluid px-0 d-flex justify-content-center">
+            <div
+              class="col-xl-3 col-lg-6 col-md-12 col-sm-12 p-3 d-flex align-items-center justify-content-center"
+            >
+              <div class="card border-0 p-3 m-3 text-white">
+                <img
+                  :src="article.picture"
+                  :alt="article.title"
+                  class="img-thumbnail align-self-center"
+                  style="max-width:320px; max-height:240px;"
+                >
+                <a href @click.prevent="readArticle(article)">
+                  <div class="card-img-overlay h-100 d-flex flex-column justify-content-end">
+                    <div class="card-text border-0 bg-semitransparent text-center">
+                      <b>Read this</b>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12 p-3">
+              <div class="row container-fluid px-0 mx-0 read">
+                <div class="col-12 m-0 p-0" href @click="readArticle(article)">
+                  <div class="m-3">
+                    <h1>{{article.title}}</h1>
+                  </div>
+                  <small
+                    class="ml-3"
+                  >created At {{new Date(article.createdAt).toLocaleDateString()}}</small>
+                  <br>
+                  <div class="m-3">
+                    <span v-for="tag in article.tags" :key="tag" class="badge badge-secondary mr-3">
+                      <i class="fa fa-tags mr-1"></i>
+                      {{ tag }}
+                    </span>
+                  </div>
+                  <div class="m-3 mt-0">
+                    <p>{{article.content.split("").splice(0, 200).join("")}} ...</p>
+                  </div>
+                </div>
+              </div>
+              <div class="m-3 align-self-end d-flex justify-content-around">
+                <a href @click.prevent="deleteArticle(article)">
+                  <i class="fa fa-trash fa-2x delete" aria-hidden="true"></i>
+                </a>
+                <a href @click.prevent="editArticle(article)">
+                  <i class="fa fa-pencil-square-o fa-2x edit" aria-hidden="true"></i>
+                </a>
+                <a>
+                  <i class="fa fa-heart-o fa-2x love" aria-hidden="true">{{article.likedby.length}}</i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="posted.length == 0" class="p-5 text-center">
+          <h1>NO ARTICLES FOUND</h1>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -76,16 +234,19 @@ export default {
   },
   mounted() {},
   methods: {
-    readArticle(id) {
-      console.log(id);
+    readArticle(article) {
+      console.log("read");
     },
-    editArticle(id) {
-      console.log(id);
+    editArticle(article) {
+      console.log("edit");
+    },
+    deleteArticle(article) {
+      console.log("delete");
     },
     _getUserArticles() {
       this.ax({
         methods: "GET",
-        url: "/articles/all/user"
+        url: "/articles/all/user?sort=desc"
       })
         .then(({ data }) => {
           this.articles = data;
@@ -106,5 +267,31 @@ export default {
 </script>
 
 <style scoped>
+.delete {
+  color: grey;
+}
+.delete:hover {
+  color: red;
+}
+
+.edit {
+  color: grey;
+}
+.edit:hover {
+  color: orange;
+}
+
+.love {
+  color: grey;
+}
+.love:hover {
+  color: pink;
+}
+.read {
+  color: grey;
+}
+.read:hover {
+  color: #3399f3;
+}
 </style>
 

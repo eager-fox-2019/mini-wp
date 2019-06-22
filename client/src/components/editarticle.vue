@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5">VIEW ARTICLE</div>
+  <div class="p-5">EDIT ARTICLE</div>
 </template>
 
 <script>

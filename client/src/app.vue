@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <loginpage
       :ax="ax"
       :input="inputLoginRegister"
@@ -29,20 +29,32 @@
       @pindah_newarticle="page_newarticle"
     ></navbar>
 
-    <articlespage v-if="isLogin === true && isOnPage =='articles'" :ax="ax"></articlespage>
+    <articlespage
+      v-if="isLogin === true && isOnPage =='articles'"
+      @edit="page_editarticle"
+      @view="page_detailarticle"
+      :ax="ax"
+    ></articlespage>
 
-    <myarticlespage v-if="isLogin === true && isOnPage =='myarticles'" :ax="ax"></myarticlespage>
+    <myarticlespage
+      v-if="isLogin === true && isOnPage =='myarticles'"
+      @edit="page_editarticle"
+      @view="page_detailarticle"
+      :ax="ax"
+    ></myarticlespage>
 
     <newarticlepage class="px-5 pt-5" v-if="isLogin === true && isOnPage =='newarticle'" :ax="ax"></newarticlepage>
 
     <settingpage v-if="isLogin === true && isOnPage =='setting'" :ax="ax"></settingpage>
 
-    <div v-if="isLogin === true && isOnPage =='editarticle'" class="p-5">
-      <div class="container">halaman edit artikel/feeds</div>
-    </div>
+    <editarticlepage
+      v-if="isLogin === true && isOnPage =='editarticle'"
+      :selectedArticle="selectedArticle"
+      :ax="ax"
+    ></editarticlepage>
 
     <viewarticlepage
-      v-if="isLogin === true && isOnPage =='viewarticle'"
+      v-if="isLogin === true && isOnPage =='detailarticle'"
       :selectedArticle="selectedArticle"
       :ax="ax"
     ></viewarticlepage>
@@ -58,6 +70,7 @@ import myarticlespage from "./components/myarticles";
 import settingpage from "./components/settingpage";
 import newarticlepage from "./components/newarticle";
 import viewarticlepage from "./components/viewarticle";
+import editarticlepage from "./components/editarticle";
 import axios from "axios";
 
 export default {
@@ -92,7 +105,8 @@ export default {
     myarticlespage,
     settingpage,
     newarticlepage,
-    viewarticlepage
+    viewarticlepage,
+    editarticlepage
   },
   created() {
     const serverURL = "http://localhost:3000";
@@ -215,8 +229,10 @@ export default {
       this.isOnPage = this.pages[0];
       localStorage.setItem("isOnPage", this.pages[0]);
     },
-    page_detailarticles() {
+    page_detailarticle(e) {
       this.r_inputLoginRegister();
+      this.selectedArticle = e;
+      console.log("di app ke detail article");
       this.isOnPage = this.pages[1];
       localStorage.setItem("isOnPage", this.pages[1]);
     },
@@ -230,8 +246,10 @@ export default {
       this.isOnPage = this.pages[3];
       localStorage.setItem("isOnPage", this.pages[3]);
     },
-    page_editarticle() {
+    page_editarticle(e) {
       this.r_inputLoginRegister();
+      console.log("di app ke edit article");
+      this.selectedArticle = e;
       this.isOnPage = this.pages[4];
     },
     page_register() {
