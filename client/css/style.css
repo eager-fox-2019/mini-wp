@@ -43,17 +43,22 @@ a {
     list-style-type: none;
 }
 
+.form-group{
+    /* magrin : 5rem 15rem; */
+}
 /* landing page */
 body{
     background-color: rgba(28, 28, 25, 0);
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url(../img/patrick-tomasso-71909-unsplash.jpg);
     background-size: cover;
+    /* background-repeat: no-repeat; */
     background-position: 5% 20% 
 }
 .main4 {
     /* background-image: url(../img/todd-quackenbush-701-unsplash.jpg); */
     /* background-color: aqua;  */
-    color: #fff
+    color: #fff;
+    margin-top : 15%;
 }
 #main4Con .container{
     width: 100%;
@@ -62,6 +67,24 @@ body{
     margin-right: auto;
     margin-left: auto;
     margin-top: 6rem;
+}
+/* wysiwyg text editor */
+.ql-toolbar.ql-snow, .ql-editor {
+    background-color: whitesmoke;
+}
+#editor {
+    background-color: whitesmoke;
+    height: 400px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.ql-toolbar.ql-snow {
+    margin-top: 1rem;
+    /* margin-bottom: 1rem; */
+    /* background-color: linear-gradient(rgba(0 0 0 0.5), rgba(0 0 0 0.5)) */
+}
+.ql-editor{
+    margin-bottom: 1rem;
 }
 
 /* footer */
