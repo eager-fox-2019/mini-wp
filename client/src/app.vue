@@ -56,6 +56,9 @@
 
     <viewarticlepage
       class="px-5 pt-5"
+      @myarticles="page_myarticles"
+      @edit="page_editarticle"
+      @view="page_detailarticle"
       v-if="isLogin === true && isOnPage =='detailarticle'"
       :selectedArticle="selectedArticle"
       :ax="ax"

@@ -252,15 +252,6 @@ export default {
         });
     },
     like_unlike(article) {
-      // if (this.checkLike(article.likedby)) {
-      //   console.log("udah di like");
-      //   let likedby = article.likedby;
-      //   let index = likedby.indexOf(article._id);
-      //   article.likedby.splice(index, 1);
-      // } else {
-      //   console.log("belum di like");
-      //   article.likedby.push(this.loggedInUser._id);
-      // }
       this.ax({
         method: "PATCH",
         url: "/articles/likes/" + article._id
