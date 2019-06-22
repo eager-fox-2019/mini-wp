@@ -289,6 +289,7 @@ var app = new Vue({
       })
     },
     editArticle(articleId){
+      console.log(articleId)
       this.editArticleArea = true;
 
       axios({

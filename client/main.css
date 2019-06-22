@@ -144,3 +144,18 @@ h3 {
 .card{
   margin: 1em;
 }
+
+.card-img-wrapper{
+  width: 20%;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.card-detail{
+  width: 80%;
+}
+
+.card-text{
+  height: 2em;
+  overflow: hidden;
+}

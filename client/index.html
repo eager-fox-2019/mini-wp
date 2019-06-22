@@ -144,7 +144,8 @@
         <!-- list articles -->
         <div id="articlesContainer" v-if="editArticleArea === false" >
           <div class="card" v-for="article in filteredArticles">
-            
+            <article-card v-bind:carddetail="article" v-bind:postarea="postArea"
+            @edit-article="editArticle(article._id)" @read-article="readArticle(article._id)" @del-article="delArticle(article._id)"></article-card>
           </div>
         </div>
 
@@ -157,6 +158,9 @@
               <input v-model="newTitle" type="text" name="title"></input>
             </span>
             <editor api-key="9mkhnm26fjqe5fdpy6ewfsnhcy5vrts624vxr42ffw5eunpd" :init="{plugins: 'wordcount'}" v-model="newContent" id="editArticletextarea" name="body"></editor>
+            <span class="article-image-upload-area">
+              
+            </span>
             <div class="d-flex justify-content-end align-items-center">
               <a class="btn btn-secondary" href="#" @click.prevent="cancelEdit">cancel edit</a><button v-on:click.prevent="updateArticle" class="btn btn-primary btn-md d-flex">Submit</button>
             </div>
@@ -177,7 +181,8 @@
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
         <!-- Vue components -->
-        <!-- <script src="./assets/components/nav-bar.js"></script> -->
+        <script src="./assets/components/button-counter.js"></script>
+        <script src="./assets/components/article-card.js"></script>
 
         <!-- fb login -->
         <div id="fb-root"></div>
@@ -208,6 +213,11 @@
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
+
+        <!-- fontawesome -->
+        <script src="https://kit.fontawesome.com/ecee750dca.js"></script>
+
+        <!-- Vue app -->
         <script src="./index.js"></script>
 
         <!-- Bootstrap JS -->
@@ -215,9 +225,6 @@
 
         <!-- Popper -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
-        <!-- fontawesome -->
-        <script src="https://kit.fontawesome.com/ecee750dca.js"></script>
       </span>
     </div>
   
