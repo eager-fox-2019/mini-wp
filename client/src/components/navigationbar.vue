@@ -94,7 +94,6 @@ export default {
   methods: {
     do_nothing() {},
     logout() {
-      
       gapi.load("auth2", () => {
         var auth2 = gapi.auth2.init({
           client_id:

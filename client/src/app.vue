@@ -43,17 +43,19 @@
       :ax="ax"
     ></myarticlespage>
 
-    <newarticlepage class="px-5 pt-5" v-if="isLogin === true && isOnPage =='newarticle'" :ax="ax"></newarticlepage>
-
     <settingpage v-if="isLogin === true && isOnPage =='setting'" :ax="ax"></settingpage>
 
+    <newarticlepage class="px-5 pt-5" v-if="isLogin === true && isOnPage =='newarticle'" :ax="ax"></newarticlepage>
+
     <editarticlepage
+      class="px-5 pt-5"
       v-if="isLogin === true && isOnPage =='editarticle'"
       :selectedArticle="selectedArticle"
       :ax="ax"
     ></editarticlepage>
 
     <viewarticlepage
+      class="px-5 pt-5"
       v-if="isLogin === true && isOnPage =='detailarticle'"
       :selectedArticle="selectedArticle"
       :ax="ax"

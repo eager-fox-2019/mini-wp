@@ -117,15 +117,6 @@ export default {
   },
   mounted() {},
   methods: {
-    r_inputArticle() {
-      this.inputArticle = {
-        title: "",
-        content: "",
-        rawHTML: "",
-        picture: "",
-        tags: []
-      };
-    },
     lastsave() {
       let str = this.loggedInUser._id + "_write";
       if (localStorage.getItem(str)) {
@@ -135,6 +126,15 @@ export default {
     autosave() {
       let str = this.loggedInUser._id + "_write";
       localStorage.setItem(str, JSON.stringify(this.inputArticle));
+    },
+    r_inputArticle() {
+      this.inputArticle = {
+        title: "",
+        content: "",
+        rawHTML: "",
+        picture: "",
+        tags: []
+      };
     },
     selectArticlePic(event) {
       this.inputArticle.picture = event.target.files[0];
@@ -308,6 +308,7 @@ export default {
       if (index >= 0) {
         tags.splice(index, 1);
       }
+      this.autosave();
     }
   }
 };

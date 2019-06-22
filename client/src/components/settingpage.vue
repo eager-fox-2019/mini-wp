@@ -165,20 +165,20 @@ export default {
                     JSON.stringify(this.loggedInUser)
                   );
                   this.userChange = {};
-                  this.checkUser();
                   swal("Success", "Your account has been updated", "success");
                 })
                 .catch(err => {
-                  if (err.response.data.message) {
-                    swal("Sorry", err.response.data.message, "error");
-                  } else {
-                    swal("Sorry", "Problem occured, try again later", "error");
-                  }
+                  console.log(err);
                   console.log(err);
                   console.log(
                     "error update akun dengan upload gambar",
                     JSON.stringify(err, null, 2)
                   );
+                  if (err.response.data.message) {
+                    swal("Sorry", err.response.data.message, "error");
+                  } else {
+                    swal("Sorry", "Problem occured, try again later", "error");
+                  }
                 });
             } else if (updValue.password && passwordValid == false) {
               swal(
@@ -205,10 +205,15 @@ export default {
                       JSON.stringify(this.loggedInUser)
                     );
                     this.userChange = {};
-                    this.checkUser();
+
                     swal("Success", "Your account has been updated", "success");
                   })
                   .catch(err => {
+                    console.log(err);
+                    console.log(
+                      "error update akun tanpa upload gambar",
+                      JSON.stringify(err, null, 2)
+                    );
                     if (err.response.data.message) {
                       swal("Sorry", err.response.data.message, "error");
                     } else {
@@ -218,11 +223,6 @@ export default {
                         "error"
                       );
                     }
-                    console.log(err);
-                    console.log(
-                      "error update akun tanpa upload gambar",
-                      JSON.stringify(err, null, 2)
-                    );
                   });
               }
             }
