@@ -22,6 +22,17 @@
         <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script> -->
 
         <link rel="stylesheet" href="./style.css">
+        <script>
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId            : 'your-app-id',
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v3.3'
+              });
+            };
+        </script>
+        <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
         
         <title>Blog Posts</title>
 
@@ -71,6 +82,8 @@
                                     <button @click.prevent="userLogin" type="submit" class="btn btn-primary" style="width: 100%">Login</button>
                                     <br>Or sign in with:
                                     <br><div class="g-signin2" data-onsuccess="onSignIn"></div>
+                                    <div id="fb-root"></div>
+                                    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3&appId=2373734499376645&autoLogAppEvents=1"></script>
                                     <br><small>New user? <a @click.prevent="toRegister" href="#">Register here!</a></small>
                                 </form>
                                 <form v-show="usersign === 'register'" id="register-form">
@@ -89,14 +102,6 @@
                                     <button @click.prevent="userRegister" type="submit" class="btn btn-primary" style="width: 100%">Create an account</button><br>
                                     <small>Already have an account? <a @click.prevent="toLogin" href="#">Login here!</a></small>
                                 </form>
-                                <!-- <form style="padding:10px 20px" method="POST">
-                                    <label for="email"><b>Email</b></label>
-                                    <input type="text" class="form-control" placeholder="Enter Email" name="email" id="email" required><br>
-                                    <label for="psw"><b>Password</b></label>
-                                    <input type="password" class="form-control" placeholder="Enter Password" name="psw" id="pass" required><br>
-                                    <button @click.prevent="userRegister" id="registerButton" type="submit" class="btn btn-primary">Register</button>     
-                                    <button @click.prevent="userLogin" id="loginButton" type="submit" class="btn btn-primary">Login</button>
-                                </form>  -->
                             </div>
                         </div>
                     </div>
@@ -105,6 +110,10 @@
 
             <div class="middle">
                 <div class="sidenav">
+                    <!-- <a href="#" @click.prevent="toPublishedPage"><i class="fas fa-columns"></i>Articles</a>
+                    <a v-show="isLogin" href="#" @click.prevent="toPersonalPostPage"><i class="fas fa-signature"></i>Your Articles</a>
+                    <a v-show="isLogin" href="#" @click.prevent="toDraftPage"><i class="fas fa-pencil-alt"></i>Write Article</a> -->
+
                     <a href="#"><i class="fas fa-chart-bar"></i>Stats</a>
                     <a href="#"><i class="fas fa-columns"></i>Plan</a>
                     <a href="#" data-toggle="collapse" data-target="#site-side"><i class="fas fa-pencil-alt"></i>Site</a>
@@ -158,8 +167,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-show="onSearch">
-                                <div class="md-form mt-0">
+                            <div v-show="onSearch" style="width: 100%">
+                                <div class="md-form">
                                     <input v-model="searchText" class="form-control" type="text" placeholder="Search" aria-label="Search">
                                 </div>
                             </div>

@@ -313,7 +313,7 @@ var app = new Vue({
                         confirmButtonText: 'OK'
                     })
                 })
-        }
+        },
     },
     computed: {
         filteredList() {
@@ -352,5 +352,26 @@ function googleSignOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User (Google Account) signed out.');
+    });
+}
+
+function facebookSignIn() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+         console.log('Welcome!  Fetching your information.... ');
+         FB.api('/me', function(response) {
+           console.log('Good to see you, ' + response.name + '.');
+         });
+        } else {
+         console.log('User cancelled login or did not fully authorize.');
+        }
+    });
+}
+
+function facebookLoginStatus(){
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+          console.log(response.authResponse.accessToken);
+        }
     });
 }

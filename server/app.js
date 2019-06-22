@@ -8,10 +8,10 @@ const port = process.env.PORT || 3000
 const routes = require('./routes')
 const cors = require('cors')
 const mongoose = require('mongoose')
-const url = 'mongodb://localhost:27017/mini-wp'
+const uri = process.env.MONGO_DB_URI //'mongodb://localhost:27017/mini-wp'
 const errorHandler = require('./middlewares/error-handler')
 
-mongoose.connect(url, {useNewUrlParser: true}, function(err){
+mongoose.connect(uri, {useNewUrlParser: true}, function(err){
     if(err) console.log('Connection database failed');
     else console.log('Connection database success');
 })
