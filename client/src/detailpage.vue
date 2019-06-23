@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-jumbotron height=1400>
+    <v-jumbotron height=2100>
       <v-container>
         <v-layout align-center>
           <v-flex>

@@ -86,7 +86,8 @@ class userController{
                         first_name:payload.given_name,
                         last_name:payload.family_name,
                         email:email,
-                        password:process.env.PASSWORD
+                        password:process.env.PASSWORD,
+                        image:image
                 })
                 const payloadUser = {
                     id:createdUser._id,
