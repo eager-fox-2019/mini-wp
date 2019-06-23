@@ -22,21 +22,13 @@ class ControllerArticle {
     let filteredField = Object.keys(req.body).filter((x) => schemaField.indexOf(x) > -1)
     let query = filteredField.reduce((acc, el) => Object.assign(acc, {[el]: req.body[el]}), {})
 
-    Article.find(query).populate('user_id').lean()
+    Article.find(query).lean().populate('user_id', '_id full_name username email')
       .then((articles) => {
         articles = articles.map((article) => {
           return Object.assign(article, {
             contentNonHtml: article.content.replace(/<[^>]*>?/gm, ' ').trim()
           })
         })
-        res.json(articles)
-      })
-      .catch(next)
-  }
-
-  static readAll(req, res, next) {
-    Article.find().populate('user_id')
-      .then((articles) => {
         res.json(articles)
       })
       .catch(next)
@@ -74,7 +66,9 @@ class ControllerArticle {
         } 
       })
       .then((data) => {
-        res.status(201).json(data)
+        res.status(201).json({
+          message: 'successfully delete article'
+        })
       })
       .catch(next)
   }  
