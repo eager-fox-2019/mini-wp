@@ -123,10 +123,10 @@ export default {
             swal("Logged Out", `Goodbye!`, "success");
             this.$emit("berhasil_logout");
           })
-          .catch(function(err) {
+          .catch(err => {
             console.log(err);
-            localStorage.clear();
             this.$emit("berhasil_logout");
+            localStorage.clear();
           });
       });
     },
