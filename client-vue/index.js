@@ -17,7 +17,7 @@ let vm = new Vue({
   },
   methods: {
     listArticle() {
-      axios.get('http://localhost:3000/api/article')
+      axios.get('http://localhost:3000/article')
       .then(({ data }) => {
         data.forEach(item => {
           item.createdAt = item.createdAt.substring(0,10)
