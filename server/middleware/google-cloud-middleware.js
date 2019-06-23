@@ -12,9 +12,6 @@ const DEFAULT_BUCKET_NAME = 'miniwp-storage'; // Replace with the name of your b
  * @return {*}
  */
 exports.sendUploadToGCS = (req, res, next) => {
-  // console.log("at gcs Middleware")
-  // console.log(req.file)
-  // console.log("------------that was req.file-------------")
   if (!req.file) {
     return next();
   }
@@ -24,21 +21,11 @@ exports.sendUploadToGCS = (req, res, next) => {
   const gcsFileName = `${Date.now()}-${req.file.originalname}`;
   const file = bucket.file(gcsFileName);
 
-  // console.log("++++ storage start ++++")
-  // console.log(storage)
-  // console.log("----storage ends----")
-  // console.log("------------ file ----------------------------")
-  // console.log(file)
-  // console.log("got the file")
-  // console.log(file)
-
   const stream = file.createWriteStream({
     metadata: {
       contentType: req.file.mimetype,
     },
   });
-
-  // console.log(stream)
 
   stream.on('error', (err) => {
     req.file.cloudStorageError = err;

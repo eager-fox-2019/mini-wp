@@ -1,5 +1,8 @@
 'use strict'
-require('dotenv').config()
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config()
+}
+// dotenv dimasukkan sebagai devDependencies (tidak bisa masuk)
 
 const express = require('express')
 const app = express()

@@ -1,4 +1,4 @@
-html, body, nav, #app{
+html, body, nav, #app, .content-wrapper{
   width: 100%;
   height: 100%;
   margin: 0;
@@ -154,7 +154,3 @@ h3 {
   width: 80%;
 }
 
-.card-text{
-  height: 2em;
-  overflow: hidden;
-}

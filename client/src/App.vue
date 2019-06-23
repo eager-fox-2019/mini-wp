@@ -161,7 +161,7 @@ import Editor from '@tinymce/tinymce-vue';
 
 const VoiceRSS = require('./assets/js/voicerss-tts.min.js')
 
-const baseUrl = "http://localhost:3000/api"
+const baseUrl = "http://blogger-server.stefkwan.com/api"
 
 export default {
   data() {

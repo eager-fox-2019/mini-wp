@@ -1,5 +1,6 @@
 const Article = require('../models/').Article
 const User = require('../models/').User
+const VOICE_API = bash.bashrc.VOICE_API
 
 class ControllerArticle {
 	static findAll(req, res, next){
@@ -25,8 +26,8 @@ class ControllerArticle {
 		.then(article => {
 			//http://api.voicerss.org/?key=<API key>&hl=en-us&src=Hello, world!
 			let readStr = article.title+". "+article.content.replace(/<[^>]*>?/gm, '')
-			let link = `https://api.voicerss.org?key=${process.env.VOICE_API}&hl=en-us&src=${readStr}`
-			res.json([process.env.VOICE_API, readStr])
+			let link = `https://api.voicerss.org?key=${VOICE_API}&hl=en-us&src=${readStr}`
+			res.json([VOICE_API, readStr])
 		})
 		.catch(next)
 	}
@@ -62,7 +63,6 @@ class ControllerArticle {
 	}
 
 	static uploadImage(req, res, next){
-	  console.log("uploadimage at ControllerArticle")
       try {
       	console.log(req.body)
       	console.log(req.file)

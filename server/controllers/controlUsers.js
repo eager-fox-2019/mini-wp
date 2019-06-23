@@ -4,7 +4,7 @@ const verifyPassword = require('../helpers/bcrypt.js').verifyPassword
 const generateToken = require('../helpers/jwt.js').generateToken
 const verifyToken = require('../helpers/jwt.js').verifyToken
 const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(bash.bashrc.GOOGLE_CLIENT_ID);
 
 class ControllerUser {
   static update(req, res, next){

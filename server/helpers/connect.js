@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const dbName = "miniWP"
-const url = 'mongodb://localhost:27017/' + dbName
+// const url = 'mongodb://localhost:27017/' + dbName
+const mongoAtlasPass = bash.bashrc.MONGO_PASS
+const url= 'mongodb+srv://dbStefKwan:'+mongoAtlasPass+'@clusterhacktiv-9vqzv.gcp.mongodb.net/'+dbName+'?retryWrites=true&w=majority'
 
 function connect() {
 	return new Promise ((resolve, reject) => {

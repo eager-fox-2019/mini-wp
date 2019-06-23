@@ -5,7 +5,6 @@ const verifyToken = require('../helpers/jwt.js').verifyToken
 const authentication = (req, res, next) => {
 	let token = req.headers.access_token
 	if(token) {
-		// console.log(token)
 		try{
 			let decode = verifyToken(token).input
 			if(decode){
