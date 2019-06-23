@@ -1,7 +1,7 @@
 <template>
     <div class="card margin-m">
         <div class="media media-1 spinner">
-            <img src="../assets/img/colors-contemporary-fashion-965324.jpg" />
+            <img v-bind:src="image" />
         </div>
         <p class="padding-left-m padding-top-s lead">{{title}}</p>
         <p class="padding-left-m padding-bottom-m padding-right-m" v-html="description"></p>
@@ -14,6 +14,6 @@
 
 <script>
     export default {
-        props: ['title', 'description', 'index'],
+        props: ['title', 'description', 'image', 'index'],
     }
 </script>

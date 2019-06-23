@@ -10,6 +10,7 @@
             v-if="currentPage === 'articleList'"
             v-on:search-article="searchArticle"
             v-bind:articles="articles"
+            v-bind:currentfilter="pageArticleList.currentFilter"
             v-on:clicked-detail="showDetail"
             v-on:clicked-form="showEditForm"></article-list>
         <article-detail 
@@ -53,13 +54,16 @@ const lifecycle = {
 }
 
 const ajaxActions = {
-    fetchArticles() {
-        axios.get(`${BASE_URL}/article`, axiosConfig())
+    fetchArticles(title) {
+        let url = `${BASE_URL}/article`
+        if (title) url += '?title='+title
+        axios.get(url, axiosConfig())
             .then(res => {
                 let { data } = res
                 this.articles = data.map(article => {
                     let description = stripHtml(article.content)
                     article.description = getFirstNString(description, 100) + '...'
+                    if (!article.image) article.image = "/assets/img/colors-contemporary-fashion-965324.jpg"
                     return article
                 })
             })
@@ -98,7 +102,8 @@ const ajaxActions = {
             .catch(toast_error)
     },
     searchArticle(title) {
-        debugger
+        this.fetchArticles(title)
+        this.pageArticleList.currentFilter = title
     }
 }
 

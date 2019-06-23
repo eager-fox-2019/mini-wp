@@ -2,6 +2,9 @@ module.exports = {
     currentPage: 'login',
     articles: [],
     sidebarOpen: true,
+    pageArticleList: {
+        currentFilter: ''
+    },
     pageArticleDetail: {
         title: '',
         content: ''

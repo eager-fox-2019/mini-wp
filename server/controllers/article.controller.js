@@ -28,8 +28,13 @@ class ArticleController {
 
     static async list(req, res, next) {
         let user = req.user
+        let { title } = req.query
         try {
-            let queryResult = await Article.find({user}).exec()
+            let query = {user}
+            if (title) {
+                query.title = { $regex: title, $options: "$i" }
+            }
+            let queryResult = await Article.find(query).exec()
             res.json(queryResult)
         } catch(err) {
             console.log('article list error', err)
