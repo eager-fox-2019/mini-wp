@@ -30,7 +30,10 @@ class ArticleController {
         let user = req.user
         let { title } = req.query
         try {
-            let query = {user}
+            let query = {}
+            if (user) {
+                query.user = user
+            }
             if (title) {
                 query.title = { $regex: title, $options: "$i" }
             }
