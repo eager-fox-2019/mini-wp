@@ -6,7 +6,9 @@
         v-else
         v-on:logout="logout">
         <article-list 
-            v-if="currentPage === 'articleList'"></article-list>
+            v-if="currentPage === 'articleList'"
+            v-on:search-article="searchArticle"
+            v-bind:articles="[{title: 'test', description: 'yooow'}]"></article-list>
         <article-detail 
             v-if="currentPage === 'articleDetail'"></article-detail>
         <article-form 
@@ -31,6 +33,7 @@ const lifecycle = {
         this.loginData.loggedIn = window.localStorage.getItem('loggedIn')
         this.loginData.email = window.localStorage.getItem('kecebadai-email')
         if (this.loginData.loggedIn) {
+            this.setRouting('articleList')
             toast_success('Welcome back!')
             this.fetchArticles() 
         }
@@ -81,16 +84,18 @@ const ajaxActions = {
 const routing = {
     setRouting(page) {
         switch (page) {
+            case 'login':
+                window.history.pushState({}, document.title, '/admin/login')
+                break
             case 'articleList':
                 window.history.pushState({}, document.title, '/admin/list')
                 break;
-                
             default:
                 break;
         }
         this.currentPage = page
     },
-    getRouting() {
+    initRouting(path) {
 
     },
 }
@@ -108,9 +113,13 @@ const eventHandler = {
     },
     logout() {
         window.localStorage.clear()
+        this.setRouting('login')
         this.loginData.loggedIn = false
         this.loginData.email = ''
         this.loginData.token = ''
+    },
+    searchArticle(title) {
+        debugger
     }
 }
 
