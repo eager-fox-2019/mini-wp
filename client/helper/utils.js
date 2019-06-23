@@ -44,7 +44,7 @@ function getFirstNString(str, n) {
     return str.substring(0, n)
 }
 
-export default {
+module.exports = {
     toast_error,
     toast_success,
     stripHtml,

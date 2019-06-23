@@ -4,6 +4,7 @@
   "description": "- install turret dependencies: `cd turretcss` kemudian `npm install`\r - watch-build css: `npm run watch-css`\r - run dummy server: `npm start`",
   "main": "app.client.js",
   "scripts": {
+    "serve": "parcel serve index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

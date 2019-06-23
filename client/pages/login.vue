@@ -20,13 +20,15 @@
 </template>
 
 <script>
-import axios from 'axios'
-
+const { axios, axiosConfig, BASE_URL } = require('../helper/conn.ajax.js')
+const { toast_success, toast_error } = require('../helper/utils')
 export default {
-    data: {
-        pageLogin: {
-            email: '',
-            password: ''
+    data() {
+        return {
+            pageLogin: {
+                email: '',
+                password: ''
+            }
         }
     },
     methods: {
@@ -38,16 +40,11 @@ export default {
                 {
                     email,
                     password
-                }, this.axiosConfig())
+                }, axiosConfig())
                 .then(res => {
                     let {data} = res
-                    this.loginData.loggedIn = true
-                    this.loginData.email = data.email
-                    this.loginData.token = data.access_token
-                    window.localStorage.setItem('loggedIn', 'true')
-                    window.localStorage.setItem('miniwp-email', data.email)
-                    window.localStorage.setItem('miniwp-token', data.access_token)
-                    toast_success("Login berhasil")
+                    let {access_token, email} = data
+                    this.$emit('successful-login', access_token, email)
                 })
                 .catch(toast_error) 
         },
@@ -59,7 +56,7 @@ export default {
                 {
                     email,
                     password
-                }, this.axiosConfig())
+                }, axiosConfig())
                 .then(() => {
                     toast_success('Register Berhasil')
                 })

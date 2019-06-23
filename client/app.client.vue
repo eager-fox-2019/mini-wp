@@ -1,6 +1,10 @@
 <template>
-    <login v-if="!loginData.loggedIn"></login>
-    <admin-layout v-else>
+    <login 
+        v-if="!loginData.loggedIn"
+        v-on:successful-login="successfulLogin"></login>
+    <admin-layout 
+        v-else
+        v-on:logout="logout">
         <article-list 
             v-if="currentPage === 'articleList'"></article-list>
         <article-detail 
@@ -18,9 +22,9 @@ import login from './pages/login.vue'
 import articleList from './pages/articleList.vue'
 import articleDetail from './pages/articleDetail.vue'
 import articleForm from './pages/articleForm.vue'
-import { stripHtml, toast_error, toast_success, getFirstNString } from './helper'
-import axios from 'axios'
-const BASE_URL = `http://localhost:3000`
+
+import { stripHtml, toast_error, toast_success, getFirstNString } from './helper/utils.js'
+const { axios, axiosConfig, BASE_URL } = require('./helper/conn.ajax.js') 
 
 const lifecycle = {
     created() {
@@ -28,22 +32,14 @@ const lifecycle = {
         this.loginData.email = window.localStorage.getItem('kecebadai-email')
         if (this.loginData.loggedIn) {
             toast_success('Welcome back!')
+            this.fetchArticles() 
         }
-        this.fetchArticles() 
     }
 }
 
-const methods = {
-    axiosConfig() {
-        return {
-            headers: {
-                token: window.localStorage.getItem('kecebadai-token'),
-                'Content-Type': 'application/json'
-            }
-        }
-    },
+const ajaxActions = {
     fetchArticles() {
-        axios.get(`${BASE_URL}/article`, this.axiosConfig())
+        axios.get(`${BASE_URL}/article`, axiosConfig())
             .then(res => {
                 let { data } = res
                 this.articles = data.map(article => {
@@ -59,7 +55,7 @@ const methods = {
         axios.post(`${BASE_URL}/article`, {
             title,
             content
-        }, this.axiosConfig())
+        }, axiosConfig())
             .then(() => {
                 this.currentPage = 'pageArticleList'
                 this.fetchArticles()
@@ -72,7 +68,7 @@ const methods = {
         axios.patch(`${BASE_URL}/article`, {
             title,
             content
-        }, this.axiosConfig())
+        }, axiosConfig())
             .then(() => {
                 toast_success('Sukses mengubah artikel')
                 this.currentPage = 'pageArticleList'
@@ -80,6 +76,42 @@ const methods = {
             })
             .catch(toast_error)
     },
+}
+
+const routing = {
+    setRouting(page) {
+        switch (page) {
+            case 'articleList':
+                window.history.pushState({}, document.title, '/admin/list')
+                break;
+                
+            default:
+                break;
+        }
+        this.currentPage = page
+    },
+    getRouting() {
+
+    },
+}
+
+const eventHandler = {
+    successfulLogin(access_token, email) {
+        this.loginData.loggedIn = true
+        this.loginData.email = email
+        this.loginData.token = access_token
+        window.localStorage.setItem('loggedIn', 'true')
+        window.localStorage.setItem('kecebadai-email', email)
+        window.localStorage.setItem('kecebadai-token', access_token)
+        toast_success("Login berhasil")
+        this.setRouting('articleList')
+    },
+    logout() {
+        window.localStorage.clear()
+        this.loginData.loggedIn = false
+        this.loginData.email = ''
+        this.loginData.token = ''
+    }
 }
 
 export default {
@@ -105,6 +137,10 @@ export default {
         articleDetail,
         articleForm
     },
-    methods
+    methods: {
+        ...ajaxActions,
+        ...eventHandler,
+        ...routing,
+    }
 }
 </script>
