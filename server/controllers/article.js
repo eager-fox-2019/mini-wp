@@ -1,14 +1,23 @@
 const Article = require("../models/article.js")
+const { image } = require("../helpers/error.js")
 
 class ArticleController{
     static create(req, res, next) {
         let id = req.decoded.id
+        if (!req.file){
+          throw {
+            code: 404,
+            name: `ValidationError`,
+            path: `Image`,
+            message: image
+          }
+        }
         let newArticle = {
           title: req.body.title,
           content: req.body.content,
           created_at: new Date(),
           image: req.file.cloudStoragePublicUrl,
-          tag: req.body.tags,
+          tag: req.body.tag,
           UserId: id
         };
         Article.create(newArticle)
@@ -20,16 +29,10 @@ class ArticleController{
       static read(req, res, next) {
         let myArticle = req.query.myArticle
         let id = req.decoded.id;
-        let tag = req.query.tag;
-        let search = req.query.search;
         let userArticle = {
-          UserId: id,
-          group: tag,
-          title: {$regex: `.*${search}.*`}
+          UserId: id
         }
         if(!myArticle) delete userArticle.UserId
-        if(!search) delete userArticle.title
-        if(!tag) delete userArticle.group
         Article.find(userArticle)
         .populate('UserId')
           .then(result => {

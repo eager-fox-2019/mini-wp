@@ -28,7 +28,7 @@
           >`
       }"
             ></picture-input>
-            <p v-if="error" style="color:red;display:flex;justify-content:center">Image required!</p>
+            <p v-if="error" style="color:red;display:flex;justify-content:center">{{ error }}</p>
           </div>
         </div>
       </div>
@@ -87,10 +87,9 @@ export default {
         .then(({ data }) => {
           console.log(data);
           this.$emit("showArticle");
-          console.log("@@@");
         })
         .catch(error => {
-          this.error = true;
+          this.error = error.response.data.message;
           console.log(error.response);
         });
     }

@@ -33,9 +33,6 @@
             <img style="width:757px;" v-bind:src="data.image" alt="Card image cap">
           </div>
         </div>
-
-
-
         <p class="card-text">
           <small class="text-muted">Created at {{data.created_at}}</small>
         </p>

@@ -10755,9 +10755,6 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
 var url = "http://localhost:3000";
 var _default = {
   name: "allArticle-page",
@@ -11954,10 +11951,8 @@ var _default = {
         console.log(data);
 
         _this.$emit("showArticle");
-
-        console.log("@@@");
       }).catch(function (error) {
-        _this.error = true;
+        _this.error = error.response.data.message;
         console.log(error.response);
       });
     }
@@ -12053,7 +12048,7 @@ exports.default = _default;
                           "justify-content": "center"
                         }
                       },
-                      [_vm._v("Image required!")]
+                      [_vm._v(_vm._s(_vm.error))]
                     )
                   : _vm._e()
               ],
@@ -13221,7 +13216,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49444" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51111" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -67,8 +67,6 @@ export default {
 
     // this.$refs.wisi2.setContent(content)
     //    console.log(iFrame.contentWindow.document)
-
-
     iFrame.contentWindow.document.body.innerHTML = content; // overide value's body
           //  console.log(iFrame.contentWindow.document)
     // iFrame.contentWindow.document.body.spellcheck = true

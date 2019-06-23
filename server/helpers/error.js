@@ -5,5 +5,6 @@ module.exports = {
     forbidden: `Forbidden`,
     notAuth: `Unauthorized`,
     bad: `Bad request`,
-    internal: `Internal server error`
+    internal: `Internal server error`,
+    image: `Image not found!`
   }

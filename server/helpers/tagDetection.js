@@ -21,7 +21,7 @@ const tagDetection = (req, res, next) => {
       labels.forEach(tag => {
           tags.push(tag.description)
       });
-      req.body.tags = tags
+      req.body.tag = tags
       console.log(req.body.tags)
       next()
   })
