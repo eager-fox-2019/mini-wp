@@ -120,6 +120,12 @@ const routing = {
             case 'articleDetail':
                 window.history.pushState({}, document.title, '/admin/detail')
                 break;
+            case 'articleForm':
+                window.history.pushState({}, document.title, '/admin/form')
+                break;
+            case 'publicPage':
+                window.history.pushState({}, document.title, '/')
+                break;
             default:
                 break;
         }
