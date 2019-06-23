@@ -4,7 +4,8 @@
         v-on:successful-login="successfulLogin"></login>
     <admin-layout 
         v-else
-        v-on:logout="logout">
+        v-on:logout="logout"
+        v-on:clicked-new-article="showNewForm">
         <article-list 
             v-if="currentPage === 'articleList'"
             v-on:search-article="searchArticle"
@@ -20,13 +21,14 @@
             v-if="currentPage === 'articleForm'"
             v-bind:title.sync="pageFormArticle.title"
             v-bind:content.sync="pageFormArticle.content"
+            v-bind:edit="pageFormArticle.edit"
             v-on:clicked-list="showList"
             v-on:clicked-submit-new="postArticle"></article-form>
     </admin-layout>
 </template>
 
 <script>
-import adminLayout from './components/mainPageLayout.vue'
+import adminLayout from './components/adminLayout.vue'
 import login from './pages/login.vue'
 import articleList from './pages/articleList.vue'
 import articleDetail from './pages/articleDetail.vue'
@@ -141,7 +143,13 @@ const eventHandler = {
         this.pageFormArticle.edit = true
         this.pageFormArticle.title = article.title
         this.pageFormArticle.content = article.content
+        this.setRouting('articleForm')
+    },
+    showNewForm() {
         debugger
+        this.pageFormArticle.edit = false 
+        this.pageFormArticle.title = ''
+        this.pageFormArticle.content = ''
         this.setRouting('articleForm')
     },
     showList() {

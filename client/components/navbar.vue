@@ -6,7 +6,7 @@
                 <h2 class="branding">KECE BADAI</h2>
             </div>
             <div class="nav-miniwp-control padding-xxl flex flex-row justify-content-flex-end align-items-center">
-            <button v-on:click="$emit('addForm')" id="newArticle" class="button button-white button-text margin-m"> <i class="fas fa-feather-alt"></i> New
+            <button v-on:click="$emit('add-form')" id="newArticle" class="button button-white button-text margin-m"> <i class="fas fa-feather-alt"></i> New
                 Article</button>
             <button v-on:click="$emit('logout')" class="button button-warning"> Logout</button>
             </div>

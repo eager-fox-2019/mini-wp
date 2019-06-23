@@ -2,7 +2,9 @@
     <div class="main-page">
           <sidebar v-bind:sidebar-open="sidebarOpen"></sidebar>
           <div id="content" class="flex flex-column justify-content-space-between">
-            <navbar v-on:logout="() => $emit('logout')"></navbar>
+            <navbar 
+              v-on:logout="() => $emit('logout')"
+              v-on:add-form="() => $emit('clicked-new-article')"></navbar>
             <slot></slot>
             <footer-component></footer-component>
         </div>

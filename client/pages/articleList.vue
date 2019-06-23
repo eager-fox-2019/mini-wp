@@ -6,12 +6,15 @@
             <h2 v-else class="padding-m">No Article</h2>
         </div>
         <div class='grid-card-input-search padding-m'>
-            <input 
-                v-if='articles.length > 0'
-                class="input-m" 
-                autocomplete="off" 
-                placeholder="search by title" 
-                v-on:change="$emit('search-article', $event.target.value)" />
+            <div class="flex flex-row">
+                <input 
+                    v-if='articles.length > 0'
+                    class="input-m" 
+                    autocomplete="off" 
+                    placeholder="search by title" 
+                    v-on:change="$emit('search-article', $event.target.value); $event.target.value = ''" />
+                <button class="button button-primary button-border"><i class="fas fa-search"></i></button>
+            </div>
         </div>
         <article-card 
             v-for="(article, i) in articles" 
