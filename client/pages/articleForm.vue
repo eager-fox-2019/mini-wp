@@ -19,7 +19,7 @@
         <br/>
         <button 
             v-if="edit" 
-            v-on:click="updateArticle" 
+            v-on:click="$emit('clicked-submit-edit')" 
             class="button button-m button-primary button-border">
                 Submit
         </button>

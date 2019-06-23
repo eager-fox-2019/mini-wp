@@ -24,7 +24,8 @@
             v-on:update-image="setImage"
             v-bind:edit="pageFormArticle.edit"
             v-on:clicked-list="showList"
-            v-on:clicked-submit-new="postArticle"></article-form>
+            v-on:clicked-submit-new="postArticle"
+            v-on:clicked-submit-edit="updateArticle"></article-form>
     </admin-layout>
 </template>
 
@@ -65,6 +66,7 @@ const ajaxActions = {
             .catch(toast_error)
     },
     postArticle() {
+        debugger
         let { title, content, image } = this.pageFormArticle
         let formData = new FormData() 
         formData.append('title', title)
@@ -79,7 +81,11 @@ const ajaxActions = {
             .catch(toast_error)
     },
     updateArticle() {
-        let { title, content } = this.pageFormArticle
+        let { title, content, image } = this.pageFormArticle
+        let formData = new FormData() 
+        formData.append('title', title)
+        formData.append('content', content)
+        formData.append('image', image)
         axios.patch(`${BASE_URL}/article`, {
             title,
             content
