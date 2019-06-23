@@ -128,3 +128,8 @@ footer {
   height: 900px;
 } 
 */
+
+
+div img{
+  object-fit: cover;
+}
