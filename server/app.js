@@ -6,7 +6,7 @@ const routes = require('./routes')
 const mongoose = require('mongoose')
 const url = process.env.SERVER_URL
 const cors = require('cors')
-const port = 3000
+const port = 80
 
 mongoose.connect(url, {useNewUrlParser: true}, (err) => {
   if(err) console.log('error connecting mongoose')

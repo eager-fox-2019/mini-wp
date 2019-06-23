@@ -1,3 +1,5 @@
+const baseUrl = 'http://34.87.35.99/api/'
+
 new Vue({
   el: '#app',
   data: {
@@ -64,7 +66,7 @@ new Vue({
     this.createdHook = true
     axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/articles'
+      url: `${baseUrl}articles`
     })
     .then(({data}) => { 
       data.forEach(article => {
@@ -85,7 +87,7 @@ new Vue({
     getArticles() {
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/api/articles'
+        url: `${baseUrl}articles`
       })
       .then(({data}) => {
         data.forEach(article => {
@@ -106,7 +108,7 @@ new Vue({
     deleteArticle(id) {
       axios({
         method: 'DELETE',
-        url: `http://localhost:3000/api/articles/${id}`
+        url: `${baseUrl}articles/${id}`
       })
       .then(() => {
         let filterNih = this.articles.filter(article => article._id !== id)
@@ -122,7 +124,7 @@ new Vue({
       formData.append('image', this.newArticle.image)
       axios({
         method: 'POST',
-        url:  `http://localhost:3000/api/articles`,
+        url:  `${baseUrl}articles`,
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -146,7 +148,7 @@ new Vue({
       let input = this.register
       axios({ 
         method: 'POST',
-        url: `http://localhost:3000/api/users/register`,
+        url: `${baseUrl}users/register`,
         data: input
       })
       .then(({data}) => {
@@ -166,7 +168,7 @@ new Vue({
       let input = this.login
       axios({ 
         method: 'POST',
-        url: `http://localhost:3000/api/users/login`,
+        url: `${baseUrl}users/login`,
         data: input
       })
       .then(({data}) => {
@@ -201,7 +203,7 @@ new Vue({
     findArticle(id) {
       axios({ 
         method: 'GET',
-        url: `http://localhost:3000/api/articles/find/${id}`
+        url: `${baseUrl}articles/find/${id}`
       })
       .then(({data}) => {
         this.page = 'edit'
@@ -219,7 +221,7 @@ new Vue({
       formData.append('image', this.editArticle.picture)
       axios({ 
         method: 'PATCH',
-        url: `http://localhost:3000/api/articles/${this.editArticle._id}`,
+        url: `${baseUrl}articles/${this.editArticle._id}`,
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -238,7 +240,7 @@ new Vue({
     getByUser() {
       axios({ 
         method: 'GET',
-        url: `http://localhost:3000/api/articles/user/${this.loggedUser.id}`,
+        url: `${baseUrl}articles/user/${this.loggedUser.id}`,
         headers: {
           'token': localStorage.getItem('token')
         }
