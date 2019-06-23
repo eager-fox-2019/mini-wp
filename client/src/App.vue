@@ -534,40 +534,45 @@ export default {
     uploadImage(event) {
     	const image = event.target.files[0]
 
-	    let data = new FormData();
-	    data.append('name', 'my-picture');
-	    data.append('file', image); 
-	    console.log("data from image")
-	    console.log(data)
-	    console.log("---")
+      // const reader = new FileReader();
+      // reader.readAsDataURL(image);
+      // reader.onload = e =>{
+      //     this.newImage = e.target.result;
+      //     debugger
+      //     localStorage.setItem("imageToUpload", e.target.result)
+      //     console.log("image at local storage")
+      //     console.log(localStorage.getItem("imageToUpload"));
+      //     console.log("-----")
+      // };
 
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = e =>{
-          this.newImage = e.target.result;
-          debugger
-          localStorage.setItem("imageToUpload", e.target.result)
-          console.log("image at local storage")
-          console.log(localStorage.getItem("imageToUpload"));
-          console.log("-----")
-      };
+	    let dataToUpload = new FormData();
+	    dataToUpload.append('name', 'my-picture');
+	    dataToUpload.append('image', image); 
+	    // console.log("dataToUpload from image")
+	    // console.log(dataToUpload)
+	    // console.log("---")
 
-      // axios({
-      //   method: "POST",
-      //   url: baseUrl+"/articles/uploadImage",
-      //   data: newArticle,
-      //   headers:{
-      //     access_token: localStorage.getItem("access_token"),
-      //     // "Content-Type": "multipart/form-data",
-      //   }
-      // })
-      // .then(({data}) => {
-      //   console.log("uploaded an image")
-      // })
-      // .catch(err => {
-      //   console.log("created error:",err)
-      //   this.showError(err)
-      // })
+      axios({
+        method: "POST",
+        url: baseUrl+"/articles/uploadImage",
+        data: dataToUpload,
+        headers:{
+          access_token: localStorage.getItem("access_token"),
+          "Content-Type": "application/x-www-form-urlencoded"
+          // "Content-Type": "multipart/form-data",
+        }
+      })
+      .then(({data}) => {
+        console.log("uploaded an image")
+        console.log(data)
+        console.log("-------------------was that the link?------")
+        this.newImage = data;
+        localStorage.setItem("imageToUpload", data)
+      })
+      .catch(err => {
+        console.log("created error:",err)
+        this.showError(err)
+      })
 
 	  }
   }

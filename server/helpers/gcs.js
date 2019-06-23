@@ -30,9 +30,9 @@ exports.getPublicUrl = (bucketName, fileName) => `https://storage.googleapis.com
    */
 exports.copyFileToGCS = (localFilePath, bucketName, options) => {
 options = options || {};
-console.log("========================")
-console.log(storage)
-console.log("++++++++++++++++++++++++")
+// console.log("========================")
+// console.log(storage)
+// console.log("++++++++++++++++++++++++")
 
 const bucket = storage.bucket(bucketName);
 const fileName = path.basename(localFilePath);
