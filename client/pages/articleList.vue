@@ -19,6 +19,8 @@
             v-bind:description="article.description"
             v-bind:index="i"
             v-bind:key="'article-id-'+i"
+            v-on:clicked-form="(i) => $emit('clicked-form', i)"
+            v-on:clicked-detail="(i) => $emit('clicked-detail', i)"
             ></article-card>
     </div>
 </template>

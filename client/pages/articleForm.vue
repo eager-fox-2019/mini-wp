@@ -10,7 +10,7 @@
             placeholder="Title"/>
         <wysiwyg 
             v-on:change="(val) => $emit('update:content', val)"
-            v-bind:value="content"
+            v-model="content"
             ></wysiwyg>
         <br/>
         <button 
@@ -21,12 +21,12 @@
         </button>
         <button 
             v-else 
-            v-on:click="$emit('postArticle')" 
+            v-on:click="$emit('clicked-submit-new')" 
             class="button button-m button-primary button-border">
                 Submit
         </button>
         <button 
-            v-on:click="this.$emit('viewList')" 
+            v-on:click="$emit('clicked-list')" 
             class="button button-m button-error button-border">
                 Cancel
         </button>

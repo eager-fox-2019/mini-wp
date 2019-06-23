@@ -8,13 +8,20 @@
         <article-list 
             v-if="currentPage === 'articleList'"
             v-on:search-article="searchArticle"
-            v-bind:articles="[{title: 'test', description: 'yooow'}]"></article-list>
+            v-bind:articles="articles"
+            v-on:clicked-detail="showDetail"
+            v-on:clicked-form="showEditForm"></article-list>
         <article-detail 
-            v-if="currentPage === 'articleDetail'"></article-detail>
+            v-if="currentPage === 'articleDetail'"
+            v-bind:title="pageArticleDetail.title"
+            v-bind:content="pageArticleDetail.content"
+            v-on:clicked-list="showList"></article-detail>
         <article-form 
             v-if="currentPage === 'articleForm'"
             v-bind:title.sync="pageFormArticle.title"
-            v-bind:content.sync="pageFormArticle.content"></article-form>
+            v-bind:content.sync="pageFormArticle.content"
+            v-on:clicked-list="showList"
+            v-on:clicked-submit-new="postArticle"></article-form>
     </admin-layout>
 </template>
 
@@ -27,6 +34,7 @@ import articleForm from './pages/articleForm.vue'
 
 import { stripHtml, toast_error, toast_success, getFirstNString } from './helper/utils.js'
 const { axios, axiosConfig, BASE_URL } = require('./helper/conn.ajax.js') 
+const APP_STATE = require('./app.state')
 
 const lifecycle = {
     created() {
@@ -79,6 +87,9 @@ const ajaxActions = {
             })
             .catch(toast_error)
     },
+    searchArticle(title) {
+        debugger
+    }
 }
 
 const routing = {
@@ -89,6 +100,9 @@ const routing = {
                 break
             case 'articleList':
                 window.history.pushState({}, document.title, '/admin/list')
+                break;
+            case 'articleDetail':
+                window.history.pushState({}, document.title, '/admin/detail')
                 break;
             default:
                 break;
@@ -113,32 +127,31 @@ const eventHandler = {
     },
     logout() {
         window.localStorage.clear()
-        this.setRouting('login')
         this.loginData.loggedIn = false
         this.loginData.email = ''
         this.loginData.token = ''
+        this.setRouting('login')
     },
-    searchArticle(title) {
+    showDetail(i) {
+        this.pageArticleDetail = this.articles[i]
+        this.setRouting('articleDetail')
+    },
+    showEditForm(i) {
+        let article = this.articles[i]
+        this.pageFormArticle.edit = true
+        this.pageFormArticle.title = article.title
+        this.pageFormArticle.content = article.content
         debugger
+        this.setRouting('articleForm')
+    },
+    showList() {
+        this.setRouting('articleList')
     }
 }
 
 export default {
     created: lifecycle.created,
-    data: {
-        currentPage: 'login',
-        articles: [],
-        sidebarOpen: true,
-        pageFormArticle: {
-            edit: false, 
-            title: '',
-            content: '',
-        },
-        loginData: {
-            loggedIn: false,
-            email: '',
-        },
-    },
+    data: APP_STATE,
     components: {
         adminLayout,
         login,
