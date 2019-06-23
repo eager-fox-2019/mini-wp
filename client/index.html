@@ -4,83 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Mini WP</title>
+    <title>KECE BADAI</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/bundle.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/toastify.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/wsiwig.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
   </head>
   <body>
-      
-      <div id="app">
-        <div class="main-page" v-if='loginData.loggedIn'>
-          <sidebar v-bind:sidebar-open="sidebarOpen"></sidebar>
-          <div id="content" class="flex flex-column justify-content-space-between">
-            <navbar></navbar>
-            
-            <div v-if='currentPage === "pageArticleList"' class="main-content margin-s background-white padding-l box-shadow-m grid-card-container">
-              <div></div>
-              <div class="grid-card-title">
-                <h2 v-if='filteredArticle.length > 0' class="padding-m">Your Published Articles</h2>
-                <h2 v-else class="padding-m">No Article</h2>
-              </div>
-              <div class='grid-card-input-search padding-m'>
-                <input v-if='articles.length > 0' class="input-m" autocomplete="off" placeholder="search by title" v-model="pageArticleList.searchTitle" />
-              </div>
-              <card 
-                v-for="(article, i) in filteredArticle" 
-                v-bind:title="article.title" 
-                v-bind:description="article.description"
-                v-bind:index="i"
-                v-bind:key="'article-id-'+i"
-                ></card>
-            </div>
-  
-            <div v-if='currentPage === "pageArticleDetail"' class="main-content margin-s background-white padding-l box-shadow-m">
-              Test Halaman Detail {{pageArticleDetail.indexArticle}}
-              <br/>
-              <button v-on:click="viewList" class="button button-m button-primary">Article List</button>
-            </div>
-  
-            <div v-if='currentPage === "pageFormArticle"' class="main-content margin-s background-white padding-l box-shadow-m">
-              <h3 v-if='pageFormArticle.edit'>Edit Article</h3>
-              <h3 v-else>Add New Article</h3>
-              <input v-model='pageFormArticle.title' type="text" placeholder="Title">
-              <textarea v-model='pageFormArticle.content' placeholder="content"></textarea>
-              <button v-on:click="viewList" class="button button-m button-error">Cancel</button>
-            </div>
-            <footer-component></footer-component>
-        </div>
-      </div>
-      <div v-else style="height: 100%">
-        <div style="height: 100%" class="flex flex-row justify-content-center align-items-center">
-          <form v-on:submit.prevent="">
-            <h1>Mini WP</h1>
-            <h2>Login!</h2>
-            <div class="field">
-              <label for="form-simple-email">Email</label>
-              <input v-model="pageLogin.email" type="email" id="form-simple-email" placeholder="Enter Email">
-            </div>
-            <div class="field">
-              <label for="form-simple-password">Password</label>
-              <input v-model="pageLogin.password" type="password" id="form-simple-password" placeholder="Enter Password">
-            </div>
-            <div class="field">
-              <button v-on:click="login" type="submit" class="button button-primary">Login</button>
-              <button v-on:click="register" type="reset" class="button button-secondary">Register</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-  <script src="app.helper.js"></script>
-  <script src="assets/js/axios.min.js"></script>
-  <script src="assets/js/toastify.js"></script>
-  <script src="vue/vue.js"></script>
-  <script src="vue/sidebar.js"></script>
-  <script src="vue/navbar.js"></script>
-  <script src="vue/card.js"></script>
-  <script src="vue/footer.js"></script>
-  <script src="app.client.js"></script>
+    <div id="app"></div>
+    <script src="app.client.js"></script>
   </body>
 </html>

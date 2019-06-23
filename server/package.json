@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch-css": "cd client && cd turretcss && npm run watch",
-    "start-client": "cd client && live-server --host=localhost",
-    "start-server": "cd server && nodemon app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

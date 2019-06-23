@@ -9,6 +9,7 @@ class ArticleController {
             let article = await Article.create({ 
                 title, 
                 content, 
+                user
             })
             let {_id} = article
             res.json({_id, title, content, user })
