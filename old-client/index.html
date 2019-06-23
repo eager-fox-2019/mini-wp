@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="329419294434-eurdatplfe2uglb5q3t1qfps7s3mns36.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mini Wordpress</title>
+    <style>
+    .fixed-action-bt, .addBlog{
+                right: auto; 
+                margin-left: 1%;
+}
+ 
+    </style>
+</head>
+<body>
+    <div id="app"> 
+
+        <!-- DROPDOWN USER -->
+            <ul id="user-dropdown" class="dropdown-content">
+                    <li v-if="!isLogin"><a href="#register-modal" class="modal-trigger">Register/     Sign In</a></li>
+                    <!-- <li><a href="#register-modal" class="modal-trigger">Sign In</a></li> -->
+                    <li v-if="!isLogin"><div class="g-signin2" data-onsuccess="onSignIn" @done="onSignIn" style="float: right; margin-top: 8px;"></div></li>
+                    <li v-if="isLogin"><a v-on:click="signOut">Sign Out</a></li>
+                </ul>
+            
+                <!-- REGISTER/SIGNIN FORM MODAL -->
+                <div id="register-modal" class="modal">
+                    <div class="modal-content">
+                        <ul  class="tabs row">
+                                <li class="tab col s6"><a href="#register-form">Register</a></li>
+                                <li class="tab col s6"><a href="#sign-in-form">Sign In</a></li>
+                                
+                            </ul>
+                            <div id="register-form" class="col s12">
+                                <form class="col s12">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">account_circle</i>
+                                        <input v-model="registerUsername" type="text" class="validate" required="">
+                                        <label for="usernameInput">Username</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">mail</i>
+                                        <input v-model="registerEmail" type="email" class="validate">
+                                        <label for="emailInput">Email</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">vpn_key</i>
+                                        <input v-model="registerPassword" type="password" class="validate">
+                                        <label for="passwordInput">Password</label>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div id="sign-in-form" class="col s12">
+                                <form class="col s12">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">account_circle</i>
+                                        <input v-model="loginUsername" type="text" class="validate">
+                                        <label for="usernameInput">Username</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">vpn_key</i>
+                                        <input v-model="loginPassword" type="password" class="validate">
+                                        <label for="passwordInput">Password</label>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn" v-on:click="registerUser">Register</a>
+                            <a href="#!" class="modal-close waves-effect waves-green btn" v-on:click="signIn">Sign In</a>
+                            <!-- <div class="g-signin2" data-onsuccess="onSignIn" @done="onSignIn" style="float: right; margin-top: 8px;"></div> -->
+                        </div>
+                        
+                    </div>
+                    
+                    
+                 <!-- <div id="sign-in-modal" class="modal">
+                        <div class="modal-content">
+                            <ul  class="tabs row">
+                                    <li class="tab col s6"><a class="" href="#register-form2">Register</a></li>
+                                    <li class="tab col s6"><a class="active" href="#sign-in-form2">Sign In</a></li>
+                            </ul>
+                                  <div id="register-form2" class="col s12">
+                                    <form class="col s12">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">account_circle</i>
+                                            <input id="usernameInput" type="text" class="validate">
+                                            <label for="usernameInput">Username</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">mail</i>
+                                            <input id="emailInput" type="email" class="validate">
+                                            <label for="emailInput">Email</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">vpn_key</i>
+                                            <input id="passwordInput" type="password" class="validate">
+                                            <label for="passwordInput">Password</label>
+                                        </div>
+                                    </form>
+                                  </div>
+                
+                                  <div id="sign-in-form2" class="col s12">
+                                        
+                                                <form class="col s12">
+                                                    <div class="input-field col s12">
+                                                        <i class="material-icons prefix">account_circle</i>
+                                                        <input id="usernameInput" type="text" class="validate">
+                                                        <label for="usernameInput">Username</label>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <i class="material-icons prefix">vpn_key</i>
+                                                        <input id="passwordInput" type="password" class="validate">
+                                                        <label for="passwordInput">Password</label>
+                                                    </div>
+                                                </form>
+                                           
+                                  </div>
+                        </div>
+                                <div class="modal-footer">
+                                    <a href="#!" class="modal-close waves-effect waves-green btn">Submit</a>
+                                </div>
+                
+                     </div> -->
+            
+            
+            
+            
+            <!-- NAV BAR -->
+                <nav>
+                    <div class="row">
+                        <div class="nav-wrapper">
+                           
+                            <a href="#" class="col l3 hide-on-med-and-down">
+                                <i class="large material-icons col s2" style="font-size: 45px;">home</i>
+                                <span class="col s6">Mini WordPress</span>
+                            </a>
+                            
+                            <div class="input-field col l6">
+                                <input id="search" type="search" required>
+                                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                                <i class="material-icons">close</i>
+                            </div>
+                                      
+                            <ul id="nav-mobile" class="hide-on-med-and-down col l3">
+                                    <li class="right"><a class="dropdown-trigger" data-target="user-dropdown" href="#!"><i class="large material-icons" style="font-size: 45px;">person</i></a></li>
+                                    <li class="right"><a href="#">Articles</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            
+                <!-- LOADING PROGRESS -->
+              <span class="progress">
+                    <span class="indeterminate"></span>
+              </span>
+            
+            <!-- <span>
+                <h1>lol</h1>
+                <p v-bind:class="{'red': register, 'blue':signIn}">{{test}}</p>
+                <a v-on:click="createNewBlog">ttest</a>
+            </span>
+             -->
+              <div class="container">
+            
+                <div id="posts" v-show="isLogin" v-for="(post, index) in posts">
+                    <!-- CONTENT COLLECTION -->
+                        <content-collection v-bind:post="post"></content-collection>
+                                
+                            <!-- CONTENT DISPLAY -->
+
+                        <content-display v-bind:post="post"></content-display>
+                        
+                </div>
+
+                <!-- CREATE BLOG FORM -->
+              <div id="createBlog" class="modal modal-fixed-footer">
+                    <div class="modal-content">
+                      <h4>Create Blog</h4>
+                      <div class="row">
+                            <form class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">Title</i>
+                                        <input id="titleInput" type="text" class="validate" v-model="input.title">
+                                        <label for="titleInput">Title</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">image</i>
+                                            <!-- <div class="file-path validate" style="margin-left: 39px;"> -->
+                                                <input id="imageInput" type="text" class="validate" v-model="input.imgSrc">
+                                                <label for="imageInput">Image URL</label>
+                                            <!-- </div> -->
+                                        </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">mode_edit</i>
+                                        <textarea id="contentInput" v-model="input.content" class="materialize-textarea"></textarea>
+                                        <label for="contentInput">Content</label>
+                                    </div>
+                                    <!-- <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor> -->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                            <!-- <button v-on:click="createNewBlog">Submit</button> -->
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat" v-on:click="createArticle">Submit</a>
+                    </div>
+                  </div>
+
+
+                  <!-- EDIT BLOG FORM -->
+                  <div id="editBlog" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                          <h4>Edit Blog</h4>
+                          <div class="row">
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">Title</i>
+                                            <input id="titleInput" type="text" class="validate" v-model="input.title">
+                                            <label for="titleInput">Title</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                            <div class="input-field col s12">
+                                                <i class="material-icons prefix">image</i>
+                                                <!-- <div class="file-path validate" style="margin-left: 39px;"> -->
+                                                    <input id="imageInput" type="text" class="validate" v-model="input.imgSrc">
+                                                    <label for="imageInput">Image URL</label>
+                                                <!-- </div> -->
+                                            </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">mode_edit</i>
+                                            <textarea id="contentInput" class="materialize-textarea"></textarea>
+                                            <label for="contentInput">Content</label>
+                                        </div>
+                                        <!-- <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor> -->
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                                <!-- <button v-on:click="createNewBlog">Submit</button> -->
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat" v-on:click="createNewBlog">Submit</a>
+                        </div>
+                      </div>
+                    
+             </div> <!-- CONTAINER CLOSING TAG -->
+
+                    <div style="height: 200px;"></div>
+              </div>
+            
+              <div class="fixed-action-btn addBlog" style="margin-left: 1%">
+                    <a class="btn-floating btn-large red">
+                      <i class="large material-icons">mode_edit</i>
+                    </a>
+                    <ul>
+                      <li><a class="btn-floating red modal-trigger" href="#createBlog"><i class="material-icons">add</i></a></li>
+                    </ul>
+                  </div>
+            
+              
+              <!-- ADD BLOG BUTTON -->
+    </div>
+    
+
+            
+
+    <script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+              <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+              <!-- <script src="/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+              <script src="/node_modules/@ckeditor/ckeditor5-vue/dist/ckeditor.js"></script>   -->
+              <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+              <script src="assets/components/test.js"></script>
+              <script src="assets/components/test2.js"></script>
+              <script src="index.js"></script>
+</body>
+</html>

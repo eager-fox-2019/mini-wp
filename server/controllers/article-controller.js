@@ -6,7 +6,16 @@ class ArticleController{
     static findAll(req, res, next){
         Article.find().populate("author").lean()
         .then(articles =>{
-            res.status(201).json(articles)
+            res.status(200).json(articles)
+        })
+        .catch(next)
+    }
+
+    static findMyArticles(req, res, next){
+        var userid = req.headers.payload.id
+        Article.find({author: userid}).populate("author")
+        .then(articles =>{
+            res.status(200).json(articles)
         })
         .catch(next)
     }
@@ -27,7 +36,18 @@ class ArticleController{
     }
 
     static edit(req, res, next){
-
+        return Article.update({_id: req.query.id},{
+            title: req.body.title,
+            imgSrc: req.body.imgSrc,
+            content: req.body.content
+        })
+        .then(updated =>{
+            return Article.findOne({_id: req.query.id})
+        })
+        .then(updated =>{
+            res.status(200).json(updated)
+        })
+        .catch(next)
     }
 
     static delete(req, res, next){

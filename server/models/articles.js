@@ -5,7 +5,8 @@ const Schema = mongoose.Schema
 const articleSchema = new Schema({
     title: {
         type: String,
-        required: [true, "title cannot be empty"]
+        required: [true, "title cannot be empty"],
+        unique: [true, "title already exist"]
     },
     imgSrc:{
         type: String,
