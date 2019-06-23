@@ -21,6 +21,7 @@
             v-if="currentPage === 'articleForm'"
             v-bind:title.sync="pageFormArticle.title"
             v-bind:content.sync="pageFormArticle.content"
+            v-on:update-image="setImage"
             v-bind:edit="pageFormArticle.edit"
             v-on:clicked-list="showList"
             v-on:clicked-submit-new="postArticle"></article-form>
@@ -132,6 +133,7 @@ const eventHandler = {
         this.loginData.loggedIn = false
         this.loginData.email = ''
         this.loginData.token = ''
+        toast_success("Bye bye")
         this.setRouting('login')
     },
     showDetail(i) {
@@ -146,7 +148,6 @@ const eventHandler = {
         this.setRouting('articleForm')
     },
     showNewForm() {
-        debugger
         this.pageFormArticle.edit = false 
         this.pageFormArticle.title = ''
         this.pageFormArticle.content = ''
@@ -154,6 +155,10 @@ const eventHandler = {
     },
     showList() {
         this.setRouting('articleList')
+    },
+    setImage(files) {
+        if (!files.length) return;
+        this.resolution.image = files[0]
     }
 }
 

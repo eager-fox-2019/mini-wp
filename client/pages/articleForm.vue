@@ -8,6 +8,10 @@
             v-bind:value="title"
             type="text"
             placeholder="Title"/>
+        <br/>Featured Image: <input
+            type="file"
+            v-on:change="$emit('update-image', $event.target.files)"/>
+        <br/>
         <wysiwyg 
             v-on:change="(val) => $emit('update:content', val)"
             v-model="content"

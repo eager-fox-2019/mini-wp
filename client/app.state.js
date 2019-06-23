@@ -10,6 +10,7 @@ module.exports = {
         edit: false,
         title: '',
         content: '',
+        image: '',
     },
     loginData: {
         loggedIn: false,
