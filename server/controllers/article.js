@@ -28,14 +28,18 @@ class ControllerArticle{
                 userId: req.decoded.id,
                 title: req.body.title,
                 content: req.body.content,
-                img: req.file.cloudStoragePublicUrl
+                img: req.file.cloudStoragePublicUrl,
+                tags: req.body.tags,
+                comments: []
             }
         }else{
             input = {
                 userId: req.decoded.id,
                 title: req.body.title,
                 content: req.body.content,
-                img: req.body.image
+                img: req.body.image,
+                tags: req.body.tags,
+                comments: []
             }
         }
         Article
@@ -52,14 +56,16 @@ class ControllerArticle{
                 userId: req.decoded.id,
                 title: req.body.title,
                 content: req.body.content,
-                img: req.file.cloudStoragePublicUrl
+                img: req.file.cloudStoragePublicUrl,
+                tags: req.body.tags
             }
         }else{
             input = {
                 userId: req.decoded.id,
                 title: req.body.title,
                 content: req.body.content,
-                img: req.body.img
+                img: req.body.img,
+                tags: req.body.tags
             }
         }
 

@@ -19,8 +19,8 @@ var app = new Vue({
             img: "",
             createdAt: "",
             author: "",
-            comments: [],
-            tags: []
+            tags: [],
+            comments: []
         },
         listArticles: [],
         listArticlesUser: [],
@@ -60,13 +60,6 @@ var app = new Vue({
         articleList(){
             this.fetchArticle()
             this.mainStatus = 'articleList'
-            this.article = {
-                id: "",
-                title: "",
-                content: "",
-                img: "",
-                createdAt: ""
-            }
         },
         register(){
             let data = {
@@ -74,7 +67,6 @@ var app = new Vue({
                 email: this.user.email,
                 password: this.user.password
             }
-            // ax.post("/users/signup", data)
             axios({
                 method: "POST",
                 url: `${baseURL}/users/signup`,
@@ -104,7 +96,6 @@ var app = new Vue({
                 email: this.user.email,
                 password: this.user.password
             }
-            // ax.post("/users/signin", data)
             axios({
                 method: "POST",
                 url: `${baseURL}/users/signin`,
@@ -162,7 +153,6 @@ var app = new Vue({
             })
         },
         fetchArticle(){
-            // ax.get("/articles")
             axios({
                 method: "GET",
                 url: `${baseURL}/articles`,
@@ -184,7 +174,6 @@ var app = new Vue({
             })
         },
         fetchArticleUser(){
-            // ax.get("/articles/users")
             axios({
                 method: "GET",
                 url: `${baseURL}/articles/users`,
@@ -203,7 +192,6 @@ var app = new Vue({
             })
         },
         searchArticle(){
-            // ax.get(`/articles/search/${this.searchInput}`)
             axios({
                 method: "GET",
                 url: `${baseURL}/articles/search/${this.searchInput}`,
@@ -245,7 +233,6 @@ var app = new Vue({
             input.append("content", this.article.content)
             input.append("image", img)
 
-            // ax.post(`/articles`, input)
             axios({
                 method: "POST",
                 url: `${baseURL}/articles`,
@@ -263,6 +250,7 @@ var app = new Vue({
             })
             .catch(err => {
                 swal({
+                    // text: err.response.data.message,
                     title: "Failed Create Article",
                     icon: "../assets/2.gif",
                 })
@@ -287,6 +275,7 @@ var app = new Vue({
             .catch(err => {
                 swal({
                     title: "Failed Delete Article",
+                    text: err.response.data.message,
                     icon: "../assets/2.gif",
                 })
             })
@@ -326,7 +315,6 @@ var app = new Vue({
                 input.append("image", this.article.img)
             }
 
-            // ax.post(`/articles`, input)
             axios({
                 method: "PATCH",
                 url: `${baseURL}/articles/${id}`,
@@ -345,13 +333,12 @@ var app = new Vue({
             .catch(err => {
                 swal({
                     title: "Failed Update Article",
+                    text: err.response.data.message,
                     icon: "../assets/2.gif",
                 })
-                this.mainStatus = "newArticle"
             })
         },
         getEditArticle(id){
-            // ax.post(`/articles`, input)
             axios({
                 method: "GET",
                 url: `${baseURL}/articles/${id}`,

@@ -9,19 +9,17 @@ module.exports = function (req, res, next) {
                 if (req.decoded.id == String(data.userId)) {
                     next()
                 } else {
-                    res.status(401).json({
-                        msg: "Not Authorized"
+                    throw ({
+                        status: 401,
+                        msg: "Unauthorized"
                     })
                 }
             } else {
-                res.status(404).json({
-                    msg: "Post Not Found"
+                throw({
+                    status: 404,
+                    msg: "Post not found"
                 })
             }
         })
-        .catch(err => {
-            res.status(500).json({
-                msg: "Internal Server Error author"
-            })
-        })
+        .catch(next)
 }
