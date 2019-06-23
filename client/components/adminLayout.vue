@@ -1,6 +1,8 @@
 <template>
     <div class="main-page">
-          <sidebar v-bind:sidebar-open="sidebarOpen"></sidebar>
+          <sidebar 
+            v-bind:sidebar-open="sidebarOpen"
+            v-on:set-route="(route) => $emit('set-route', route)"></sidebar>
           <div id="content" class="flex flex-column justify-content-space-between">
             <navbar 
               v-on:logout="() => $emit('logout')"

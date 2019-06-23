@@ -5,7 +5,8 @@
     <admin-layout 
         v-else
         v-on:logout="logout"
-        v-on:clicked-new-article="showNewForm">
+        v-on:clicked-new-article="showNewForm"
+        v-on:set-route="setRouting">
         <article-list 
             v-if="currentPage === 'articleList'"
             v-on:search-article="searchArticle"
