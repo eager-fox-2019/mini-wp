@@ -115,7 +115,6 @@ export default {
   },
   created() {
     const serverURL = "http://localhost:3000";
-
     this.ax = axios.create({
       baseURL: serverURL,
       headers: {

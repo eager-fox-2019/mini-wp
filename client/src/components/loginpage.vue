@@ -90,20 +90,20 @@ export default {
         })
           .then(({ data }) => {
             localStorage.setItem("token", data.token);
-            console.log(localStorage.token)
+            console.log(localStorage.token);
             localStorage.setItem("user", JSON.stringify(data.user));
             swal("Logged In", `Welcome ${data.user.name}!`, "success");
             this.$emit("berhasil_login");
           })
           .catch(err => {
+            console.log("error login biasa");
+            console.log(err);
+            console.log(JSON.stringify(err.response, null, 2));
             if (err.response.data.message) {
               swal("attention", err.response.data.message, "error");
             } else {
               swal("Sorry", "Internal Server Error", "error");
             }
-            console.log("error login biasa");
-            console.log(err);
-            console.log(JSON.stringify(err.response, null, 2));
           });
       }
     },
