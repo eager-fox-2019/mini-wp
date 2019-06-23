@@ -45,6 +45,6 @@ Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validat
 `api/articles` | POST | token | {title, description, picture, content} | {title, description, picture, content, _id(user)} | create a new article | -
 `api/articles` | GET | - | - | [{title, description, picture, content, _id(user)}] | get list of article | -
 `api/articles/:id` | GET | - | - | {title, description, picture, content} | get single article | -
-`api/articles/:id` | DELETE | token | - | - | delete an article | -
+`api/articles/:id` | DELETE |  | - | - | delete an article | -
 `api/articles/:id` | PATCH | token | {title, description, picture, content} | {title, description, picture, content} | update article | -
-`api/articles/user/:id` | GET | token | |[{title, description, picture, content, _id(user)}] |  Get all articles with user based on params `:id`  | -
+`api/articles/user/:id` | GET |  | |[{title, description, picture, content, _id(user)}] |  Get all articles with user based on params `:id`  | -
