@@ -533,24 +533,11 @@ export default {
     },
     uploadImage(event) {
     	const image = event.target.files[0]
-
-      // const reader = new FileReader();
-      // reader.readAsDataURL(image);
-      // reader.onload = e =>{
-      //     this.newImage = e.target.result;
-      //     debugger
-      //     localStorage.setItem("imageToUpload", e.target.result)
-      //     console.log("image at local storage")
-      //     console.log(localStorage.getItem("imageToUpload"));
-      //     console.log("-----")
-      // };
+      this.newImage = ""
 
 	    let dataToUpload = new FormData();
 	    dataToUpload.append('name', 'my-picture');
-	    dataToUpload.append('image', image); 
-	    // console.log("dataToUpload from image")
-	    // console.log(dataToUpload)
-	    // console.log("---")
+	    dataToUpload.append('image', image);
 
       axios({
         method: "POST",
