@@ -442,3 +442,22 @@ a {
   padding: 20px;
   border-right: 2px solid rgba(255, 255, 255, 0.342);
 }
+
+
+/* -------------------------------- FOOTER ----------------------------- */
+
+#footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #64b5f6 ;
+  padding: 7px;
+  z-index: 100000;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+a {
+  color: #311b92;
+  text-decoration: none;
+}

@@ -112,7 +112,7 @@
             <div class="container-form">
               <div style="width: 300px; margin-left: 30px;">
                 <span><label style="color: white;">Title: </label><input type="text" name="title" placeholder="Title" style="color: white;" v-model="newArticle.title" style="width: 10px;"></input></span>
-                <span><label style="color: white;">Description: </label><input type="text" name="newDescription" id="newDescription" v-model="newArticle.description" placeholder="Little description for your article"></span>
+                <span><label style="color: white;">Description: </label><input type="text" name="newDescription" v-model="newArticle.description" placeholder="Little description for your article"></span>
               </div>
               <div class="image-container">
                 <div class="file-field input-field">
@@ -142,7 +142,7 @@
               <div class="container-form">
                 <div style="width: 300px; margin-left: 30px;">
                   <span><label style="color: white;">Title: </label><input type="text" name="title" placeholder="Title" style="color: white;" v-model="editArticle.title" style="width: 10px;"></input></span>
-                  <span><label style="color: white;">Description: </label><input type="text" name="newDescription" id="newDescription" v-model="editArticle.description" placeholder="Little description for your article"></span>
+                  <span><label style="color: white;">Description: </label><input type="text" name="newDescription" v-model="editArticle.description" placeholder="Little description for your article"></span>
                 </div>
                 <div class="image-container">
                   <div class="file-field input-field">
@@ -184,9 +184,13 @@
         </div>
       </div>
     </div>
-  </div>
+  <footer id="footer">
+    <div id="footer-link">
+      Mini-WordPress Created by : <strong>Jays</strong>  for portofio project in <a href="https://hacktiv8.com/">Hacktiv8</a> | <a href="https://github.com/jaysm12">Github</a>
+    </div>
+  </footer>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script type="text/javascript" src="./assets/materialize/js/materialize.min.js"></script>
   <script src="./assets/js/main.js"></script>
 </body>
