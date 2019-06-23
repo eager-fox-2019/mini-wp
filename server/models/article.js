@@ -8,12 +8,19 @@ const articleSchema = new Schema({
   },
   content: String,
   created_at: Date,
+  tags: Array,
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
-  imageName: String,
-  imageUrl: String,
+  imageName: {
+    type: String,
+    default: null,
+  },
+  imageUrl: {
+    type: String,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model('Article', articleSchema);

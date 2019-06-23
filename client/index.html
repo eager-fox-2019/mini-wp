@@ -9,63 +9,74 @@
 </head>
 <body>
   <div id="app">
-    <div id="outside" v-if="!loggedIn">
-      <div id="title">
-        Mini WP
-      </div>
-      <div id="subtitle">
-        Register for a new account / login to an existing account.
-      </div>
-      <div id="front-forms">
-        <div style="display: flex; justify-content: center;">
-          <form id="register-form" class="form1" @submit.prevent="sendRegister" autocomplete="off">
-            <p class="form1title">Register</p>
-            <input class="input1" type="text" placeholder="New Email" name="email" required><br>
-            <input class="input1" type="password" placeholder="New Password" name="password" required><br>
-            <button class="button1" type="submit">Register</button>
-          </form>
-          <form id="login-form" class="form1" action="/" method="POST" autocomplete="off">
-            <p class="form1title">Login</p>
-            <input class="input1" type="text" placeholder="Email" name="email" required><br>
-            <input class="input1" type="password" placeholder="Password" name="password" required><br>
-            <button class="button1" type="submit">Login</button>
-          </form>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 0.8rem; position: relative;">
-          <p style="margin-bottom: 0.7rem; color: #ccc">Or sign in with Google:</p>
-          <div id="btn-overlay"></div>
-          <div id="my-signin2"></div>
-        </div>
-      </div>
-      <div id="reg-message">
-        <p>Successfully Registered</p>
-        <button id="ok1" class="button1">Return</button>
-      </div>
-    </div>
+    <register-login
+      id="outside" :section="section" @section="goTo" @login="loggedIn = true" v-if="!loggedIn">
+    </register-login>
     <div id="inside" v-if="loggedIn">
-      <nav>
-        <a class="navitem" id="logo" href="#">Mini WP</a>
-        <div id="navcenter">
-          <button id="articlesbutton" class="button">Articles</button>
-          <button id="writebutton" class="button">Write</button>
-          <button id="accountbutton" class="button">Account</button>
-        </div>
-        <div id="navright" style="display: flex; align-items: center;">
-          <img class="navitem" id="userimg" src="./icons/user/default.png" alt="">
-          <a class="navitem" id="logout" href="">Log out</a>
-        </div>
-      </nav>
-      <div style="min-height: 5rem; max-width: 50rem; margin: 0 auto 0 auto; padding: 1rem; background-color: #fff5ee;">
-        <tiptap></tiptap>
-        <button>Save</button>
+      <!-- Navbar -->
+      <nav-component :section="section" @section="goTo" @logout="loggedIn = false"></nav-component>
+      <div id="container">
+        <!-- Write Section -->
+        <section id="writesection" v-if="section === 3">
+          <input id="articletitle" type="text" v-model="editor.title" placeholder="Enter Title..." autofocus required>
+          <tip-tap :clear="clearEditor" @editor="updateEditor"></tip-tap>
+          <form class="articleform" enctype="multipart/form-data">
+            <div style="margin-bottom: 0.5rem;">
+              <label for="tags">Tags:&nbsp;</label>
+              <input type="text" id="tags" name="tags" v-model="editor.tags" placeholder="Enter comma-seperated tags (optional)">
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span>
+                <label for="fileinput" id="uploadbutton">Upload Image</label>
+                <input id="fileinput" class="button" type="file" name="pic" accept="image/*" @change="fileSelect" hidden>
+                <span v-show="file">
+                  <span class="selectedfile">{{filename}}</span>
+                  <span style="font-size: 1.5rem; vertical-align: -7%; cursor: pointer;" @click="clearFile">×</span>
+                </span>
+              </span>
+              <button class="button button2" type="submit" @click.prevent="saveArticle">Publish Article</button>
+            </div>
+          </form>
+          <p style="color: white;" v-show="alert">
+            {{alert}}
+          </p>
+        </section>
+        <!-- Explore Section -->
+        <section id="exploresection" v-if="section === 4">
+          <div id="tags1">
+            <span>Tags: </span>
+            <div class="tagbutton" :class={selected: (selectedTag === tag)} v-for="tag of currentTags" @click="selectTag(tag)">
+              {{tag}}
+            </div>
+          </div>
+          <div id="list1">
+            <div class="card" v-for="article of allArticles">
+              <div class="articleimage">
+                <img :src="article.imageUrl">
+              </div>
+              <div class="cardcontent">
+                {{article.title}}
+                {{article.author.email}}
+                {{article.tags}}
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- My Articles Section -->
+        <section id="myarticlessection" v-if="section === 5">
+          <div id="list2">
+            <div class="card" v-for="article of myArticles">
+              {{article.author.email}} {{article.title}} {{article.imageUrl}}
+            </div>
+          </div>
+        </section>
+        <!-- My Account Section -->
+        <section id="accountsection" v-if="section === 6">
+          account
+        </section>
       </div>
     </div>
   </div>
   <script src="./dist/bundle.js"></script>
 </body>
 </html>
-<body>
-</body>
-</html>
-
-<img src="">

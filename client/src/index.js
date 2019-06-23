@@ -1,30 +1,160 @@
 import Vue from 'vue/dist/vue.esm';
-import axios from 'axios';
-import Tiptap from './tiptap.js';
 
-const ax = axios.create({
-  baseURL: 'http://localhost:3002',
-});
+import RegisterLogin from './registerlogin.vue';
+import NavComponent from './navcomponent.vue';
+import TipTap from './tiptap.vue';
+import ax from './helpers/axiosInstance';
 
-Vue.component('tiptap', Tiptap)
+let headers = {
+  'Authorization': localStorage.getItem('token')
+};
 
 let app = new Vue({
   el: '#app',
+  components: {
+    RegisterLogin, NavComponent, TipTap,
+  },
   data: {
-    message: 'Hello Vue!',
-    loggedIn: true,
+    alert: '',
+    section: 0,
+    loggedIn: false,
+    editor: {
+      title: '',
+      content: '',
+      tags: '',
+    },
+    clearEditor: false,
+    file: null,
+    allArticles: [],
+    myArticles: [],
+    selectedTag: '',
   },
   methods: {
-    sendRegister(event) {
-      let inputs = event.target.elements
-      console.log(inputs.email.value)
-      console.log(inputs.password.value)
+    showAlert(str) {
+      this.alert = str;
+      setTimeout(() => {
+        this.alert = '';
+      }, 1800);
     },
-    sendLogin() {
+    goTo(num) {
+      this.section = num
+      if(num === 3) {
+        this.editor.title = ''
+        this.editor.content = ''
+        this.editor.tags = ''
+        this.file = null
+      } else if(num === 4) {
+        ax.get('/articles', { headers })
+          .then(({data}) => {
+            console.log(data)
+            this.allArticles = data
+          })
+          .catch(err => console.log(err))
+      } else if(num === 5) {
+        ax.get('/articles/user', { headers })
+          .then(({data}) => {
+            console.log(data)
+            this.myArticles = data
+          })
+          .catch(err => console.log(err))
+      } else if(num === 6) {
 
+      }
+      console.log(this.currentTags)
     },
+    updateEditor(str) {
+      this.editor.content = str
+    },
+    fileSelect(event) {
+      this.file = event.target.files[0]
+    },
+    clearFile() {
+      this.file = null
+    },
+    saveArticle() {
+      let formData = new FormData()
+      formData.append('title', this.editor.title);
+      formData.append('content', this.editor.content);
+      formData.append('created_at', new Date());
+      formData.append('file', this.file)
+      formData.append('tags', this.tagArray)
+      this.alert = 'Loading ...';
+
+      ax.post('articles', formData, { headers })
+        .then(({data}) => {
+          console.log(data)
+          this.showAlert('Success')
+          this.clearEditor = true;
+          this.editor.title = ''
+          this.editor.content = ''
+          this.editor.tags = ''
+          this.file = null
+        })
+        .catch(err => {
+          this.showAlert('Failed')
+        })
+        .finally(() => {
+          this.clearEditor = false;
+        })
+    },
+    selectTag(str) {
+      this.selectedTag = str;
+      console.log(str)
+    }
   },
   mounted() {
-    console.log("111")
-  }
+    if (localStorage.getItem('token')) {
+      ax.post('users/check', {}, { headers })
+        .then(({data}) => {
+          console.log(data)
+          this.loggedIn = true;
+          this.goTo(4);
+        })
+        .catch(err => console.log(err.response.data))
+        .finally(() => {
+          document.getElementById('app').style.visibility = 'visible'
+        })
+    } else {
+        document.getElementById('app').style.visibility = 'visible'
+    }
+  },
+  computed: {
+    filename() {
+      if(this.file) return this.file.name
+    },
+    tagArray() {
+      let str = this.editor.tags.toLowerCase().trim()
+      let str2 = ''
+      // ignore (spaces after commas) and (spaces after spaces)
+      for(let i = 0; i < str.length; i ++) {
+        if(!(str[i] === ' ' && (str[i-1] === ',' || str[i-1] === ' '))) {
+          str2 += str[i]
+        }
+      }
+      // unique values only
+      return str2.split(',').filter((val, index, self) => {
+        if(val === '') {
+          return false;
+        }
+        return self.indexOf(val) === index;
+      });
+    },
+    currentTags() {
+      let input;
+      let output = [];
+      if(this.section === 4) input = this.allArticles;
+      if(this.section === 5) input = this.myArticles;
+      for(let article of input) {
+        for(let tag of article.tags) {
+          if(output.indexOf(tag) === -1) {
+            output.push(tag);
+          }
+        }
+      }
+      return output;
+    },
+  },
+  // watch: {
+    
+  // },
 })

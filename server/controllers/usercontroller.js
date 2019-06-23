@@ -1,6 +1,7 @@
-const User = require("../models/user.js")
-const pw = require('../helpers/password.js');
-const tk = require('../helpers/token.js');
+const User = require('../models/user.js')
+const pwHelper = require('../helpers/password.js');
+const tkHelper = require('../helpers/token.js');
+
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
@@ -12,17 +13,17 @@ class Controller {
       email: req.body.email,
       password: req.body.password,
     })
-    .then(user => {
-      res.status(201).end()
-    })
-    .catch(err => {
-      if(err.message.includes("invalid format")) {
-        next({ status: 400, msg: "Invalid email format" })
-      } else if(err.message.includes("not unique")) {
-        next({ status: 409, msg: "Email already used" })
-      }
-      next({})
-    })
+      .then(user => {
+        res.status(201).end()
+      })
+      .catch(err => {
+        if(err.message.includes("invalid format")) {
+          next({ status: 400, msg: "Invalid email format" })
+        } else if(err.message.includes("not unique")) {
+          next({ status: 409, msg: "Email already used" })
+        }
+        next({})
+      })
   }
 
   static login(req, res, next) {
@@ -35,9 +36,12 @@ class Controller {
         throw { status: 401, msg: "Invalid username/password" }
       }
       else {
-        if(pw.compare(req.body.password, user.password)) {
-          let token = tk.sign({ email: user.email, id: user._id, })
-          res.json({ token })
+        if(pwHelper.compare(req.body.password, user.password)) {
+          let token = tkHelper.sign({ email: user.email, id: user._id, })
+          res.json({
+            email: req.body.email,
+            token,
+          })
         } else {
           throw { status: 401, msg: "Invalid username/password"}
         }
@@ -61,15 +65,15 @@ class Controller {
             // Create new user and send token
             User.create({
               email: payload.email,
-              password: pw.generateRandom(18),
+              password: pwHelper.generateRandom(18),
             })
               .then(user2 => {
-                let token = tk.sign({ email: user2.email, id: user2._id, })
+                let token = tkHelper.sign({ email: user2.email, id: user2._id, })
                 res.json({ token })
               })
               .catch(next)
           } else {
-            let token = tk.sign({ email: user.email, id: user._id, })
+            let token = tkHelper.sign({ email: user.email, id: user._id, })
             res.json({ token })
           }
         })
@@ -78,11 +82,10 @@ class Controller {
   }
 
   static checkLogin(req, res) {
-    if(req.userData) {
-      res.status(200).end()
-    } else {
-      res.status(401).json()
-    }
+    console.log(`Auto login for: ${req.userData.email}`)
+    res.status(200).json({
+      email: req.userData.email,
+    })
   }
 }
 

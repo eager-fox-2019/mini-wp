@@ -18,10 +18,11 @@ export default {
   components: {
     EditorContent, EditorMenuBar
   },
+  props: ['clear'],
   data() {
     return {
       editor: new Editor({
-        content: '<p>Type here</p>',
+        content: '',
         extensions: [
           new Bold(),
           new Italic(),
@@ -36,8 +37,16 @@ export default {
           new Blockquote(),
           new CodeBlock(),
         ],
+        onUpdate: ({ getHTML }) => {
+          this.$emit('editor', getHTML())
+        },
       })
     }
+  },
+  watch: {
+    clear(t) {
+      if(t === true) this.editor.clearContent()
+    },
   },
   beforeDestroy() {
     this.editor.destroy()
@@ -45,6 +54,9 @@ export default {
   template: `<div class="editor">
       <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
         <div class="menubar">
+          <button class="menubar__button" :class="{ 'is-active': isActive.paragraph() }" @click="commands.paragraph">
+            <img class="menu_icon" src="./icons/tiptap/paragraph.svg">
+          </button>
           <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 1 }) }" @click="commands.heading({ level: 1 })">
             <span>H1</span>
           </button>
@@ -69,9 +81,6 @@ export default {
           <button class="menubar__button" :class="{ 'is-active': isActive.code() }" @click="commands.code">
             <img class="menu_icon" src="./icons/tiptap/code.svg">
           </button>
-          <button class="menubar__button" :class="{ 'is-active': isActive.paragraph() }" @click="commands.paragraph">
-            <img class="menu_icon" src="./icons/tiptap/paragraph.svg">
-          </button>
           <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
             <img class="menu_icon" src="./icons/tiptap/ul.svg">
           </button>
@@ -86,6 +95,6 @@ export default {
           </button>
         </div>
       </editor-menu-bar>
-      <editor-content :editor="editor" />
+      <editor-content :editor="editor" class="editorbody" ref="editor"/>
     </div>`
 }
