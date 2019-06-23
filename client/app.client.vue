@@ -65,11 +65,12 @@ const ajaxActions = {
             .catch(toast_error)
     },
     postArticle() {
-        let { title, content } = this.pageFormArticle
-        axios.post(`${BASE_URL}/article`, {
-            title,
-            content
-        }, axiosConfig())
+        let { title, content, image } = this.pageFormArticle
+        let formData = new FormData() 
+        formData.append('title', title)
+        formData.append('content', content)
+        formData.append('image', image)
+        axios.post(`${BASE_URL}/article`, formData, {...axiosConfig(), 'Content-Type': 'multipart/form-data'})
             .then(() => {
                 this.currentPage = 'pageArticleList'
                 this.fetchArticles()
@@ -158,7 +159,7 @@ const eventHandler = {
     },
     setImage(files) {
         if (!files.length) return;
-        this.resolution.image = files[0]
+        this.pageFormArticle.image = files[0]
     }
 }
 
