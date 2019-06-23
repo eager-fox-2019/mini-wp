@@ -56,9 +56,8 @@ export default {
         }
       })
       .then(({ data }) => {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('name', data.name);
-        this.$emit('registered', 'main')
+        swal.fire(`${data.name} successfully registered`,"", "success")
+        this.$emit('registered', 'login')
       })
       .catch(err => { swal.fire(err.response.data.message,"", "error") })
     }

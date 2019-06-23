@@ -60,7 +60,6 @@ export default {
       })
     },
     onSignIn(user) {
-      console.log('here')
       const token = user.getAuthResponse().id_token
       axios({
         method: 'POST',
