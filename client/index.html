@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="./cssWY/vueWysiwyg.css"> -->
+    <link rel="stylesheet" href="./cssWY/vueWysiwig.css">
+    <title>Document</title>
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1548334124-6376f9585b57?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80');
+            background-size: cover
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container-fluid" >
+            <div class="row" >
+                <div class="col-3 m-0 p-0" >
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                            <a class="navbar-brand" href="#">Navbar</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </nav>
+                </div>
+                <div class="col-9 m-0 p-0" >
+                        <nav class="navbar navbar-dark bg-dark">
+                            <a class="navbar-brand" style="opacity: 0">N</a>
+                            <form class="form-inline">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                        </nav>
+                </div>
+            </div>
+        </div>
+        <!-- button -->
+        <!-- body dari content -->
+        <div class="row m-0" >
+            <div class="col-2" ></div>
+            <div class="col-10" >
+                <div class="ok" style="display: flex; justify-content:flex-end;">
+                    <!-- <button v-if="isLogin == false" @click="goLogin" type="button" class="btn btn-dark">Login Button</button> -->
+                    <button v-if="isLogin == true" @click="goLogout" type="button" class="btn btn-success">Logout Button</button>
+                </div>
+            </div>
+        </div>
+        <div v-if="isLogin == true" class="isi">
+            <!-- <h1>{{ message }}</h1>
+            <input v-model="message">
+            <form method="post" v-on:submit.prevent="addSomething">
+                <input type="text" v-model="newSomething" autocomplete="off" placeholder="Titile" autofocus>
+                <button type="submit">the button</button>
+            </form>
+            <ul>
+                <li v-for="todo in theThing">{{todo}}</li>
+                {{theThing}} -->
+            <!-- </ul> -->
+        </div>
+        <!-- isian -->
+        <div v-if="isLogin" class="row m-0 p-0" >
+                <div class="col-2" >
+                    <div class="list-group">
+                        <button v-on:click="respond('')" type="button" class="list-group-item list-group-item-action" style="background-color: #6fc2d0; color: black">Home</button>
+                        <button v-on:click="respond('prof')" type="button" class="list-group-item list-group-item-action" style="background-color: rgba(3, 95, 207, 0.7); color: black">My Profile</button>
+                        <button v-on:click="ownerArticle" type="button" class="list-group-item list-group-item-action" style="background-color: rgba(3, 95, 207, 0.7); color: black">My Articles</button>
+                    </div>
+                </div>
+                <div class="col-10" >
+                    <h3 style="color: yellow; background-color : black">Create your blog <button id="btn-create" type="button" class="btn btn-success" v-on:click="respond('gin')">+create</button></h3>
+                    
+                    
+                    <!-- wysy -->
+                    <div v-if="isLogin && dooob == 'gin'" id="wyz">
+                        <!-- form isian -->
+                        <form>
+                            <div  class="form-group">
+                                <label for="exampleInputEmail1">Titile</label>
+                                <input v-model ="inputArticle.inputTitle" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="exampleInputPassword1">description</label>
+                                <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            </div> -->
+                            <!-- <div class="form-group">
+                                <label for="exampleInputPassword1">created_at</label>
+                                <input type="date" class="form-control" id="wo" placeholder="created_at">
+                            </div> -->
+
+
+                            <div  class="form-group">
+                                <label for="exampleInputPassword1">images</label>
+                                <input v-model ="inputArticle.inputImages" type="text" class="form-control" id="wi" placeholder="Password">
+                            </div>
+
+                            <!-- multer -->
+
+
+                            <!-- <div class="input-group">
+                                <div class="custom-file">
+                                    <input href="image" type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                                </div>
+                            </div> -->
+                            <!-- <div class="form-group form-check"> -->
+                                <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"> -->
+                                <!-- <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
+                            <!-- </div> -->
+                            <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+                        </form>
+                        <wysiwyg v-model="inputArticle.text"></wysiwyg>
+                        <button v-on:click.prevent="submitArticle" type="submit" class="btn btn-primary">Submit</button>
+
+                    </div>
+
+                    <!-- edit -->
+
+                    <div v-if="isLogin && dooob == 'formEdit'" id="wyz">
+                        <!-- form isian -->
+                        <form>
+                            <div  class="form-group">
+                                <label for="exampleInputEmail1">Titile</label>
+                                <input v-model ="inputArticle.inputTitle" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="exampleInputPassword1">description</label>
+                                <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            </div> -->
+                            <!-- <div class="form-group">
+                                <label for="exampleInputPassword1">created_at</label>
+                                <input type="date" class="form-control" id="wo" placeholder="created_at">
+                            </div> -->
+                            <div  class="form-group">
+                                <label for="exampleInputPassword1">images</label>
+                                <input v-model ="inputArticle.inputImages" type="text" class="form-control" id="wi" placeholder="Password">
+                            </div>
+                            
+                            <!-- <div class="form-group form-check"> -->
+                                <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"> -->
+                                <!-- <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
+                            <!-- </div> -->
+                            <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+                        </form>
+                        <wysiwyg v-model="inputArticle.text"></wysiwyg>
+                        <button v-on:click.prevent="goEdit" type="submit" class="btn btn-primary">Edit</button>
+
+                    </div>
+
+                    <div class="container-fluid" style="display: flex; flex-wrap: wrap">
+                        <!-- component of cards *dummy*-->
+                        <div v-if="dooob == ''" v-for="each in notDummy" class="card mb-3" style="max-width: 500px; min-width: 500px; margin: 20px" id="list-blog">
+                            <list-blog v-bind:each="each" v-on:detail-card="showDetail"></list-blog>
+
+                        </div>
+                        <div v-if="dooob == 'own'" v-for="each in ownerData" class="card mb-3" style="max-width: 500px; min-width: 500px; margin: 20px" id="list-blog">
+                            <list-blog v-bind:each="each" v-on:detail-card="showDetail"></list-blog>
+    
+                        </div>
+                    </div>
+                    <!-- <div v-if="isLogin && dooob == 'gin'" id="wyz">
+                        <input class="form-control" type="text" placeholder="Readonly input here..." readonly>
+                    </div> -->
+                    <div v-if="isLogin && dooob == 'showDetil'" class="text-cencter">
+                        <h1> SU! </h1>
+                    </div>
+                    <div v-show="isLogin && dooob == 'prof'" class="">
+                        <h1 style="background-color: white">
+                            {{user}}
+                        </h1>
+                    </div>
+                     <!-- my article -->
+                 <div v-show="isLogin && dooob =='goEach'">
+
+                    </div>
+                    <!-- detail -->
+                    <div v-show="isLogin && dooob == 'details'">
+                       <!-- <div class="card">
+                           <h5 class="card-header">details</h5>
+                           <div class="card-body">
+                               <h5 class="card-title">{{detail.title}}</h5>
+                               <p class="card-text">{{detail.content}}</p>
+                               <a href="#" class="btn btn-primary">Edit</a>
+                           </div>
+                       </div> -->
+                       <div class="card mb-3">
+                           <img v-bind:src="detail.images" class="card-img-top" alt="..." style="max-width: 250px">
+                           <div class="card-body">
+                               <h5 class="card-title">{{detail.title}}</h5>
+                               <p class="card-text">{{detail.content}}</p>
+                               <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                           </div>
+                           <button v-on:click.prevent="toEdit('formEdit', detail._id)" type="button" class="btn btn-warning">Edit</button>
+                           <button v-on:click.prevent="goDelete(detail._id)" type="button" class="btn btn-danger">Delete</button>
+                       </div>
+                    </div>
+
+                </div>
+                
+        </div>
+        <!-- form login -->
+        <div v-if="!isLogin && dooob == 'registerDone'" class="container-fluid" style="border: 1px solid black; display: flex; justify-content: center; background-color: rgba(241, 243, 247, 0.7);">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input v-model="userLogin.inputLoginEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input v-model="userLogin.inputLoginPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <button v-on:click.prevent="runLogin" type="submit" class="btn btn-primary">Login</button>
+                </form>
+        </div>
+        <!-- form register -->
+        <div v-if="!isLogin && dooob == ''" class="container-fluid" style="border: 1px solid black; display: flex; justify-content: center; background-color: rgba(241, 243, 247, 0.7);">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input v-model="register.emailRegister" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input v-model="register.passwordRegister" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <button v-on:click.prevent="registerFunction" type="submit" class="btn btn-primary">Register</button>
+                    <button v-on:click.prevent="respond('registerDone')" type="submit" class="btn btn-primary">Login</button>
+                </form>
+        </div>       
+        
+    </div>
+    <!-- script bootstrap-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- script vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./demoComponent/demo.js"></script>
+    <script src="./cssWY/vueWysiwig.js"></script>
+    <script src="./vue/main.js"></script>
+    
+</body>
+</html>
+
+<!-- pindah bentar -->
+<!-- <div class="row no-gutters">
+    <div class="col-md-4">
+    <img v-bind:src="each.image" class="card-img" alt="..." style="height: 100%; object-fit: cover">
+    </div> -->
+    <!-- <div class="col-md-5" style="background-color: #044589"> -->
+    <!-- <div class="col-md-8" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)), url('https://images.unsplash.com/photo-1450704944629-6a65f6810cf2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1947&q=80'); color: honeydew">
+    <div class="card-body">
+        <h5 class="card-title">{{each.title}}</h5>
+        <p class="card-text">{{each.description}}.</p>
+        <p class="card-text"><small class="text-muted">{{each.updated}}</small></p>
+        <button v-on:click="respond('showDetil')" type="button" class="btn btn-info">Detail</button>
+    </div>
+    </div>
+</div> -->
