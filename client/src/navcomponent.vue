@@ -5,7 +5,6 @@
       <button id="writebutton" class="button" :class="{currentsection: section === 3}" @click="goTo(3)">Write</button>
       <button id="explorebutton" class="button" :class="{currentsection: section === 4}" @click="goTo(4)">Explore</button>
       <button id="articlesbutton" class="button" :class="{currentsection: section === 5}" @click="goTo(5)">My Articles</button>
-      <button id="accountbutton" class="button" :class="{currentsection: section === 6}" @click="goTo(6)">Account</button>
     </div>
     <div id="navright" style="display: flex; align-items: center;">
       <img class="navitem" id="userimg" src="./icons/user/default.png" alt="">
@@ -26,7 +25,7 @@ export default {
       this.goTo(0);
       this.$emit('logout');
     },
-  }
+  },
 }
 </script>
 

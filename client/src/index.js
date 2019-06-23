@@ -1,22 +1,25 @@
 import Vue from 'vue/dist/vue.esm';
+import ax from './helpers/axiosInstance';
 
 import RegisterLogin from './registerlogin.vue';
 import NavComponent from './navcomponent.vue';
 import TipTap from './tiptap.vue';
-import ax from './helpers/axiosInstance';
+import ArticleCard from './articlecard.vue';
+import MyArticle from './myarticle.vue';
+import TiptapViewer from './tiptapviewer.vue'
 
-let headers = {
-  'Authorization': localStorage.getItem('token')
-};
+let headers = { 'Authorization': localStorage.getItem('token') };
 
 let app = new Vue({
   el: '#app',
   components: {
-    RegisterLogin, NavComponent, TipTap,
+    RegisterLogin, NavComponent, TipTap, ArticleCard, MyArticle, TiptapViewer,
   },
   data: {
     alert: '',
     section: 0,
+    detailSection: false,
+    editSection: false,
     loggedIn: false,
     editor: {
       title: '',
@@ -27,7 +30,8 @@ let app = new Vue({
     file: null,
     allArticles: [],
     myArticles: [],
-    selectedTag: '',
+    selectedTag: null,
+    selectedArticle: null,
   },
   methods: {
     showAlert(str) {
@@ -37,7 +41,10 @@ let app = new Vue({
       }, 1800);
     },
     goTo(num) {
-      this.section = num
+      this.section = num;
+      this.detailSection = false;
+      this.editSection = false;
+      this.selectedArticle = null;
       if(num === 3) {
         this.editor.title = ''
         this.editor.content = ''
@@ -60,7 +67,6 @@ let app = new Vue({
       } else if(num === 6) {
 
       }
-      console.log(this.currentTags)
     },
     updateEditor(str) {
       this.editor.content = str
@@ -97,9 +103,48 @@ let app = new Vue({
           this.clearEditor = false;
         })
     },
+    updateArticle() {
+      let data = {
+        title: this.editor.title,
+        content: this.editor.content,
+        tags: this.tagArray,
+      }
+      this.alert = 'Loading ...';
+
+      let id = this.selectedArticle._id
+      ax.patch(`articles/${id}`, data, { headers })
+        .then(({data}) => {
+          console.log(data)
+          this.showAlert('Updated')
+          this.clearEditor = true;
+          this.editor.title = ''
+          this.editor.content = ''
+          this.editor.tags = ''
+        })
+        .catch(err => {
+          this.showAlert('Failed')
+        })
+        .finally(() => {
+          this.goTo(5);
+          this.clearEditor = false;
+        })
+    },
     selectTag(str) {
-      this.selectedTag = str;
-      console.log(str)
+      if(this.selectedTag === str) {
+        this.selectedTag = null;
+      } else {
+        this.selectedTag = str;
+      }
+    },
+    detail(a) {
+      this.selectedArticle = a;
+      this.detailSection = true;
+    },
+    edit(a) {
+      this.selectedArticle = a;
+      this.editSection = true;
+      this.editor.title = a.title
+      this.editor.tags = a.tags.join(', ')
     }
   },
   mounted() {
@@ -142,17 +187,33 @@ let app = new Vue({
     currentTags() {
       let input;
       let output = [];
-      if(this.section === 4) input = this.allArticles;
-      if(this.section === 5) input = this.myArticles;
+      if(this.section === 4) { input = this.allArticles; }
+      else if(this.section === 5) { input = this.myArticles; }
+      else return [];
       for(let article of input) {
         for(let tag of article.tags) {
-          if(output.indexOf(tag) === -1) {
+          if(output.indexOf(tag) === -1 && (tag !== '')) {
             output.push(tag);
           }
         }
       }
       return output;
     },
+    filteredArticles() {
+      if(this.section === 4) {
+        if(this.selectedTag == null) {
+          return this.allArticles
+        } else {
+          return this.allArticles.filter(article => article.tags.includes(this.selectedTag))
+        }
+      } else if(this.section === 5) {
+        if(this.selectedTag == null) {
+          return this.myArticles
+        } else {
+          return this.myArticles.filter(article => article.tags.includes(this.selectedTag))
+        }
+      }
+    }
   },
   // watch: {
     

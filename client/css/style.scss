@@ -32,6 +32,7 @@ body {
   padding: 0;
   background-image: linear-gradient(180deg, #264661 0%, #0a243a 100%);
   background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Noto Sans", "Ubuntu", "Helvetica Neue", "Cantarell", "Fira Sans", "Droid Sans", sans-serif;
 }
 
@@ -136,9 +137,9 @@ nav {
 }
 
 #navcenter > button {
-  margin: 0 0.3rem;
+  margin: 0 0.4rem;
   padding: 0.4rem;
-  width: 5.6rem;
+  width: 5.7rem;
   border: none;
   background: none;
   color: $white2;
@@ -156,8 +157,8 @@ nav {
 }
 
 #userimg {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2.2rem;
+  height: 2.2rem;
   border: 1px solid $white1;
   border-radius: 50%;
 }
@@ -225,13 +226,20 @@ nav {
   }
 }
 
+.viewertitle {
+  margin: 0 0 0.5rem 0;
+  padding: 0.2rem 0.5rem;
+  font-family: 'Zilla Slab', serif;
+  font-size: 1.8rem;
+  background: none;
+  color: white;
+}
+
 // tiptap editor component
 .editor {
   word-wrap: break-word;
   font-family: 'Zilla Slab', serif;
   caret-color: currentColor;
-  // background-color: white;
-  
   .menubar {
     display: flex;
     padding: 0.6rem 0.4rem;
@@ -266,10 +274,11 @@ nav {
 
   .editorbody {
     min-height: 20rem;
-    padding: 0.4rem 1.6rem;
+    padding: 0.3rem 1.6rem;
     font-size: 1.1rem;
     line-height: 1.6rem;
     background-color: white;
+    color: black;
 
     p {
       margin: 0.7rem 0;
@@ -296,8 +305,7 @@ nav {
       color: rgba($black2, 0.8);
     }
   
-    ul,
-    ol {
+    ul, ol {
       padding-left: 1rem;
     }
   
@@ -361,14 +369,15 @@ nav {
   color: rgba($black2, 0.8);
 }
 
-#tags1 {
+.taglist {
   display: flex;
-  padding: 0.8rem 0;
+  flex-wrap: wrap;
+  padding: 0 0 0.5rem 0;
 }
 
 .tagbutton {
   cursor: pointer;
-  margin-left: 0.7rem;
+  margin: 0.2rem 0.8rem 0.2rem 0;
   padding: 0.2rem 0.5rem;
   border: none;
   border-radius: 0.3rem;
@@ -382,14 +391,15 @@ nav {
 }
 
 .card {
+  cursor: pointer;
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   .articleimage {
     display: flex;
     justify-content: center;
     background-color: #aaa;
-    width: 13.5rem;
-    height: 9rem;
+    width: 12rem;
+    height: 8rem;
     overflow: hidden;
     img {
       max-width: 100%;
@@ -397,9 +407,29 @@ nav {
     }
   }
   .cardcontent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     background-color: $trp3;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     flex-grow: 1;
+    line-height: 1.8rem;
   }
 }
 
+.viewerimage {
+  display: flex;
+  justify-content: center;
+  width: 18rem;
+  height: 12rem;
+  img {
+    max-width: 100%;
+    flex: none;
+  }
+}
+
+.button3 {
+  padding: 0.3rem 0.8rem;
+  margin-bottom: 0.3rem;
+  margin-right: 0.5rem;
+}

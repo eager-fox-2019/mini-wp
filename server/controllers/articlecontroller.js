@@ -64,6 +64,7 @@ class Controller {
 
   static update(req, res, next) {
     let updates = Object.assign({}, req.body)
+    console.log(updates)
     Article.findByIdAndUpdate(req.params.id,
       { $set: updates },
       { new: true },

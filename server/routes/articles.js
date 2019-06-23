@@ -15,8 +15,8 @@ const multer = Multer({
 router.post("/", Authenticate, multer.single('file'), upload, Controller.create)
 router.get("/", Authenticate, Controller.readAll)
 router.get("/user", Authenticate, Controller.readMine)
-router.get("/:articleId", Authenticate, Controller.readOne)
-router.delete("/:articleId", Authenticate, Controller.delete)
-router.patch("/:articleId", Authenticate, Controller.update)
+router.get("/:id", Authenticate, Controller.readOne)
+router.delete("/:id", Authenticate, Controller.delete)
+router.patch("/:id", Authenticate, Controller.update)
 
 module.exports = router;

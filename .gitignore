@@ -1,5 +1,5 @@
 client/node_modules
-client/dist/bundle.js
+client/dist
 server/node_modules
 server/.env
 server/max_service_account.json

@@ -19,6 +19,7 @@ body {
   padding: 0;
   background-image: linear-gradient(180deg, #264661 0%, #0a243a 100%);
   background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Noto Sans", "Ubuntu", "Helvetica Neue", "Cantarell", "Fira Sans", "Droid Sans", sans-serif;
 }
 
@@ -124,9 +125,9 @@ nav {
 }
 
 #navcenter > button {
-  margin: 0 0.3rem;
+  margin: 0 0.4rem;
   padding: 0.4rem;
-  width: 5.6rem;
+  width: 5.7rem;
   border: none;
   background: none;
   color: #c4c4c4;
@@ -144,8 +145,8 @@ nav {
 }
 
 #userimg {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2.2rem;
+  height: 2.2rem;
   border: 1px solid #eee;
   border-radius: 50%;
 }
@@ -212,6 +213,15 @@ nav {
   color: #c8c8c8;
 }
 
+.viewertitle {
+  margin: 0 0 0.5rem 0;
+  padding: 0.2rem 0.5rem;
+  font-family: "Zilla Slab", serif;
+  font-size: 1.8rem;
+  background: none;
+  color: white;
+}
+
 .editor {
   word-wrap: break-word;
   font-family: "Zilla Slab", serif;
@@ -249,10 +259,11 @@ nav {
 }
 .editor .editorbody {
   min-height: 20rem;
-  padding: 0.4rem 1.6rem;
+  padding: 0.3rem 1.6rem;
   font-size: 1.1rem;
   line-height: 1.6rem;
   background-color: white;
+  color: black;
 }
 .editor .editorbody p {
   margin: 0.7rem 0;
@@ -275,8 +286,7 @@ nav {
   background: #d9d9d9;
   color: rgba(34, 34, 34, 0.8);
 }
-.editor .editorbody ul,
-.editor .editorbody ol {
+.editor .editorbody ul, .editor .editorbody ol {
   padding-left: 1rem;
 }
 .editor .editorbody li > p,
@@ -334,14 +344,15 @@ nav {
   color: rgba(34, 34, 34, 0.8);
 }
 
-#tags1 {
+.taglist {
   display: flex;
-  padding: 0.8rem 0;
+  flex-wrap: wrap;
+  padding: 0 0 0.5rem 0;
 }
 
 .tagbutton {
   cursor: pointer;
-  margin-left: 0.7rem;
+  margin: 0.2rem 0.8rem 0.2rem 0;
   padding: 0.2rem 0.5rem;
   border: none;
   border-radius: 0.3rem;
@@ -355,15 +366,16 @@ nav {
 }
 
 .card {
+  cursor: pointer;
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 .card .articleimage {
   display: flex;
   justify-content: center;
   background-color: #aaa;
-  width: 13.5rem;
-  height: 9rem;
+  width: 12rem;
+  height: 8rem;
   overflow: hidden;
 }
 .card .articleimage img {
@@ -371,9 +383,30 @@ nav {
   flex: none;
 }
 .card .cardcontent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   background-color: #355e8591;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   flex-grow: 1;
+  line-height: 1.8rem;
+}
+
+.viewerimage {
+  display: flex;
+  justify-content: center;
+  width: 18rem;
+  height: 12rem;
+}
+.viewerimage img {
+  max-width: 100%;
+  flex: none;
+}
+
+.button3 {
+  padding: 0.3rem 0.8rem;
+  margin-bottom: 0.3rem;
+  margin-right: 0.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

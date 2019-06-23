@@ -9,16 +9,18 @@
 </head>
 <body>
   <div id="app">
+    <!-- Register & Login Area Component -->
     <register-login
       id="outside" :section="section" @section="goTo" @login="loggedIn = true" v-if="!loggedIn">
     </register-login>
     <div id="inside" v-if="loggedIn">
-      <!-- Navbar -->
+      <!-- Navbar Component -->
       <nav-component :section="section" @section="goTo" @logout="loggedIn = false"></nav-component>
       <div id="container">
         <!-- Write Section -->
         <section id="writesection" v-if="section === 3">
           <input id="articletitle" type="text" v-model="editor.title" placeholder="Enter Title..." autofocus required>
+          <!-- TipTap Editor Component -->
           <tip-tap :clear="clearEditor" @editor="updateEditor"></tip-tap>
           <form class="articleform" enctype="multipart/form-data">
             <div style="margin-bottom: 0.5rem;">
@@ -43,36 +45,89 @@
         </section>
         <!-- Explore Section -->
         <section id="exploresection" v-if="section === 4">
-          <div id="tags1">
-            <span>Tags: </span>
-            <div class="tagbutton" :class={selected: (selectedTag === tag)} v-for="tag of currentTags" @click="selectTag(tag)">
-              {{tag}}
+          <div v-show="!detailSection">
+            <i style="font-size: 0.9rem">Tags: </i>
+            <div class="taglist">
+              <div class="tagbutton" :class="{selected: (selectedTag === tag)}" v-for="tag of currentTags" @click="selectTag(tag)">
+                {{tag}}
+              </div>
+            </div>
+            <div id="list1">
+              <!-- Card Component -->
+              <article-card v-for="article of filteredArticles" :article="article" @click.native="detail(article)"></article-card>
             </div>
           </div>
-          <div id="list1">
-            <div class="card" v-for="article of allArticles">
-              <div class="articleimage">
-                <img :src="article.imageUrl">
-              </div>
-              <div class="cardcontent">
-                {{article.title}}
-                {{article.author.email}}
-                {{article.tags}}
-              </div>
+          <div v-if="detailSection">
+            <div style="display: flex; justify-content: center;" v-show="selectedArticle.imageUrl">
+              <div class="viewerimage"><img :src="selectedArticle.imageUrl"></div>
             </div>
+            <div class="viewertitle">{{selectedArticle.title}}</div>
+            <div style=" padding: 0 0.5rem 0.8rem 0.5rem;">
+              By: {{selectedArticle.author.email}}<br>
+            </div>
+            <!-- TipTap Viewer Component -->
+            <tiptap-viewer :content="selectedArticle.content"></tiptap-viewer>
+            <div style=" padding: 0.7rem 0.5rem;">
+              <span style="color: #ddd;">Tags: {{selectedArticle.tags.join(', ')}}</span>
+            </div>
+            <button class="button" @click="goTo(4)">Return</button>
           </div>
         </section>
         <!-- My Articles Section -->
         <section id="myarticlessection" v-if="section === 5">
-          <div id="list2">
-            <div class="card" v-for="article of myArticles">
-              {{article.author.email}} {{article.title}} {{article.imageUrl}}
+          <div v-show="!detailSection && !editSection">
+            <i style="font-size: 0.9rem">Tags: </i>
+            <div class="taglist">
+              <div class="tagbutton" :class="{selected: (selectedTag === tag)}" v-for="tag of currentTags" @click="selectTag(tag)">
+                {{tag}}
+              </div>
             </div>
+            <div id="list2">
+              <!-- Card Component For My Articles -->
+              <my-article v-for="article of filteredArticles" :article="article" @view="detail(article)" @edit="edit(article)"></my-article>
+            </div>
+          </div>
+          <div v-if="detailSection">
+            <div style="display: flex; justify-content: center;" v-show="selectedArticle.imageUrl">
+              <div class="viewerimage"><img :src="selectedArticle.imageUrl"></div>
+            </div>
+            <div class="viewertitle">{{selectedArticle.title}}</div>
+            <div style=" padding: 0 0.5rem 0.8rem 0.5rem;">
+              By: {{selectedArticle.author.email}}<br>
+            </div>
+            <!-- TipTap Viewer Component -->
+            <tiptap-viewer :content="selectedArticle.content"></tiptap-viewer>
+            <div style=" padding: 0.7rem 0.5rem;">
+              <span style="color: #ddd;">Tags: {{selectedArticle.tags.join(', ')}}</span>
+            </div>
+            <button class="button" @click="goTo(5)">Return</button>
+          </div>
+          <div v-if="editSection">
+            <div style="margin-bottom: 0.5rem;">
+              <i style="font-size: 0.9rem">Editing: </i>
+            </div>
+            <input id="articletitle" type="text" v-model="editor.title" placeholder="Enter Title..." autofocus required>
+            <!-- TipTap Editor Component -->
+            <tip-tap :clear="clearEditor" :content="selectedArticle.content" @editor="updateEditor"></tip-tap>
+            <form class="articleform" enctype="multipart/form-data">
+              <div style="margin-bottom: 0.5rem;">
+                <label for="tags" style="color: black;">Tags:&nbsp;</label>
+                <input type="text" id="tags" name="tags" v-model="editor.tags" placeholder="Enter comma-seperated tags (optional)">
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                </div>
+            </form>
+            <p style="color: white;" v-show="alert">
+              {{alert}}
+            </p>
+            <button style="margin-right: 0.5rem;" class="button1" @click.prevent="updateArticle">Save Changes</button>
+            <button class="button1" @click="goTo(5)">Cancel</button>
+
           </div>
         </section>
         <!-- My Account Section -->
         <section id="accountsection" v-if="section === 6">
-          account
+          Account info
         </section>
       </div>
     </div>

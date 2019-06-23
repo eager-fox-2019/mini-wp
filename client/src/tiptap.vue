@@ -68,7 +68,7 @@ export default {
   components: {
     EditorContent, EditorMenuBar,
   },
-  props: ['clear'],
+  props: ['clear', 'content'],
   data() {
     return {
       editor: new Editor({
@@ -97,6 +97,13 @@ export default {
     clear(t) {
       if(t === true) this.editor.clearContent()
     },
+  },
+  mounted() {
+    if(this.content) {
+      setTimeout(() => {
+      this.editor.setContent(this.content)
+    }, 50);
+    }
   },
   beforeDestroy() {
     this.editor.destroy()
