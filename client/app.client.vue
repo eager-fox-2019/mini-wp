@@ -2,6 +2,14 @@
     <login 
         v-if="!loginData.loggedIn && currentPage === 'login'"
         v-on:successful-login="successfulLogin"></login>
+    <public-layout v-else-if="currentPage === 'publicPage'">
+        <article-detail 
+            v-for="(artcl, i) in articles"
+            v-bind:key="i + 'article'"
+            v-bind:title="artcl.title"
+            v-bind:content="artcl.content"
+            v-on:clicked-list="showList"></article-detail>
+    </public-layout>
     <admin-layout 
         v-else
         v-on:logout="logout"
@@ -33,6 +41,7 @@
 
 <script>
 import adminLayout from './components/adminLayout.vue'
+import publicLayout from './components/publicLayout.vue'
 import login from './pages/login.vue'
 import articleList from './pages/articleList.vue'
 import articleDetail from './pages/articleDetail.vue'
@@ -194,6 +203,7 @@ export default {
     data: APP_STATE,
     components: {
         adminLayout,
+        publicLayout,
         login,
         articleList,
         articleDetail,
