@@ -1,6 +1,6 @@
 <template>
     <login 
-        v-if="!loginData.loggedIn"
+        v-if="!loginData.loggedIn && currentPage === 'login'"
         v-on:successful-login="successfulLogin"></login>
     <admin-layout 
         v-else
@@ -46,11 +46,7 @@ const lifecycle = {
     created() {
         this.loginData.loggedIn = window.localStorage.getItem('loggedIn')
         this.loginData.email = window.localStorage.getItem('kecebadai-email')
-        if (this.loginData.loggedIn) {
-            this.setRouting('articleList')
-            toast_success('Welcome back!')
-            this.fetchArticles() 
-        }
+        this.initRouting()
     }
 }
 
@@ -131,8 +127,19 @@ const routing = {
         }
         this.currentPage = page
     },
-    initRouting(path) {
-
+    initRouting() {
+        let path = window.location.pathname
+        if (path.startsWith('/admin/')) {
+            if (this.loginData.loggedIn) {
+                this.setRouting('articleList')
+                toast_success('Welcome back!')
+                this.fetchArticles() 
+            } else {
+                this.setRouting('login')
+            }
+        } else {
+            this.setRouting('publicPage')
+        }
     },
 }
 
@@ -145,6 +152,7 @@ const eventHandler = {
         window.localStorage.setItem('kecebadai-email', email)
         window.localStorage.setItem('kecebadai-token', access_token)
         toast_success("Login berhasil")
+        this.fetchArticles()
         this.setRouting('articleList')
     },
     logout() {
