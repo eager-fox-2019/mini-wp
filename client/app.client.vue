@@ -65,10 +65,11 @@ const lifecycle = {
 }
 
 const ajaxActions = {
-    fetchArticles(title) {
+    fetchArticles({title, disableHeader} = {}) {
         let url = `${BASE_URL}/article`
         if (title) url += '?title='+title
-        axios.get(url, axiosConfig())
+        let config = (disableHeader)? {} : axiosConfig()
+        axios.get(url, config)
             .then(res => {
                 let { data } = res
                 this.articles = data.map(article => {
@@ -119,7 +120,7 @@ const ajaxActions = {
             .catch(toast_error)
     },
     searchArticle(title) {
-        this.fetchArticles(title)
+        this.fetchArticles({title})
         this.pageArticleList.currentFilter = title
     }
 }
@@ -140,6 +141,7 @@ const routing = {
                 window.history.pushState({}, document.title, '/admin/form')
                 break;
             case 'publicPage':
+                this.fetchArticles({disableHeader: true})
                 window.history.pushState({}, document.title, '/')
                 break;
             default:
@@ -158,7 +160,7 @@ const routing = {
                 this.setRouting('login')
             }
         } else {
-            this.fetchArticles()
+            this.fetchArticles({disableHeader: true})
             this.setRouting('publicPage')
         }
     },
