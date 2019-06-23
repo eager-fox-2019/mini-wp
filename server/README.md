@@ -1,12 +1,9 @@
-# fancy-todo
+# mini-wp
 @hemhem 2020
 
-### Fitur Tambahan
-- WYSIWYG editor buat detail todo
 
 ### Alamat Aplikasi
-- client: `https://khasburrahman.github.io/fancy-todo/`
-- server: `https://hemhem-fancytodo.herokuapp.com/`
+- `https://kecebadai.khariskhasburrahman.com/`
 
 ### Cara main
 - buat file `.env` dari template `.envTemplate`
@@ -17,13 +14,12 @@
 
 ::API `POST` harus menggunakan `Content-Type` header dengan nilai `application/json`::
 
-Route | HTTP | Header | BodyJSON / QueryParam | Response | Description
--- | -- | -- | -- | -- | --
-`/user/register` | POST | - | {email, password} | {_id, email, password} | register a user
-`/user/login` | POST | - | {email, password} | {access_token} | login: get token
-`/user/loginGithub` | POST | - | {code} | {access_token, email} | login: get token pake github
-`/todo` | POST | token | {textData, quillData, dueDate, name, htmlData} | {textData, quillData, dueDate, name _id} | create a new todo
-`/todo` | GET | token | - | [{ name, textData, quillData, dueDate, status, htmlData, _id }] | get list of todo
-`/todo/:id` | GET | token | - | { name, textData, quillData, dueDate, status } | get single todo
-`/todo/:id` | DELETE | token | - | - | delete a todo
-`/todo/:id` | PATCH | token | { textData, quillData, name, dueDate, status, htmlData} | { name, textData, quillData, dueDate, status } | update todo
+Route | HTTP | Header | BodyJSON / QueryParam | Response | Description | Validation
+-- | -- | -- | -- | -- | -- | --
+`/user/register` | POST | - | {email, password} | {_id, email, password} | register a user | email must be valid
+`/user/login` | POST | - | {email, password} | {access_token} | login: get token | -
+`/article` | POST | token | {textData, quillData, dueDate, name, htmlData} | {textData, quillData, dueDate, name _id} | create a new article | -
+`/article` | GET | - | - | [{ name, textData, quillData, dueDate, status, htmlData, _id }] | get list of article | -
+`/article/:id` | GET | - | - | { name, textData, quillData, dueDate, status } | get single article | -
+`/article/:id` | DELETE | token | - | - | delete a article | -
+`/article/:id` | PATCH | token | { textData, quillData, name, dueDate, status, htmlData} | { name, textData, quillData, dueDate, status } | update article | -
