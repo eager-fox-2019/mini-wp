@@ -159,6 +159,8 @@ import articlecard from './assets/components/article-card.vue';
 // es modules for tinymce text editor
 import Editor from '@tinymce/tinymce-vue';
 
+const VoiceRSS = require('./assets/js/voicerss-tts.min.js')
+
 const baseUrl = "http://localhost:3000/api"
 
 export default {
@@ -351,7 +353,7 @@ export default {
         this.showMsg("deleted a user")
         this.currentUserName = ""
         this.toggleRegister()
-        this.logoutUser()
+        this.logout()
       })
       .catch(err => {
         console.log("updateArticle error:",err)
@@ -359,6 +361,7 @@ export default {
       })
     },
     showError(err){
+      console.log(err)
       this.errorMessage = err.response.data
       window.scrollTo(0,0)
     },
@@ -375,6 +378,8 @@ export default {
     clearLogin(){
       this.userEmail = ""
       this.editUserArea = false;
+      this.currentUserName = ""
+      this.userPassword = ""
     },
     logout(){
       localStorage.clear()
@@ -405,6 +410,23 @@ export default {
             f: '44khz_16bit_stereo',
             ssml: false
         });
+
+        // http.createServer(function (request, response) {
+        //   tts.speech({
+        //     key: api_key,
+        //     hl: 'en-us',
+        //     src: readStr,
+        //     r: 0,
+        //     c: 'mp3',
+        //     f: '44khz_16bit_stereo',
+        //     ssml: false,
+        //     b64: false,
+        //     callback: function (error, content) {
+        //       response.end(error || content);
+        //     }
+        //   });
+        // }).listen(8081);
+                     
 
       })
       .catch(err => {

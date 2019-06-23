@@ -37,6 +37,9 @@ export default {
       if (this.card.owner){
         if(this.card.owner.name) {
           this.userName = this.card.owner.name
+        } else {
+          //get name of user
+          
         }
       }
     },
