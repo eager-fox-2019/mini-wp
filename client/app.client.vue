@@ -87,26 +87,25 @@ const ajaxActions = {
         formData.append('image', image)
         axios.post(`${BASE_URL}/article`, formData, {...axiosConfig(), 'Content-Type': 'multipart/form-data'})
             .then(() => {
-                this.currentPage = 'pageArticleList'
                 this.fetchArticles()
                 toast_success('Sukses membuat artikel')
+                this.currentPage = 'articleList'
             })
             .catch(toast_error)
     },
     updateArticle() {
-        let { title, content, image } = this.pageFormArticle
+        let { title, content, image, _id } = this.pageFormArticle
+        this.pageFormArticle = {}
         let formData = new FormData() 
         formData.append('title', title)
         formData.append('content', content)
         formData.append('image', image)
-        axios.patch(`${BASE_URL}/article`, {
-            title,
-            content
-        }, axiosConfig())
+        debugger
+        axios.patch(`${BASE_URL}/article/${_id}`, formData, {...axiosConfig(), 'Content-Type': 'multipart/form-data'})
             .then(() => {
                 toast_success('Sukses mengubah artikel')
-                this.currentPage = 'pageArticleList'
                 this.fetchArticles()
+                this.currentPage = 'articleList'
             })
             .catch(toast_error)
     },
@@ -185,6 +184,7 @@ const eventHandler = {
         this.pageFormArticle.edit = true
         this.pageFormArticle.title = article.title
         this.pageFormArticle.content = article.content
+        this.pageFormArticle._id = article._id
         this.setRouting('articleForm')
     },
     showNewForm() {
