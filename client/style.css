@@ -8,6 +8,14 @@
     padding: 0;
 }
 
+nav {
+    height: 35px;
+}
+
+#searchInput {
+    height: 30px;
+}
+
 /* Sidebar sizes when expanded and expanded */
 .sidebar-expanded {
     width: 230px;
@@ -84,7 +92,7 @@
     left: 0;
     top: 0;
     z-index: 1;
-    margin-top: 50px;
+    margin-top: 35px;
     
 }
 

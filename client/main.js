@@ -3,13 +3,8 @@ var app = new Vue({
     el : '#app',
     data :  {
         allArticle : [],
-        automotiveArticle: [],
-        educationArticle: [],
-        fashionArticle: [],
-        fdArticle: [],
-        technologyArticle: [],
-        filmArticle: [],
         searchResult : "",
+        userPostOnly : [],
         activePage : 'nologinuser',
         activePageInside : "nologinuser",
         emailLogin : "",
@@ -17,10 +12,20 @@ var app = new Vue({
         emailregister : "",
         passwordregister : "",
         first_nameRegister: "",
+        image : null,
         last_nameRegister: "",
+        singlePostArticle : {
+            author : "",
+            image : "",
+            content : "",
+            title : "",
+            category:"",
+            createdAt : "",
+            
+        },
         newArticle : {
+            newArticleId : "",
             newArticleTitle : "",
-            newArticleImage : "",
             newArticleContent : "",
             newArticleCreatedAt: "",
             newArticleCategory : ""
@@ -30,12 +35,92 @@ var app = new Vue({
         wysiwyg: vueWysiwyg.default.component,
       },
     methods : {
+        getImage(event) {
+        this.image = event.target.files[0]
+        
+        },
         addNewArticle(){
             console.log("masuk create Data");
-            
+            let formData = new FormData()
+            formData.append('title', this.newArticle.newArticleTitle)
+            formData.append('image', this.image)
+            formData.append('content',this.newArticle.newArticleContent)
+            formData.append('category',this.newArticle.newArticleCategory)
+            console.log(formData, 'ini form data')
             axios({
                 method: 'post',
                 url: 'http://localhost:3100/article',
+                responseType: 'json',
+                data :formData,
+                headers: {
+                    token : localStorage.getItem('token')
+                }
+                
+              })
+              .then( ({data}) => {
+                  this.newArticle.newArticleTitle = ""
+                  this.newArticle.newArticleImage = ""
+                  this.newArticle.newArticleContent = ""
+                  this.newArticle.newArticleCategory = ""
+                  this.allArticle.push(data)
+                  this.userPostOnly.push(data)
+                  this.activePageInside = "MyPostOnly"
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+        },
+        deleteArticle(data){
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#343A40',
+                cancelButtonColor: '#C82333',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    axios({
+                        method: "DELETE",
+                        url: `http://localhost:3100/article/${data._id}`,
+                        headers: {
+                            "token" : localStorage.getItem('token')
+                        }
+                    })            
+                    .then(({data}) => {
+                        this.getArticle()
+                         this.activePageInside = 'MyPostOnly'
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        Swal.fire({
+                            title: 'Failed to delete article!',
+                            text: `${err.message}`,
+                            type: 'error',
+                            confirmButtonText: 'Ok'
+                        })
+                    })
+                }
+            })
+
+        },
+        editArticle(data){
+            console.log(data);
+            
+            // alert(data.title)
+            this.newArticle.newArticleId = data._id
+            this.newArticle.newArticleTitle = data.title
+            this.newArticle.newArticleImage = data.image
+            this.newArticle.newArticleContent = data.content
+            this.newArticle.newArticleCategory = data.category
+            this.activePageInside = 'editArticle'
+        },
+        submitEditArticle(){
+            axios({
+                method: 'put',
+                url: `http://localhost:3100/article/${this.newArticle.newArticleId}`,
                 responseType: 'json',
                 data : {
                     title : this.newArticle.newArticleTitle,
@@ -48,17 +133,27 @@ var app = new Vue({
                 }
                 
               })
-                .then( ({data}) => {
-                    this.newArticle.newArticleTitle = ""
-                    this.newArticle.newArticleImage = ""
-                    this.newArticle.newArticleContent = ""
-                    this.newArticle.newArticleCategory = ""
-                    this.article.push(data)
-                    this.activePageInside = "mypost"
+              .then( ({data}) => {
+                  this.newArticle.newArticleTitle = ""
+                  this.newArticle.newArticleImage = ""
+                  this.newArticle.newArticleContent = ""
+                  this.newArticle.newArticleCategory = ""
+                  this.getArticle()
+                  this.activePageInside = "MyPostOnly"
                 })
                 .catch((err)=>{
                     console.log(err);
                 })
+        },
+        generateSinglePostArticle(data){
+            // alert(data.title)
+            this.activePageInside ='singlePage'
+            this.singlePostArticle.author = `${data.UserId.first_name} ${data.UserId.last_name}` 
+            this.singlePostArticle.image = data.image
+            this.singlePostArticle.content = data.content
+            this.singlePostArticle.title = data.title
+            this.singlePostArticle.createdAt = data.createdAt
+            this.singlePostArticle.category = data.category
         },
         login(){
             axios({
@@ -74,7 +169,9 @@ var app = new Vue({
                     this.activePage = 'userLogin'
                     this.activePageInside = 'category'
                     localStorage.setItem('token', data.token)
+                    localStorage.setItem('userid', data.id)
                     this.checkLogin()
+                    this.getArticle()
                     
                 this.article = data
                 })
@@ -99,8 +196,8 @@ var app = new Vue({
                    swal(data)
                 })
                 .catch((err)=>{
-                    console.log(err);
-                    swal(`${err.response.data.message}`)
+                    console.log(err.response);
+                    swal(`${err.response.data.errorArr[0].message}`)
                 })
         },
         logout(){
@@ -117,36 +214,33 @@ var app = new Vue({
         showPerCategory(category){
             this.activePageInside = `${category}`
         },
-        getArticle(){
+        showMyPost(){
+            this.activePageInside = 'MyPostOnly'
+        },
+        getArticle(){ 
+            this.allArticle = []
+            this.userPostOnly = []
             axios({
                 method: 'get',
                 url: 'http://localhost:3100/article',
                 responseType: 'json'
               })
                 .then( ({data}) => {
-                   for (let i = 0; i < data.length; i++) {
-                    this.allArticle.push(data[i])
-                    if(data[i].category === "Film"){                
-                        this.filmArticle.push(data[i])
-                    } else if(data[i].category === "Food & Drink"){                
-                        this.fdArticle.push(data[i])
-                    } else if(data[i].category === "Automotive"){                
-                        this.automotiveArticle.push(data[i])
-                    } else if(data[i].category === "Education"){                
-                        this.educationArticle.push(data[i])
-                    } else if(data[i].category === "Fashion"){                
-                        this.fashionArticle.push(data[i])
-                    } else if(data[i].category === "Technology"){                
-                        this.technologyArticle.push(data[i])
-                    }
-                       
-                   } 
+                    let userid = localStorage.getItem('userid')
+                    this.allArticle = data
+                    for (let i = 0; i < data.length; i++) {
+                        // console.log("id user login", userid,);
+                        // console.log('id userartcile', data[i].UserId);
                 
+                        if(data[i].UserId._id === localStorage.getItem('userid')){
+                            console.log("dapet nih sama");
+                            
+                            this.userPostOnly.push(data[i])
+                        }
+                        
+                    }
                 })
                 .catch((err)=>{
-                    console.log("masuk error");
-    
-                    console.log(err);
                     
                 })
         },
@@ -170,16 +264,27 @@ var app = new Vue({
         // },
         filteredArticleCategory(){
 
-            let filter = this.allArticle.filter(filterResult => { 
-                if(this.activePageInside === "mypost"){
-                    return this.allArticle
-                } else {
-                    return filterResult.category === this.activePageInside
-                }
-                
-            })
-        if (filter.length === 0) return this.article
-        else return filter
+            if(this.searchResult !== "") {
+                let filter = this.allArticle.filter(filterResult => {
+                    return filterResult.title.toLowerCase().includes(this.searchResult.toLowerCase())
+                })
+                if (filter.length === 0) return this.article
+                else return filter
+                        
+            } else {
+                let filter = this.allArticle.filter(filterResult => { 
+                    if(this.activePageInside === "mypost"){
+                        return this.allArticle
+                    } else {
+                        return filterResult.category === this.activePageInside
+                    }
+                    
+                })
+            if (filter.length === 0) return this.article
+            else return filter
+            }
+
+            
         },
         checkPage(){
             if(this.activePageInside === "allpost" ||

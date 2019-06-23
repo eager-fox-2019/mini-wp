@@ -1,6 +1,7 @@
 const Article = require('../models/Article')
 const jwt = require('../helpers/jwt')
 
+
 class ArticleController {
     static findAllUser(req,res,next){
     //    let decodeToken = jwt.decode(req.headers.token)
@@ -17,7 +18,8 @@ class ArticleController {
     }
 
     static findAll(req,res,next){
-           Article.find()
+           Article.find().
+           populate('UserId')
            .then((foundArticle)=>{
                if(!foundArticle){
                    throw ({status : 404, message : "Not Found"})
@@ -42,15 +44,12 @@ class ArticleController {
     }
 
     static create(req,res,next){
-        // console.log("masuk pak eko");
-        // console.log(req.headers.token);
+        console.log(req.body, "req body create new article");
         
         let decodeToken = jwt.decode(req.headers.token)
-        // console.log(decodeToken, "<<<<<<<<<<<<<<<<");
-        
         let newArticle = {
             title: req.body.title,
-            image: req.body.image,
+            image: req.file.cloudStoragePublicUrl,
             content: req.body.content,
             category: req.body.category,
             UserId: decodeToken.id

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dedysimamora",
+  "private_key_id": "e5197b7ee98c28c41254f04d37c61cd0ac074322",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDHOCpKdBOFmxGF\nEd0uwDYayN1tERGyvBIVPdGhHFs5aAiPftPg4/wqnjksloF6GBkRO0o9QfoTJsVD\nlMsEf2ERmtnF8xJT2AAKoidWcKf8mdAcndMlsG6SXnXtDPhzrNYrA7NDwvmw4oY3\naqV6ikKPnlb7uhb16HB4EtzQpnFF0pIf1JP4L6V8y1FycKv+I3FsrufOIcfHXMaH\nnEPYi5uAh6dX7pRfFNrXRvTW3GE6rSrEzEDkXKVY9k6pdefQKXS8Kgac3k3iXpRP\nYzilxbaQxFVX1Yx8ljkwo5GnQ4bwtIxPVfbHMvKkbc/pqjbupgrGxyKo9/Q4S2qZ\nmo6tBVpBAgMBAAECggEASipApEMeWWjnVtDVtOfdvI72z/nAyvd1C+9dsUrrMy3l\nsfYXTuvRHtSUmGLXhOqfumiGNNPxE1wlqAkmo2AAdRte43CgbBJHwa2oU2fRQhrI\n/T5MMwXBxD/iSwO/IuE/Qfg4rotRhWZvbQYI4NvD98+Mtl4K2jVUWX88MXklRkZ7\ne1OqzSdsjUEmcl5LYGPF9EdZ3HnfAJ/vym5AJ3wSX6Sqsbdg854U2p7abjxIwiX1\nTAEUH0qoGA7QnwCPkbZXw2ZReSUzRUsWhc8P/N/ujNeodU/x54St356bu5Kjlhhl\nbQQyRCOC2ih8crCcRR/Grn1A/of8gwT7q+FuFNwamQKBgQDzi/PR4hYJSuOlWvvo\nwhe2KJ4Za25Ojz1uKk0wBEqLry+TCT+jTrgGb9ypRj1c9/BWOGtTmsu+bLCani0X\nZ8qcCWYVdUM3hjBc5SZVnDWevPoZ9jIUu9lZMjgbgbN606nCKYk6Ie+v72J+7YQn\nTLykY2FRYsL72tfSK4MQEGIFSwKBgQDRZ/bwNBXw17aR2BKYkG/OkmPiuN6f8/PG\neHwFmpWHeqSL21OFxsb38hw9Xg9clVltuHxf16ZFhG1mgVXhx9rKk+/lqQ6mMDZn\nFZD/iT0KCCVrqJCRdy2X8rR0jMkdgKjgi4/C1Syw4jYpem1hT2WdOFuE49FCCLJ1\n0PEs/zRDIwKBgAY8WRvQnBvUzQtYzwZgodbKJ3IjLAna5QnDD4LhOT9mVuN+4yA9\nTbzsdEvpPnz45DBw9V6IohrYEZWD40esIqXoH7MA852iU+6s91RN0Zmk4Qp1IUci\noCgGfyVFJuFINhqAkcDpSYfJq03wqueOsW3MFZvN2Yw1SD1bW9m3casNAoGBAID9\n270nOIS9PDcmtH3KKzVCM8lLO8eoDHgra6pACPAFeiq0lgSH57SALSkYMbpEPWw7\nAlI/kqqr4oAMF40XAQ1ch6AevWldtYVWYZUnQrRVREfG9BbHJQy+cq6Asro7sMtw\n7MOFcRwcnGR8h7gzolJwjt+TPinBFb1BUe733YelAoGAEwraJR+Q9KGdEDdyuQD8\nlVjAvqMbEzyU/4QYkZcQ9NKX0OiCZjY0SJy3/1cIF6UQEp51XTmTPPliRWMBBCyr\nW0kl1aWCJTXETV/NGos11c3np9C2z4ZifcextzLdhRb0julVOZdEr9v0WbjBle6w\nbCvAEpZ8O2eZ3+bw6ON49fo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "simamora-bucket-access@dedysimamora.iam.gserviceaccount.com",
+  "client_id": "108283145714547888913",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/simamora-bucket-access%40dedysimamora.iam.gserviceaccount.com"
+}

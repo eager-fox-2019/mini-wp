@@ -1,12 +1,13 @@
 const jwt = require('../helpers/jwt')
-const Todo = require('../models/Article')
+const Article = require('../models/Article')
 
 
 function authorization(req, res, next){
+    console.log(req.params.id);
+    
     let decodeToken = jwt.decode(req.headers.token)
     console.log(decodeToken.id, "id user");
-    console.log(req.params.id, "id todo")
-    Todo.findById(req.params.id)    
+    Article.findById(req.params.id)    
     .then((gotData)=>{
         if(gotData){
             console.log(gotData.UserId ," got id user");

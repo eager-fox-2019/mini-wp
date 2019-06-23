@@ -36,14 +36,14 @@
             
                         </ul>
                         <form v-on:submit.prevent="" class="form-inline my-2 my-lg-0">
-                            <input  class="form-control mr-sm-2" type="text" placeholder="Search" v-model="searchResult">
+                            <input  class="form-control mr-sm-2" type="text" id="searchInput" placeholder="Search" v-model="searchResult">
                         </form>
                     </div>
                 </nav>
 
                     <!-- sidebarr -->
         <div class="row" id="body-row">
-            <div id="sidebar-container" class="sidebar-expanded d-none d-md-block" style="display: none;">""""
+            <div id="sidebar-container" class="sidebar-expanded d-none d-md-block" style="display: none;">
                 <ul class="list-group">
                     
                     <!-- login form -->
@@ -75,7 +75,7 @@
                             <a  href="#submenu3" data-toggle="collapse" aria-expanded="false"
                         class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-start align-items-center">
-                            <span class="mr-3"><i class="fas fa-user"></i></span>
+                            <span class="mr-3"><i class="far fa-user"></i></span>
                             <span class="menu-collapsed">Register</span>
                             <span class="ml-auto"><i class="fas fa-caret-down"></i></span>
                         </div>
@@ -101,9 +101,7 @@
                     <!-- end register form -->
                     
                     <section v-if="activePage === 'userLogin'">
-                            <div class="col-12">
-                                    <button @click="logout()" type="submit" class="btn btn-primary btn-block  my-2">Log Out</button>
-                                </div>
+                            
                     <a  v-on:click.prevent="showFormNewArticle()" href="#"
                         class="bg-dark list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -111,16 +109,18 @@
                             <span v-on:click="showFormNewArticle()" class="menu-collapsed">New Post</span>
                         </div>
                     </a>
-
-                    <a  v-on:click.prevent="showCategory()" href="#"
+                </section>
+                    <a v-if="activePage === 'nologinuser' || activePage === 'userLogin'" v-on:click.prevent="showCategory()" href="#"
                         class="bg-dark list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-start align-items-center">
-                            <span class="mr-3"><i class="far fa-plus-square"></i></span>
-                            <span v-on:click="showFormNewArticle()" class="menu-collapsed">Category</span>
+                            <span class="mr-3"><i class="far fa-newspaper"></i></i></span>
+                            <span class="menu-collapsed">Category</span>
                         </div>
                     </a>
 
-                    <a  v-on:click.prevent="showPerCategory('mypost')" href="#"
+                    <section v-if="activePage === 'userLogin'">
+
+                    <a  v-on:click.prevent="showMyPost()" href="#"
                         class="bg-dark list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-start align-items-center">
                             <span class="mr-3"><i class="fas fa-tasks"></i></span>
@@ -146,8 +146,12 @@
                     </div>
 
                 </ul>
+            </section>
+                <div v-if="activePage === 'userLogin'" class="col-12">
+                        <button @click="logout()" type="submit" class="btn btn-primary btn-block  my-2">Log Out</button>
+                    </div>
             </div>
-        </section>
+            
             <!-- MAIN -->
 
 
@@ -156,10 +160,10 @@
                 <!-- form add new post -->
                 <div v-if="activePageInside === 'newArticle'" id="newArticalForm" class="row" style="margin-top: 10%">
                     <div class="col-8 offset-2 py-5 border">
-                        <form @submit.prevent="addNewArticle()">
+                        <form @submit.prevent="addNewArticle()" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleFormControlFile1">Thumbnail</label>
-                                <input  v-model="newArticle.newArticleImage"  type="text" class="form-control-file" id="exampleFormControlFile1">
+                                <input v-on:change="getImage"  type="file" class="form-control-file" id="exampleFormControlFile1">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Title</label>
@@ -204,6 +208,58 @@
                 </div>
 
                 <!-- end form new post -->
+
+
+                <!-- edit article -->
+                <div v-if="activePageInside === 'editArticle'" id="newArticalForm" class="row" style="margin-top: 10%">
+                        <div class="col-8 offset-2 py-5 border">
+                            <form @submit.prevent="submitEditArticle()">
+                                <div class="form-group">
+                                    <label for="exampleFormControlFile1">Thumbnail</label>
+                                    <input  v-model="newArticle.newArticleImage"  type="text" class="form-control-file" id="exampleFormControlFile1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Title</label>
+                                    <input  v-model="newArticle.newArticleTitle"  type="text" class="form-control" id="exampleInputPassword1"
+                                        placeholder="Title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Content</label>
+                                    <wysiwyg v-model="newArticle.newArticleContent"></wysiwyg>
+                                </div>
+                                <div>
+                                    <label for="categoryArticleRadioButton">Category</label><br>
+                                    <div id='categoryArticleRadioButton' class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox1" v-model="newArticle.newArticleCategory" value="Fashion">
+                                        <label class="form-check-label" for="inlineCheckbox1">Fashion</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox2" v-model="newArticle.newArticleCategory" value="Food & Drink">
+                                        <label class="form-check-label" for="inlineCheckbox2">Food & Drink</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Automotive">
+                                        <label class="form-check-label" for="inlineCheckbox3">Automotive</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Technology">
+                                        <label class="form-check-label" for="inlineCheckbox3">Technology</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Film">
+                                        <label class="form-check-label" for="inlineCheckbox3">Film</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Education">
+                                        <label class="form-check-label" for="inlineCheckbox3">Education</label>
+                                      </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </form>
+    
+                        </div>
+                    </div>
+                <!-- end edit artivcle -->
 
 
                 <!-- category -->
@@ -315,10 +371,10 @@
 
                 <!-- end category -->
 
-                <!-- mypost -->
+                <!-- allpost -->
                 <div v-if="checkPage" class="row" style="margin-top: 8%">
                     <div class="col-10 offset-1 ">
-                        <div v-if="searchResult !== null" v-for="post in filteredArticleCategory" class="card w-100 my-2">
+                        <div @click="generateSinglePostArticle(post)" v-if="searchResult !== null" v-for="post in filteredArticleCategory" class="card w-75 my-2">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4">
@@ -332,19 +388,13 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-12 mb-5">
-                                                <p class="card-text">With supporting text below as a natural lead-in to
-                                                    additional
-                                                    content.</p>
+                                            <div class="col-12 mb-5 text-truncate">
+                                                <p class="card-text text-truncate">{{post.content}}</p>
                                             </div>
                                         </div>
                                         <div style="display: flex;justify-content:flex-end;margin-bottom: -10px;" class="">
-                                            <div class="">
-                                                <a href="#" class="btn btn-primary">Edit</a>
-                                            </div>
-                                            <div class="" style="margin-left: 0.5rem;">
-                                                <a href="#" class="btn btn-primary">Delete</a>
-                                            </div>
+                                            <p class="card-text"><small class="text-muted">{{`${post.UserId.first_name} ${post.UserId.last_name}`}} &nbsp;</small></p>
+                                            <p class="card-text"><small class="text-muted">{{post.createdAt.substring(0, 10)}}</small></p>
                                         </div>
                                     </div>
                                 </div>
@@ -354,7 +404,60 @@
                     </div>
                 </div>
 
-                <!-- end mypost -->
+                <!-- end alpost -->
+
+                <!-- MypostOnly -->
+
+                <div v-if="activePageInside === 'MyPostOnly'" class="row" style="margin-top: 8%">
+                    <div class="col-10 offset-1 ">
+                        <div   v-for="post in userPostOnly" class="card w-100 my-2 ">
+                            <div  class="card-body bg-light ">
+                                <div class="row  ">
+                                    <div class="col-1">
+                                        <img :src=post.image class="card-img " alt="..." height="40" width="20px" >
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row">
+                                                <div class="col-10">
+                                                        <h5 class="card-text "><b>{{post.title}}</b></h5>
+                                                    </div>
+                                                    <div class="col-2 d-flex justify-content-end">
+                                                       <h4><span><i @click="editArticle(post)" class="far fa-edit"></i></span>
+                                                        <span><i @click="deleteArticle(post)" class="fas fa-trash"></i></i></span>
+                                                    </h4>  
+                                                    </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <!-- end my post only -->
+
+                <!-- single article -->
+                <div v-if="activePageInside === 'singlePage'" class="row" style="margin-top: 8%">
+                    <div class="col-10 offset-1 ">
+                        <div class="card mb-3 bg-light">
+                            <div class="card-header bg-primary d-flex justify-content-between">
+                                    <span>{{singlePostArticle.author}}</span>
+                                    <span>{{singlePostArticle.createdAt}}</span>
+                            </div>
+                            <div class="card-img-top p-3">  
+                                <img :src=singlePostArticle.image class="card-img-top">
+                            </div>
+                            <div class="card-body">
+                              <h5 class="card-title">{{singlePostArticle.title}}</h5>
+                              <p class="card-text" v-html="singlePostArticle.content"></p>
+                              <p class="card-text"><small class="text-muted">{{singlePostArticle.category}}</small></p>
+                            </div>
+                          </div>
+
+                    </div>
+                </div>
+                <!-- single article -->
 
             </div>
         </div>
@@ -373,6 +476,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/12.2.0/classic/ckeditor.js"></script>

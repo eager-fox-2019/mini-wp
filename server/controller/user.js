@@ -54,7 +54,7 @@ class UserController {
                         res.status(200).json({
                             token : userToken,
                             email : gotData.email,
-                        id : gotData.id
+                            id : gotData.id
                         })
 
                     } else {
