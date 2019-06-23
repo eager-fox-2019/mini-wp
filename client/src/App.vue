@@ -8,23 +8,18 @@
                     @to-register="toRegister"
                     @user-register="userRegister"
                     @to-login="toLogin"
-                    v-bind:isLoginProps="isLogin"
-                    v-bind:usersignProps="usersign"
-                    v-bind:userNameProps="userName"
-                    v-bind:userEmailProps="userEmail"
-                    v-bind:userPswProps="userPsw"
                 ></navright>
             </nav>
         </header>
         
         <!-- <main>
             <div class="middle">
-                <div class="sidenav"> -->
-                    <!-- <a href="#" @click.prevent="toPublishedPage"><i class="fas fa-columns"></i>Articles</a>
+                <div class="sidenav">
+                    <a href="#" @click.prevent="toPublishedPage"><i class="fas fa-columns"></i>Articles</a>
                     <a v-show="isLogin" href="#" @click.prevent="toPersonalPostPage"><i class="fas fa-signature"></i>Your Articles</a>
-                    <a v-show="isLogin" href="#" @click.prevent="toDraftPage"><i class="fas fa-pencil-alt"></i>Write Article</a> -->
+                    <a v-show="isLogin" href="#" @click.prevent="toDraftPage"><i class="fas fa-pencil-alt"></i>Write Article</a>
 
-                    <!-- <a href="#"><i class="fas fa-chart-bar"></i>Stats</a>
+                    <a href="#"><i class="fas fa-chart-bar"></i>Stats</a>
                     <a href="#"><i class="fas fa-columns"></i>Plan</a>
                     <a href="#" data-toggle="collapse" data-target="#site-side"><i class="fas fa-pencil-alt"></i>Site</a>
                     <div id="site-side" class="collapse">
@@ -145,10 +140,10 @@
                             <img id="imgShow" v-bind:src="uploadImg" alt="your image" />
                             <input type="file" class="form-control" placeholder="Browse an image"
                                 id="imgUrl" name="imgUrl" v-on:change="readURL"
-                                accept="image/png, image/jpeg"> -->
-                            <!-- <label for="imgUrl"><b>Image Url</b></label>
-                            <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br> -->
-                            <!-- <editor v-model="newPost" api-key="5t9c5vfi2kk6s9yazv87rfciyj6b720adar1ephqweq14uhp" :init="{plugins: 'wordcount'}">Write here</editor>
+                                accept="image/png, image/jpeg">
+                            <label for="imgUrl"><b>Image Url</b></label>
+                            <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br>
+                            <editor v-model="newPost" api-key="5t9c5vfi2kk6s9yazv87rfciyj6b720adar1ephqweq14uhp" :init="{plugins: 'wordcount'}">Write here</editor>
                             <br>
                             <div v-show="loadPage === 'draft'">
                                 <button @click.prevent="postArticle" class="btn btn-primary">Publish</button>
@@ -176,36 +171,18 @@
                     </div>
                 </div>
             </div>
-        </main>
+        </main> -->
 
 
         <footer class="page-footer font-small fixed-bottom" style="position: relative; background-color: #22344B; padding: 3rem">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 d-flex justify-content-center">
-                        <div class="flex-center">
-                            <a class="fb-ic" href="https://www.facebook.com/MelinA.Dew1" target="blank">
-                                <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                            <a class="li-ic" href="https://id.linkedin.com/in/melina-dewi-murjadi-097605142" target="blank">
-                                <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                            <a class="ins-ic" href="https://www.instagram.com/melinadm57/" target="blank">
-                                <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-copyright text-center" style="color: white; margin-top: 10px;">
-                    © 2019 Copyright tidak sama dengan Copyleft
-                </div>
-            </div>
-        </footer> -->
+            <foot></foot>
+        </footer>
     </div>
 </template>
 <script>
 import navleft from './components/navleft.vue';
 import navright from './components/navright.vue';
+import foot from './components/foot.vue';
 export default {
     data() {
         return {
@@ -321,38 +298,157 @@ export default {
 }
 </script>
 <style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    html{
+        height: 100%;
+    }
+
+    body{
+        margin:0;
+        height: 100%;
+    }
+
+    #app{
+        display: flex;
+        flex-flow: column nowrap;
+    }
+
+    .article-container{ 
+        height:100%;
+        width:80%;
+        background: rgba(111,147,173, 0.1);
+        margin-left:20%;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .container-nav{
+        margin: 50px auto;
+        width: 1000px;
+        padding: 10px;
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .container-nav-link{
+        flex-wrap: wrap;
+        display: inline-block;
+        height: 50px;
+        width: 100px;
+        line-height: 50px;
+        padding-left: 20px;
+    }
+
+    .container-nav-search{
+        display: inline-block;
+        height: 50px;
+        width: 90%;
+        line-height: 50px;
+        padding-left: 20px;
+        flex-grow: 8;
+    }
+
+    .container-nav-link :hover{
+        border-bottom: #0073aa
+    }
+
+    .container-post{
+        align-content: center;
+    }
+
+    .card{
+        width: 1000px;
+    }
+
     nav{
         background-color: #0073aa;
     }
+
     .nav-elm{
         justify-content: space-evenly;
     }
-/* html, body, .contentwrapper{
-    height: 100%;
-    width: 100%;
-}
-.header {
-    height: 10%
-}
-.maincontent {
-    height: 90%
-}
-.sidebarwrapper{
-    width: 20%;
-    transition: width 0.5s;
-}
-.sidebarwrapper-closed{
-    width: 0;
-    transition: width 0.5s;
-}
-.content {
-    overflow: auto;
-    transition: width 0.5s;
-}
-.content-full {
-    width: 100%;
-}
-.content-pushed {
-    width: 80%;
-} */
+
+    .sidenav {
+        height: 100%;
+        width: 270px;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        background-color: white;
+        overflow: auto;
+        flex: 2;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    .sidenav i{
+        width:20%;
+    }
+
+    .content{
+        display: inline-block;
+        vertical-align: top;
+        height: 100%;
+        width: 82%;
+        overflow: auto;
+        background: rgba(111,147,173, 0.1);
+    }
+
+    .card-img-top{
+        height: 500px;
+    }
+
+    .card-img-top-display{
+        height: 100%;
+        width: 100%;
+    }
+
+    .card{
+        margin-bottom: 40px;
+    }
+
+    .fa {
+        padding: 20px;
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 50%;
+        background: gray;
+        color: white;
+    }
+
+    .fa:hover {
+        opacity: 0.7;
+    }
+
+    footer {
+        flex-shrink: 0;
+        height: 10rem;
+        position: relative;
+        padding: 3rem;
+        right: 0;
+        bottom: 0;
+        padding: 1rem;
+        background-color: #22344B;
+        text-align: center;
+    }
 </style>

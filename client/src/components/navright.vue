@@ -23,7 +23,6 @@
                             v-on:input="$emit('userEmail', $event.target.value)"
                             type="text" placeholder="Enter your email" name="email" id="log-email" required
                         >
-                        <!-- <input v-model="userEmail" type="text" placeholder="Enter your email" name="email" id="log-email" required> -->
                     </div>
                     <div class="form-group">
                         <label for="log-psw"><b>Password</b></label><br>
@@ -32,7 +31,6 @@
                             v-on:input="userPswProps = $event.target.value"
                             type="password" placeholder="Enter your password" name="password" id="log-psw" required
                         >
-                        <!-- <input v-model="userPsw" type="password" placeholder="Enter your password" name="password" id="log-psw" required> -->
                     </div>
                     <button @click.prevent="userLoginFromChild" type="submit" class="btn btn-primary" style="width: 100%">Login</button>
                     <!-- <br>Or sign in with:
@@ -49,7 +47,6 @@
                             v-on:input="$emit('input', $event.target.value)"
                             type="text" placeholder="Enter your name" name="username" id="username" required
                         >
-                        <!-- <input v-model="userName" type="text" placeholder="Enter your name" name="username" id="username" required> -->
                     </div>
                     <div class="form-group">
                         <label for="reg-email"><b>Email</b></label><br>
@@ -58,7 +55,6 @@
                             v-on:input="userEmailProps = $event"
                             type="text" placeholder="Enter your email" name="email" id="reg-email" required
                         >
-                        <!-- <input v-model="userEmail" type="text" placeholder="Enter your email" name="email" id="reg-email" required> -->
                     </div>
                     <div class="form-group">
                         <label for="reg-psw"><b>Password</b></label><br>
@@ -67,7 +63,6 @@
                             v-on:input="userPswProps = $event"
                             type="password" placeholder="Enter your password" name="password" id="reg-psw" required
                         >
-                        <!-- <input v-model="userPsw" type="password" placeholder="Enter your password" name="password" id="reg-psw" required> -->
                     </div>
                     <button @click.prevent="userRegisterFromChild" type="submit" class="btn btn-primary" style="width: 100%">Create an account</button><br>
                     <small>Already have an account? <a @click.prevent="toLoginFromChild" href="#">Login here!</a></small>
@@ -89,7 +84,7 @@ export default {
             console.log('First emit')
             this.$emit('userPsw', this.userPswProps)
             console.log('Second emit')
-            // this.$emit("user-login")
+            this.$emit("user-login")
         },
         toRegisterFromChild(){
             this.$emit("to-register")
