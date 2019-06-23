@@ -5,7 +5,7 @@ const ModelSchema = new Schema({
     title: String,
     content: String,
     createdAt: Date,
-    imgBucker: String,
+    image: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users'

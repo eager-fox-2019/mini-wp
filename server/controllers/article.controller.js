@@ -5,14 +5,21 @@ class ArticleController {
     static async create(req, res, next) {
         let user = req.user
         let {title, content } = req.body
+
         try {
-            let article = await Article.create({ 
-                title, 
-                content, 
-                user
-            })
-            let {_id} = article
-            res.json({_id, title, content, user })
+            if (req.file && req.file.gcsUrl) {
+                let image = req.file.gcsUrl
+                let article = await Article.create({
+                    title,
+                    content,
+                    user,
+                    image,
+                })
+                let { _id } = article
+                res.json({ _id, title, content, user })
+            } else {
+                next({code:400, msg: 'featured image is required'})
+            }
         } catch(err) {
             console.log('article create error', err)
             next({code: 400, msg: err.message})
