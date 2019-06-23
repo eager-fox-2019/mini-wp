@@ -17,11 +17,13 @@
         v-on:logout="logout"
         v-on:clicked-new-article="showNewForm"
         v-on:set-route="setRouting">
+        <v-dialog></v-dialog>
         <article-list 
             v-if="currentPage === 'articleList'"
             v-on:search-article="searchArticle"
             v-bind:articles="articles"
             v-bind:currentfilter="pageArticleList.currentFilter"
+            v-on:delete-article="deleteArticle"
             v-on:clicked-detail="showDetail"
             v-on:clicked-form="showEditForm"></article-list>
         <article-detail 
@@ -79,7 +81,6 @@ const ajaxActions = {
             .catch(toast_error)
     },
     postArticle() {
-        debugger
         let { title, content, image } = this.pageFormArticle
         let formData = new FormData() 
         formData.append('title', title)
@@ -93,6 +94,15 @@ const ajaxActions = {
             })
             .catch(toast_error)
     },
+    deleteArticle(i) {
+        let article = this.articles[i]
+        axios.delete(`${BASE_URL}/article/${article._id}`, axiosConfig())
+            .then(() => {
+                toast_success('Terhapus!')
+                this.fetchArticles()
+            })
+            .catch(toast_error)
+    },
     updateArticle() {
         let { title, content, image, _id } = this.pageFormArticle
         this.pageFormArticle = {}
@@ -100,7 +110,6 @@ const ajaxActions = {
         formData.append('title', title)
         formData.append('content', content)
         formData.append('image', image)
-        debugger
         axios.patch(`${BASE_URL}/article/${_id}`, formData, {...axiosConfig(), 'Content-Type': 'multipart/form-data'})
             .then(() => {
                 toast_success('Sukses mengubah artikel')

@@ -4,7 +4,7 @@
         <div class="grid-card-title">
             <h2 v-if='articles.length > 0 && currentfilter === ""' class="padding-m">Your Published Articles</h2>
             <h2 v-else-if='articles.length > 0 && currentfilter !== ""' class="padding-m">Your Published Articles (Filter: {{currentfilter}})</h2>
-            <h2 v-else class="padding-m">No Article (Filter: {{ (currentfilter)? currentfilter: '' }})</h2>
+            <h2 v-else class="padding-m">No Article {{ (currentfilter)? `(Filter: ${currentfilter})`: '' }}</h2>
         </div>
         <div class='grid-card-input-search padding-m'>
             <div class="flex flex-row">
@@ -26,6 +26,7 @@
             v-bind:image="article.image"
             v-bind:index="i"
             v-bind:key="'article-id-'+i"
+            v-on:delete-article="(i) => $emit('delete-article', i)"
             v-on:clicked-form="(i) => $emit('clicked-form', i)"
             v-on:clicked-detail="(i) => $emit('clicked-detail', i)"
             ></article-card>
