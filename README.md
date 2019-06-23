@@ -10,7 +10,7 @@ mini-wp
 - make file .env from .env-template
 - run code :
 ```
-  $ pm install
+  $ npm install
 ```
 - then just run this code to enable the server :
 ```
