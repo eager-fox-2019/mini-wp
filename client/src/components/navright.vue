@@ -52,7 +52,7 @@
                         <label for="reg-email"><b>Email</b></label><br>
                         <input
                             v-bind:value="userEmailProps"
-                            v-on:input="userEmailProps = $event"
+                            v-on:input="userEmailProps = $event.target.value"
                             type="text" placeholder="Enter your email" name="email" id="reg-email" required
                         >
                     </div>
@@ -60,7 +60,7 @@
                         <label for="reg-psw"><b>Password</b></label><br>
                         <input
                             v-bind:value="userPswProps"
-                            v-on:input="userPswProps = $event"
+                            v-on:input="userPswProps = $event.target.value"
                             type="password" placeholder="Enter your password" name="password" id="reg-psw" required
                         >
                     </div>
