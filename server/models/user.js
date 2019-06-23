@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Schema = mongoose;
+const {Schema} = mongoose;
 const Helper = require('../helpers/helper')
 
 let validEmail = function (email) {

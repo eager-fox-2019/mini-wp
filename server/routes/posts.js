@@ -1,5 +1,5 @@
 const route = require('express').Router()
-const ArticleController = require('../controllers/ArticleController')
+const PostController = require('../controllers/postController')
 const Authentication = require('../middlewares/authentication')
 const Authorization = require('../middlewares/authorization')
 
@@ -8,17 +8,17 @@ const Authorization = require('../middlewares/authorization')
 route.use(Authentication)
 
 // CREATE
-route.post('/', ArticleController.create)
+route.post('/', PostController.create)
 
 // READ
-route.get('/', ArticleController.findAll)
-route.get('/findMine', ArticleController.findMine)
-route.get('/:id', Authorization, ArticleController.findOne)
+route.get('/', PostController.findAll)
+route.get('/findMine', PostController.findMine)
+route.get('/:id', Authorization, PostController.findOne)
 
 // UPDATE
-route.patch('/:id', ArticleController.update)
+route.patch('/:id', PostController.update)
 
 // DELETE
-route.delete('/:id', Authorization, ArticleController.delete)
+route.delete('/:id', Authorization, PostController.delete)
 
 module.exports = route
