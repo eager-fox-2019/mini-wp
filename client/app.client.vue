@@ -5,7 +5,9 @@
     <public-layout v-else-if="currentPage === 'publicPage'">
         <article-detail 
             v-for="(artcl, i) in articles"
+            disableButton="true"
             v-bind:key="i + 'article'"
+            v-bind:image="artcl.image"
             v-bind:title="artcl.title"
             v-bind:content="artcl.content"
             v-on:clicked-list="showList"></article-detail>
@@ -25,6 +27,7 @@
         <article-detail 
             v-if="currentPage === 'articleDetail'"
             v-bind:title="pageArticleDetail.title"
+            v-bind:image="pageArticleDetail.image"
             v-bind:content="pageArticleDetail.content"
             v-on:clicked-list="showList"></article-detail>
         <article-form 
@@ -147,6 +150,7 @@ const routing = {
                 this.setRouting('login')
             }
         } else {
+            this.fetchArticles()
             this.setRouting('publicPage')
         }
     },
