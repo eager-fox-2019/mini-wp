@@ -3,7 +3,8 @@
 
 
 ### Alamat Aplikasi
-- `https://kecebadai.khariskhasburrahman.com/`
+- blog: https://kecebadai.khariskhasburrahman.com/
+- admin: https://kecebadai.khariskhasburrahman.com/admin/
 
 ### Cara main
 - buat file `.env` dari template `.envTemplate`
