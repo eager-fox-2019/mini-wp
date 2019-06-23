@@ -14,6 +14,7 @@ module.exports = {
         title: '',
         content: '',
         image: '',
+        _id: '',
     },
     loginData: {
         loggedIn: false,
