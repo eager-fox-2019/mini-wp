@@ -170,12 +170,16 @@
                                         <div style="font-size: 40px; margin-top: 30px; text-align: center">
                                             <b>{{article.title}}</b>
                                         </div>
-                                        <div style="font-size: 20px; margin-bottom: 20px; margin-left: 50px; margin-top: 10px;">
+                                        <div style="font-size: 20px; margin-bottom: 20px; margin-left: 30px; margin-top: 10px;">
                                             <small>
                                                 <i>Created At {{article.createdAt}}</i>
                                             </small>
+                                            <br>
+                                            <small>
+                                                <i>Author {{article.author}}</i>
+                                            </small>
                                         </div>
-                                        <div style="font-size: 20px; margin-left: 50px; width: 750px">
+                                        <div style="font-size: 20px; margin-left: 30px; width: 750px">
                                             <p v-html="article.content">
                                             </p>
                                         </div>
@@ -192,9 +196,15 @@
                                             <div style="margin-bottom: 20px; background-color: white">
                                                 <wysiwyg v-model="article.content"></wysiwyg>
                                             </div>
-                                            <div class="form-group" style="margin-left: 10px">
-                                                <label for="upload">Upload Picture</label>
-                                                <input type="file" class="form-control-file" id="upload" v-on:change="selectImage">
+                                            <div class="row" style="margin-bottom:20px">
+                                                <div class="col-4">
+                                                    Image Preview
+                                                    <img src="../assets/previewimg.gif" alt="" id='previewimg' style="margin-left:10px; width:100%">
+                                                </div>
+                                                <div class="form-group col" style="margin-left: 10px">
+                                                    <label for="upload">Upload Picture</label>
+                                                    <input type="file" class="form-control-file" id="upload" v-on:change="selectImage">
+                                                </div>
                                             </div>
                                             <div style="margin-left: 10px">
                                                 <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-right: 10px" @click.prevent="createArticle">Submit</button>
@@ -214,14 +224,16 @@
                                             <div style="margin-bottom: 20px; background-color: white">
                                                 <wysiwyg v-model="article.content"></wysiwyg>
                                             </div>
-                                            <!-- <div class="form-group" style="margin-left: 10px">
-                                                <label for="upload">Upload Picture</label>
-                                                <input type="file" class="form-control-file" id="upload" v-model="article.img">
-                                            </div> -->
-                                            <div class="form-group" style="margin-left: 10px">
-                                                <label for="upload">Upload Picture</label>
-                                                <input type="file" class="form-control-file" id="upload" v-on:change="selectImage">
-                                            </div>
+                                            <div class="row" style="margin-bottom:20px">
+                                                    <div class="col-4">
+                                                        Image Preview
+                                                        <img src="../assets/previewimg.gif" alt="" id='previewimg' style="margin-left:10px; width:100%">
+                                                    </div>
+                                                    <div class="form-group col" style="margin-left: 10px">
+                                                        <label for="upload">Upload Picture</label>
+                                                        <input type="file" class="form-control-file" id="upload" v-on:change="selectImage">
+                                                    </div>
+                                                </div>
                                             <div style="margin-left: 10px">
                                                 <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-right: 10px" @click.prevent="editArticle(article.id)">Edit</button>
                                                 <button type="button" class="btn btn-outline-secondary" style="width: 180px;" @click.prevent="userArticle">Cancel</button>
@@ -235,16 +247,17 @@
                                             <img class="card-img-top" :src="article.img" alt="Card image cap" style="width: 400px;">
                                         </div>
                                         <div class="card-body">
-                                            <h2 class="card-title">{{article.title}}</h2>
-                                            <p class="card-text" v-html="article.content" style="line-break: 20px"></p>
-                                            <p class="card-text"><small class="text-muted">Created At {{article.createdAt}}</small></p>
-                                            <button type="button" class="btn btn-outline-dark" style="width: 180px; margin-left: 480px" @click.prevent="viewArticle(article._id)">Read More</button>
+                                            <h1 class="card-title" style="text-align:center">{{article.title}}</h1>
+                                            <!-- <p class="card-text" v-html="article.content"></p> -->
+                                            <small>Created At {{article.createdAt}}</small><br>
+                                            <small>Author <i>{{article.userId.userName}}</i></small>
+                                            <button type="button" class="btn btn-outline-primary" style="width: 180px; margin-left: 480px" @click.prevent="viewArticle(article._id)">Read More</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="articleList" v-if="mainStatus === 'loading'"  style="margin-top: 80px; text-align: center; margin-bottom: 80px">
                                     <h1><b>LOADING..</b></h1>
-                                    <img src="./assets/loading.gif" alt="loading">
+                                    <img src="./assets/previewimg.gif" alt="loading">
                                 </div>
                             </div>
                         </div>
@@ -264,6 +277,9 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div style="margin: 20px">
+                                <h4>Tags</h4>
                             </div>
                             <div class="row justify-content-center" style="margin-top: 30px; margin-bottom: 30px; position:unset">
                                 <img src="./assets/animation.gif" alt="animation.png" style="width: 200px">

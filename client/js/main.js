@@ -18,6 +18,7 @@ var app = new Vue({
             content: "",
             img: "",
             createdAt: "",
+            author: "",
             comments: [],
             tags: []
         },
@@ -171,6 +172,9 @@ var app = new Vue({
             })
             .then(({data}) => {
                 this.listArticles = data
+                for(let i = 0; i < data.length; i++){
+                    this.listArticles[i].createdAt = data[i].createdAt.substr(0, 10).split('-').reverse().join('-')
+                }
             })
             .catch(err => {
                 swal({
@@ -232,7 +236,7 @@ var app = new Vue({
             this.mainStatus = "loading"
             let img
             if (this.article.img == ""){
-                img = "https://f4.bcbits.com/img/a4238187022_10.jpg"
+                img = "../assets/nopic.png"
             }else{
                 img = this.article.img
             }
@@ -383,7 +387,8 @@ var app = new Vue({
                 this.article.title = data.title
                 this.article.content = data.content
                 this.article.img = data.img,
-                this.article.createdAt = data.createdAt
+                this.article.createdAt = data.createdAt.substr(0, 10).split('-').reverse().join('-')
+                this.article.author = 'rudy'
             })
             .catch(err => {
                 swal({
@@ -394,6 +399,13 @@ var app = new Vue({
         },
         selectImage(event){
             this.article.img = event.target.files[0]
+            document.getElementById("previewimg").style.display = "block";
+            var oFReader = new FileReader();
+                oFReader.readAsDataURL(document.getElementById("upload").files[0]);
+            
+            oFReader.onload = function(oFREvent) {
+                document.getElementById("previewimg").src = oFREvent.target.result;
+            }
         },
         onSignGoogle(data) {
             console.log('masuk google', data)

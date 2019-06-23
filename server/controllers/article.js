@@ -4,6 +4,7 @@ class ControllerArticle{
     static findAll(req, res, next){
         Article
         .find()
+        .populate('userId')
         .then(data => {
             res.status(200).json(data)
         })
