@@ -1,7 +1,0 @@
-.row-list .col a {
-  text-decoration: none
-}
-
-.row-list:nth-child(odd) {
-  background-color: lightgray
-}

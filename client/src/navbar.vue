@@ -23,11 +23,17 @@ export default {
   created() {
     this.name = localStorage.getItem('name')
   },
+  mounted() {
+    gapi.load("auth2", () => gapi.auth2.init())
+  },
   methods: {
     logout() {
-      localStorage.removeItem('token')
-      localStorage.removeItem('name')
-      this.$emit('logout')
+      gapi.auth2.getAuthInstance().signOut()
+      .then(() => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('name')
+        this.$emit('logout')
+      })
     }
   }
 }

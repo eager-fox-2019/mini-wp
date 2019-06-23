@@ -1,2 +1,0 @@
-# mini-wp
-mini-wp
