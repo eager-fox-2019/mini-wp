@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 const routes = require('./routes')
 const mongoose = require('mongoose')
-const url = 'mongodb://localhost/miniwp'
+const url = process.env.SERVER_URL
 const cors = require('cors')
 const port = 3000
 

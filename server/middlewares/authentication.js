@@ -8,9 +8,7 @@ module.exports = (req,res, next) => {
       User.find({ email: decoded.email })
         .then(users => {
           if(users.length > 0) {
-            console.log(decoded)
             req.userData = decoded;
-            console.log(req.file)
             next()
           } else {
             next({ status: 403, message: 'Authentication failed' })
