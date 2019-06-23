@@ -114,13 +114,7 @@ export default {
     editarticlepage
   },
   created() {
-    const serverURL = "http://localhost:3000";
-    this.ax = axios.create({
-      baseURL: serverURL,
-      headers: {
-        token: localStorage.getItem("token")
-      }
-    });
+    this.initAxios();
   },
 
   mounted() {
@@ -143,6 +137,15 @@ export default {
       this.inputLoginRegister.name = "";
       this.inputLoginRegister.password = "";
       swal("Account Created", "Successfully created an account", "success");
+    },
+    initAxios() {
+      const serverURL = "http://localhost:3000";
+      this.ax = axios.create({
+        baseURL: serverURL,
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      });
     },
 
     // INITIAL CHECK
@@ -230,11 +233,13 @@ export default {
     // MOVING BETWEEN PAGE FUNCTION
     page_articles() {
       this.r_inputLoginRegister();
+      this.initAxios();
       this.isOnPage = this.pages[0];
       localStorage.setItem("isOnPage", this.pages[0]);
     },
     page_detailarticle(e) {
       this.r_inputLoginRegister();
+      this.initAxios();
       this.selectedArticle = e;
       console.log("di app ke detail article");
       this.isOnPage = this.pages[1];
@@ -242,16 +247,19 @@ export default {
     },
     page_myarticles() {
       this.r_inputLoginRegister();
+      this.initAxios();
       this.isOnPage = this.pages[2];
       localStorage.setItem("isOnPage", this.pages[2]);
     },
     page_newarticle() {
       this.r_inputLoginRegister();
+      this.initAxios();
       this.isOnPage = this.pages[3];
       localStorage.setItem("isOnPage", this.pages[3]);
     },
     page_editarticle(e) {
       this.r_inputLoginRegister();
+      this.initAxios();
       console.log("di app ke edit article");
       this.selectedArticle = e;
       this.isOnPage = this.pages[4];
@@ -269,6 +277,7 @@ export default {
     },
     page_login_afterregister(emit) {
       this.r_inputLoginRegister_afterregister();
+      this.initAxios();
       this.isOnPage = this.pages[6];
       setTimeout(() => {
         this.loadGAPI();
@@ -276,6 +285,7 @@ export default {
     },
     page_setting() {
       this.r_inputLoginRegister();
+      this.initAxios();
       localStorage.setItem("isOnPage", this.pages[7]);
       this.isOnPage = this.pages[7];
     }

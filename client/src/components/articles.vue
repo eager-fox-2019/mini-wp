@@ -139,10 +139,9 @@ export default {
   },
   created() {
     this.loggedInUser = JSON.parse(localStorage.user);
-    this._getAllArticles();
   },
   mounted() {
-    this.loggedInUser = JSON.parse(localStorage.user);
+    this._getAllArticles();
   },
   methods: {
     resetFilter() {

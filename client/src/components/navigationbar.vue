@@ -23,7 +23,12 @@
             <i class="fa fa-newspaper-o" aria-hidden="true"></i>
             <br>Feeds
           </a>
-          <a class="nav-link active" v-if="isOnPage === 'articles'" href @click.prevent="do_nothing">
+          <a
+            class="nav-link active"
+            v-if="isOnPage === 'articles'"
+            href
+            @click.prevent="do_nothing"
+          >
             <i class="fa fa-newspaper-o" aria-hidden="true"></i>
             <br>Feeds
           </a>
@@ -39,7 +44,12 @@
             <br>My
             Articles
           </a>
-          <a class="nav-link active" href v-if="isOnPage === 'myarticles'" @click.prevent="do_nothing">
+          <a
+            class="nav-link active"
+            href
+            v-if="isOnPage === 'myarticles'"
+            @click.prevent="do_nothing"
+          >
             <i class="fa fa-bookmark-o" aria-hidden="true"></i>
             <br>My
             Articles
@@ -68,7 +78,12 @@
             <br>Write
           </a>
 
-          <a class="nav-link active" v-if="isOnPage === 'newarticle'" href @click.prevent="do_nothing">
+          <a
+            class="nav-link active"
+            v-if="isOnPage === 'newarticle'"
+            href
+            @click.prevent="do_nothing"
+          >
             <i class="fa fa-plus" aria-hidden="true"></i>
             <br>Write
           </a>
@@ -110,6 +125,8 @@ export default {
           })
           .catch(function(err) {
             console.log(err);
+            localStorage.clear();
+            this.$emit("berhasil_logout");
           });
       });
     },
