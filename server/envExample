@@ -1,2 +1,6 @@
-PORT=
-JWT_SECRET=
+PORT=3000
+JWT_SECRET=helloworld
+CLIENT_ID=132166001773-nljl5umc0vmdlvodji12sfl1eqk051q7.apps.googleusercontent.com
+GCLOUD_PROJECT=yudawardana-1560407905203
+CLOUD_BUCKET=yuda-wardana
+KEYFILE_PATH=keyfile.json
