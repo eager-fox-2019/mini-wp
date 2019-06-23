@@ -25,13 +25,13 @@
         >
           <div class="p-3 ml-1">
             <a @click.prevent="like_unlike(article)">
-              <div v-if="checkLike(article.likedby) == true">
+              <div v-if="checkLike(article.likedby)">
                 <i
                   class="fa fa-heart fa-2x love text-danger"
                   aria-hidden="true"
                 >&ensp;{{article.likedby.length}}</i>
               </div>
-              <div v-if="checkLike(article.likedby) == false">
+              <div v-if="!checkLike(article.likedby)">
                 <i
                   class="fa fa-heart-o fa-2x love"
                   aria-hidden="true"
@@ -132,33 +132,73 @@ export default {
       });
     },
     like_unlike(article) {
-      this.ax({
-        method: "PATCH",
-        url: "/articles/likes/" + article._id
-      })
-        .then(({ data }) => {
-          if (this.checkLike(article.likedby)) {
-            let likedby = article.likedby;
-            let index = likedby.indexOf(article);
-            article.likedby.splice(index, 1);
-          } else {
-            article.likedby.push(this.loggedInUser);
+      if (this.checkLike(article.likedby)) {
+        swal({
+          title: "Confirmation",
+          text: `Unlike this article?`,
+          icon: "info",
+          buttons: true,
+          dangerMode: true
+        }).then(confirm => {
+          if (confirm) {
+            this.ax({
+              method: "PATCH",
+              url: "/articles/likes/" + article._id
+            })
+              .then(({ data }) => {
+                if (this.checkLike(article.likedby)) {
+                  let likedby = article.likedby;
+                  let index = likedby.indexOf(article);
+                  this.article.likedby.splice(index, 1);
+                } else {
+                  this.article.likedby.push(this.loggedInUser._id);
+                }
+              })
+              .catch(err => {
+                swal("Sorry", "Problem occured, try again later", "error");
+                console.log(
+                  "errorlike unlike artikel",
+                  JSON.stringify(err, null, 2)
+                );
+                console.log(err);
+              });
           }
-        })
-        .catch(err => {
-          swal("Sorry", "Problem occured, try again later", "error");
-          console.log("errorlike unlike artikel", JSON.stringify(err, null, 2));
-          console.log(err);
         });
+      } else {
+        swal({
+          title: "Confirmation",
+          text: `Like this article?`,
+          icon: "info",
+          buttons: true,
+          dangerMode: true
+        }).then(confirm => {
+          if (confirm) {
+            this.ax({
+              method: "PATCH",
+              url: "/articles/likes/" + article._id
+            })
+              .then(({ data }) => {
+                if (this.checkLike(article.likedby)) {
+                  let index = this.article.likedby.indexOf(loggedInUser._id);
+                  this.article.likedby.splice(index, 1);
+                } else {
+                  this.article.likedby.push(this.loggedInUser._id);
+                }
+              })
+              .catch(err => {
+                swal("Sorry", "Problem occured, try again later", "error");
+                console.log(
+                  "errorlike unlike artikel",
+                  JSON.stringify(err, null, 2)
+                );
+                console.log(err);
+              });
+          }
+        });
+      }
     },
     checkLike(likedby) {
-      let status = false;
-      likedby.forEach(like => {
-        if (like._id == this.loggedInUser._id) {
-          status = true;
-        }
-      });
-      if (status == true) {
+      if (likedby.indexOf(this.loggedInUser._id) > -1) {
         return true;
       } else {
         return false;

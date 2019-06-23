@@ -90,6 +90,7 @@ export default {
         })
           .then(({ data }) => {
             localStorage.setItem("token", data.token);
+            console.log(localStorage.token)
             localStorage.setItem("user", JSON.stringify(data.user));
             swal("Logged In", `Welcome ${data.user.name}!`, "success");
             this.$emit("berhasil_login");

@@ -29,7 +29,7 @@
     </div>
     <div v-if="articles.length > 0" class="border my-2">
       <div
-        v-for="article in articles"
+        v-for="(article, index) in articles"
         :key="article._id"
         class="row mx-3 border-bottom d-flex justify-content-center"
       >
@@ -98,7 +98,7 @@
                 {{ article.author.name}}
               </div>
               <div class="p-3 ml-1">
-                <a @click.prevent="like_unlike(article)">
+                <a @click.prevent="like_unlike(article, index)">
                   <div v-if="checkLike(article.likedby) == true">
                     <i
                       class="fa fa-heart fa-2x love text-danger"
@@ -141,7 +141,9 @@ export default {
     this.loggedInUser = JSON.parse(localStorage.user);
     this._getAllArticles();
   },
-  mounted() {},
+  mounted() {
+    this.loggedInUser = JSON.parse(localStorage.user);
+  },
   methods: {
     resetFilter() {
       this.filterTags = [];
@@ -226,13 +228,7 @@ export default {
       }
     },
     checkLike(likedby) {
-      let status = false;
-      likedby.forEach(like => {
-        if (like._id == this.loggedInUser._id) {
-          status = true;
-        }
-      });
-      if (status == true) {
+      if (likedby.indexOf(this.loggedInUser._id) > -1) {
         return true;
       } else {
         return false;
@@ -251,19 +247,74 @@ export default {
           console.log(err);
         });
     },
-    like_unlike(article) {
-      this.ax({
-        method: "PATCH",
-        url: "/articles/likes/" + article._id
-      })
-        .then(({ data }) => {
-          this._getAllArticles();
-        })
-        .catch(err => {
-          swal("Sorry", "Problem occured, try again later", "error");
-          console.log("errorlike unlike artikel", JSON.stringify(err, null, 2));
-          console.log(err);
+    like_unlike(article, index) {
+      if (this.checkLike(article.likedby)) {
+        swal({
+          title: "Confirmation",
+          text: `Unlike this article?`,
+          icon: "info",
+          buttons: true,
+          dangerMode: true
+        }).then(confirm => {
+          if (confirm) {
+            this.ax({
+              method: "PATCH",
+              url: "/articles/likes/" + article._id
+            })
+              .then(({ data }) => {
+                if (this.checkLike(article.likedby)) {
+                  let i = this.articles[index].likedby.indexOf(
+                    this.loggedInUser._id
+                  );
+                  this.articles[index].likedby.splice(i, 1);
+                } else {
+                  this.articles[index].likedby.push(this.loggedInUser._id);
+                }
+              })
+              .catch(err => {
+                swal("Sorry", "Problem occured, try again later", "error");
+                console.log(
+                  "errorlike unlike artikel",
+                  JSON.stringify(err, null, 2)
+                );
+                console.log(err);
+              });
+          }
         });
+      } else {
+        swal({
+          title: "Confirmation",
+          text: `Like this article?`,
+          icon: "info",
+          buttons: true,
+          dangerMode: true
+        }).then(confirm => {
+          if (confirm) {
+            this.ax({
+              method: "PATCH",
+              url: "/articles/likes/" + article._id
+            })
+              .then(({ data }) => {
+                if (this.checkLike(article.likedby)) {
+                  let i = this.articles[index].likedby.indexOf(
+                    this.loggedInUser._id
+                  );
+                  this.articles[index].likedby.splice(i, 1);
+                } else {
+                  this.articles[index].likedby.push(this.loggedInUser._id);
+                }
+              })
+              .catch(err => {
+                swal("Sorry", "Problem occured, try again later", "error");
+                console.log(
+                  "errorlike unlike artikel",
+                  JSON.stringify(err, null, 2)
+                );
+                console.log(err);
+              });
+          }
+        });
+      }
     },
     readArticle(article) {
       console.log("read");

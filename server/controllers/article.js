@@ -14,7 +14,6 @@ class ControllerArticle {
 
   // DELETE /articles
   static delete(req, res, next) {
-    console.log(req.params.id, "==================== start delete");
     Article.findByIdAndDelete(req.params.id)
       .then(deleted => {
         res.status(200).json(deleted);
@@ -24,7 +23,6 @@ class ControllerArticle {
 
   // GET /articles/:id
   static detail(req, res, next) {
-    console.log(req.params.id, "===================start get detail");
     Article.findById(req.params.id)
       .populate("author")
       .then(found => {
@@ -41,7 +39,6 @@ class ControllerArticle {
   static all(req, res, next) {
     Article.find({ status: "post" })
       .populate("author")
-      .populate("likedby")
       .then(founds => {
         if (founds.length >= 1) {
           let asc = founds.sort((a, b) => {

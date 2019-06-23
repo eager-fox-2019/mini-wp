@@ -11,6 +11,8 @@ module.exports = {
       console.log("auth ok");
       next();
     } catch (err) {
+      console.log("auth ga tembus")
+      console.log(err)
       next({
         code: 401,
         message: `login first!`
