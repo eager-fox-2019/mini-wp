@@ -64,6 +64,7 @@
                         </v-list-tile>
                     </v-list>
                     <v-layout ml-5 pl-4>
+                        <!-- <GoogleLogin :params="params" :logoutButton=true @click="setLogin" style="background-color:black;color:white;height:35px;width:130px;">Logout</GoogleLogin> -->
                         <v-btn color="white" @click="setLogin">Logout</v-btn>
                     </v-layout>
                 </v-navigation-drawer>
@@ -74,7 +75,11 @@
 
 
 <script>
+import GoogleLogin from 'vue-google-login';
 export default {
+    components: {
+        GoogleLogin
+    },
     data(){
         return{
             first_name:localStorage.getItem("first_name"),
@@ -84,6 +89,11 @@ export default {
             tile:false,
             avatarSize:120,
             show:false,
+            tokenGoogle : '',
+            logoutButton: true,
+            params:{
+                client_id:'388484419255-16ivket8k713j9ueq47smna6qtkhdu8f.apps.googleusercontent.com'
+            }
         }
     },
     methods:{
