@@ -62,7 +62,10 @@ export default {
         swal.fire(`${this.article.title} successfully added`, '', 'success')
         this.$emit('add-article')
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        swal.fire(`Can not save article ${title}`, `${err.response.data.message}`, 'error')
+      })
     }
   }
 }
