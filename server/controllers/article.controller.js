@@ -58,12 +58,13 @@ class ArticleController {
         let { title, content } = req.body
         let user = req.user
         try {
-            let todo = await Article.findOne({ _id: id, user }).exec()
-            if (todo) {
-                if (title) todo.title = title
-                if (content) todo.content = content
-                await todo.save()
-                res.json(todo)
+            let article = await Article.findOne({ _id: id, user }).exec()
+            if (article) {
+                if (title) article.title = title
+                if (content) article.content = content
+                if (req.file && req.file.gcsUrl) article.image = req.file.gcsUrl
+                await article.save()
+                res.json(article)
             } else {
                 next({code: 400, msg: 'id not found'})
             }
