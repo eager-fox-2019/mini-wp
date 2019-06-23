@@ -17,18 +17,16 @@ class ControllerUser {
             })
             .then(resp => {
                 if (!resp) {
-                    User
-                        .create(data)
-                        .then(resp => {
-                            res.status(201).json(resp)
-                        })
-                        .catch(next)
+                    return User.create(data)
                 } else {
                     throw ({
                         status: 401,
                         msg: "Email Already Used"
                     })
                 }
+            })
+            .then(resp => {
+                res.status(201).json(resp)
             })
             .catch(next)
     }

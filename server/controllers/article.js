@@ -82,7 +82,7 @@ class ControllerArticle{
     static search(req, res, next){
         Article
         .find({
-            title : {$regex: req.params.input}
+            title : {'$regex': req.params.input, '$options' : 'i'}
         })
         .then(data => {
             res.status(200).json(data)

@@ -1,10 +1,3 @@
-// const ax = axios.create({
-//   baseURL: 'http://localhost:3000',
-//   headers: {
-//       token: localStorage.token
-//   }
-// });
-
 const baseURL = 'http://localhost:3000'
 
 var app = new Vue({
@@ -23,7 +16,7 @@ var app = new Vue({
             title: "",
             desc: "",
             content: "",
-            img: "../assets/miss.jpg",
+            img: "",
             createdAt: "",
             comments: [],
             tags: []
@@ -237,11 +230,16 @@ var app = new Vue({
         },
         createArticle(){
             this.mainStatus = "loading"
-
+            let img
+            if (this.article.img == ""){
+                img = "https://f4.bcbits.com/img/a4238187022_10.jpg"
+            }else{
+                img = this.article.img
+            }
             let input = new FormData()
             input.append("title", this.article.title)
             input.append("content", this.article.content)
-            input.append("image", this.article.img)
+            input.append("image", img)
 
             // ax.post(`/articles`, input)
             axios({

@@ -130,9 +130,9 @@
         </nav>
         <div class="container-fluid" v-if="pageStatus === 'home'">
             <div class="row justify-content-center" style="margin-top: 50px; font-size: 70px;">
-                <div class="card" style="width: 650px; text-align: center; color:lightgrey">
-                    <a href="" style="color: orange;" @click.prevent="articleList"><b>Hacktiv Wordpress</b></a>
-                </div>
+                <!-- <div class="card" style="width: 650px; text-align: center; color:black"> -->
+                    <a href="" style="color: lightgray;" @click.prevent="articleList"><b>Hacktiv Wordpress</b></a>
+                <!-- </div> -->
             </div>
             <div class="row justify-content-center">
                 <div class="card" style="width: 90%; margin-top: 50px; background-color:lightgray; margin-bottom: 50px;">
@@ -164,8 +164,8 @@
                                 </div>
                                 <div id="detailArticle" v-if="mainStatus === 'detailArticle'">
                                     <div style="width:800px">
-                                        <div style="text-align: center; margin-top: 30px">
-                                            <img :src="article.img" alt="" style="width: 650px; margin-top: 20px;">
+                                        <div style="text-align: center; margin-top: 30px; background-image: url('./assets/bgcard.jpg'); background-size: cover">
+                                            <img :src="article.img" alt="" style="width: 450px; margin-top: 20px;">
                                         </div>
                                         <div style="font-size: 40px; margin-top: 30px; text-align: center">
                                             <b>{{article.title}}</b>
@@ -230,8 +230,10 @@
                                     </div>
                                 </div>
                                 <div id="articleList" v-if="mainStatus === 'articleList'"  style="margin-bottom: 20px">
-                                    <div class="card mb-3 bg-light" style="margin-top: 50px; width: 700px" v-for="article in listArticles">
-                                        <img class="card-img-top" :src="article.img" alt="Card image cap" height="300px">
+                                    <div class="card mb-3" style="margin-top: 50px; width: 700px; background-image: url('./assets/bgcard.jpg'); background-size: cover; background-position: center; color: whitesmoke" v-for="article in listArticles">
+                                        <div style="text-align: center">
+                                            <img class="card-img-top" :src="article.img" alt="Card image cap" style="width: 400px;">
+                                        </div>
                                         <div class="card-body">
                                             <h2 class="card-title">{{article.title}}</h2>
                                             <p class="card-text" v-html="article.content" style="line-break: 20px"></p>
