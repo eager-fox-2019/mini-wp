@@ -5,8 +5,11 @@ const ArticleSchema = new Schema({
     title: String,
     content: String,
     created_at: Date,
-    image: String,
-    tag: String,
+    image: {
+        type: String,
+        required: [ true, 'Image is required' ],
+    },
+    tag: [String],
     UserId: { type: Schema.Types.ObjectId, ref: 'User'}
 });
 
