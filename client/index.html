@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Jays Mini WordPress</title>
+  <link rel="stylesheet" type="text/css" href="./assets/materialize/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="./assets/style.css">
+  <script src="https://cdn.tiny.cloud/1/4f5s0ns2x3wonggglzxk433520ia7e08uzap3389l5u7ydnf/tinymce/5/tinymce.min.js"></script>
+  <script src="./assets/js/tinymce-vue.min.js"></script>
+  <script src="https://kit.fontawesome.com/bffd864163.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+</head>
+<body class="body-login-page">
+  <div id="app">
+    <div id="navbar">
+      <div class="nav-content logo-nav" @click="page = 'article'">
+          <i class="fas fa-paper-plane logonya"></i>
+        <div class="nav-content">Mini WordPress</div>
+      </div>
+      <div class="nav-content logout-nav" v-if="loginStatus === true" @click="logoutUser">
+        <div class="nav-content">Sign Out</div>
+        <i class="fas fa-sign-out-alt logonya"></i>
+      </div>
+      <div class="nav-content login-nav" v-if="!loginStatus && page != 'login'" @click="page = 'login'">
+        <div class="nav-content">Sign In</div>
+        <i class="fas fa-sign-in-alt logonya"></i>
+      </div>
+    </div>  
+    <p style="text-align: center; font-size: 16px;" id="successAlert" v-if="successRegister === true"  :class="{ 'animated fadeIn primary-container' : successRegister  }">Success created an account {{register.email}} !</p>
+    <div id="login-page" v-if="page === 'login' && createdHook === true">
+      <div id="login" class="primary-container animated fadeInDown" style="opacity: 0.5">
+        <h4 style="text-align: center">Login</h4>
+        <h6 v-show="errorLogin.status === true" style=" text-align: center; color: #ef5350;">{{ errorLogin.msg }} !</h6>
+        <form class="form-login" @submit.prevent="loginUser">
+          <label for="login-email">Email</label>
+          <input type="text" name="login-email" id="login-email" v-model="login.email" required>
+          <label for="login-password">Password</label>
+          <input type="password" name="login-password" id="login-password" v-model="login.password" required>
+          <button type="submit" class="btn blue wave-light" style="margin-top: 10px;">Sign In</button>
+        </form>
+      </div>
+      <div id="register" class="primary-container animated fadeInDown" style="opacity: 0.5">
+        <h4 style="text-align: center">Register</h4>
+        <h6 v-show="errorRegister.status === true" style=" text-align: center; color: #ef5350;"> {{ errorRegister.msg }}</h6>
+        <form class="form-login" @submit.prevent="registerUser">
+          <label for="register-first-name">First Name</label>
+          <input type="text" name="register-first-name" id="register-first-name" v-model="register.first_name" required>
+          <label for="register-last-name">Last Name</label>
+          <input type="text" name="register-last-name" id="register-last-name" v-model="register.last_name" required>
+          <label for="register-email">Email</label>
+          <input type="text" name="register-email" id="register-id" v-model="register.email" required>
+          <label for="register-password">Password</label>
+          <input type="password" name="register-password" id="register-password" v-model="register.password" required>
+          <button type="submit" class="btn blue">Register</button>
+        </form>
+      </div>
+    </div>
+    <div id="main-content"  v-if="loginStatus === true">
+      <div id="sidebar"  v-if="loginStatus === true">
+        <div id="sidebar-profile">
+          <i class="fas fa-user sidebar-logo"></i>
+          <p style="font-size: 24px;">{{fullName}}</p>
+        </div>
+        <div class="sidebar-item  sidebar-item-container" v-on:click="page = 'create'" v-bind:style="page === 'create' ? {'background-color' : '#64b5f6', 'color': 'white'} : {}">
+          <p id="sidebar-add" class="item">Add New Article</p>
+          <i class="fas fa-edit item"></i>
+        </div>
+        <a class="sidebar-item  sidebar-item-container" v-on:click="getByUser" v-bind:style="page === 'article' && listState === 'owner' ? {'background-color' : '#64b5f6', 'color': 'white'} : {}">
+          <p id="sidebar-add" class="item">Your Articles</p>
+          <i class="fas fa-user-edit item"></i>
+        </a>
+        <div class="sidebar-item  sidebar-item-container" @click="getArticles"v-bind:style="page === 'article' && listState === 'all' ? {'background-color' : '#64b5f6', 'color': 'white'} : {}">
+          <p id="sidebar-add" class="item">All Articles</p>
+          <i class="fas fa-list item"></i>
+        </div>
+      </div>
+      <div id="primary"  v-if="page === 'article'" :class="{'animated fadeInDown' : page === 'article'}">
+        <div class="primary-container search-container">
+          <form v-on:submit.prevent="searchArticle" class="search-form" style="color: white;">
+            <i class="fas fa-search search-logo"></i>
+            <input type="text" class="input-field" v-model="searchInput" placeholder="Search Articles by Title" style="color: white;">
+          </form>
+        </div>
+        <div id="article-list" class="primary-container">
+          <div class="article-item" v-for="article in filteredList">
+            <div id="article-card">
+              <h5 style="font-size: 12px; ">Click the card to read more</h5>
+              <div class="card blue lighten-2 darken-1" @click="getDisplayingArticle(article)">
+                <div class="card-content white-text">
+                  <div>
+                    <span class="card-title">{{article.title}}</span>
+                    <p>{{article.description}}.</p>
+                    <img :src="article.picture" alt="" class="image-article">
+                    <p class="white-text" style="margin-top: 20px;">Date created: {{article.createdAt}}</p>
+                  </div>
+                  <p v-if="listState === 'all'">Creator: {{article.creator}}</p>
+                </div>
+                <div class="card-action blue darken-4" v-if="listState === 'owner'">
+                  <a href="#" class="btn-small red darken-4" v-on:click="deleteArticle(article._id)">delete</a>
+                  <a href="#" class="btn-small blue" @click="findArticle(article._id)" >edit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="create" v-if="page === 'create'" class="col s9":class="{'animated fadeInUp' : page === 'create'}"> 
+        <div class="create-form-container" style="color: white;">
+          <form v-on:submit.prevent="addArticle" class="create-form" style="color: white;">
+            <div class="container-form">
+              <div style="width: 300px; margin-left: 30px;">
+                <span><label style="color: white;">Title: </label><input type="text" name="title" placeholder="Title" style="color: white;" v-model="newArticle.title" style="width: 10px;"></input></span>
+                <span><label style="color: white;">Description: </label><input type="text" name="newDescription" id="newDescription" v-model="newArticle.description" placeholder="Little description for your article"></span>
+              </div>
+              <div class="image-container">
+                <div class="file-field input-field">
+                    <div class="btn blue">
+                      <span>Upload Image</span>
+                      <input type="file" name="image"  @change="getPreview">
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text">
+                    </div>
+                  </div>
+                <div class="image-preview-container">
+                  <img :src="imagePreview" v-if="imagePreview" id="image-preview">
+                </div>
+              </div>
+            </div>
+            <span><label>Content: </label><editor api-key="4f5s0ns2x3wonggglzxk433520ia7e08uzap3389l5u7ydnf" :init="{menubar: false}"  v-model="newArticle.content"></editor></span>
+            <div class="d-flex justify-content-end">
+              <button class="btn waves-effect waves-blue blue" style="margin-top: 20px;">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="edit" v-if="page === 'edit'" class="col s9"> 
+        <div class="create-form-container" style="color: white;">
+          <form v-on:submit.prevent="edit" class="create-form" style="color: white;">
+              <div class="container-form">
+                <div style="width: 300px; margin-left: 30px;">
+                  <span><label style="color: white;">Title: </label><input type="text" name="title" placeholder="Title" style="color: white;" v-model="editArticle.title" style="width: 10px;"></input></span>
+                  <span><label style="color: white;">Description: </label><input type="text" name="newDescription" id="newDescription" v-model="editArticle.description" placeholder="Little description for your article"></span>
+                </div>
+                <div class="image-container">
+                  <div class="file-field input-field">
+                      <div class="btn blue">
+                        <span>Change Image</span>
+                        <input type="file" name="image"  @change="getPreview">
+                      </div>
+                      <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                      </div>
+                    </div>
+                  <div class="image-preview-container">
+                    <img :src="imagePreview" v-if="imagePreview" id="image-preview">
+                  </div>
+                </div>
+              </div>
+            <span><label>Content: </label><editor api-key="4f5s0ns2x3wonggglzxk433520ia7e08uzap3389l5u7ydnf" :init="{menubar: false}"  v-model="editArticle.content"></editor></span>
+            <div class="d-flex justify-content-end">
+              <button class="btn waves-effect waves-blue blue" style="margin-top: 20px;">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="display" v-if="page === 'display'" class="col s9">
+        <p v-if="listState === 'all'">created by: {{ displayingArticle.creator }}</p>
+        <div  id="display-container">
+          <p id="display-title">{{ displayingArticle.title }}</p>
+          <div class="display-withimage" v-if="displayingArticle.picture">
+            <div id="display-image-container">
+              <img :src="displayingArticle.picture" id="display-image">
+            </div>
+            <div id="display-content">
+              <div v-html="displayingArticle.content"></div>
+            </div>
+          </div>
+          <div v-else class="display-noimage">
+            <div id="display-content" v-html="displayingArticle.content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script type="text/javascript" src="./assets/materialize/js/materialize.min.js"></script>
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>
