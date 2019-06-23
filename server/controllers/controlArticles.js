@@ -60,6 +60,22 @@ class ControllerArticle {
 	      })
 	      .catch(next)
 	}
+
+	static uploadImage(req, res, next){
+	  console.log("uploadimage at ControllerArticle")
+      try {
+      	console.log(req.body)
+      	console.log(req.file)
+		if (req.file && req.file.gcsUrl) {
+			return res.send(req.file.gcsUrl);
+		}
+
+      } catch (err){
+      	console.log(err)
+  		return res.send(err)
+      }
+      // return res.status(500).send('Unable to upload');
+    }
 }
 
 module.exports = ControllerArticle

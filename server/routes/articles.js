@@ -18,6 +18,9 @@ const multer = Multer({
 		},
 	});
 
+router.post('/uploadImage', multer.single('image'), gcsMiddlewares.sendUploadToGCS,
+    ControllerArticles.uploadImage)
+
 router.post('/', multer.single('image'), gcsMiddlewares.sendUploadToGCS, ControllerArticles.create)
 router.patch('/:id', multer.single('image'), gcsMiddlewares.sendUploadToGCS, isAuthorized, ControllerArticles.update)
 router.delete('/:id', isAuthorized, ControllerArticles.delete)

@@ -534,22 +534,40 @@ export default {
     uploadImage(event) {
     	const image = event.target.files[0]
 
-	    // let data = new FormData();
-	    // data.append('name', 'my-picture');
-	    // data.append('file', image); 
-	    // console.log("data from image")
-	    // console.log(data)
-	    // console.log("---")
+	    let data = new FormData();
+	    data.append('name', 'my-picture');
+	    data.append('file', image); 
+	    console.log("data from image")
+	    console.log(data)
+	    console.log("---")
 
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = e =>{
           this.newImage = e.target.result;
-          localStorage.setItem("imageToUpload", this.newImage)
+          debugger
+          localStorage.setItem("imageToUpload", e.target.result)
           console.log("image at local storage")
           console.log(localStorage.getItem("imageToUpload"));
           console.log("-----")
       };
+
+      // axios({
+      //   method: "POST",
+      //   url: baseUrl+"/articles/uploadImage",
+      //   data: newArticle,
+      //   headers:{
+      //     access_token: localStorage.getItem("access_token"),
+      //     // "Content-Type": "multipart/form-data",
+      //   }
+      // })
+      // .then(({data}) => {
+      //   console.log("uploaded an image")
+      // })
+      // .catch(err => {
+      //   console.log("created error:",err)
+      //   this.showError(err)
+      // })
 
 	  }
   }
