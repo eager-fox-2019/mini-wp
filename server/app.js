@@ -13,8 +13,8 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-//Connect to MongoDB via mongoose
-mongoose.connect('mongodb://localhost:27017/MiniWP', { useNewUrlParser: true })
+// Connect to MongoDB via mongoose
+mongoose.connect(process.env.MONGODB_CONN, { useNewUrlParser: true })
 mongoose.set('useFindAndModify', false);
 
 const db = mongoose.connection;
