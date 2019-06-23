@@ -4,6 +4,7 @@ class Article {
 
   static getArticles(req, res, next) {
     Model.Article.find()
+      .populate('author')
       .then((response) => {
         res.status(200).json(response);
       })
@@ -13,11 +14,14 @@ class Article {
   }
 
   static create(req, res, next) {
+
     let articleObj = {
       title: req.body.title,
       content: req.body.description,
-      created_at: new Date()
+      image: req.file.gcsUrl,
+      author: req.decode.obj._id
     }
+
     Model.Article.create(articleObj)
       .then((response) => {
         res.status(201).json(response);
@@ -38,6 +42,12 @@ class Article {
       objArticle['content'] = req.body.description;
     }
 
+    if (req.file) {
+      objArticle['image'] = req.body.description;
+    }
+
+    console.log(objArticle);
+    
     Model.Article.updateOne({
         _id: req.params.articleId
       }, objArticle)
@@ -50,13 +60,15 @@ class Article {
   }
 
   static delete(req, res, next) {
-    Model.Article.deleteOne({_id: req.params.articleId})
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      next(err);
-    })
+    Model.Article.deleteOne({
+        _id: req.params.articleId
+      })
+      .then((response) => {
+        res.status(200).json(response);
+      })
+      .catch((err) => {
+        next(err);
+      })
   }
 }
 

@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 
 let articleSchema = mongoose.Schema({
   title: String,
-  content: String
-},
-{
+  content: String,
+  image: String,
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
+}, {
   timestamps: true
 });
 

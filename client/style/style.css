@@ -1,5 +1,7 @@
 /* --------------------- Initial setup ---------------------  */
 
+@import '../node_modules/vue-wysiwyg/dist/vueWysiwyg.css';
+
 * {
   padding: 0;
   margin: 0;
@@ -20,6 +22,101 @@ ul {
   list-style: none;
 }
 
+/*----------------- Login Register Page SETUP -----------------*/
+
+.g-signin2 {
+  margin: 15px 0px 15px 0px;
+}
+
+.login-register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #eee;
+}
+
+#login-form-container {
+  width: 30%;
+  height: 500px;
+  background-color: #252728;
+}
+
+#register-form-container {
+  width: 30%;
+  height: 600px;
+  background-color: #252728;
+}
+
+.login-register-header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  background-color: #1D1F20;
+  border-bottom: 1px solid #333;
+}
+
+.login-register-header-text {
+  color: #eee;
+  font-size: 3rem;
+}
+
+.login-register-header-text a {
+  color: #eee;
+  font-size: 3rem;
+}
+
+.login-register-form-container {
+  width: 100%;
+  height: 400px;
+  padding: 0px 50px 0px 50px;
+}
+
+.login-register-input {
+  display: block;
+  margin: 0 auto;
+  margin-top: 40px;
+  width: 100%;
+  height: 50px;
+  padding: 0px 20px 0px 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  opacity: 0.9;
+}
+
+.login-register-button {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 30px;
+  color: white;
+  background-color: #303641;
+  border: none;
+  outline: none;
+  height: 50px;
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.login-register-button:hover {
+  transition: 0.3s;
+  color: #555;
+  background-color: #eee;
+}
+
+.login-register-input:focus, .login-register-button:focus {
+  outline: none;
+}
+
+.login-register-text {
+  color: #eee;
+}
+
+.login-register-text a {
+  font-weight: bold;
+}
+
 /* --------------------- Navbar setup ---------------------  */
 
 /* -------- Navbar Brand setup --------  */
@@ -32,6 +129,7 @@ ul {
   /* Position the navbar at the top of the page */
   width: 100%;
   /* Full width */
+  z-index: 1;
 }
 
 .navbar-brand {
@@ -121,6 +219,8 @@ ul {
   width: 100%;
   min-height: 100px;
   text-align: center;
+  border-bottom: 1px solid #999;
+  padding-bottom: 30px;
 }
 
 #user-icon {
@@ -228,23 +328,14 @@ ul {
   padding: 10px;
   margin-bottom: 20px;
 }
-
-#article-image-1 {
+.article-image-container {
   max-width: 100%;
-  background: url("https://images.unsplash.com/photo-1484417894907-623942c8ee29?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80") no-repeat center;
-  background-size: cover;
   height: 200px;
   border-radius: 5px;
-}
-
-#article-image-2 {
-  max-width: 100%;
-  background: url("https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60") no-repeat center;
   background-size: cover;
-  height: 200px;
-  border-radius: 5px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
-
 .article-title {
   margin-top: 10px;
   font-weight: bold;
@@ -266,6 +357,7 @@ ul {
   margin: 0;
   font-size: 0.8rem;
   color: #777;
+  margin-bottom: 10px;
 }
 
 /* -------- Add Section setup --------  */
@@ -276,11 +368,11 @@ ul {
   margin-left: 20%;
 }
 
-#title:focus, #description:focus {
+.title:focus, .description:focus {
   outline: none;
 }
 
-#title {
+.title {
   width: 100%;
   height: 80px;
   font-size: 3rem;
@@ -296,12 +388,21 @@ ul {
   font-size: 1.5rem;
 }
 
-#input-image {
+.show-image-form {
+  margin: 20px 20px 0px 20px;
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.input-image {
   margin-top: 20px;
   margin-left: 20px;
 }
 
-#button-add {
+.button-form {
   display: block;
   margin-top: 20px;
   margin-left: 20px;
@@ -317,7 +418,17 @@ ul {
   padding: 80px 150px 80px 150px;
 }
 
+#display-article-section-image-container {
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
 #display-article-section-title-container {
+  margin-top: 30px;
   height: 15vh;
   text-align: center;
   background-color: white;
@@ -340,6 +451,14 @@ ul {
   background-color: white;
   border-radius: 5px;
   border: 1px solid #ddd;
+}
+
+/* -------- Edit Section setup --------  */
+
+#content-section-edit {
+  height: 100vh;
+  width: 80%;
+  margin-left: 20%;
 }
 
 /* --------------------- Footer setup ---------------------  */

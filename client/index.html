@@ -5,7 +5,9 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <script src="https://apis.google.com/js/platform.js"></script>
+  <meta name="google-signin-client_id" content="710791434182-tij8hkav8sjheo9ik7kufgb68j688t2m.apps.googleusercontent.com">
+  
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,700" rel="stylesheet">
 
@@ -18,105 +20,18 @@
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
-
+  
   <!-- Custom CSS -->
   <link rel="stylesheet" href="./style/style.css">
   <title>Mini Wordpress</title>
 </head>
 
 <body>
-  <header>
-    <nav class="navbar navbar-dark bg-dark">
-      <div id="brand-header">
-        <a class="navbar-brand" href="#">
-          <span id="logo"><i class="fab fa-wordpress"></i></span>
-          <p id="brand-text">Made Wordpress</p>
-        </a>
-      </div>
-      <div id="navbar-avatar-section">
-        <div id="avatar">
-          <span id="avatar-emoji"><i class="far fa-dizzy"></i></span>
-        </div>
-        <a id="logout-link" href=""><span><i class="fas fa-sign-out-alt"></i></span> Log Out</a>
-      </div>
-    </nav>
-  </header>
-  <main id="app">
-    <div id="main-page">
-      <section id="menu-section">
-        <div id="user-profile">
-          <span id="user-icon"><i class="fas fa-user-circle"></i></span>
-          <p id="user-name">John Doe</p>
-        </div>
-        <form id="search-form" class="form-inline my-2 my-lg-0">
-          <input v-model='articleSearchTitle' id="search-input" class="form-control" type="search" placeholder="Search"
-            aria-label="Search">
-        </form>
-        <div class="menu-container">
-          <a v-on:click.prevent="changePage('articleList')" class="menu-list" href=""><span class="menu-icon"><i
-                class="fas fa-list"></i></span> Blog Posts</a>
-        </div>
-        <div class="menu-container">
-          <a v-on:click.prevent="changePage('addArticle')" class="menu-list" href=""><span class="menu-icon"><i
-                class="fas fa-folder-plus"></i></span> Add
-            Article</a>
-        </div>
-        <div class="menu-container">
-          <a class="menu-list" href=""><span class="menu-icon"><i class="fas fa-edit"></i></span> Edit Article</a>
-        </div>
-        <div class="menu-container">
-          <a class="menu-list" href=""><span class="menu-icon"><i class="fas fa-trash"></i></span> Delete Article</a>
-        </div>
-        <div class="menu-container">
-          <a class="menu-list" href=""><span><i class="fas fa-file-alt"></i></span> Drafts</a>
-        </div>
-      </section>
-      <section v-if="page === 'articleList' && isLogin" id="content-section-article">
-        <div id="content-section-header">
-          <div class="content-section-header-link">
-            <a href="">Published</a>
-          </div>
-          <div class="content-section-header-link">
-            <a href="">Drafts</a>
-          </div>
-        </div>
-        <div id="content-section-body">
-          <div class="article-container" v-for="article in filteredArticle">
-            <div id="article-image-1">
-            </div>
-            <a v-on:click.prevent="displayArticle(article._id)" href=""><h3 class="article-title">{{article.title}}</h3></a>
-            <p class="article-author-text">Article by: {{article.author}}</p>
-            <p class="article-footer-text">May 12 - 6 min read - <i class="fas fa-star"></i></p>
-          </div>
-        </div>
-      </section>
-      <section v-else-if="page === 'addArticle' && isLogin" id="content-section-add">
-        <input type="text" id="title" v-model="articleTitle" placeholder="Title">
-        <editor api-key="kosnqtstdfirzhy3ne6no7y71apm80cc9p3nlh3xb89b6vxo" v-model="articleDescription" :init="{plugins: 'wordcount'}"></editor>
-        <input id="input-image" type="file" name="myFile">
-        <button id="button-add" class="btn btn-primary" v-on:click.prevent="addArticle()">Add</button>
-      </section>
-    </div>
-    <section id="display-article-section" v-if="page === 'displayArticle'">
-      <div id="display-article-section-title-container">
-        <h2 id="display-article-section-title">{{selectedArticle.title}}</h2>
-      </div>
-      <div id="display-article-section-content" v-html="selectedArticle.content">
-        
-      </div>
-    </section>
-  </main>
-  <footer>
-    <p>Dibuat oleh Made Aryadi <i class="fas fa-smile"></i></p>
-  </footer>
-
+  <div id="app">
+  </div>
+  
   <!-- Javascript -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
-  <script src="./node_modules/@tinymce/tinymce-vue/lib/browser/tinymce-vue.min.js"></script>
-
-  <script src="./main.js"></script>
+  <script src="src/main.js"></script>
 </body>
 
 </html>

@@ -10,6 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tinymce/tinymce-vue": "^2.1.0"
+    "sweetalert2": "^8.13.0",
+    "vue": "^2.6.10",
+    "vue-hot-reload-api": "^2.3.3",
+    "vue-wysiwyg": "^1.7.2"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.0.0",
+    "vue-template-compiler": "^2.6.10"
   }
 }
