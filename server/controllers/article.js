@@ -20,6 +20,16 @@ class ControllerArticle{
         })
         .catch(next)
     }
+    static tags(req, res, next){
+        Article
+        .find({
+            tags: {$in: req.params.tag}
+        })
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(next)
+    }
     static create(req, res, next){
         console.log(req.body, 'body create')
         let input = ""
@@ -29,7 +39,7 @@ class ControllerArticle{
                 title: req.body.title,
                 content: req.body.content,
                 img: req.file.cloudStoragePublicUrl,
-                tags: req.body.tags,
+                tags: req.body.tags.split(','),
                 comments: []
             }
         }else{
@@ -38,7 +48,7 @@ class ControllerArticle{
                 title: req.body.title,
                 content: req.body.content,
                 img: req.body.image,
-                tags: req.body.tags,
+                tags: req.body.tags.split(','),
                 comments: []
             }
         }
@@ -57,7 +67,7 @@ class ControllerArticle{
                 title: req.body.title,
                 content: req.body.content,
                 img: req.file.cloudStoragePublicUrl,
-                tags: req.body.tags
+                tags: req.body.tags.split(',')
             }
         }else{
             input = {

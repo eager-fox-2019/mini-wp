@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css" />
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/vueWysiwyg.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@voerro/vue-tagsinput@2.0.0/dist/style.css">
     <script src="https://apis.google.com/js/platform.js"></script>
     <title>Mini Wordpress</title>
 </head>
@@ -178,6 +179,8 @@
                                             <small>
                                                 <i>Author {{article.author}}</i>
                                             </small>
+                                            <small style="margin-right: 5px">Tags</small>
+                                            <a href="" v-for="tags in article.tags" @click.prevent="searchtag(tags)">{{tags}}, </a>
                                         </div>
                                         <div style="font-size: 20px; margin-left: 30px; width: 750px">
                                             <p v-html="article.content">
@@ -197,7 +200,7 @@
                                                 <wysiwyg v-model="article.content"></wysiwyg>
                                             </div>
                                             <div>
-                                                
+                                                <v-tags-input v-model="article.tags"></v-tags-input>
                                             </div>
                                             <div class="row" style="margin-bottom:20px">
                                                 <div class="col-4">
@@ -227,6 +230,9 @@
                                             <div style="margin-bottom: 20px; background-color: white">
                                                 <wysiwyg v-model="article.content"></wysiwyg>
                                             </div>
+                                            <div>
+                                                <v-tags-input v-model="article.tags"></v-tags-input>
+                                            </div>
                                             <div class="row" style="margin-bottom:20px">
                                                     <div class="col-4">
                                                         Image Preview
@@ -253,7 +259,9 @@
                                             <h1 class="card-title" style="text-align:center">{{article.title}}</h1>
                                             <!-- <p class="card-text" v-html="article.content"></p> -->
                                             <small>Created At {{article.createdAt}}</small><br>
-                                            <small>Author <i>{{article.userId.userName}}</i></small>
+                                            <small>Author <i>{{article.userId.userName}}</i></small><br>
+                                            <small style="margin-right: 5px">Tags</small>
+                                            <a href="" v-for="tags in article.tags" @click.prevent="searchtag(tags)">{{tags}}, </a>
                                             <button type="button" class="btn btn-outline-primary" style="width: 180px; margin-left: 480px" @click.prevent="viewArticle(article._id)">Read More</button>
                                         </div>
                                     </div>
@@ -294,6 +302,8 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@voerro/vue-tagsinput@1.8.0/dist/voerro-vue-tagsinput.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>

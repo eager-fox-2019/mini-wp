@@ -28,6 +28,7 @@ var app = new Vue({
     },
     components: {
         wysiwyg: vueWysiwyg.default.component,
+        "v-tags-input": VoerroTagsInput
     },
     methods : {
         toRegis(){
@@ -224,7 +225,7 @@ var app = new Vue({
             this.mainStatus = "loading"
             let img
             if (this.article.img == ""){
-                img = "../assets/nopic.png"
+                img = "../../assets/nopic.png"
             }else{
                 img = this.article.img
             }
@@ -232,6 +233,7 @@ var app = new Vue({
             input.append("title", this.article.title)
             input.append("content", this.article.content)
             input.append("image", img)
+            input.append("tags", this.article.tags)
 
             axios({
                 method: "POST",
@@ -306,13 +308,15 @@ var app = new Vue({
                 input = {
                     title : this.article.title,
                     content : this.article.content,
-                    img: this.article.img 
+                    img: this.article.img, 
+                    tags: this.article.tags
                 }
             }else{
                 input = new FormData()
                 input.append("title", this.article.title)
                 input.append("content", this.article.content)
                 input.append("image", this.article.img)
+                input.append("tags", this.article.tags)
             }
 
             axios({
@@ -352,6 +356,7 @@ var app = new Vue({
                 this.article.title = data.title
                 this.article.content = data.content
                 this.article.img = data.img
+                this.article.tags = data.tags
             })
             .catch(err => {
                 swal({
@@ -376,6 +381,7 @@ var app = new Vue({
                 this.article.img = data.img,
                 this.article.createdAt = data.createdAt.substr(0, 10).split('-').reverse().join('-')
                 this.article.author = 'rudy'
+                this.article.tags = data.tags
             })
             .catch(err => {
                 swal({
@@ -393,6 +399,25 @@ var app = new Vue({
             oFReader.onload = function(oFREvent) {
                 document.getElementById("previewimg").src = oFREvent.target.result;
             }
+        },
+        searchtag(tag){
+            axios({
+                method: "GET",
+                url: `${baseURL}/articles/tags/${tag}`,
+                headers:{
+                    token: localStorage.token
+                }
+            })
+            .then(({data}) => {
+                this.listArticles = data
+                this.mainStatus = "articleList"
+            })
+            .catch(err => {
+                swal({
+                    title: "Get Articles Error",
+                    icon: "../assets/2.gif",
+                })
+            })
         },
         onSignGoogle(data) {
             console.log('masuk google', data)
