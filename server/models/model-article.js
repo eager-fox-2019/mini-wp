@@ -8,7 +8,7 @@ var articleSchema = new Schema({
   content: String,
   published: Boolean,
   user_id: { type: 'ObjectId', ref: 'User' },
-  image_url: String,
+  featured_image: String,
 }, {timestamps: true});
 
 var Article = mongoose.model('Article', articleSchema);

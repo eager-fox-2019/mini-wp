@@ -2,11 +2,13 @@ const Article = require('../models/model-article')
 
 class ControllerArticle {
   static create(req, res, next) {
+    console.log('masuk creaate')
     let newArticle = {
-      title: req.body.title,
-      content: req.body.content,
+      title: req.body.title || '',
+      content: req.body.content || '',
       published: req.body.published || false,
       user_id: req.userId,
+      featured_image: (req.file) ? req.file.gcsUrl : ''
     }
     Article.create(newArticle)
       .then((createdArticle) => {
@@ -22,6 +24,11 @@ class ControllerArticle {
 
     Article.find(query).populate('user_id').lean()
       .then((articles) => {
+        articles = articles.map((article) => {
+          return Object.assign(article, {
+            contentNonHtml: article.content.replace(/<[^>]*>?/gm, ' ').trim()
+          })
+        })
         res.json(articles)
       })
       .catch(next)
@@ -44,10 +51,13 @@ class ControllerArticle {
   }
   
   static update(req, res, next) {
+    console.log('ini nilai req.body content', req.body);
+    console.log('ini nilai req.body content', typeof req.body);
+    
     let schemaField = Object.keys(Article.prototype.schema.paths)
     let filteredField = Object.keys(req.body).filter((x) => schemaField.indexOf(x) > -1)
     let updatedArticle = filteredField.reduce((acc, el) => Object.assign(acc, {[el]: req.body[el]}), {})
-    Article.findByIdAndUpdate({_id: req.params.id}, updatedArticle)
+    Article.findByIdAndUpdate(req.params.id, updatedArticle)
       .then((article) => {
         res.status(201).json(article)
       })

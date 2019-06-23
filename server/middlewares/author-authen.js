@@ -8,6 +8,8 @@ module.exports = {
   authentication: (req, res, next) => {
     try {
       console.log('########## Checking authentication');
+      console.log('req bidy', req.body);
+      
       let payload = decodeToken(req.headers.token)
       Promise.all([User.findOne({_id: payload.userId}), Token.findOne({token: req.headers.token})])
         .then(result => {
@@ -32,6 +34,7 @@ module.exports = {
   },
   authorization: function(req, res, next) {
     console.log('########## Checking authorization');
+    console.log('req bidy', req.body);
     try {
       let articleId = req.params.id
       let loginUserId = req.userId
