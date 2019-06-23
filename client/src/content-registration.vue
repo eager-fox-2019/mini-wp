@@ -130,20 +130,15 @@ export default {
         })
     },
     onSignInSuccess (googleUser) {
-      // `googleUser` is the GoogleUser object that represents the just-signed-in user.
-      // See https://developers.google.com/identity/sign-in/web/reference#users
       const profile = googleUser.getBasicProfile() // etc etc
-      console.log('ini hasil profile', profile)
       let sendUser = {
         full_name: profile.ig,
         email: profile.U3,
         username: profile.U3.split('@')[0],
         login_type: 'google'
       }
-      console.log('ini sendUser', sendUser)
       axios.post(`${this.$root.url_server}/users/login`, sendUser)
         .then(({ data }) => {
-          console.log('ini data hasil reques', data)
           if (data.token) {
             let token = {
               token: data.token,
@@ -172,7 +167,6 @@ export default {
         })
     },
     onSignInError (error) {
-      // `error` contains any error occurred.
       console.log(error)
       Swal.fire({
         title: 'Error!',
@@ -197,7 +191,6 @@ export default {
           this.currentPage = "content-list-articles"   
         })
         .catch(({ message }) => {
-          console.log('ini  error yang diterima', message);
           Swal.fire({
             title: 'Error!',
             text: err.response.data.message,

@@ -54,7 +54,7 @@ export default {
         published: false,
       },
       articles: [],
-      url_server: 'http://localhost:3000',
+      url_server: 'http://34.87.23.92:80', // http://34.87.23.92:80 //http://localhost:3000
     };
   },
   computed: {
@@ -80,7 +80,6 @@ export default {
     setCurrentPage(val) {
       if (typeof val == 'object') {
         this.selectedArticle = this.articles.filter((article) => article._id == val[1])[0]
-        console.log('ini selected article', this.selectedArticle)
         this.currentPage = val[0]
       } else {
         this.currentPage = val
@@ -99,7 +98,6 @@ export default {
           data.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt)
           })
-          console.log(data)
           this.articles = data
         })
         .catch((err) => {

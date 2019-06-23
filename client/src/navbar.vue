@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import Navtab from './navtab.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
@@ -62,7 +61,6 @@ export default {
   },
   methods: {
     submitPage(val) {
-      console.log(val)
       this.$emit('change-page', val)
     },
     submitDrawer(val) {
@@ -96,10 +94,6 @@ export default {
             'success'
           )
           localStorage.removeItem("token");
-          // var auth2 = gapi.auth2.getAuthInstance();
-          // auth2.signOut().then(() => {
-          //   console.log('User signed out.');
-          // });
           this.$emit('set-isLogin', false)
           this.$emit('change-page', 'content-home')
           let blank = {
