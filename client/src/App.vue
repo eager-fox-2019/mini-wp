@@ -409,24 +409,7 @@ export default {
             c: 'mp3',
             f: '44khz_16bit_stereo',
             ssml: false
-        });
-
-        // http.createServer(function (request, response) {
-        //   tts.speech({
-        //     key: api_key,
-        //     hl: 'en-us',
-        //     src: readStr,
-        //     r: 0,
-        //     c: 'mp3',
-        //     f: '44khz_16bit_stereo',
-        //     ssml: false,
-        //     b64: false,
-        //     callback: function (error, content) {
-        //       response.end(error || content);
-        //     }
-        //   });
-        // }).listen(8081);
-                     
+        });                     
 
       })
       .catch(err => {
