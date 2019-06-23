@@ -1,5 +1,6 @@
-# mini-wp-1
-mini-wp
+# mini-wp
+
+postman documentation: https://documenter.getpostman.com/view/6691212/S1a1bUqU
 
 register /login user with email and password
 edit logged in user to add name, or change password
