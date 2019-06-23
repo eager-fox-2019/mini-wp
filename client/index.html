@@ -4,16 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
     <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
     />
     <!-- css -->
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/wysiwyg.css" />
-    <link rel="stylesheet" href="css/signinsignup.css" />
-    <!-- vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- fontawesome -->
     <link
       rel="stylesheet"
@@ -44,130 +41,409 @@
     <title>My-ni-WP</title>
   </head>
   <body>
-    <div id="app"></div>
-    <div class="hero is-primary is-fullheight">
-      <div class="hero-head">
-        <nav class="navbar is-transparent">
-          <div
-            class="navbar-brand "
-            role="navigation"
-            aria-label="main navigation"
-          >
-            <span class="icon is-medium">
-              <i class="fab fa-atlassian " size="20px"></i>
-            </span>
-            <a
-              role="button"
-              class="navbar-burger "
-              aria-label="menu"
-              aria-expanded="false"
-              data-target="navbarBasicExample"
+    <div id="app">
+      <div class="hero is-fullheight">
+        <div class="hero-head">
+          <nav class="navbar is-transparent">
+            <div
+              class="navbar-brand "
+              role="navigation"
+              aria-label="main navigation"
             >
-              <span aria-hidden="false"></span>
-              <span aria-hidden="false"></span>
-              <span aria-hidden="false"></span>
-            </a>
+              <span class="icon is-medium" v-on:click="selectPage('Landing')">
+                <i class="fab fa-atlassian " size="20px"></i>
+              </span>
+              <a
+                role="button"
+                class="navbar-burger "
+                aria-label="menu"
+                aria-expanded="false"
+                data-target="navbarBasicExample"
+              >
+                <span aria-hidden="false"></span>
+                <span aria-hidden="false"></span>
+                <span aria-hidden="false"></span>
+              </a>
+            </div>
+
+            <div class="navbar-menu " id="navbarBasicExample">
+              <div class="navbar-start">
+                <a class="navbar-item" v-on:click="selectPage('Landing')"
+                  >Home</a
+                >
+                <a class="navbar-item" v-on:click="selectPage('Article')"
+                  >Article</a
+                >
+                <a class="navbar-item" v-on:click="selectPage('Create')"
+                  >Create</a
+                >
+                <a class="navbar-item" v-on:click="selectPage('Galery')"
+                  >Galery</a
+                >
+              </div>
+
+              <div class="navbar-end">
+                <a class="navbar-item" v-on:click="selectPage('SignIn')">Sign In</a>
+                <a class="navbar-item" v-on:click="selectPage('SignUp')">Sign Up</a>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div
+          class="hero-body"
+          style="align-items :start; border : 1px solid black"
+        >
+          <div class="container" id="Landing" v-if="selectedPage === 'Landing'">
+            <div class="level-left">
+              <div class="container">
+                <div class="columns">
+                  <div class="column is-offset-1 is-5 is-margin-right-3">
+                    <h1 class="title is-1">Lorem Ipsum</h1>
+                    <p>
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s, when an unknown
+                      printer took a galley of type and scrambled it to make a
+                      type specimen book. It has survived not only five
+                      centuries, but also the leap into electronic typesetting,
+                      remaining essentially unchanged. It was popularised in the
+                      1960s with the release of Letraset sheets containing Lorem
+                      Ipsum passages, and more recently with desktop publishing
+                      software like Aldus PageMaker including versions of Lorem
+                      Ipsum.
+                    </p>
+                  </div>
+                  <div class="column is-offset-1 is-5 is-margin-left-3">
+                    <h1 class="title is-1">Lorem Ipsum</h1>
+                    <p>
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s, when an unknown
+                      printer took a galley of type and scrambled it to make a
+                      type specimen book. It has survived not only five
+                      centuries, but also the leap into electronic typesetting,
+                      remaining essentially unchanged. It was popularised in the
+                      1960s with the release of Letraset sheets containing Lorem
+                      Ipsum passages, and more recently with desktop publishing
+                      software like Aldus PageMaker including versions of Lorem
+                      Ipsum.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div class="navbar-menu " id="navbarBasicExample">
-            <div class="navbar-start">
-              <a class="navbar-item">Home</a>
-              <a class="navbar-item">Article</a>
-              <a class="navbar-item">Create</a>
-              <a class="navbar-item">Galery</a>
-            </div>
+          <!-- home page -->
+          <div
+            class="container"
+            id="Article"
+            v-else-if="selectedPage === 'Article'"
+          >
+            <div class="container">
+              <div class="columns is-multiline is-mobile">
+                <div class="column is-6 is-offset-2">
+                  <!-- navbar -->
+                  <div class="navbar-item field">
+                    <p class="control has-icons-right">
+                      <input
+                        class="input"
+                        type="search"
+                        placeholder="Search..."
+                      />
+                      <span class="icon is-small is-right">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            fill="#ddd"
+                            d="M23.822 20.88l-6.353-6.354c.93-1.465 1.467-3.2 1.467-5.059.001-5.219-4.247-9.467-9.468-9.467s-9.468 4.248-9.468 9.468c0 5.221 4.247 9.469 9.468 9.469 1.768 0 3.421-.487 4.839-1.333l6.396 6.396 3.119-3.12zm-20.294-11.412c0-3.273 2.665-5.938 5.939-5.938 3.275 0 5.94 2.664 5.94 5.938 0 3.275-2.665 5.939-5.94 5.939-3.274 0-5.939-2.664-5.939-5.939z"
+                          />
+                        </svg>
+                      </span>
+                    </p>
+                  </div>
+                  <!-- end of navbar -->
+                </div>
+                <div class="column is-12"></div>
+                <hr />
+                <div class="column is-1"></div>
+                <div class="column is-8">
+                  <!-- isi timeline media -->
+                  <div class="tile is-ancestor">
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <p class="title">Hello World</p>
+                        <p class="subtitle">What is up?</p>
+                      </article>
+                    </div>
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <p class="title">Foo</p>
+                        <p class="subtitle">Bar</p>
+                      </article>
+                    </div>
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <p class="title">Third column</p>
+                        <p class="subtitle">With some content</p>
+                        <div class="content">
+                          <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Proin ornare magna eros, eu pellentesque
+                            tortor vestibulum ut. Maecenas non massa sem. Etiam
+                            finibus odio quis feugiat facilisis.
+                          </p>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
 
-            <div class="navbar-end">
-              <a class="navbar-item">Sign In</a>
-              <a class="navbar-item">Sign Up</a>
+                  <div class="tile is-ancestor">
+                    <div class="tile is-vertical is-7">
+                      <div class="tile">
+                        <div class="tile is-parent is-vertical">
+                          <article class="tile is-child box">
+                            <p class="title">Vertical tiles</p>
+                            <p class="subtitle">Top box</p>
+                          </article>
+                          <article class="tile is-child box">
+                            <p class="title">Vertical tiles</p>
+                            <p class="subtitle">Bottom box</p>
+                          </article>
+                        </div>
+                        <div class="tile is-parent">
+                          <article class="tile is-child box">
+                            <p class="title">Middle box</p>
+                            <p class="subtitle">With an image</p>
+                            <figure class="image is-4by3">
+                              <img
+                                src="https://bulma.io/images/placeholders/640x480.png"
+                              />
+                            </figure>
+                          </article>
+                        </div>
+                      </div>
+                      <div class="tile is-parent">
+                        <article class="tile is-child box">
+                          <p class="title">Wide column</p>
+                          <p class="subtitle">Aligned with the right column</p>
+                          <div class="content">
+                            <p>
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Proin ornare magna eros, eu pellentesque
+                              tortor vestibulum ut. Maecenas non massa sem.
+                              Etiam finibus odio quis feugiat facilisis.
+                            </p>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <div class="content">
+                          <p class="title">Tall column</p>
+                          <p class="subtitle">With even more content</p>
+                          <div class="content">
+                            <p>
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Etiam semper diam at erat pulvinar, at
+                              pulvinar felis blandit. Vestibulum volutpat tellus
+                              diam, consequat gravida libero rhoncus ut. Morbi
+                              maximus, leo sit amet vehicula eleifend, nunc dui
+                              porta orci, quis semper odio felis ut quam.
+                            </p>
+                            <p>
+                              Suspendisse varius ligula in molestie lacinia.
+                              Maecenas varius eget ligula a sagittis.
+                              Pellentesque interdum, nisl nec interdum maximus,
+                              augue diam porttitor lorem, et sollicitudin felis
+                              neque sit amet erat. Maecenas imperdiet felis
+                              nisi, fringilla luctus felis hendrerit sit amet.
+                              Aenean vitae gravida diam, finibus dignissim
+                              turpis. Sed eget varius ligula, at volutpat
+                              tortor.
+                            </p>
+                            <p>
+                              Integer sollicitudin, tortor a mattis commodo,
+                              velit urna rhoncus erat, vitae congue lectus dolor
+                              consequat libero. Donec leo ligula, maximus et
+                              pellentesque sed, gravida a metus. Cras
+                              ullamcorper a nunc ac porta. Aliquam ut aliquet
+                              lacus, quis faucibus libero. Quisque non semper
+                              leo.
+                            </p>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+
+                  <div class="tile is-ancestor">
+                    <div class="tile is-parent">
+                      <article class="tile is-child box">
+                        <p class="title">Side column</p>
+                        <p class="subtitle">With some content</p>
+                        <div class="content">
+                          <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Proin ornare magna eros, eu pellentesque
+                            tortor vestibulum ut. Maecenas non massa sem. Etiam
+                            finibus odio quis feugiat facilisis.
+                          </p>
+                        </div>
+                      </article>
+                    </div>
+                    <div class="tile is-parent is-8">
+                      <article class="tile is-child box">
+                        <p class="title">Main column</p>
+                        <p class="subtitle">With some content</p>
+                        <div class="content">
+                          <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Proin ornare magna eros, eu pellentesque
+                            tortor vestibulum ut. Maecenas non massa sem. Etiam
+                            finibus odio quis feugiat facilisis.
+                          </p>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                  <!-- isi timeline media -->
+                </div>
+                <div class="column is-3">
+                  <aside class="menu">
+                    <p class="menu-label">
+                      General
+                    </p>
+                    <ul class="menu-list">
+                      <li><a>Dashboard</a></li>
+                      <li><a>Customers</a></li>
+                    </ul>
+                    <p class="menu-label">
+                      Administration
+                    </p>
+                    <ul class="menu-list">
+                      <li><a>Team Settings</a></li>
+                      <li>
+                        <a class="is-active">Manage Your Team</a>
+                        <ul>
+                          <li><a>Members</a></li>
+                          <li><a>Plugins</a></li>
+                          <li><a>Add a member</a></li>
+                        </ul>
+                      </li>
+                      <li><a>Invitations</a></li>
+                      <li><a>Cloud Storage Environment Settings</a></li>
+                      <li><a>Authentication</a></li>
+                    </ul>
+                    <p class="menu-label">
+                      Transactions
+                    </p>
+                    <ul class="menu-list">
+                      <li><a>Payments</a></li>
+                      <li><a>Transfers</a></li>
+                      <li><a>Balance</a></li>
+                    </ul>
+                  </aside>
+                </div>
+              </div>
             </div>
           </div>
-        </nav>
-      </div>
-      <div
-        class="hero-body"
-        style="align-items :start; border : 1px solid black"
-      >
-        <div class="container" style="border :1px solid black">
-          <div class="columns">
-            <div class="column is-1" style="border :1px solid black"></div>
-            <div class="column" style="border :1px solid black">
-              <div class="field">
-                <label class="label">Username</label>
-                <div class="control has-icons-left has-icons-right">
-                  <input
-                    class="input is-success"
-                    type="text"
-                    placeholder="Text input"
-                  />
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Tags</label>
-                <div class="control has-icons-left has-icons-right">
-                  <input
-                    class="input is-success"
-                    type="text"
-                    placeholder="Text input"
-                  />
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Content</label>
-                <div class="control has-icons-left has-icons-right">
-                  <input
-                    class="input is-success"
-                    type="text"
-                    placeholder="Text input"
-                  />
-                  <div id="editor"
-                  style="height: 300px">
-                    <p>Hello World!</p>
-                    <p>Some initial <strong>bold</strong> text</p>
-                    <p><br /></p>
+          <!-- create -->
+          <div
+            class="container"
+            id="Create"
+            v-else-if="selectedPage === 'Create'"
+            style="border :1px solid black"
+          >
+            <div class="columns">
+              <div class="column is-1" style="border :1px solid black"></div>
+              <div class="column" style="border :1px solid black">
+                <div class="field">
+                  <label class="label">Username</label>
+                  <div class="control has-icons-left has-icons-right">
+                    <input
+                      class="input is-success"
+                      type="text"
+                      placeholder="Text input"
+                    />
                   </div>
-                  <div class="field is-grouped">
-                    <div class="control">
-                            <div class="button is-link"> Submit </div>
+                </div>
+                <div class="field">
+                  <label class="label">Tags</label>
+                  <div class="control has-icons-left has-icons-right">
+                    <input
+                      class="input is-success"
+                      type="text"
+                      placeholder="Text input"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Content</label>
+                  <div class="control has-icons-left has-icons-right">
+                    <input
+                      class="input is-success"
+                      type="text"
+                      placeholder="Text input"
+                    />
+                    <div id="editor" style="height: 300px">
+                      <p>Hello World!</p>
+                      <p>Some initial <strong>bold</strong> text</p>
+                      <p><br /></p>
                     </div>
-                    <div class="control">
-                            <div class="button is-text"> Cancel </div>
+                    <div class="field is-grouped">
+                      <div class="control">
+                        <div class="button is-link">Submit</div>
+                      </div>
+                      <div class="control">
+                        <div class="button is-text">Cancel</div>
+                      </div>
                     </div>
                   </div>
-
                 </div>
               </div>
+              <div class="column is-1" style="border :1px solid black"></div>
             </div>
-            <div class="column is-1" style="border :1px solid black"></div>
+          </div>
+          <div class="container" id="Galery" v-else-if="selectedPage === 'Galery'">
+            <h1 class="title is-1">Galery loohhh</h1>
+          </div>
+          <div class="container" id="SignUp" v-else-if="selectedPage === 'SignUp'">
+              <div class="title is-1"> S
+                  ign Up</div>
+          </div>
+          <div class="container" id="SignIn" v-else-if="selectedPage === 'SignIn'">
+              <div class="title is-1"> Sign In </div>
           </div>
         </div>
-      </div>
-      <div class="hero-foot">
-        <nav class="tabs">
-          <div class="container">
-            <ul>
-              <li class="is-active"><a>Overview</a></li>
-              <li><a>Modifiers</a></li>
-              <li><a>Grid</a></li>
-              <li><a>Elements</a></li>
-              <li><a>Components</a></li>
-              <li><a>Layout</a></li>
-            </ul>
-          </div>
-        </nav>
+
+        <div class="hero-foot">
+          <nav class="tabs">
+            <div class="container">
+              <ul>
+                <li class="is-active"><a>Overview</a></li>
+                <li><a>Modifiers</a></li>
+                <li><a>Grid</a></li>
+                <li><a>Elements</a></li>
+                <li><a>Components</a></li>
+                <li><a>Layout</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
 
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- js-aku -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/wysiwyg.js"></script>
-    <!-- <script src="js/signinsignup.js"></script> -->
-    <!-- <script src="js/summernote-bs4.js"></script> -->
-    <!-- bootstrap -->
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
   </body>
 </html>

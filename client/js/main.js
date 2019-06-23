@@ -1,4 +1,4 @@
-let app = new Vue ({
+new Vue ({
     el : '#app',
     data : {   
         menus : [
@@ -8,6 +8,7 @@ let app = new Vue ({
             'Sign in', 'Sign up'
         ],
         selectedPage : 'Landing',
+        isLogin : false ,
         tagInputed : [],
         users : [],
         quill : '',
