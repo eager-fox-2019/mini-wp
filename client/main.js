@@ -24,6 +24,8 @@ var app = new Vue({
     created(){
         if(localStorage.getItem("token")){
             this.isLogin = true
+            this.usersign = 'logout'
+            this.getPersonalArticle()
         }
         axios({
             method: "GET",
@@ -166,40 +168,20 @@ var app = new Vue({
                     console.log("Error from getPersonalArticle: ", err)
                 })
         },
-        readURL() {
-            let input = this.newImgUrl
-            console.log(input)
-            this.uploadImg = input
-            // if (input.files && input.files[0]) {
-            //     var reader = new FileReader();   
-            //     reader.onload = function(e){
-            //         this.uploadImg = e.target.result
-            //     }
-            //     // reader.onload = function (e) {
-
-            //     //     $('#imgShow')
-            //     //         .attr('src', e.target.result)
-            //     //         .width(150)
-            //     //         .height(200);
-            //     // };
-            //     console.log("MAsuk readurl, input")
-            //     reader.readAsDataURL(input.files[0]);
-            // }
+        readURL(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) return;
+                this.newImgUrl = files[0]
+            this.uploadImg = URL.createObjectURL(file);
         },
         postArticle(){
-            // console.log(this.newImgUrl)
             let formData = new FormData();
-            formData.append("title", this.title);
-            formData.append("imgUrl", this.imgUrl);
-            formData.append("content", this.content);
+            formData.set("title", this.newTitle);
+            formData.append("imgUrl", this.newImgUrl);
+            formData.set("content", this.newPost);
             axios({
                 method: "POST",
                 url: `http://localhost:3000/article/create`,
-                // data: {
-                //     title: this.newTitle,
-                //     imgUrl: this.newImgUrl,
-                //     content: this.newPost
-                // },
                 data: formData,
                 headers: {
                     token: localStorage.getItem('token')
@@ -386,23 +368,23 @@ function googleSignOut() {
     });
 }
 
-function facebookSignIn() {
-    FB.login(function(response) {
-        if (response.authResponse) {
-         console.log('Welcome!  Fetching your information.... ');
-         FB.api('/me', function(response) {
-           console.log('Good to see you, ' + response.name + '.');
-         });
-        } else {
-         console.log('User cancelled login or did not fully authorize.');
-        }
-    });
-}
+// function facebookSignIn() {
+//     FB.login(function(response) {
+//         if (response.authResponse) {
+//          console.log('Welcome!  Fetching your information.... ');
+//          FB.api('/me', function(response) {
+//            console.log('Good to see you, ' + response.name + '.');
+//          });
+//         } else {
+//          console.log('User cancelled login or did not fully authorize.');
+//         }
+//     });
+// }
 
-function facebookLoginStatus(){
-    FB.getLoginStatus(function(response) {
-        if (response.status === 'connected') {
-          console.log(response.authResponse.accessToken);
-        }
-    });
-}
+// function facebookLoginStatus(){
+//     FB.getLoginStatus(function(response) {
+//         if (response.status === 'connected') {
+//           console.log(response.authResponse.accessToken);
+//         }
+//     });
+// }

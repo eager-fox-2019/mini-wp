@@ -11,7 +11,6 @@ const DEFAULT_BUCKET_NAME = process.env.DEFAULT_BUCKET_NAME; // Replace with the
  */
 
 exports.sendUploadToGCS = (req, res, next) => {
-    console.log("masuk send upload", req.file)
     if (!req.file) {
         return next();
     }
@@ -26,16 +25,16 @@ exports.sendUploadToGCS = (req, res, next) => {
     });
 
     stream.on('error', (err) => {
+        console.log('stream error')
         req.file.cloudStorageError = err;
         next(err);
     });  
 
     stream.on('finish', () => {
-        console.log("masuk send upload finish")
+        console.log('Masuk finish')
         req.file.cloudStorageObject = gcsFileName;
         return file.makePublic()
             .then(() => {
-                console.log("masuk makepublic")
                 req.file.gcsUrl = getPublicUrl(bucketName, gcsFileName);
                 next();
             });

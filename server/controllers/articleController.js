@@ -46,22 +46,18 @@ class ArticleController{
         const { title, content } = req.body
         const input = { title, content }
         input.author = req.decode.id
-        console.log("ini req file", req.file)
-        console.log("ini req files", req.files)
-        // console.log(req)
-        console.log("ini req body", req.body.imgUrl)
         if (req.file) {
             input.imgUrl = req.file.gcsUrl
         } else {
             input.imgUrl = req.body.imgUrl
         }
-        console.log("ini input imgUrl", input.imgUrl)
-        // Article.create(input)
-        //     .then(newArticle => {  
-        //         console.log("success created")
-        //         res.status(201).json(newArticle)
-        //     })
-        //     .catch(next)
+        Article.create(input)
+            .then(newArticle => {  
+                console.log("success created")
+                res.status(201).json(newArticle)
+            })
+            .catch(next)
+        
     }
 
     static update(req, res, next){

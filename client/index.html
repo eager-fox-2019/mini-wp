@@ -231,10 +231,10 @@
                         <form style="height: 80%; width:80%" enctype="multipart/form-data">
                             <label for="title"><b>Title</b></label>
                             <input v-model="newTitle" type="text" class="form-control" placeholder="Enter title" name="title" id="title" required><br>
-                            <label for="imgUrl">Choose feature image:</label>
+                            <label for="newImgUrl">Choose feature image:</label>
                             <img id="imgShow" v-bind:src="uploadImg" alt="your image" />
-                            <input type="file" v-model="newImgUrl" class="form-control" placeholder="Browse an image"
-                                id="imgUrl" name="imgUrl" @change="readURL"
+                            <input type="file" class="form-control" placeholder="Browse an image"
+                                id="imgUrl" name="imgUrl" v-on:change="readURL"
                                 accept="image/png, image/jpeg">
                             <!-- <label for="imgUrl"><b>Image Url</b></label>
                             <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br> -->
