@@ -7,19 +7,19 @@
         <meta name="google-signin-client_id" content="168247526060-2a0ocm7heujiappg1ldophc9c422haes.apps.googleusercontent.com">
         
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
         
         <!-- Load required Bootstrap and BootstrapVue CSS -->
-        <!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" /> -->
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
 
         <!-- Load polyfills to support older browsers -->
-        <!-- <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script> -->
+        <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script>
 
         <!-- Load Vue followed by BootstrapVue -->
-        <!-- <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
-        <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script> -->
+        <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+        <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
 
         <link rel="stylesheet" href="./style.css">
         <!-- <script>
@@ -34,271 +34,20 @@
         </script>
         <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script> -->
         
-        <title>Blog Posts</title>
+        <title>Travel WP</title>
 
     </head>
     <body>
         <div id="app">
-            <header>
-                <nav class="navbar navbar-dark fixed-top" style="background-color:#0073aa; padding: 0;">
-                    <div class="nav-elm">
-                        <a class="navbar-brand" href="#" style="background-color:#22344B; padding:10px;">
-                            <img src="/assets/logo-wp.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                            My Sites
-                        </a>
-                        <a class="navbar-brand" href="#">
-                            <img src="/assets/dashicons-welcome-widgets-menus.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                            Reader
-                        </a>
-                    </div>
-                    <div class="nav-elm">                        
-                        <div v-show="isLogin">
-                            <button @click.prevent="toDraftPage" type="button" class="btn btn-light" style="color:#0073aa; margin-right: 10px;"><img src="/assets/dashicons-welcome-add-page.png" width="30" height="30" class="d-inline-block align-top" alt=""> Write</button>
-                            <a class="navbar-brand nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="https://0.gravatar.com/avatar/0d268b07588c38410c771a2056d120ae?s=96&d=mm" width="25" height="25" class="d-inline-block align-top" alt="" style="border-radius: 50%">
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="left: auto; right: 0;">
-                                <a v-show="usersign === 'logout'" @click.prevent="userLogout" class="dropdown-item" href="#">Log out</a>
-                            </div>
-                            <a class="navbar-brand" href="#">
-                                <img src="/assets/gridicons-bell.png" width="30" height="30" class="d-inline-block align-top" alt="nav-link">
-                            </a>
-                        </div>
-                        
-                        <div v-show="!isLogin">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
-                                Register/Login
-                            </a>                            
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="padding:20px 30px; left: auto; right: 0; align-content: center">
-                                <form v-show="usersign === 'login'" id="login-form">
-                                    <div class="form-group">
-                                        <label for="log-email"><b>Email</b></label><br>
-                                        <input v-model="userEmail" type="text" placeholder="Enter your email" name="email" id="log-email" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="log-psw"><b>Password</b></label><br>
-                                        <input v-model="userPsw" type="password" placeholder="Enter your password" name="password" id="log-psw" required>
-                                    </div>
-                                    <button @click.prevent="userLogin" type="submit" class="btn btn-primary" style="width: 100%">Login</button>
-                                    <br>Or sign in with:
-                                    <br><div class="g-signin2" data-onsuccess="onSignIn"></div>
-                                    <!-- <div id="fb-root"></div>
-                                    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3&appId=2373734499376645&autoLogAppEvents=1"></script> -->
-                                    <br><small>New user? <a @click.prevent="toRegister" href="#">Register here!</a></small>
-                                </form>
-                                <form v-show="usersign === 'register'" id="register-form">
-                                    <div class="form-group">
-                                        <label for="username"><b>Name</b></label><br>
-                                        <input v-model="userName" type="text" placeholder="Enter your name" name="username" id="username" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="reg-email"><b>Email</b></label><br>
-                                        <input v-model="userEmail" type="text" placeholder="Enter your email" name="email" id="reg-email" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="reg-psw"><b>Password</b></label><br>
-                                        <input v-model="userPsw" type="password" placeholder="Enter your password" name="password" id="reg-psw" required>
-                                    </div>
-                                    <button @click.prevent="userRegister" type="submit" class="btn btn-primary" style="width: 100%">Create an account</button><br>
-                                    <small>Already have an account? <a @click.prevent="toLogin" href="#">Login here!</a></small>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-
-            <div class="middle">
-                <div class="sidenav">
-                    <!-- <a href="#" @click.prevent="toPublishedPage"><i class="fas fa-columns"></i>Articles</a>
-                    <a v-show="isLogin" href="#" @click.prevent="toPersonalPostPage"><i class="fas fa-signature"></i>Your Articles</a>
-                    <a v-show="isLogin" href="#" @click.prevent="toDraftPage"><i class="fas fa-pencil-alt"></i>Write Article</a> -->
-
-                    <a href="#"><i class="fas fa-chart-bar"></i>Stats</a>
-                    <a href="#"><i class="fas fa-columns"></i>Plan</a>
-                    <a href="#" data-toggle="collapse" data-target="#site-side"><i class="fas fa-pencil-alt"></i>Site</a>
-                    <div id="site-side" class="collapse">
-                        <ul>
-                            <li><a href="#" @click="toPublishedPage">Pages</a></li>
-                            <li><a href="#" id="posts" @click="toPersonalPostPage">Posts</a></li>
-                            <li><a href="#">Media</a></li>
-                            <li><a href="#">Comments</a></li>
-                            <li><a href="#">Feedback</a></li>
-                        </ul>
-                    </div>
-                    <a href="#" data-toggle="collapse" data-target="#design-side"><i class="fas fa-signature"></i>Design</a>
-                    <div id="design-side" class="collapse">
-                        <ul>
-                            <li><a href="#">Customize</a></li>
-                            <li><a href="#">Themes</a></li>
-                        </ul>
-                    </div> 
-                    <a href="#" data-toggle="collapse" data-target="#tools-side"><i class="fas fa-wrench"></i>Tools</a>
-                    <div id="tools-side" class="collapse">
-                        <ul>
-                            <li><a href="#">Plugins</a></li>
-                            <li><a href="#">Import</a></li>
-                            <li><a href="#">Export</a></li>
-                            <li><a href="#">Marketing</a></li>
-                            <li><a href="#">Earn</a></li>
-                            <li><a href="#">Activity</a></li>
-                        </ul>
-                    </div>
-                    <a href="#" data-toggle="collapse" data-target="#manage-side"><i class="fas fa-cog"></i>Manage</a>
-                    <div id="manage-side" class="collapse">
-                        <ul>
-                            <li><a href="#">Domains</a></li>
-                            <li><a href="#">People</a></li>
-                            <li><a href="#">Settings</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="article-container d-flex justify-content-center align-items-center">
-                    <div v-show="loadPage === 'published'">
-                        <div class="container-nav">
-                            <div v-show="onSearch === false" style="display: flex">
-                                <div>
-                                    <div class="container-nav-link">
-                                        <a @click.prevent="toPublishedPage">Published</a>
-                                    </div>
-                                    <div class="container-nav-link">
-                                        <a @click.prevent="toDraftPage">Drafts</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-show="onSearch" style="width: 100%">
-                                <div class="md-form">
-                                    <input v-model="searchText" class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                </div>
-                            </div>
-                            <div class="container-nav-link">
-                                <i @click="changeSearch" class="fas fa-search" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div class="container-post">
-                            <div class="articles">
-                                <div class="card align-items-*-center" v-for="post in filteredList">
-                                    <img class="card-img-top" v-bind:src="post.imgUrl" alt="Image">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ post.title }}</h5>
-                                        <div class="card-text" v-html="shortText(post.content)"></div>
-                                        <button @click="readMore(post._id)" class="btn btn-primary">Read more</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-show="loadPage === 'privatepost'">
-                        <div class="container-nav">
-                            <div v-show="onSearch === false" style="display: flex">
-                                <div>
-                                    <div class="container-nav-link">
-                                        <a @click.prevent="toPublishedPage">Published</a>
-                                    </div>
-                                    <div class="container-nav-link">
-                                        <a @click.prevent="toDraftPage">Drafts</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-show="onSearch">
-                                <div class="md-form mt-0">
-                                    <input v-model="searchText" class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                </div>
-                            </div>
-                            <div class="container-nav-link">
-                                <i @click="changeSearch" class="fas fa-search" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div class="container-post">
-                            <div class="articles">
-                                <div class="card align-items-*-center" v-for="post in privateFilteredList">
-                                    <img class="card-img-top" v-bind:src="post.imgUrl" alt="Image">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ post.title }}</h5>
-                                        <div class="card-text" v-html="shortText(post.content)"></div>
-                                        <button @click="readMore(post._id)" class="btn btn-primary">Read more</button>
-                                        <button @click="beforeEdit(post._id)" class="btn btn-warning">Edit</button>
-                                        <button @click="deleteArticle(post._id)" class="btn btn-danger">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-show="loadPage === 'draft' || loadPage === 'edit-mode'">
-                        <form style="height: 80%; width:80%" enctype="multipart/form-data">
-                            <label for="title"><b>Title</b></label>
-                            <input v-model="newTitle" type="text" class="form-control" placeholder="Enter title" name="title" id="title" required><br>
-                            <label for="newImgUrl">Choose feature image:</label>
-                            <img id="imgShow" v-bind:src="uploadImg" alt="your image" />
-                            <input type="file" class="form-control" placeholder="Browse an image"
-                                id="imgUrl" name="imgUrl" v-on:change="readURL"
-                                accept="image/png, image/jpeg">
-                            <!-- <label for="imgUrl"><b>Image Url</b></label>
-                            <input v-model="newImgUrl" type="text" class="form-control" placeholder="Enter url" name="imgUrl" id="imgUrl"><br> -->
-                            <editor v-model="newPost" api-key="5t9c5vfi2kk6s9yazv87rfciyj6b720adar1ephqweq14uhp" :init="{plugins: 'wordcount'}">Write here</editor>
-                            <br>
-                            <div v-show="loadPage === 'draft'">
-                                <button @click.prevent="postArticle" class="btn btn-primary">Publish</button>
-                            </div>
-                            <div v-show="loadPage === 'edit-mode'">
-                                <button @click.prevent="afterEdit" class="btn btn-primary">Update</button>
-                                <button @click.prevent="deleteArticle(selectedArticle._id)" class="btn btn-danger">Delete</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div v-show="loadPage === 'read-more'">
-                        <div class="container-post">
-                            <div class="articles">
-                                <div class="card align-items-*-center">
-                                    <img class="card-img-top-display" v-bind:src="selectedArticle.imgUrl" alt="Image">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ selectedArticle.title }}</h5>
-                                        <div class="card-text" v-html="selectedArticle.content"></div>
-                                        <button @click.prevent="toPublishedPage" class="btn btn-primary">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <footer class="page-footer font-small fixed-bottom" style="position: relative; background-color: #22344B; padding: 3rem">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <div class="flex-center">
-                                <a class="fb-ic" href="https://www.facebook.com/MelinA.Dew1" target="blank">
-                                    <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                                </a>
-                                <a class="li-ic" href="https://id.linkedin.com/in/melina-dewi-murjadi-097605142" target="blank">
-                                    <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                                </a>
-                                <a class="ins-ic" href="https://www.instagram.com/melinadm57/" target="blank">
-                                    <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer-copyright text-center" style="color: white; margin-top: 10px;">
-                        © 2019 Copyright tidak sama dengan Copyleft
-                    </div>
-                </div>
-            </footer>
+            
         </div>
-
+        <script src="/src/main.js"></script>
         <!-- Optional JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="./assets/tinymce-vue.min.js"></script>
-        <script src="./main.js"></script>
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
