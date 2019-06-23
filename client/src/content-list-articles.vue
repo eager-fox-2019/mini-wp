@@ -73,7 +73,6 @@ export default {
       this.$emit('change-page', val)
     },
     updateArticles() {
-      console.log('masuk dashboard')
       this.$emit('update-articles')
     }
   }

@@ -41,7 +41,6 @@ export default {
     },
     sendArticle(val) {
       event.preventDefault()
-      console.log('nilai val di send article', val)
       let method, fd
       if (val) {
         val = `/${val}`
@@ -56,16 +55,11 @@ export default {
         val = ''
         method = 'POST'
         fd = new FormData()
-        console.log(this.inputVal.title)
         fd.append("title",this.inputVal.title)
-        console.log(this.inputVal.published)
         fd.append("published",this.inputVal.published)
-        console.log(this.inputVal.content)
         fd.append("content",this.inputVal.content)
-        console.log(this.inputVal.featured_image)
         fd.append("featured_image",this.inputVal.featured_image)
       }
-      console.log('yang dikirim', fd)
       axios({
         method: method,
         headers: {
@@ -75,7 +69,6 @@ export default {
         url: `${this.$root.url_server}/articles${val}`
       })
         .then(({ data }) => {
-          console.log('ini data', data)
           this.$emit('update-articles')
           this.$emit('change-page', "content-list-articles")
         })

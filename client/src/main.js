@@ -8,8 +8,6 @@ import "vue-wysiwyg/dist/vueWysiwyg.css";
 
 Vue.use(GSignInButton)
 Vue.use(wysiwyg, {
-  hideModules: { "bold": true },
-  iconOverrides: { "bold": "<i class='your-custom-icon'></i>" },
   image: {
     uploadURL: "/api/myEndpoint",
     dropzoneOptions: {}
