@@ -9,6 +9,8 @@
     - `{ email: 'dimitri@mail.com', password: 'secret' }`
 - response:
   - `201`: `{ _id: ObjectId(''), email: 'dimitri@mail.com', password: 'HashedPassword' }`
+- error:
+  - `Validation Error`
 
 ```
 - Email is unique, so it is not allowed to have same email in database.
@@ -25,6 +27,8 @@
     - `{ email: 'dimitri@mail.com', password: 'secret' }`
 - response:
   - `201`: `{ token: '...' }`
+- error:
+  - `404 not found`
 
 ```
 Token is generated from JWT package.
@@ -39,6 +43,8 @@ Token is generated from JWT package.
     - `{ email: 'dimitri@mail.com' }`
 - response:
   - `201`: `{ token: '...' }`
+- error:
+  - `500 internal server error`
 
 ```
 - If Google email is present in database, user receive token that is generated from JWT package.
@@ -63,7 +69,10 @@ Token is generated from JWT package.
       created_at
       image
       UserId
-    };
+    }`
+- error:
+  - `Validation Error`
+
 
 ```
 - Token is decoded via JWT to get UserId.
@@ -89,6 +98,9 @@ Token is generated from JWT package.
       image
       UserId
     }`
+- error:
+  - `500 internal server error`
+
 ```
 - Token is decoded via JWT to get UserId.
 
@@ -104,6 +116,8 @@ Token is generated from JWT package.
     - `{ token }`
 - response
   - `200`: `{ _id: ObjectId('') }`
+- error:
+  - `401 not authorized`
 
 ```
 User can not delete Article that does not belongs to his/her, it is authorized in middleware.
@@ -127,6 +141,9 @@ User can not delete Article that does not belongs to his/her, it is authorized i
       image
       UserId
     }`
+- error:
+  - `401 not authorized`
+
 ```
 - User can not update Article that does not belongs to his/her, it is authorized in middleware.
 
