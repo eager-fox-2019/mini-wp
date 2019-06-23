@@ -4,14 +4,17 @@
 1. clone this repository
 2. open the `/server` folder of this repo on the terminal and then run `npm install` on the terminal to install all of the dependencies
 3. `npm run start` on the terminal
+4. open the `/client` folder of this repo on the terminal and then run `npm install` on the terminal to install all of the dependencies
+5. run the `parcel index.html` or `npm run start` on the terminal to run the client on localhost port 1234
 ---
 ## __B. API Documentation__
 
-### How to user the REST API
+### How to use the REST API
  
-If you are running the client using live-server on localhost port 3000, then the base url is = __http://localhost:3000__
+If you are running the server on localhost port 3000, then the base url is = __http://localhost:3000__
 
-Then, if you want to register new user, the URL should be : `http://localhost:3000/users/register`
+Example :
+If you want to register new user, the URL should be : `http://localhost:3000/users/register`
 
 The formula is : `BASE_URL` + `routes` + `?` +`query`
 
@@ -37,7 +40,6 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
           name: String
           email: String
           picture: String
-          password: String
         }
         ```
     - ON ERROR : HTTP RESPONSE `500` if server database error
@@ -71,7 +73,6 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
                     name: String
                     email: String
                     picture: String
-                    password: String
                 }
         }
         ```
@@ -104,7 +105,6 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
                     name: String
                     email: String
                     picture: String
-                    password: String
                 }
         }
         ```
@@ -115,37 +115,7 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
         }
         ```
     
-### B.4. Delete Your Account
-- Method & Route
-	  - `DELETE` /users
-- Request
-    - HEADERS
-        ```
-        {
-          token: String
-        }
-        ```    
-    - BODY
-    - QUERY
-- Response
-    - ON SUCCESS : HTTP RESPONSE `200`
-        ```
-        {
-          _id: ObjectId
-          name: String
-          email: String
-          picture: String
-          password: String
-        }
-        ```
-    - ON ERROR : HTTP RESPONSE `500` if server error or `401` if user unauthenticated/unauthorized
-        ```
-        {
-          message : String
-        }
-        ```
-
-### B.5. Update Your Account (User can change profile picture, name and pasword)
+### B.4. Update Your Account (User can change profile picture, name and pasword)
 - Method & Route
 	  - `PATCH` /users
 - Request
@@ -182,7 +152,7 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
         }
         ```
 
-### B.6. POST NEW ARTICLE
+### B.5. POST NEW ARTICLE
 - Method & Route
 	  - `POST` /articles 
 - Request
@@ -212,10 +182,10 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
           content: String,
           rawHTML: String,
           likedby: [ ObjectId ],
-          tags: [ ObjectId ]
+          tags: [ String ]
         }
         ```
-    - ON ERROR : HTTP RESPONSE `500` if server database error or update picture failed
+    - ON ERROR : HTTP RESPONSE `500` if server database error or update picture failed or `401` if token is invalid
         ```
         {
           message : String
@@ -239,7 +209,8 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
           picture: String,
           content: String,
           rawHTML: String,
-          tags: [ ObjectId ]
+          likedby : [ ObjectId ]
+          tags: [ String ]
         }
         ```
     - QUERY
@@ -247,6 +218,7 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
     - ON SUCCESS : HTTP RESPONSE `201`
         ```
         {
+          author : ObjectId
           title: String,
           picture: String,
           content: String,
@@ -278,12 +250,13 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
     - ON SUCCESS : HTTP RESPONSE `201`
         ```
         {
+          author : ObjectId
           title: String,
           picture: String,
           content: String,
           rawHTML: String,
           likedby: [ ObjectId ],
-          tags: [ ObjectId ]
+          tags: [ String ]
         }
         ```
     - ON ERROR : HTTP RESPONSE `500` if server database error or `401` if user is unauthenticated
@@ -304,7 +277,7 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
         }
         ```    
     - BODY
-    - QUERY
+    - QUERY = `sort=asc` or `sort=desc`
 - Response
     - ON SUCCESS : HTTP RESPONSE `201`
         ```
@@ -337,7 +310,7 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
         }
         ```    
     - BODY
-    - QUERY
+    - QUERY = `sort=asc` or `sort=desc`
 - Response
     - ON SUCCESS : HTTP RESPONSE `201`
         ```
@@ -359,10 +332,10 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
         }
         ```
 
-  
-### B.11. VIEW ARTICLE YOU HAVE LIKED
+
+### B.11. UPLOAD PICT TO GOOGLE CLOUD BUCKET
 - Method & Route
-	  - `GET` /articles/user
+	  - `POST` /uploadimg
 - Request
     - HEADERS
         ```
@@ -371,30 +344,21 @@ The formula is : `BASE_URL` + `routes` + `?` +`query`
         }
         ```    
     - BODY
+      ```
+      {
+        file : FormData
+      }
+      ```
     - QUERY
 - Response
     - ON SUCCESS : HTTP RESPONSE `201`
         ```
-        [
-          {
-            title: String,
-            picture: String,
-            content: String,
-            rawHTML: String,
-            likedby: [ ObjectId ],
-            tags: [ ObjectId ]
-          }
-        ]
+        String
         ```
-    - ON ERROR : HTTP RESPONSE `500` if server database error or `401` if user is unauthenticated/unauthorized
+    - ON ERROR : HTTP RESPONSE `500` if upload process error or `401` if user is unauthenticated/unauthorized
         ```
         {
           message : String
         }
         ```
 
-1.  Create new tag
-
-2.  Get all tags
-
-3.  Delete a tag 
