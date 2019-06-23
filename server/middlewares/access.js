@@ -1,6 +1,6 @@
 const { verifyToken } = require('../helpers/token')
 const Users = require('../models/user')
-const Todos = require('../models/todo')
+const Articles = require('../models/article')
 
 const auth = (req, res, next) => {
   if (req.headers.hasOwnProperty('token')) {
@@ -21,9 +21,9 @@ const auth = (req, res, next) => {
 }
 
 const authorization = (req, res, next) => {
-  Todos.findById(req.params.id)
-  .then(todo => {
-    if (todo.userId.toString() === req.decode._id) next()
+  Articles.findById(req.params.id)
+  .then(article => {
+    if (article.userId.toString() === req.decode._id) next()
     else next({ code: 401 })
   })
   .catch(next)

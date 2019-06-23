@@ -7,6 +7,7 @@
 
     <div class="row border-bottom border-secondary p-2">
       <div class="col">Page Title</div>
+      <div class="col">Author</div>
       <div class="col">Date</div>
       <div class="col">Action</div>
     </div>
@@ -15,6 +16,9 @@
       <div class="row row-list border-bottom border-secondary p-1" :key="article.id">
         <div class="col">
           <a v-on:click.prevent="readArticle(article._id)" href="#">{{ article.title }}</a>
+        </div>
+        <div class="col">
+          <span>{{ article.userId.name }}</span>
         </div>
         <div class="col">
           <span>{{ article.createdAt }}</span>
@@ -43,7 +47,8 @@ export default {
   created() {
     axios({
       method: 'GET',
-      url: `${this.$serverUrl}/article`
+      url: `${this.$serverUrl}/article`,
+      headers: { 'token': localStorage.getItem('token') }
     })
     .then(({ data }) => {
       data.forEach(item => { item.createdAt = item.createdAt.substring(0,10) })
@@ -65,13 +70,24 @@ export default {
       let index = this.articles.findIndex(i => i._id === id)
       this.$emit('article-action', 'read', this.articles[index])
     },
+    editArticle(article) {
+      this.$emit('article-action', 'edit', article)
+    },
     deleteArticle(id, title) {
-      axios.delete(`http://localhost:3000/article/${id}`)
+      axios({
+        method: 'DELETE',
+        url: `http://localhost:3000/article/${id}`,
+        headers: { 'token': localStorage.getItem('token') }
+      })
       .then(() => {
         this.articles = this.articles.filter(element => element._id !== id)
-        swal.fire(`${title} successfully deleted`, '', 'success')
+        swal.fire(`article ${title} successfully deleted`, '', 'success')
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        swal.fire(`Can not delete article ${title}`, `${err.response.data.message}`, 'error')
+      }) 
+        
     }
   }
 }

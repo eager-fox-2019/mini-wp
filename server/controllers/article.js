@@ -3,31 +3,17 @@ const imagePath = '/data/Phase2/week2/senin/mini-wp/images'
 
 class ArticleController {
   static create(req, res, next) {
-    //console.log('aaaa')
-    //if (Object.keys(req.files).length !== 0) {
-      
-      const uploadedFile = req.files.imageFile
+    req.body = Object.assign({ userId: req.decode._id }, req.body)
 
-      uploadedFile.mv(`${imagePath}/benul.png`, function(err) {
-        if (err) next(err)
-        // Articles.create(req.body)
-        // .then(article => res.status(201).json(article))
-        // .catch(next)
-        console.log('success')
-      })
-    //}
-    console.log('image kosong')    
+    Articles.create(req.body) 
+    .then(article => res.status(201).json(article))
+    .catch(next)
   }
 
   static listAll(req, res, next) {
     Articles.find()
+    .populate('userId')
     .then(article => res.json(article))
-    .catch(next)
-  }
-
-  static searchTitle(req, res, next) {
-    Articles.find({ title: req.query.title })
-    .then(articles => res.json(articles))
     .catch(next)
   }
 

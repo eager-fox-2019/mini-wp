@@ -3,8 +3,10 @@
     <img v-bind:src="image">
     <hr>
     <h3>{{ article.title }}</h3>
-    <p>{{ article.content }}</p>
-    <strong>Published: {{ article.createdAt }}</strong>
+    <div v-html="article.content"></div>
+    <hr>
+    <span>Author:<strong> {{ article.userId.name }}</strong></span><br>
+    <span>Published:<strong> {{ article.createdAt }}</strong></span>
   </div>
 </template>
 
@@ -20,5 +22,8 @@ export default {
 </script>
 
 <style scoped>
-
+span {
+  font-size: 12px;
+  font-style: italic
+}
 </style>
