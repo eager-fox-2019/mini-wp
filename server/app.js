@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 // Connect to MongoDB via mongoose
-mongoose.connect(process.env.MONGODB_CONN, { useNewUrlParser: true })
+mongoose.connect(process.env.MONGO_MINI_WP, { useNewUrlParser: true })
 mongoose.set('useFindAndModify', false);
 
 const db = mongoose.connection;
