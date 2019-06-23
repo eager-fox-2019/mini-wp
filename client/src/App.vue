@@ -41,6 +41,8 @@
       @search_by_tag="search_by_tag"
       @fetchArticles="fetchArticles"
       @search_by_tag_link="search_by_tag_link"
+      @trigger_start_loading="trigger_start_loading"
+      @trigger_stop_loading="trigger_stop_loading"
       v-if="read_article_page"
       :articles="articles"
       :myServer="myServer"
@@ -90,7 +92,7 @@ export default {
   },
   data() {
     return {
-      myServer: "http://localhost:3000",
+      myServer: "http://miniwp2-server.sukmaranggapradeta.com",
       articles: [],
       myArticles: [],
       edit_article_data: "",
@@ -112,7 +114,7 @@ export default {
   },
   methods: {
     search_by_tag_link(tag){
-              console.log(' response dari kakek', tag)
+        // console.log(' response dari kakek', tag)
         this.search_by_tag(tag)
         // this.read_article_page = true
     },
@@ -140,6 +142,7 @@ export default {
       this.my_article_page = true;
     },
     remove_article(id) {
+      this.trigger_start_loading()
     //   console.log("remove article trigger");
       Swal.fire({
         title: "Are you sure?",
@@ -159,6 +162,7 @@ export default {
             }
           })
             .then(({ data }) => {
+              this.trigger_stop_loading()
               Swal.fire({
                 position: "center",
                 type: "success",
@@ -167,13 +171,13 @@ export default {
                 showConfirmButton: false,
                 timer: 2000
               });
-
               this.articles = this.articles.filter(el => el._id !== data._id);
               this.myArticles = this.myArticles.filter(
                 el => el._id !== data._id
               );
             })
             .catch(err => {
+              this.trigger_stop_loading()
               Swal.fire({
                 type: "error",
                 title: "Oops...",
@@ -202,6 +206,7 @@ export default {
     },
     create_article_link() {
     //   console.log("create_article_link APP");
+      this.edit_page = false;
       this.create_article_page = true;
       this.read_article_page = false;
       this.article_detail_page = false;
@@ -211,6 +216,7 @@ export default {
     read_article_link() {
     //   console.log("rread_article_link APP");
       this.fetchArticles();
+      this.edit_page = false;
       this.create_article_page = false;
       this.read_article_page = true;
       this.article_detail_page = false;
@@ -219,6 +225,7 @@ export default {
     },
     my_fav_article_link() {
     //   console.log("my_fav_article_link APP");
+      this.edit_page = false;
       this.create_article_page = false;
       this.read_article_page = false;
       this.article_detail_page = false;
@@ -227,6 +234,7 @@ export default {
     },
     my_article_link() {
     //   console.log("my_article_link APP");
+      this.edit_page = false;
       this.create_article_page = false;
       this.read_article_page = false;
       this.article_detail_page = false;
@@ -260,6 +268,7 @@ export default {
       localStorage.removeItem("email");
       localStorage.removeItem("picture");
       this.isLogin = false;
+      this.edit_page = false;
       this.create_article_page = false;
       this.read_article_page = false;
       this.menu_article = false;
@@ -279,6 +288,7 @@ export default {
         }
       })
         .then(response => {
+          this.trigger_stop_loading()
           this.articles = response.data;
           this.articles = this.articles.reverse();
         //   console.log(response.data);
@@ -298,7 +308,8 @@ export default {
         });
     },
     search_by_tag(q) {
-      console.log("search_by_tag", q);
+      this.trigger_start_loading()
+      // console.log("search_by_tag", q);
       axios({
         method: "get",
         url: `${this.myServer}/articles/tags/${q}`,
@@ -308,27 +319,20 @@ export default {
       })
         .then(({ data }) => {
           if (data.length == 0) {
+          this.trigger_stop_loading()
             Swal.fire({
               type: "info",
               title: "Oops...",
               text: `article with the tag "${q}" was not found`
             });
           } else {
-              console.log('response dari buyut')
-            // let dataSearch = [];
-            // let dataArticle = this.articles;
-            // this.articles.map(el => {
-            //   data.forEach(search => {
-            //     if (el._id === search._id) {
-            //       dataSearch.push(search);
-            //     }
-            //   });
-            // });
+            this.trigger_stop_loading()
+            // console.log('response dari buyut')
             this.articles = data;
-            // console.log(dataArticle);
           }
         })
         .catch(err => {
+          this.trigger_stop_loading()
             Swal.fire({
               type: "info",
               title: "Oops...",

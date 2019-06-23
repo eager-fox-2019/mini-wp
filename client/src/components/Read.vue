@@ -7,6 +7,7 @@
       @fetchArticles="fetchArticles"
       :articles="articles"
       :myServer="myServer"
+      @trigger_start_loading="trigger_start_loading"
     ></ReadArticle>
 
     <ReadDetailArticle
@@ -42,6 +43,9 @@ export default {
     };
   },
   methods: {
+    trigger_start_loading(){
+      this.$emit('trigger_start_loading')
+    },
     search_by_tag_link(tag){
       console.log(' response dari parent', tag)
       this.ReadArticlePage = true

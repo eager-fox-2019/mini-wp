@@ -16,10 +16,10 @@
         <div class="card-content-detail">
           <p v-html="article_detail_content"></p>
         </div>
-        <div class="card-action">
-          <div class="row">
+        <div class="center card-action">
+          <div class="row center">
             <div
-              class="col"
+              class="col center"
               v-for="(article_detail_tag, index) in article_detail_tags"
               :key="index"
             >
@@ -67,6 +67,9 @@ export default {
 </script>
 
 <style scoped>
+.card-content-detail{
+  width: 100%;
+}
   a{
     cursor: pointer;
   }

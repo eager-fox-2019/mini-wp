@@ -5,17 +5,21 @@
     </div>
     <div v-else class="cals">
       <div v-for="(myArticle, index) in myArticles" :key="index">
-        <div class="col s12 m7">
-          <div id="cardMyArticle" class="card horizontal small hoverable">
-            <div class="card-image">
-              <img :src="myArticle.featured_image">
-            </div>
-            <div class="card-stacked">
+        <div class="card row hoverable">
+          <div id="myarticel_image" class="col s12 m6">
+            <div class>
               <div class="card-content">
-                <p>{{ myArticle.title }}</p>
+                <img :src="myArticle.featured_image" alt>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 m6">
+            <div class>
+              <div class="card-content">
+                <h5>{{ myArticle.title }}</h5>
                 <span>Created: {{ getDate(myArticle.createdAt) }}</span>
               </div>
-              <div class="card-action">
+              <div class="card-action center">
                 <a
                   @click="edit_article(myArticle._id)"
                   class="waves-effect waves-light orange lighten-2 btn"
@@ -62,13 +66,11 @@ export default {
 
 
 <style scoped>
-.card-image img {
-  max-height: 200px;
+#myarticel_image img {
+  width: 100%;
 }
-#cardMyArticle {
-  max-height: 200px;
-}
-h2 {
+h2,
+h5 {
   font-family: "Mali", cursive;
 }
 </style>

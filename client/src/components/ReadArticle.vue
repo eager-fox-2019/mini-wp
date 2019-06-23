@@ -102,6 +102,9 @@ export default {
     };
   },
   methods: {
+    trigger_start_loading(){
+      this.$emit('trigger_start_loading')
+    },
     read_more_link(id) {
       this.$emit("read_more_link", id);
     },
@@ -119,6 +122,7 @@ export default {
       this.search_input_title = "";
     },
     clear_search_tag() {
+      this.$emit('trigger_start_loading')
       // console.log('clear_search_tag')
       this.search_input_tag = "";
       this.$emit("fetchArticles");

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="">
     <div v-if="loading" class>
       <div class="progress">
         <div class="indeterminate"></div>
@@ -11,7 +11,7 @@
 
     <div v-if="!loading" class="row container">
       <form method="#" class="col s12">
-        <div class="row">
+        <div class="row container">
           <div class="center">
             <div class="input-field col s12">
               <i class="material-icons prefix">Title</i>
@@ -21,11 +21,11 @@
           </div>
         </div>
 
-        <div class="center file-field input-field row">
-                    <div class="center btn grey darken-3">
+        <div class="file-field input-field row container">
+                    <div class="btn grey darken-3">
             <i class="material-icons right">image</i>
             <span>Upload Image</span>
-            <input class="center" type="file" ref="file" v-on:change="handleFileUpload()">
+            <input type="file" ref="file" v-on:change="handleFileUpload()">
           </div>
             <div class="center uploadimage">
               <img :src="urlTemp ? urlTemp : 'https://www.pngarts.com/files/3/Photo-Camera-PNG-Photo.png'" alt>

@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000
 const cors = require('cors')
 const mongoose = require('mongoose')
 // const url = `mongodb://localhost/Eager-miniWp`
-// const url = process.env.ATLAS_URI
+const url = `mongodb+srv://admin:${process.env.ATLAS_PASSWORD}@cluster0-nkgn9.gcp.mongodb.net/eagerminiwp?retryWrites=true&w=majority`
 const myRoute = require('./routes/index')
 const errHandling = require('./middlewares/errHandling')
 
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/', myRoute)
 app.use(errHandling)
 
-mongoose.connect(`mongodb+srv://admin:${process.env.ATLAS_PASSWORD}@cluster0-nkgn9.gcp.mongodb.net/eagerminiwp?retryWrites=true&w=majority`, { useNewUrlParser: true }, (err) => {
+mongoose.connect(url, { useNewUrlParser: true }, (err) => {
     if (err) console.log('Database not connect!')
     else console.log(`Database connected`)
 })
