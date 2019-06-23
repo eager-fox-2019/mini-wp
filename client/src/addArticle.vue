@@ -9,9 +9,9 @@
             <input v-model="article.title" class="col" type="text" placeholder="Title"><br><br>
             <div id="article-editor"></div>
           </div><br>
-          <input type="file">
+          <input type="file" id="file" ref="file" @change="imageHandler">
           <div class="clearfix">
-            <button type="submit" href="#" class="btn btn-primary float-right">Save</button>
+            <button type="submit" class="btn btn-primary float-right">Save</button>
           </div>
         </form>
       </div>
@@ -26,8 +26,8 @@ export default {
       article: {
         title: '',
         content: ''
-      }
-      
+      },
+      file: ''
     }
   },
   created() {
@@ -39,12 +39,24 @@ export default {
     })
   },
   methods: {
+    imageHandler() {
+      this.file = this.$refs.file.files[0];
+    },
     save() {
+      let formData = new FormData()
+
+      formData.append('imageUpload', this.file)
+      formData.append('title', this.article.title)
+      formData.append('content', this.article.content)
+      
       axios({
         method: 'POST',
         url: `${this.$serverUrl}/article`,
-        data: this.article,
-        headers: { 'token': localStorage.getItem('token') }
+        data: formData,
+        headers: { 
+          'token': localStorage.getItem('token'),
+          'Content-Type': 'multipart/form-data'
+          }
       })
       .then(({ data }) => {
         swal.fire(`${this.article.title} successfully added`, '', 'success')

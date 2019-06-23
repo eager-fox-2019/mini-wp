@@ -1,5 +1,4 @@
 const Articles = require('../models/article')
-const imagePath = '/data/Phase2/week2/senin/mini-wp/images'
 
 class ArticleController {
   static create(req, res, next) {
