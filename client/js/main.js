@@ -17,6 +17,27 @@ let app = new Vue ({
         selectPage(page){
             this.selectedPage = page
         },
+        onSignIn(googleUser){
+            console.log ('di google signInd')
+            let id_token = googleUser.getAuthResponse().id_token;
+            axios({
+                method : 'POST',
+                url : 'http://localhost:3000/users/login/google',
+                data :{
+                    idtoken :id_token
+                }
+                .then(response => {
+                    localStorage.setItem('token',`${response.token}`)
+                    console.log ('berhasil set localstorage')
+                })
+            })
+        },
+        onSignOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+              console.log('User signed out.');
+            });
+        },
         inputTag(inputed){
             let tags = inputed.split(',')
             console.log (tags)

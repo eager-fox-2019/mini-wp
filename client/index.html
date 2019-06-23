@@ -1,180 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- fontawesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <!-- bootstrap 4.0 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- WYSIWYG --- summernote -->
-    <!-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet"> -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
     <!-- css -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/wysiwyg.css">
-    <link rel="stylesheet" href="css/signinsignup.css">
-    <!-- <link rel="stylesheet" href="css/summernote-bs4.css"> -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/wysiwyg.css" />
+    <link rel="stylesheet" href="css/signinsignup.css" />
     <!-- vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <!-- google sign in -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <meta
+      name="google-signin-client_id"
+      content="132166001773-nljl5umc0vmdlvodji12sfl1eqk051q7.apps.googleusercontent.com"
+    />
+    <!-- bulma -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css"
+    />
     <!-- font -->
-    <link href="https://fonts.googleapis.com/css?family=Contrail+One&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Contrail+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap"
+      rel="stylesheet"
+    />
     <title>My-ni-WP</title>
-</head>
-<body>
-    <div id="app">
-            <nav class="navbar navbar-expand-md">
-                <a class="navbar-brand" href="#" v-on:click="selectPage('Landing')">My-ni-WP</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button> 
-                        
-                <div class="collapse navbar-collapse " id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item" v-for="menu in menus">
-                            <a class="nav-link" href="#" v-on:click="selectPage(menu)">{{ menu }}</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" v-for="menu in endMenus">
-                            <a class="nav-link" href="#" v-on:click="selectPage(menu)">{{ menu }}</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div class="hero is-primary is-fullheight">
+      <div class="hero-head">
+        <nav class="navbar is-transparent">
+          <div
+            class="navbar-brand "
+            role="navigation"
+            aria-label="main navigation"
+          >
+            <span class="icon is-medium">
+              <i class="fab fa-atlassian " size="20px"></i>
+            </span>
+            <a
+              role="button"
+              class="navbar-burger "
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbarBasicExample"
+            >
+              <span aria-hidden="false"></span>
+              <span aria-hidden="false"></span>
+              <span aria-hidden="false"></span>
+            </a>
+          </div>
 
-            <div class="container-fluid" style="margin-bottom: 10%">
-                <div class="main" v-if="selectedPage === 'Home'" style="height: 1200px; overflow: scroll"> 
-                    <!-- <h1>home</h1> -->
-                    <div class="d-flex justify-content-center container" id="home" >
-                        <div class="card mb-3" style="max-width: 90%">
-                            <img src="./img/da-kraplak-727110-unsplash.jpg" class="card-img-top" alt="gampar.png" >
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="d-flex justify-content-center container" id="home">
-                        <div class="card mb-3" style="max-width: 90%">
-                            <img src="./img//todd-quackenbush-701-unsplash.jpg" class="card-img-top" alt="gampar.png">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="d-flex justify-content-center container" id="home">
-                        <div class="card mb-3" style="max-width: 90%">
-                            <img src="./img/green-chameleon-21532-unsplash.jpg" class="card-img-top" alt="gampar.png">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-                <div class="main2" v-else-if="selectedPage === 'Article'">
-                    <h1 style="color: blanchedalmond" class="ml-5">article</h1>
-                    <div class="container" id="article">
-                        <ol>
-                            <li v-for="user in users" style="color:blanchedalmond">
-                                    <p>{{ user.id }} </p>
-                                    <p>{{ user.asset_category }}</p>
-                                    <p>{{ user.id }} </p>
-                                    <p>{{ user.description }}</p>
-                                    <p>{{ user.created_at }}</p>
-                                    <p>{{ user.updated_at }}</p>
-                                <!-- <p> {{ user.class_id }}</p> -->
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="main3" v-else-if="selectedPage === 'Create'">
-                    <!-- <form action="" method="post"> -->
-                        <div class="form-group">
-                            <label for="exampleInputEmail1" style="color: blanchedalmond">Title :</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Title">
-                            <label for="exampleInputEmail1" style="color: blanchedalmond">Tags :</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Tags">
-                            <br>
-                            <div id="editor">
-                                <div class="editorData">
-                                    {{editorData}}
-                                </div>
-                            </div>
-                            <button class="btn btn-light" @click="submitArticle">Submit</button>
-                        </div>
-                    <!-- </form> -->
-                        <div style="color: blanchedalmond">{{editorData}}</div>
-                </div>
-                <div class="main5" v-else-if="selectedPage === 'Sign in'">
-                    <h1>sign in</h1>
-                    <div class="container d-flex justify-content-center">
-                        <form role="form">
-                            <div class="form-group float-label-control">
-                                <label for="">Username</label>
-                                <input type="email" class="form-control" placeholder="Username">
-                            </div>
-                            <div class="form-group float-label-control">
-                                <label for="">Password</label>
-                                <input type="password" class="form-control" placeholder="Password">
-                            </div>
-                            <button type="submit" class="btn btn-light" v-on:click="selectPage('Home')">sign in</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="main6" v-else-if="selectedPage === 'Sign up'">
-                    <h1>sign up</h1>
-                    <div class="container d-flex justify-content-center">
-                        <form role="form">
-                            <div class="form-group float-label-control">
-                                <label for="">Username</label>
-                                <input type="email" class="form-control" placeholder="">
-                            </div>
-                            <div class="form-group float-label-control">
-                                <label for="">Password</label>
-                                <input type="password" class="form-control" placeholder="">
-                            </div>
-                            <div class="form-group float-label-control">
-                                <label for="">Email</label>
-                                <input type="email" class="form-control" placeholder="">
-                            </div>
-                            <button type="submit" class="btn btn-light">Sign Up</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="main4" v-else="selectedPage === 'Landing'">
-                    <div class="container " id="main4Con">
-                        <div class="row">
-                            <div class="col-5 mt-10 mb-0">
-                                <h1>Create anything, for anyone.</h1>
-                                <p> WordPress.com allows you to build a website that meets your unique needs. Start a          blog, business site, portfolio, online store, or anything else you can imagine.</p>
-                                        
-                                <p>With built‑in optimization and responsive, mobile‑ready themes, there’s no limit to who you can reach with your new website. Create a simple website for your family or sell products around the world—it’s up to you.</p>
-                            </div>
-                            <div class="col-5 mt-9 ml-auto text-center" >
-                                <h1>Nantinya akan digunakan untuk gambar gambar pendahulu</h1>
-                            </div>
-                                
-                            </div>
-                        </div>
-                </div>
+          <div class="navbar-menu " id="navbarBasicExample">
+            <div class="navbar-start">
+              <a class="navbar-item">Home</a>
+              <a class="navbar-item">Article</a>
+              <a class="navbar-item">Create</a>
+              <a class="navbar-item">Galery</a>
             </div>
 
-            <!-- footer -->
-                <div class="footer-copyright text-center py-3 fixed-bottom" >
-                    <p class="footer-p">© 2018 Copyright: <a href="https://www.instagram.com/yudawardana/">@Yudawardana</a></p>
+            <div class="navbar-end">
+              <a class="navbar-item">Sign In</a>
+              <a class="navbar-item">Sign Up</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div
+        class="hero-body"
+        style="align-items :start; border : 1px solid black"
+      >
+        <div class="container" style="border :1px solid black">
+          <div class="columns">
+            <div class="column is-1" style="border :1px solid black"></div>
+            <div class="column" style="border :1px solid black">
+              <div class="field">
+                <label class="label">Username</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input is-success"
+                    type="text"
+                    placeholder="Text input"
+                  />
                 </div>
+              </div>
+              <div class="field">
+                <label class="label">Tags</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input is-success"
+                    type="text"
+                    placeholder="Text input"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Content</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input is-success"
+                    type="text"
+                    placeholder="Text input"
+                  />
+                  <div id="editor"
+                  style="height: 300px">
+                    <p>Hello World!</p>
+                    <p>Some initial <strong>bold</strong> text</p>
+                    <p><br /></p>
+                  </div>
+                  <div class="field is-grouped">
+                    <div class="control">
+                            <div class="button is-link"> Submit </div>
+                    </div>
+                    <div class="control">
+                            <div class="button is-text"> Cancel </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="column is-1" style="border :1px solid black"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-foot">
+        <nav class="tabs">
+          <div class="container">
+            <ul>
+              <li class="is-active"><a>Overview</a></li>
+              <li><a>Modifiers</a></li>
+              <li><a>Grid</a></li>
+              <li><a>Elements</a></li>
+              <li><a>Components</a></li>
+              <li><a>Layout</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     </div>
 
     <!-- js-aku -->
@@ -185,12 +166,8 @@
     <!-- <script src="js/signinsignup.js"></script> -->
     <!-- <script src="js/summernote-bs4.js"></script> -->
     <!-- bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <!-- WYSAIWYG --- summernote -->
-    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-    <!-- <script src='https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script> -->
-</body>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+  </body>
 </html>

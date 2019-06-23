@@ -1,0 +1,108 @@
+.navbar {
+    background-color: none;
+    font-family: 'Contrail One', cursive;
+}
+.navbar-expand-md {
+    padding: 10px 20px 10px 0px
+}
+a.navbar-brand {
+    margin-left : 30px
+}
+a.nav-link {
+    font-size : 17px;
+}
+a.navbar-brand:hover {
+    color: blanchedalmond
+}
+a.nav-link:hover {
+    color: blanchedalmond
+}
+a {
+    color : #e8e8e8 ;
+    font-family: 'Contrail One', cursive;
+
+}
+.col-3{
+    padding: 0px;
+    margin : 0px;
+}
+#wp-logo{
+    background-color: yellow;
+    color: white;
+    font-size: 40px;
+}
+
+/* main container */
+#home a {
+    color: aliceblue
+}
+
+/* create post */
+#tagslist {
+    display: block;
+    list-style-type: none;
+}
+
+.form-group{
+    /* magrin : 5rem 15rem; */
+}
+/* landing page */
+body{
+    background-color: rgba(28, 28, 25, 0);
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url(../img/patrick-tomasso-71909-unsplash.jpg);
+    background-size: cover;
+    /* background-repeat: no-repeat; */
+    background-position: 5% 20% 
+}
+.main4 {
+    /* background-image: url(../img/todd-quackenbush-701-unsplash.jpg); */
+    /* background-color: aqua;  */
+    color: #fff;
+    margin-top : 15%;
+}
+#main4Con .container{
+    width: 100%;
+    padding-right: 10rem;
+    padding-left: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 6rem;
+}
+/* wysiwyg text editor */
+.ql-toolbar.ql-snow, .ql-editor {
+    background-color: whitesmoke;
+}
+#editor {
+    background-color: whitesmoke;
+    height: 400px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.ql-toolbar.ql-snow {
+    margin-top: 1rem;
+    /* margin-bottom: 1rem; */
+    /* background-color: linear-gradient(rgba(0 0 0 0.5), rgba(0 0 0 0.5)) */
+}
+.ql-editor{
+    margin-bottom: 1rem;
+}
+
+/* footer */
+.footer-copyright{
+    background-color: #000000;
+    height: 38px;
+    width: 100%;
+}
+.footer-copyright .footer-p a{
+    color :#f6f6f6;
+    margin-bottom: 20px;
+    font-size: 12px;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.footer-copyright .footer-p {
+    color :#f6f6f6;
+    margin-bottom: 20px;
+    font-size: 12px;
+    font-family: 'Roboto Condensed', sans-serif;
+}

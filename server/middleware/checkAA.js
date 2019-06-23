@@ -17,7 +17,7 @@ module.exports = {
                         next()
                     }
                     else {
-                        throw ({code : 401, message : `Unauthenticated`})
+                        throw ({code : 401, message : `Unauthenticate`})
                     }
                 })
                 .catch(next)
