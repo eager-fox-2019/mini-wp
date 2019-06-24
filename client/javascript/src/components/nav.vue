@@ -26,8 +26,7 @@
                 aria-expanded="false"
               >My Sites</a>
               <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item newpost" href="#">Create New Post</a>
-                <a class="dropdown-item" href="#">Profile</a>
+                <a class="dropdown-item" href="#">Dashboard</a>
                 <a class="dropdown-item" href="#" @click="logout">Logout</a>
               </div>
             </li>
@@ -50,13 +49,13 @@
       <!--/.Navbar-->
       <div class="container jumbo-header">
         <div class="jumbotron">
-          <h1 class="display-4">Hello, world!</h1>
+          <h1 class="display-4">Welcome to Mini-Word!</h1>
           <p
             class="lead"
-          >This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+          >Create your own site using this miniword. Just click plus button to make your new article! You can also delete and edit your article!</p>
           <hr class="my-4">
-          <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-          <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+          <!-- <p>You can also delete and edit your article</p>
+          <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
         </div>
       </div>
     </div>
@@ -72,20 +71,28 @@ export default {
   methods: {
     logout() {
       Swal.fire({
-        title: 'Gotta go?',
+        title: "Gotta go?",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes !'
-      }).then((result) => {
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes !"
+      }).then(result => {
         if (result.value) {
+          var auth2 = gapi.auth2.getAuthInstance();
           localStorage.clear();
-          window.location.href='http://localhost:1234/'
-          Toast.fire({
-            title: 'Logged out successfully'
-          })
+          auth2.signOut().then(function() {
+            console.log("User signed out.");
+          });
+          window.location.href = "http://localhost:1234/";
+          Swal.mixin({
+            title: "Logged out successfully",
+            toast: true,
+            position: "center",
+            showConfirmButton: false,
+            timer: 3000
+          });
         }
-      })
+      });
     }
   }
 };

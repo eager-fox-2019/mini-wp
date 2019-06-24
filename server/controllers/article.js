@@ -23,6 +23,7 @@ class ArticleController{
 
     static create(req,res,next){
         console.log('masuk create');
+        // console.log(req);
         
         Article.create({
             title: req.body.title,

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>{{ message }}</h1>
     <login />
   </div>
 </template>
@@ -14,7 +13,6 @@ export default {
   },
   data() {
     return {
-      message: "Hello world"
     };
   },
   

@@ -3,7 +3,10 @@
     <div class="container content">
       <div class="row">
         <div class="col-lg-3 col-sm-12 mt-5 sidebar">
-          <h1>SOmething</h1>
+          <h1>We Create</h1>
+          <h1>Like</h1>
+          <h1>Share</h1>
+          <h1>With You</h1>
           <button
             type="button"
             class="btn btn-warning fixed-bottom"
@@ -22,6 +25,9 @@
               </span>
               <span class="edit" @click="editType=true" v-show="!editType">
                 <i class="fa fa-lg fa-pencil pencil-icon" aria-hidden="true"></i>
+                <!-- <div v-if="editType">
+                  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+                </div> -->
               </span>
               <!-- <span class="check" v-show="editType" @click="editType=false"><i class="fa fa-lg fa-check" aria-hidden="true"></i></span> -->
             </div>
@@ -67,7 +73,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="post" id="formaddArticle" @submit.prevent="addArticle">
+            <form method="post" id="formaddArticle" @submit.prevent="addArticle">
               <div class="form-group">
                 <label for="exampleFormControlInput1">Title</label>
                 <input
@@ -99,12 +105,12 @@
                   aria-describedby="inputGroupFileAddon01"
                 >
                 <label class="custom-file-label" for="inputGroupFile01">Upload Picture</label>
-              </div> -->
+              </div>-->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success" id="submitEdit">Post</button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success" id="submitEdit">Post</button>
           </div>
         </div>
       </div>
@@ -113,11 +119,19 @@
 </template>
 
 <script>
+import PictureInput from "vue-picture-input";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 let baseUrl = `http://localhost:3006`;
+const Toast = Swal.mixin({
+  toast: true,
+  position: "center",
+  showConfirmButton: false,
+  timer: 3000
+});
 
 export default {
   components: {
-    "picture-input": PictureInput
+    PictureInput
   },
   data() {
     return {
@@ -127,7 +141,12 @@ export default {
         picture: ""
       },
       articles: [],
-      editType: false
+      editType: false,
+      // editor: ClassicEditor,
+      // editorData: "<p>Rich-text editor content.</p>",
+      // editorConfig: {
+      //   // The configuration of the rich-text editor.
+      // }
     };
   },
   created() {
@@ -148,15 +167,16 @@ export default {
   methods: {
     addArticle() {
       console.log("add");
-      console.log(this.$refs.pictureInput)
+      console.log(this.$refs.pictureInput);
       console.log(this.$refs.pictureInput.file);
-      console.log(this.tags);
 
       let newImage = new FormData();
       newImage.append("image", this.$refs.pictureInput.file);
-      newImage.append("tags", this.tags);
-      console.log(newImage);
-      
+      newImage.append("image", this.newArticle.title);
+      newImage.append("image", this.newArticle.content);
+
+      console.log(newImage, "==");
+
       axios({
         method: "POST",
         url: `${baseUrl}/articles`,
@@ -166,15 +186,15 @@ export default {
         data: {
           // title: this.newArticle.title,
           // content: this.newArticle.content,
-          // picture: " "
+          // picture: " ",
           newImage
         }
       })
         .then(({ data }) => {
           Toast.fire({
-            type: 'success',
-            title: 'Image posted successully'
-          })
+            type: "success",
+            title: "Image posted successully"
+          });
           console.log(data);
           this.articles.push(data);
           // console.log(this.articles);
@@ -185,19 +205,38 @@ export default {
     },
     removeArticle(post) {
       console.log(post);
-      axios({
-        method: "DELETE",
-        url: `${baseUrl}/articles/${post._id}`,
-        headers: {
-          token: localStorage.getItem("token")
-        }
-      })
-        .then(({ data }) => {
-          let index = this.articles.indexOf(post);
-          this.articles.splice(index, 1);
+      swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
         })
-        .catch(err => {
-          console.log(err);
+        .then(result => {
+          if (result.value) {
+            axios({
+              method: "DELETE",
+              url: `${baseUrl}/articles/${post._id}`,
+              headers: {
+                token: localStorage.getItem("token")
+              }
+            })
+              .then(({ data }) => {
+                let index = this.articles.indexOf(post);
+                this.articles.splice(index, 1);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
+            swal.fire({
+              title: "cancel remove todo",
+              type: "success"
+            });
+          }
         });
     },
     editArticle(post) {
@@ -226,33 +265,34 @@ export default {
 </script>
 
 <style>
-    .sidebar {
-        color: aliceblue;
-        position: relative;
-    }
+.sidebar {
+  color: aliceblue;
+  position: relative;
+}
 
-    .card-body {
-        background-color: rgba(255, 255, 255, 0.932);
-        text-align: left;
-    }
+.card-body {
+  background-color: rgba(255, 255, 255, 0.932);
+  text-align: left;
+}
 
-    .card img {
-        padding-top: 1rem;
-        padding-bottom: 2rem;
-        width: 46.3rem;
-    }
+.card img {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  width: 46.3rem;
+}
 
-    .card span {
-        color: #49ecb3;
-    }
+.card span {
+  color: #49ecb3;
+}
 
-    .growup {
-        padding-left: 43rem;
-        text-align: right;
-        font-size: 1.5rem;
-    }
+.growup {
+  padding-left: 43rem;
+  text-align: right;
+  font-size: 1.5rem;
+}
 
-    .delete, .edit {
-        padding-top: 3rem;
-    }
+.delete,
+.edit {
+  padding-top: 3rem;
+}
 </style>

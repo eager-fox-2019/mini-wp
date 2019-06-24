@@ -5,6 +5,7 @@ const port = 3006
 const mongoose = require('mongoose')
 const cors = require('cors')
 const router = require('./routes')
+const errorHandler = require('./helpers/errorHandler')
 
 mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true})
 .then(resp => {
@@ -20,15 +21,9 @@ app.use(cors())
 
 app.use('/', router)
 
-app.use(function(err,req,res,next){
-    console.log(err);
-    
-    res.status(500).json({
-        message: "Internal Server Error"
-    })
-})
+app.use(errorHandler)
 
 app.listen(port,()=>{
-    console.log('listening in port 3000');
+    console.log('listening in port 3006');
     
 })

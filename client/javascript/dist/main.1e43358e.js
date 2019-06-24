@@ -8954,7 +8954,6 @@ exports.default = void 0;
 //
 //
 //
-//
 var _default = {
   data: function data() {
     return {};
@@ -8962,17 +8961,25 @@ var _default = {
   methods: {
     logout: function logout() {
       Swal.fire({
-        title: 'Gotta go?',
+        title: "Gotta go?",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes !'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes !"
       }).then(function (result) {
         if (result.value) {
+          var auth2 = gapi.auth2.getAuthInstance();
           localStorage.clear();
-          window.location.href = 'http://localhost:1234/';
-          Toast.fire({
-            title: 'Logged out successfully'
+          auth2.signOut().then(function () {
+            console.log("User signed out.");
+          });
+          window.location.href = "http://localhost:1234/";
+          Swal.mixin({
+            title: "Logged out successfully",
+            toast: true,
+            position: "center",
+            showConfirmButton: false,
+            timer: 3000
           });
         }
       });
@@ -9032,17 +9039,8 @@ exports.default = _default;
                     [
                       _c(
                         "a",
-                        {
-                          staticClass: "dropdown-item newpost",
-                          attrs: { href: "#" }
-                        },
-                        [_vm._v("Create New Post")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
                         { staticClass: "dropdown-item", attrs: { href: "#" } },
-                        [_vm._v("Profile")]
+                        [_vm._v("Dashboard")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -9114,30 +9112,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "container jumbo-header" }, [
       _c("div", { staticClass: "jumbotron" }, [
-        _c("h1", { staticClass: "display-4" }, [_vm._v("Hello, world!")]),
+        _c("h1", { staticClass: "display-4" }, [
+          _vm._v("Welcome to Mini-Word!")
+        ]),
         _vm._v(" "),
         _c("p", { staticClass: "lead" }, [
           _vm._v(
-            "This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information."
+            "Create your own site using this miniword. Just click plus button to make your new article! You can also delete and edit your article!"
           )
         ]),
         _vm._v(" "),
-        _c("hr", { staticClass: "my-4" }),
-        _vm._v(" "),
-        _c("p", [
-          _vm._v(
-            "It uses utility classes for typography and spacing to space content out within the larger container."
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-primary btn-lg",
-            attrs: { href: "#", role: "button" }
-          },
-          [_vm._v("Learn more")]
-        )
+        _c("hr", { staticClass: "my-4" })
       ])
     ])
   }
@@ -9174,7 +9159,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/listArticles.vue":[function(require,module,exports) {
+},{"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/vue-picture-input/PictureInput.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9223,6 +9208,867 @@ exports.default = void 0;
 //
 //
 //
+var _default = {
+  name: 'picture-input',
+  props: {
+    width: {
+      type: [String, Number],
+      default: Number.MAX_SAFE_INTEGER
+    },
+    height: {
+      type: [String, Number],
+      default: Number.MAX_SAFE_INTEGER
+    },
+    margin: {
+      type: [String, Number],
+      default: 0
+    },
+    accept: {
+      type: String,
+      default: 'image/*'
+    },
+    size: {
+      type: [String, Number],
+      default: Number.MAX_SAFE_INTEGER
+    },
+    name: {
+      type: String,
+      default: null
+    },
+    id: {
+      type: [String, Number],
+      default: null
+    },
+    buttonClass: {
+      type: String,
+      default: 'btn btn-primary button'
+    },
+    removeButtonClass: {
+      type: String,
+      default: 'btn btn-secondary button secondary'
+    },
+    aspectButtonClass: {
+      type: String,
+      default: 'btn btn-secondary button secondary'
+    },
+    prefill: {
+      type: [String, File],
+      default: ''
+    },
+    prefillOptions: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    crop: {
+      type: Boolean,
+      default: true
+    },
+    radius: {
+      type: [String, Number],
+      default: 0
+    },
+    removable: {
+      type: Boolean,
+      default: false
+    },
+    hideChangeButton: {
+      type: Boolean,
+      default: false
+    },
+    autoToggleAspectRatio: {
+      type: Boolean,
+      default: false
+    },
+    toggleAspectRatio: {
+      type: Boolean,
+      default: false
+    },
+    changeOnClick: {
+      type: Boolean,
+      default: true
+    },
+    plain: {
+      type: Boolean,
+      default: false
+    },
+    zIndex: {
+      type: Number,
+      default: 10000
+    },
+    alertOnError: {
+      type: Boolean,
+      default: true
+    },
+    customStrings: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    }
+  },
+  watch: {
+    prefill() {
+      if (this.prefill) {
+        this.preloadImage(this.prefill, this.prefillOptions);
+      } else {
+        this.removeImage();
+      }
+    }
+
+  },
+
+  data() {
+    return {
+      imageSelected: false,
+      previewHeight: 0,
+      previewWidth: 0,
+      draggingOver: false,
+      canvasWidth: 0,
+      canvasHeight: 0,
+      strings: {
+        upload: '<p>Your device does not support file uploading.</p>',
+        drag: 'Drag an image or <br>click here to select a file',
+        tap: 'Tap here to select a photo <br>from your gallery',
+        change: 'Change Photo',
+        aspect: 'Landscape/Portrait',
+        remove: 'Remove Photo',
+        select: 'Select a Photo',
+        selected: '<p>Photo successfully selected!</p>',
+        fileSize: 'The file size exceeds the limit',
+        fileType: 'This file type is not supported.'
+      }
+    };
+  },
+
+  mounted() {
+    this.updateStrings();
+
+    if (this.prefill) {
+      this.preloadImage(this.prefill, this.prefillOptions);
+    }
+
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+      this.onResize();
+    });
+
+    if (this.supportsPreview) {
+      this.pixelRatio = Math.round(window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI);
+      const canvas = this.$refs.previewCanvas;
+
+      if (canvas.getContext) {
+        this.context = canvas.getContext('2d');
+        this.context.scale(this.pixelRatio, this.pixelRatio);
+      }
+    }
+
+    if (this.accept !== 'image/*') {
+      this.fileTypes = this.accept.split(',');
+      this.fileTypes = this.fileTypes.map(s => s.trim());
+    }
+
+    this.canvasWidth = this.width;
+    this.canvasHeight = this.height;
+    this.$on('error', this.onError);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+    this.$off('error', this.onError);
+  },
+
+  methods: {
+    updateStrings() {
+      for (let s in this.customStrings) {
+        if (s in this.strings && typeof this.customStrings[s] === 'string') {
+          this.strings[s] = this.customStrings[s];
+        }
+      }
+    },
+
+    onClick() {
+      if (!this.imageSelected) {
+        this.selectImage();
+        return;
+      }
+
+      if (this.changeOnClick) {
+        this.selectImage();
+      }
+
+      this.$emit('click');
+    },
+
+    onResize() {
+      this.resizeCanvas();
+
+      if (this.imageObject) {
+        this.drawImage(this.imageObject);
+      }
+    },
+
+    onDragStart() {
+      if (!this.supportsDragAndDrop) {
+        return;
+      }
+
+      this.draggingOver = true;
+    },
+
+    onDragStop() {
+      if (!this.supportsDragAndDrop) {
+        return;
+      }
+
+      this.draggingOver = false;
+    },
+
+    onFileDrop(e) {
+      this.onDragStop();
+      this.onFileChange(e);
+    },
+
+    onFileChange(e, prefill) {
+      let files = e.target.files || e.dataTransfer.files;
+
+      if (!files.length) {
+        return;
+      }
+
+      if (files[0].size <= 0 || files[0].size > this.size * 1024 * 1024) {
+        this.$emit('error', {
+          type: 'fileSize',
+          fileSize: files[0].size,
+          fileType: files[0].type,
+          fileName: files[0].name,
+          message: this.strings.fileSize + ' (' + this.size + 'MB)'
+        });
+        return;
+      }
+
+      if (files[0].name === this.fileName && files[0].size === this.fileSize && this.fileModified === files[0].lastModified) {
+        return;
+      }
+
+      this.file = files[0];
+      this.fileName = files[0].name;
+      this.fileSize = files[0].size;
+      this.fileModified = files[0].lastModified;
+      this.fileType = files[0].type;
+
+      if (this.accept === 'image/*') {
+        if (files[0].type.substr(0, 6) !== 'image/') {
+          return;
+        }
+      } else {
+        if (this.fileTypes.indexOf(files[0].type) === -1) {
+          this.$emit('error', {
+            type: 'fileType',
+            fileSize: files[0].size,
+            fileType: files[0].type,
+            fileName: files[0].name,
+            message: this.strings.fileType
+          });
+          return;
+        }
+      }
+
+      this.imageSelected = true;
+      this.image = '';
+
+      if (this.supportsPreview) {
+        this.loadImage(files[0], prefill || false);
+      } else {
+        if (prefill) {
+          this.$emit('prefill');
+        } else {
+          this.$emit('change', this.image);
+        }
+      }
+    },
+
+    onError(error) {
+      if (this.alertOnError) {
+        alert(error.message);
+      }
+    },
+
+    loadImage(file, prefill) {
+      this.getEXIFOrientation(file, orientation => {
+        this.setOrientation(orientation);
+        let reader = new FileReader();
+
+        reader.onload = e => {
+          this.image = e.target.result;
+
+          if (prefill) {
+            this.$emit('prefill');
+          } else {
+            this.$emit('change', this.image);
+          }
+
+          this.imageObject = new Image();
+
+          this.imageObject.onload = () => {
+            if (this.autoToggleAspectRatio) {
+              let canvasOrientation = this.getOrientation(this.canvasWidth, this.canvasHeight);
+              let imageOrientation = this.getOrientation(this.imageObject.width, this.imageObject.height);
+
+              if (canvasOrientation !== imageOrientation) {
+                this.rotateCanvas();
+              }
+            }
+
+            this.drawImage(this.imageObject);
+          };
+
+          this.imageObject.src = this.image;
+        };
+
+        reader.readAsDataURL(file);
+      });
+    },
+
+    drawImage(image) {
+      this.imageWidth = image.width;
+      this.imageHeight = image.height;
+      this.imageRatio = image.width / image.height;
+      let offsetX = 0;
+      let offsetY = 0;
+      let scaledWidth = this.previewWidth;
+      let scaledHeight = this.previewHeight;
+      const previewRatio = this.previewWidth / this.previewHeight;
+
+      if (this.crop) {
+        if (this.imageRatio >= previewRatio) {
+          scaledWidth = scaledHeight * this.imageRatio;
+          offsetX = (this.previewWidth - scaledWidth) / 2;
+        } else {
+          scaledHeight = scaledWidth / this.imageRatio;
+          offsetY = (this.previewHeight - scaledHeight) / 2;
+        }
+      } else {
+        if (this.imageRatio >= previewRatio) {
+          scaledHeight = scaledWidth / this.imageRatio;
+          offsetY = (this.previewHeight - scaledHeight) / 2;
+        } else {
+          scaledWidth = scaledHeight * this.imageRatio;
+          offsetX = (this.previewWidth - scaledWidth) / 2;
+        }
+      }
+
+      const canvas = this.$refs.previewCanvas;
+      canvas.style.background = 'none';
+      canvas.width = this.previewWidth * this.pixelRatio;
+      canvas.height = this.previewHeight * this.pixelRatio;
+      this.context.setTransform(1, 0, 0, 1, 0, 0);
+      this.context.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (this.rotate) {
+        this.context.translate(offsetX * this.pixelRatio, offsetY * this.pixelRatio);
+        this.context.translate(scaledWidth / 2 * this.pixelRatio, scaledHeight / 2 * this.pixelRatio);
+        this.context.rotate(this.rotate);
+        offsetX = -scaledWidth / 2;
+        offsetY = -scaledHeight / 2;
+      }
+
+      this.context.drawImage(image, offsetX * this.pixelRatio, offsetY * this.pixelRatio, scaledWidth * this.pixelRatio, scaledHeight * this.pixelRatio);
+    },
+
+    selectImage() {
+      this.$refs.fileInput.click();
+    },
+
+    removeImage() {
+      this.$refs.fileInput.value = '';
+      this.$refs.fileInput.type = '';
+      this.$refs.fileInput.type = 'file';
+      this.fileName = '';
+      this.fileType = '';
+      this.fileSize = 0;
+      this.fileModified = 0;
+      this.imageSelected = false;
+      this.image = '';
+      this.file = null;
+      this.imageObject = null;
+      this.$refs.previewCanvas.style.backgroundColor = 'rgba(200,200,200,.25)';
+      this.$refs.previewCanvas.width = this.previewWidth * this.pixelRatio;
+      this.$emit('remove');
+    },
+
+    rotateImage() {
+      this.rotateCanvas();
+
+      if (this.imageObject) {
+        this.drawImage(this.imageObject);
+      }
+
+      let newOrientation = this.getOrientation(this.canvasWidth, this.canvasHeight);
+      this.$emit('aspectratiochange', newOrientation);
+    },
+
+    resizeCanvas() {
+      let previewRatio = this.canvasWidth / this.canvasHeight;
+      let newWidth = this.$refs.container.clientWidth;
+
+      if (!this.toggleAspectRatio && newWidth === this.containerWidth) {
+        return;
+      }
+
+      this.containerWidth = newWidth;
+      this.previewWidth = Math.min(this.containerWidth - this.margin * 2, this.canvasWidth);
+      this.previewHeight = this.previewWidth / previewRatio;
+    },
+
+    getOrientation(width, height) {
+      let orientation = 'square';
+
+      if (width > height) {
+        orientation = 'landscape';
+      } else if (width < height) {
+        orientation = 'portrait';
+      }
+
+      return orientation;
+    },
+
+    switchCanvasOrientation() {
+      const canvasWidth = this.canvasWidth;
+      const canvasHeight = this.canvasHeight;
+      this.canvasWidth = canvasHeight;
+      this.canvasHeight = canvasWidth;
+    },
+
+    rotateCanvas() {
+      this.switchCanvasOrientation();
+      this.resizeCanvas();
+    },
+
+    setOrientation(orientation) {
+      this.rotate = false;
+
+      if (orientation === 8) {
+        this.rotate = -Math.PI / 2;
+      } else if (orientation === 6) {
+        this.rotate = Math.PI / 2;
+      } else if (orientation === 3) {
+        this.rotate = -Math.PI;
+      }
+    },
+
+    getEXIFOrientation(file, callback) {
+      var reader = new FileReader();
+
+      reader.onload = e => {
+        var view = new DataView(e.target.result);
+
+        if (view.getUint16(0, false) !== 0xFFD8) {
+          return callback(-2);
+        }
+
+        var length = view.byteLength;
+        var offset = 2;
+
+        while (offset < length) {
+          var marker = view.getUint16(offset, false);
+          offset += 2;
+
+          if (marker === 0xFFE1) {
+            if (view.getUint32(offset += 2, false) !== 0x45786966) {
+              return callback(-1);
+            }
+
+            var little = view.getUint16(offset += 6, false) === 0x4949;
+            offset += view.getUint32(offset + 4, little);
+            var tags = view.getUint16(offset, little);
+            offset += 2;
+
+            for (var i = 0; i < tags; i++) {
+              if (view.getUint16(offset + i * 12, little) === 0x0112) {
+                return callback(view.getUint16(offset + i * 12 + 8, little));
+              }
+            }
+          } else if ((marker & 0xFF00) !== 0xFF00) {
+            break;
+          } else {
+            offset += view.getUint16(offset, false);
+          }
+        }
+
+        return callback(-1);
+      };
+
+      reader.readAsArrayBuffer(file.slice(0, 65536));
+    },
+
+    preloadImage(source, options) {
+      // ie 11 support
+      let File = window.File;
+
+      try {
+        new File([], ''); // eslint-disable-line
+      } catch (e) {
+        File = class File extends Blob {
+          constructor(chunks, filename, opts = {}) {
+            super(chunks, opts);
+            this.lastModifiedDate = new Date();
+            this.lastModified = +this.lastModifiedDate;
+            this.name = filename;
+          }
+
+        };
+      }
+
+      options = Object.assign({}, options);
+
+      if (typeof source === 'object') {
+        this.imageSelected = true;
+        this.image = '';
+
+        if (this.supportsPreview) {
+          this.loadImage(source, true);
+        } else {
+          this.$emit('prefill');
+        }
+
+        return;
+      }
+
+      let headers = new Headers();
+      headers.append('Accept', 'image/*');
+      fetch(source, {
+        method: 'GET',
+        mode: 'cors',
+        headers: headers
+      }).then(response => {
+        return response.blob();
+      }).then(imageBlob => {
+        let e = {
+          target: {
+            files: []
+          }
+        };
+        const fileName = options.fileName || source.split('/').slice(-1)[0];
+        let mediaType = options.mediaType || 'image/' + (options.fileType || fileName.split('.').slice(-1)[0]);
+        mediaType = mediaType.replace('jpg', 'jpeg');
+        e.target.files[0] = new File([imageBlob], fileName, {
+          type: mediaType
+        });
+        this.onFileChange(e, true);
+      }).catch(err => {
+        this.$emit('error', {
+          type: 'failedPrefill',
+          message: 'Failed loading prefill image: ' + err
+        });
+      });
+    }
+
+  },
+  computed: {
+    supportsUpload() {
+      if (navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/)) {
+        return false;
+      }
+
+      const el = document.createElement('input');
+      el.type = 'file';
+      return !el.disabled;
+    },
+
+    supportsPreview() {
+      return window.FileReader && !!window.CanvasRenderingContext2D;
+    },
+
+    supportsDragAndDrop() {
+      const div = document.createElement('div');
+      return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && !('ontouchstart' in window || navigator.msMaxTouchPoints);
+    },
+
+    computedClasses() {
+      const classObject = {};
+      classObject['dragging-over'] = this.draggingOver;
+      return classObject;
+    },
+
+    fontSize() {
+      return Math.min(0.04 * this.previewWidth, 21) + 'px';
+    }
+
+  }
+};
+exports.default = _default;
+        var $571498 = exports.default || module.exports;
+      
+      if (typeof $571498 === 'function') {
+        $571498 = $571498.options;
+      }
+    
+        /* template */
+        Object.assign($571498, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      ref: "container",
+      staticClass: "picture-input",
+      attrs: { id: "picture-input" }
+    },
+    [
+      !_vm.supportsUpload
+        ? _c("div", { domProps: { innerHTML: _vm._s(_vm.strings.upload) } })
+        : _vm.supportsPreview
+        ? _c("div", [
+            _c(
+              "div",
+              {
+                staticClass: "preview-container",
+                style: {
+                  maxWidth: _vm.previewWidth + "px",
+                  height: _vm.previewHeight + "px",
+                  borderRadius: _vm.radius + "%"
+                }
+              },
+              [
+                _c("canvas", {
+                  ref: "previewCanvas",
+                  staticClass: "picture-preview",
+                  class: _vm.computedClasses,
+                  style: {
+                    height: _vm.previewHeight + "px",
+                    zIndex: _vm.zIndex + 1
+                  },
+                  on: {
+                    drag: function($event) {
+                      $event.stopPropagation()
+                      $event.preventDefault()
+                    },
+                    dragover: function($event) {
+                      $event.stopPropagation()
+                      $event.preventDefault()
+                    },
+                    dragstart: function($event) {
+                      $event.stopPropagation()
+                      $event.preventDefault()
+                      return _vm.onDragStart($event)
+                    },
+                    dragenter: function($event) {
+                      $event.stopPropagation()
+                      $event.preventDefault()
+                      return _vm.onDragStart($event)
+                    },
+                    dragend: function($event) {
+                      $event.stopPropagation()
+                      $event.preventDefault()
+                      return _vm.onDragStop($event)
+                    },
+                    dragleave: function($event) {
+                      $event.stopPropagation()
+                      $event.preventDefault()
+                      return _vm.onDragStop($event)
+                    },
+                    drop: function($event) {
+                      $event.stopPropagation()
+                      $event.preventDefault()
+                      return _vm.onFileDrop($event)
+                    },
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.onClick($event)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                !_vm.imageSelected && !_vm.plain
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "picture-inner",
+                        style: {
+                          top: -_vm.previewHeight + "px",
+                          marginBottom: -_vm.previewHeight + "px",
+                          fontSize: _vm.fontSize,
+                          borderRadius: _vm.radius + "%",
+                          zIndex: _vm.zIndex + 2
+                        }
+                      },
+                      [
+                        _vm.supportsDragAndDrop
+                          ? _c("span", {
+                              staticClass: "picture-inner-text",
+                              domProps: { innerHTML: _vm._s(_vm.strings.drag) }
+                            })
+                          : _c("span", {
+                              staticClass: "picture-inner-text",
+                              domProps: { innerHTML: _vm._s(_vm.strings.tap) }
+                            })
+                      ]
+                    )
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _vm.imageSelected && !_vm.hideChangeButton
+              ? _c(
+                  "button",
+                  {
+                    class: _vm.buttonClass,
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.selectImage($event)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.strings.change))]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.imageSelected && _vm.removable
+              ? _c(
+                  "button",
+                  {
+                    class: _vm.removeButtonClass,
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.removeImage($event)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.strings.remove))]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.imageSelected &&
+            _vm.toggleAspectRatio &&
+            _vm.width !== _vm.height
+              ? _c(
+                  "button",
+                  {
+                    class: _vm.aspectButtonClass,
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.rotateImage($event)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.strings.aspect))]
+                )
+              : _vm._e()
+          ])
+        : _c("div", [
+            !_vm.imageSelected
+              ? _c(
+                  "button",
+                  {
+                    class: _vm.buttonClass,
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.selectImage($event)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.strings.select))]
+                )
+              : _c("div", [
+                  _c("div", {
+                    domProps: { innerHTML: _vm._s(_vm.strings.selected) }
+                  }),
+                  _vm._v(" "),
+                  !_vm.hideChangeButton
+                    ? _c(
+                        "button",
+                        {
+                          class: _vm.buttonClass,
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.selectImage($event)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.strings.change))]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.removable
+                    ? _c(
+                        "button",
+                        {
+                          class: _vm.removeButtonClass,
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.removeImage($event)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.strings.remove))]
+                      )
+                    : _vm._e()
+                ])
+          ]),
+      _vm._v(" "),
+      _c("input", {
+        ref: "fileInput",
+        attrs: { type: "file", name: _vm.name, id: _vm.id, accept: _vm.accept },
+        on: { change: _vm.onFileChange }
+      })
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: "data-v-571498",
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$571498', $571498);
+          } else {
+            api.reload('$571498', $571498);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/listArticles.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _vuePictureInput = _interopRequireDefault(require("vue-picture-input"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -9244,61 +10090,116 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 var baseUrl = "http://localhost:3006";
+var Toast = Swal.mixin({
+  toast: true,
+  position: "center",
+  showConfirmButton: false,
+  timer: 3000
+});
 var _default = {
   components: {
-    "picture-input": PictureInput
+    PictureInput: _vuePictureInput.default
   },
   data: function data() {
     return {
@@ -9308,7 +10209,12 @@ var _default = {
         picture: ""
       },
       articles: [],
-      editType: false
+      editType: false // editor: ClassicEditor,
+      // editorData: "<p>Rich-text editor content.</p>",
+      // editorConfig: {
+      //   // The configuration of the rich-text editor.
+      // }
+
     };
   },
   created: function created() {
@@ -9334,11 +10240,11 @@ var _default = {
       console.log("add");
       console.log(this.$refs.pictureInput);
       console.log(this.$refs.pictureInput.file);
-      console.log(this.tags);
       var newImage = new FormData();
       newImage.append("image", this.$refs.pictureInput.file);
-      newImage.append("tags", this.tags);
-      console.log(newImage);
+      newImage.append("image", this.newArticle.title);
+      newImage.append("image", this.newArticle.content);
+      console.log(newImage, "==");
       axios({
         method: "POST",
         url: "".concat(baseUrl, "/articles"),
@@ -9348,14 +10254,14 @@ var _default = {
         data: {
           // title: this.newArticle.title,
           // content: this.newArticle.content,
-          // picture: " "
+          // picture: " ",
           newImage: newImage
         }
       }).then(function (_ref2) {
         var data = _ref2.data;
         Toast.fire({
-          type: 'success',
-          title: 'Image posted successully'
+          type: "success",
+          title: "Image posted successully"
         });
         console.log(data);
 
@@ -9369,20 +10275,37 @@ var _default = {
       var _this3 = this;
 
       console.log(post);
-      axios({
-        method: "DELETE",
-        url: "".concat(baseUrl, "/articles/").concat(post._id),
-        headers: {
-          token: localStorage.getItem("token")
+      swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        if (result.value) {
+          axios({
+            method: "DELETE",
+            url: "".concat(baseUrl, "/articles/").concat(post._id),
+            headers: {
+              token: localStorage.getItem("token")
+            }
+          }).then(function (_ref3) {
+            var data = _ref3.data;
+
+            var index = _this3.articles.indexOf(post);
+
+            _this3.articles.splice(index, 1);
+          }).catch(function (err) {
+            console.log(err);
+          });
+        } else {
+          swal.fire({
+            title: "cancel remove todo",
+            type: "success"
+          });
         }
-      }).then(function (_ref3) {
-        var data = _ref3.data;
-
-        var index = _this3.articles.indexOf(post);
-
-        _this3.articles.splice(index, 1);
-      }).catch(function (err) {
-        console.log(err);
       });
     },
     editArticle: function editArticle(post) {
@@ -9572,7 +10495,7 @@ exports.default = _default;
                 _c(
                   "form",
                   {
-                    attrs: { action: "post", id: "formaddArticle" },
+                    attrs: { method: "post", id: "formaddArticle" },
                     on: {
                       submit: function($event) {
                         $event.preventDefault()
@@ -9658,12 +10581,12 @@ exports.default = _default;
                       { staticClass: "input-group" },
                       [_c("picture-input", { ref: "pictureInput" })],
                       1
-                    )
+                    ),
+                    _vm._v(" "),
+                    _vm._m(3)
                   ]
                 )
-              ]),
-              _vm._v(" "),
-              _vm._m(3)
+              ])
             ])
           ]
         )
@@ -9677,7 +10600,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-lg-3 col-sm-12 mt-5 sidebar" }, [
-      _c("h1", [_vm._v("SOmething")]),
+      _c("h1", [_vm._v("We Create")]),
+      _vm._v(" "),
+      _c("h1", [_vm._v("Like")]),
+      _vm._v(" "),
+      _c("h1", [_vm._v("Share")]),
+      _vm._v(" "),
+      _c("h1", [_vm._v("With You")]),
       _vm._v(" "),
       _c(
         "button",
@@ -9791,7 +10720,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/login.vue":[function(require,module,exports) {
+},{"vue-picture-input":"node_modules/vue-picture-input/PictureInput.vue","_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/login.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9860,6 +10789,84 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var Toast = Swal.mixin({
+  toast: true,
+  position: "center",
+  showConfirmButton: false,
+  timer: 3000
+});
 var baseUrl = "http://localhost:3006";
 var _default = {
   components: {
@@ -9873,7 +10880,13 @@ var _default = {
         email: "",
         password: ""
       },
-      logintype: false
+      logintype: false,
+      registype: false,
+      error: {
+        register: "",
+        login: "",
+        fetch: ""
+      }
     };
   },
   created: function created() {
@@ -9887,7 +10900,6 @@ var _default = {
     login: function login() {
       var _this = this;
 
-      console.log(this.datauser);
       axios({
         method: "POST",
         url: "".concat(baseUrl, "/users/login"),
@@ -9897,17 +10909,20 @@ var _default = {
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        localStorage.setItem("token", data.token); //  Toast.fire({
-        //     type: 'success',
-        //     title: 'Logged in successfully'
-        //   })
-
+        localStorage.setItem("token", data.token);
+        Toast.fire({
+          type: "success",
+          title: "Logged in successfully"
+        });
         _this.logintype = true;
       }).catch(function (err) {
         console.log(err);
+        _this.error.login = " Error : ".concat(err.response.data.message);
       });
     },
     register: function register() {
+      var _this2 = this;
+
       axios({
         method: "POST",
         url: "".concat(baseUrl, "/users/register"),
@@ -9918,9 +10933,31 @@ var _default = {
         }
       }).then(function (_ref2) {
         var data = _ref2.data;
+        Toast.fire({
+          type: "success",
+          title: "register successfully, please login ^^"
+        });
         console.log(data, "regis");
       }).catch(function (err) {
         console.log(err);
+        _this2.error.register = " Error : ".concat(err.response.data.message);
+      });
+    },
+    onSignIn: function onSignIn(googleUser) {
+      var id_token = googleUser.getAuthResponse().id_token;
+      console.log(id_token);
+      $.ajax({
+        url: "".concat(baseUrl, "/users/tokensignin"),
+        method: "POST",
+        data: {
+          id_token: id_token
+        },
+        success: function success(data) {
+          localStorage.setItem("token", data.accessToken);
+        },
+        error: function error(err) {
+          console.log(err);
+        }
       });
     }
   }
@@ -10056,9 +11093,145 @@ exports.default = _default;
                       [_vm._v("Sign in")]
                     ),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _c(
+                      "p",
+                      { staticClass: "error", staticStyle: { color: "red" } },
+                      [_vm._v(_vm._s(_vm.error.login))]
+                    ),
                     _vm._v(" "),
-                    _c("p", [_vm._v("or sign in with:")])
+                    _c("p", [_vm._v("or sign in with:")]),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "g-signin2 center",
+                      attrs: { "data-onsuccess": "onSignIn" }
+                    })
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { attrs: { id: "regisForm" } }, [
+                _c(
+                  "form",
+                  {
+                    staticClass: "text-center border border-light p-5",
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.register($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("p", { staticClass: "h4 mb-4" }, [_vm._v("Sign up")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.datauser.email,
+                          expression: "datauser.email"
+                        }
+                      ],
+                      staticClass: "form-control mb-4",
+                      attrs: {
+                        type: "email",
+                        id: "Email1",
+                        placeholder: "E-mail"
+                      },
+                      domProps: { value: _vm.datauser.email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.datauser, "email", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.datauser.password,
+                          expression: "datauser.password"
+                        }
+                      ],
+                      staticClass: "form-control mb-4",
+                      attrs: {
+                        type: "password",
+                        id: "Password1",
+                        placeholder: "Password",
+                        "aria-describedby":
+                          "defaultRegisterFormPasswordHelpBlock"
+                      },
+                      domProps: { value: _vm.datauser.password },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.datauser,
+                            "password",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.datauser.username,
+                          expression: "datauser.username"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "Username1",
+                        placeholder: "Username"
+                      },
+                      domProps: { value: _vm.datauser.username },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.datauser,
+                            "username",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-info my-4 btn-block",
+                        attrs: { type: "submit", id: "register" }
+                      },
+                      [_vm._v("Sign Up")]
+                    ),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("div", { attrs: { id: "errorRegister" } }, [
+                      _c(
+                        "p",
+                        { staticClass: "error", staticStyle: { color: "red" } },
+                        [_vm._v(_vm._s(_vm.error.register))]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1)
                   ]
                 )
               ])
@@ -10066,7 +11239,9 @@ exports.default = _default;
           ])
         ])
       ]
-    )
+    ),
+    _vm._v(" "),
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
@@ -10077,7 +11252,7 @@ var staticRenderFns = [
     return _c("h1", [
       _c("img", {
         attrs: {
-          src: "https://img.icons8.com/ios/60/000000/infinity-large-filled.png"
+          src: "https://img.icons8.com/ios/50/000000/medium-logo-filled.png"
         }
       })
     ])
@@ -10087,9 +11262,88 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("p", [
-      _vm._v("\n                Not a member?\n                "),
-      _c("a", { attrs: { href: "", id: "regisButton" } }, [_vm._v("Register")])
+      _vm._v("\n                By clicking\n                "),
+      _c("em", [_vm._v("Sign up")]),
+      _vm._v(" you agree to our\n                "),
+      _c("a", { attrs: { href: "", target: "_blank" } }, [
+        _vm._v("terms of service")
+      ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "footer",
+      { staticClass: "page-footer font-small blue-grey lighten-5" },
+      [
+        _c("div", { staticStyle: { "background-color": "#21d192" } }, [
+          _c("div", { staticClass: "container" }, [
+            _c("div", { staticClass: "row py-4 d-flex align-items-center" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0"
+                },
+                [
+                  _c("h6", { staticClass: "mb-0" }, [
+                    _vm._v("Get connected with us on social networks!")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6 col-lg-7 text-center text-md-right" },
+                [
+                  _c("a", { staticClass: "fb-ic" }, [
+                    _c("i", {
+                      staticClass: "fa fa-lg fa-facebook-f white-text mr-4"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "tw-ic" }, [
+                    _c("i", {
+                      staticClass: "fa fa-lg fa-twitter white-text mr-4"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "gplus-ic" }, [
+                    _c("i", {
+                      staticClass: "fa fa-lg fa-google-plus white-text mr-4"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "li-ic" }, [
+                    _c("i", {
+                      staticClass: "fa fa-lg fa-linkedin white-text mr-4"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { staticClass: "ins-ic" }, [
+                    _c("i", { staticClass: "fa fa-lg fa-instagram white-text" })
+                  ])
+                ]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "footer-copyright text-center text-black-50 py-3 bg-light"
+          },
+          [
+            _vm._v("© 2019 Copyright:\n        "),
+            _c("a", [_vm._v(" eager-fox")])
+          ]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -10142,15 +11396,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
 var _default = {
   components: {
     login: _login.default
   },
   data: function data() {
-    return {
-      message: "Hello world"
-    };
+    return {};
   }
 };
 exports.default = _default;
@@ -10166,11 +11417,7 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [_c("h1", [_vm._v(_vm._s(_vm.message))]), _vm._v(" "), _c("login")],
-    1
-  )
+  return _c("div", [_c("login")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -10214,6 +11461,8 @@ var _app = _interopRequireDefault(require("./app.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import CKEditor from '@ckeditor/ckeditor5-vue';
+// Vue.use( CKEditor );
 new _vue.default(_app.default).$mount('#app');
 },{"vue":"node_modules/vue/dist/vue.runtime.esm.js","./app.vue":"src/app.vue"}],"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -10243,7 +11492,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41019" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43293" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

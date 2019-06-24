@@ -2,6 +2,10 @@
 require('dotenv').config()
 
 const {Storage} = require('@google-cloud/storage')
+console.log(process.env.CLOUD_BUCKET);
+
+console.log(process.env.KEYFILE_PATH);
+console.log(process.env.GCLOUD_PROJECT);
 
 const CLOUD_BUCKET = process.env.CLOUD_BUCKET
 
@@ -18,6 +22,8 @@ const getPublicUrl = (filename) => {
 
 const sendUploadToGCS = (req, res, next) => {
   console.log('masuk gcs')
+  console.log(req.body);
+  
   if (!req.file) {
     return next()
   }
