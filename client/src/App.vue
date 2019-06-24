@@ -138,59 +138,14 @@
 
                 <!-- form add new post -->
                 <div v-if="activePageInside === 'newArticle'" id="newArticalForm" class="row" style="margin-top: 10%">
-                    <formAddNewArticle @newArticle="addNewArticle"></formAddNewArticle>
+                    <formAddNewArticle @newArticle="addNewArticle" :errorNoImage="errorNoImagepr"></formAddNewArticle>
                 </div>
                 <!-- end form new post -->
 
 
                 <!-- edit article -->
                 <div v-if="activePageInside === 'editArticle'" id="newArticalForm" class="row" style="margin-top: 10%">
-                        <div class="col-8 offset-2 py-5 border">
-                            <form @submit.prevent="submitEditArticle()">
-                                <div class="form-group">
-                                    <label for="exampleFormControlFile1">Thumbnail</label>
-                                    <input  v-model="newArticle.newArticleImage"  type="text" class="form-control-file" id="exampleFormControlFile1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Title</label>
-                                    <input  v-model="newArticle.newArticleTitle"  type="text" class="form-control" id="exampleInputPassword1"
-                                        placeholder="Title">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Content</label>
-                                    <wysiwyg v-model="newArticle.newArticleContent"></wysiwyg>
-                                </div>
-                                <div>
-                                    <label for="categoryArticleRadioButton">Category</label><br>
-                                    <div id='categoryArticleRadioButton' class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineCheckbox1" v-model="newArticle.newArticleCategory" value="Fashion">
-                                        <label class="form-check-label" for="inlineCheckbox1">Fashion</label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineCheckbox2" v-model="newArticle.newArticleCategory" value="Food & Drink">
-                                        <label class="form-check-label" for="inlineCheckbox2">Food & Drink</label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Automotive">
-                                        <label class="form-check-label" for="inlineCheckbox3">Automotive</label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Technology">
-                                        <label class="form-check-label" for="inlineCheckbox3">Technology</label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Film">
-                                        <label class="form-check-label" for="inlineCheckbox3">Film</label>
-                                      </div>
-                                      <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" id="inlineCheckbox3" v-model="newArticle.newArticleCategory" value="Education">
-                                        <label class="form-check-label" for="inlineCheckbox3">Education</label>
-                                      </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                            </form>
-    
-                        </div>
+                        <editArticle @aditArticle="submitEditArticle" v-bind:article="dataEditArticle" > </editArticle>
                     </div>
                 <!-- end edit artivcle -->
                     
@@ -304,6 +259,7 @@
 <script>
 import formAddNewArticle from "./FormAddNewArticle"
 import categoryPage from "./categoryPage"
+import editArticle from "./editArticle"
 import GoogleLogin from 'vue-google-login'
 export default {
     data :  {
@@ -318,6 +274,7 @@ export default {
         passwordregister : "",
         first_nameRegister: "",
         last_nameRegister: "",
+        errorNoImagepr : "",
         singlePostArticle : {
             author : "",
             image : "",
@@ -325,14 +282,21 @@ export default {
             title : "",
             category:"",
             createdAt : "",
-            
         },
+        dataEditArticle : {
+            ArticleId : "",
+            wArticleTitle : "",
+            ArticleImage : "",
+            ArticleContent : "",
+            ArticleCategory : ""
+        }
         
     },
     components: {
         formAddNewArticle,
         categoryPage,
-         GoogleLogin
+         GoogleLogin,
+         editArticle
         // wysiwyg: vueWysiwyg.default.component,
       },
     methods : {
@@ -369,6 +333,12 @@ export default {
         },
         addNewArticle(data){
             console.log("masuk create Data");
+            console.log(data.image);
+            
+            if(data.image === null  ){
+                console.log("aaaaa");
+                
+            }
             let formData = new FormData()
             formData.append('title',  data.title)
             formData.append('image',  data.image)
@@ -386,12 +356,13 @@ export default {
               })
               .then( ({data}) => {
                   this.getArticle()
-                  this.allArticle.push(data)
-                  this.userPostOnly.push(data)
+                //   this.allArticle.push(data)
+                //   this.userPostOnly.push(data)
                   this.activePageInside = "MyPostOnly"
                 })
                 .catch((err)=>{
                     console.log(err);
+                    this.errorNoImagepr = "You Must Add Thummnail for posting a ne article"
                 })
         },
         deleteArticle(data){
@@ -431,26 +402,27 @@ export default {
 
         },
         editArticle(data){
-            console.log(data);
-            
-            // alert(data.title)
-            this.newArticle.newArticleId = data._id
-            this.newArticle.newArticleTitle = data.title
-            this.newArticle.newArticleImage = data.image
-            this.newArticle.newArticleContent = data.content
-            this.newArticle.newArticleCategory = data.category
+            this.dataEditArticle.ArticleId = data._id
+            this.dataEditArticle.ArticleTitle = data.title
+            this.dataEditArticle.ArticleImage = data.image
+            this.dataEditArticle.ArticleContent = data.content
+            this.dataEditArticle.ArticleCategory = data.category
+            console.log(this.dataEditArticle);
             this.activePageInside = 'editArticle'
         },
-        submitEditArticle(){
+        submitEditArticle(data){
+            // console.log(data);
+            console.log(`http://localhost:3100/article/${data.id}`);
+            
             axios({
                 method: 'put',
-                url: `http://localhost:3100/article/${this.newArticle.newArticleId}`,
+                url: `http://localhost:3100/article/${data.id}`,
                 responseType: 'json',
                 data : {
-                    title : this.newArticle.newArticleTitle,
-                    image : this.newArticle.newArticleImage,
-                    content : this.newArticle.newArticleContent,
-                    category : this.newArticle.newArticleCategory,
+                    title : data.title,
+                    image : data.image,
+                    content : data.content,
+                    category : data.category,
                 },
                 headers: {
                     token : localStorage.getItem('token')
@@ -458,10 +430,11 @@ export default {
                 
               })
               .then( ({data}) => {
-                  this.newArticle.newArticleTitle = ""
-                  this.newArticle.newArticleImage = ""
-                  this.newArticle.newArticleContent = ""
-                  this.newArticle.newArticleCategory = ""
+                  this.dataEditArticle.ArticleId = "",
+                  this.dataEditArticle.ArticleTitle = "",
+                  this.dataEditArticle.ArticleImage = "",
+                  this.dataEditArticle.ArticleContent = "",
+                  this.dataEditArticle.ArticleCategory = "",
                   this.getArticle()
                   this.activePageInside = "MyPostOnly"
                 })

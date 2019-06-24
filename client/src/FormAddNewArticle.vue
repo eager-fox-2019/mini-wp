@@ -1,10 +1,11 @@
 <template>
     <div>
-            <div class="col-12 offset-3 py-5 border">
+            <div class="col-12 offset-4 py-5 border">
                 <form @submit.prevent="addNewArticle()" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Thumbnail</label>
                         <input v-on:change="getImage"  type="file" class="form-control-file" id="exampleFormControlFile1">
+                        <small >{{errorNoImage}}</small>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Title</label>
@@ -43,7 +44,7 @@
                             <label class="form-check-label" for="inlineCheckbox3">Education</label>
                             </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Submit</button>
                 </form>
             </div>
     </div>
@@ -52,6 +53,7 @@
 
 <script>
 export default {
+    props : ['errorNoImage'],   
     data : function(){
 
         return {
