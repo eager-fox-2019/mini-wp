@@ -327,7 +327,7 @@ export default {
       query: {
       },
       queryTags: [],
-      showPage: "main",
+      showPage: "landing",
       // showMainPage: false,
       // showFullPost: false,
       // showNewPostPage: false,
@@ -373,8 +373,9 @@ export default {
     }
   },
   created() {
-    this.checkLogin();
+    this.checkLogin()
   },
+  
   methods: {
     showMessage(text, type) {
       let message = "";
@@ -671,7 +672,8 @@ export default {
       }
       this.showMessage("You Have Been Logged Out Successfully", "success");
       this.showPage = "landing";
-    }
+    },
+    
   }
 };
 </script>

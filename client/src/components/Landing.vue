@@ -1,38 +1,50 @@
 <template>
   <div>
     <!-- Full Page Intro -->
-        <div class="view">
-          <video class="video-intro" poster="https://mdbootstrap.com/img/Photos/Others/background.jpg" playsinline autoplay muted loop>
-            <source src="https://mdbootstrap.com/img/video/animation.mp4" type="video/mp4">
-          </video>
-          <!-- Mask & flexbox options-->
-          <div class="mask rgba-gradient align-items-center">
-            <!-- Content -->
-            <div class="container px-md-3 px-sm-0">
-              <!--Grid row-->
-              <div class="row wow fadeIn">
-                <!--Grid column-->
-                <div class="col-md-12 mb-4 white-text text-center wow fadeIn">
-                  <h3 class="display-3 font-weight-bold white-text mb-0 pt-md-5 pt-5">Mini WP</h3>
-                  <hr class="hr-light my-4 w-75">
-                  <h2 class="subtext-header mt-2 mb-4" style="font-family: 'Indie Flower', cursive;">Blogging means sharing, and sharing means caring, right?</h2>
-                  <a
-        href="#"
-        class="btn btn-lg btn-info btn-rounded my-auto"
-        data-toggle="modal"
-        data-target="#modalLRForm"
-        style="font-family: 'Eater', cursive;"
-      ><i class="fas fa-address-card mr-3"></i>YES !!!</a>
-                </div>
-                <!--Grid column-->
-              </div>
-              <!--Grid row-->
+    <div class="view">
+      <video
+        class="video-intro"
+        poster="https://mdbootstrap.com/img/Photos/Others/background.jpg"
+        playsinline
+        autoplay
+        muted
+        loop
+      >
+        <source src="https://mdbootstrap.com/img/video/animation.mp4" type="video/mp4">
+      </video>
+      <!-- Mask & flexbox options-->
+      <div class="mask rgba-gradient align-items-center">
+        <!-- Content -->
+        <div class="container px-md-3 px-sm-0">
+          <!--Grid row-->
+          <div class="row wow fadeIn">
+            <!--Grid column-->
+            <div class="col-md-12 mb-4 white-text text-center wow fadeIn">
+              <h3 class="display-3 font-weight-bold white-text mb-0 pt-md-5 pt-5">Mini WP</h3>
+              <hr class="hr-light my-4 w-75">
+              <h2
+                class="subtext-header mt-2 mb-4"
+                style="font-family: 'Indie Flower', cursive;"
+              >Blogging means sharing, and sharing means caring, right?</h2>
+              <a
+                href="#"
+                class="btn btn-lg btn-info btn-rounded my-auto"
+                data-toggle="modal"
+                data-target="#modalLRForm"
+                style="font-family: 'Eater', cursive;"
+              >
+                <i class="fas fa-address-card mr-3"></i>YES !!!
+              </a>
             </div>
-            <!-- Content -->
+            <!--Grid column-->
           </div>
-          <!-- Mask & flexbox options-->
+          <!--Grid row-->
         </div>
-        <!-- <div class="overlay"></div>
+        <!-- Content -->
+      </div>
+      <!-- Mask & flexbox options-->
+    </div>
+    <!-- <div class="overlay"></div>
   <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
     <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4">
   </video>
@@ -50,7 +62,7 @@
       ><i class="fas fa-address-card mr-1"></i>YES !!!</a>
       </div>
     </div>
-  </div> -->
+    </div>-->
     <!--Modal: Login / Register Form-->
     <div
       class="modal fade"
@@ -117,7 +129,7 @@
                         Log in
                         <i class="fas fa-sign-in ml-1"></i>
                       </button>
-                      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                      <div class="g-signin2" @data-onsuccess="onSignIn"></div>
                     </div>
                   </form>
                 </div>
@@ -258,10 +270,15 @@ export default {
         name: "",
         email: "",
         password: "",
-        repeatPass: '',
+        repeatPass: "",
         image: ""
       }
     };
+  },
+  mounted() {
+    // gapi.signin2.render("google-signin-button", {
+    //   onsuccess: this.onSignIn
+    // });
   },
   methods: {
     emptyOnSuccess() {
@@ -279,27 +296,26 @@ export default {
       this.inputRegister.repeatPass = "";
     },
     selectFile() {
-      if(event.target.files[0])
+      if (event.target.files[0])
         this.inputRegister.image = event.target.files[0];
     },
     register() {
-      if(this.inputRegister.password !== this.inputRegister.repeatPass) {
-        Swal.fire("Error", 'Password doesn\'t match', "error")
-      }
-      else {
-        let formData = new FormData()
-          formData.append('name',this.inputRegister.name)
-          formData.append('email',this.inputRegister.email)
-          formData.append('password',this.inputRegister.password)
-          formData.append('image_url',this.inputRegister.image)
+      if (this.inputRegister.password !== this.inputRegister.repeatPass) {
+        Swal.fire("Error", "Password doesn't match", "error");
+      } else {
+        let formData = new FormData();
+        formData.append("name", this.inputRegister.name);
+        formData.append("email", this.inputRegister.email);
+        formData.append("password", this.inputRegister.password);
+        formData.append("image_url", this.inputRegister.image);
         axios({
           method: "post",
           url: `/users/register`,
-          enctype: 'multipart/formdata',
+          enctype: "multipart/formdata",
           data: formData
         })
           .then(({ data }) => {
-            this.emptyOnSuccess()
+            this.emptyOnSuccess();
             Swal.fire({
               type: "success",
               title: "Registered!",
@@ -321,9 +337,9 @@ export default {
       })
         .then(({ data }) => {
           this.emptyOnSuccess();
-          $('#modalLRForm').modal('hide')
-          localStorage.setItem('access-token', data['access-token'])
-          this.$emit('loginSuccess')
+          $("#modalLRForm").modal("hide");
+          localStorage.setItem("access-token", data["access-token"]);
+          this.$emit("loginSuccess");
           Swal.fire({
             type: "success",
             title: "Logged In!",
@@ -334,6 +350,43 @@ export default {
         .catch(({ response }) => {
           this.emptyOnFail();
           Swal.fire("Error", response.data.message, "error");
+        });
+    },
+    onSignIn(googleUser) {
+      console.log("halo");
+
+      let id_token = googleUser.getAuthResponse().id_token;
+      axios({
+        method: "POST",
+        url: `/users/signingoogle`,
+        data: {
+          id_token
+        }
+      })
+        .then(({ data }) => {
+          if (data.newPass) {
+            Swal.fire(
+              "Signed In via Google!",
+              `You Have Been Logged In Successfully. Hurry up change your password now, your password is ${
+                data.newPass
+              }`,
+              "info"
+            );
+          }
+          else {
+            Swal.fire(
+              "Signed In via Google!",
+              `You Have Been Logged In Successfully`,
+              "success"
+            );
+          }
+          localStorage.setItem("signedInVia", true);
+          localStorage.setItem("access-token", data["access-token"]);
+          this.$emit('loginSuccess')
+          this.emptyOnSuccess();
+        })
+        .catch(err => {
+          console.log(err);
         });
     }
   }
@@ -372,10 +425,20 @@ header,
 }
 
 .rgba-gradient {
-  background: -moz-linear-gradient(45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
-  background: -webkit-linear-gradient(45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
-  background: linear-gradient(to 45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
+  background: -moz-linear-gradient(
+    45deg,
+    rgba(213, 15, 61, 0.6),
+    rgba(13, 17, 198, 0.69) 100%
+  );
+  background: -webkit-linear-gradient(
+    45deg,
+    rgba(213, 15, 61, 0.6),
+    rgba(13, 17, 198, 0.69) 100%
+  );
+  background: linear-gradient(
+    to 45deg,
+    rgba(213, 15, 61, 0.6),
+    rgba(13, 17, 198, 0.69) 100%
+  );
 }
-
-
 </style>
