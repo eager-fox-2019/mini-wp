@@ -111,12 +111,12 @@
 </template>
 
 <script>
-const ARTICLE_PATH = `http://localhost:3000/articles`
-const TAG_PATH = `http://localhost:3000/tags`
-const USER_PATH = `http://localhost:3000/users`
-// const ARTICLE_PATH = `http://35.247.176.207/articles`
-// const TAG_PATH = `http://35.247.176.207/tags`
-// const USER_PATH = `http://35.247.176.207/users`
+// const ARTICLE_PATH = `http://localhost:3000/articles`
+// const TAG_PATH = `http://localhost:3000/tags`
+// const USER_PATH = `http://localhost:3000/users`
+const ARTICLE_PATH = `http://35.247.176.207/articles`
+const TAG_PATH = `http://35.247.176.207/tags`
+const USER_PATH = `http://35.247.176.207/users`
 
 import ArticleDetail from './js/components/ArticleDetail'
 import ArticlePage from './js/components/ArticlePage'
