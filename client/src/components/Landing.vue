@@ -209,7 +209,7 @@
                         data-error="wrong"
                         data-success="right"
                         for="modalLRInput24"
-                      >Your password</label>
+                      >Repeat password</label>
                     </div>
                     <div class="custom-file">
                       <input
