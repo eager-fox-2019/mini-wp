@@ -141,8 +141,9 @@ let app = new Vue({
                 }
             })
                 .then(({ data }) => {
-                    // con
+                    console.log(data)
                     this.articles = data.filter(el => {
+                        console.log(el, '----')
                         el.createdAt = new Date(el.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
                         if (el.title.includes(this.search)) return el
                     })
