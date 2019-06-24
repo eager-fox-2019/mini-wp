@@ -61,7 +61,7 @@ import axios from "axios"
     created(){
         axios.request({
             method: "get",
-            url: "http://localhost:3000/articles/all",
+            url: `${this.baseUrl}/articles/all`,
         })
         .then(articles =>{
             this.articles = articles.data
@@ -76,7 +76,8 @@ import axios from "axios"
 
         },
         showList: true,
-        showContent: null
+        showContent: null,
+        baseUrl: "http://localhost:3000"
       }
     },
     methods:{

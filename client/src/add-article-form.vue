@@ -12,14 +12,7 @@
            </v-flex> 
 
            <v-flex xs12>
-               <v-text-field
-                label="Image"
-                placeholder="Image Url"
-                v-model="image"
-                required
-               >
-
-               </v-text-field>
+               <input type="file" ref="file" v-on:change="convertImage">
            </v-flex>
 
            <v-flex xs12>
@@ -50,7 +43,10 @@ export default {
             title: "",
             image: "",
             content: "",
-            newPost: null
+            newPost: null,
+            newImage: null,
+            baseUrl: "http://localhost:3000",
+            imageLinkFromGCS: null
         }
     },
     methods:{
@@ -59,14 +55,14 @@ export default {
             if(username){
                 axios.request({
                     method: "POST",
-                    url: `http://localhost:3000/articles/${username}/add`,
+                    url: `${this.baseUrl}/articles/${username}/add`,
                     headers:{
                         "token": sessionStorage.getItem("jwt")
                     },
                     data:{
                         title: this.title,
                         content: this.content,
-                        imgSrc: this.image
+                        imgSrc: this.imageLinkFromGCS,
                     }
                 })
                 .then(created =>{
@@ -80,6 +76,19 @@ export default {
                 alert("Login first")
             }
         },
+      convertImage: function(){
+          this.newImage = this.$refs.file.files[0]
+          const formData = new FormData()
+                formData.append('image',this.newImage)
+            axios.post(`${this.baseUrl}/googleCloudStorage`, formData)
+            .then(({ data }) =>{
+            this.imageLinkFromGCS = data
+            // this.loading = false
+            })
+            .catch(err =>{
+            console.log(err)
+            })
+      }
     },
     watch: {
         showform: function(){

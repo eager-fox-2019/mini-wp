@@ -90,14 +90,7 @@
            </v-flex> 
 
            <v-flex xs12>
-               <v-text-field
-                label="Image"
-                placeholder="Image Url"
-                v-model="image"
-                required
-               >
-
-               </v-text-field>
+               <input type="file" ref="file" v-on:change="convertImage">
            </v-flex>
 
            <v-flex xs12>
@@ -138,7 +131,7 @@ export default {
         if(token){
             axios.request({
                 method: "GET",
-                url: "http://localhost:3000/articles/myarticles",
+                url: `${this.baseUrl}/articles/myarticles`,
                 headers: {
                     token: token
                 }
@@ -163,7 +156,10 @@ export default {
         title: "",
         showEditForm: false,
         selectedId: null,
-        selectedIndex: null
+        selectedIndex: null,
+        baseUrl: "http://localhost:3000",
+        newImage: null,
+        imageLinkFromGCS: null
     }
     },
     methods:{
@@ -183,7 +179,7 @@ export default {
                 headers:{
                     token: sessionStorage.getItem("jwt")
                 },
-                url: `http://localhost:3000/articles/${username}/delete?article=${id}`
+                url: `${this.baseUrl}/articles/${username}/delete?article=${id}`
             })
             .then(deleted =>{
                 this.articles.splice(index, 1)
@@ -210,10 +206,10 @@ export default {
               headers:{
                   token: sessionStorage.getItem("jwt")
               },
-              url: `http://localhost:3000/articles/${username}/edit?id=${this.selectedId}`,
+              url: `${this.baseUrl}/articles/${username}/edit?id=${this.selectedId}`,
               data:{
                   title: this.title,
-                  imgSrc: this.image,
+                  imgSrc: this.imageLinkFromGCS,
                   content: this.content
               }
           })
@@ -226,6 +222,19 @@ export default {
           .catch(err =>{
               console.log(err.response)
           })
+      },
+      convertImage: function(){
+          this.newImage = this.$refs.file.files[0]
+          const formData = new FormData()
+                formData.append('image',this.newImage)
+            axios.post(`${this.baseUrl}/googleCloudStorage`, formData)
+            .then(({ data }) =>{
+            this.imageLinkFromGCS = data
+            // this.loading = false
+            })
+            .catch(err =>{
+            console.log(err)
+            })
       }
     },
     watch:{

@@ -36,13 +36,14 @@
     data: () => ({
       dialog: false,
       username: "",
-      password: ""
+      password: "",
+      baseUrl: "http://localhost:3000"
     }),
     methods:{
       login: function(){
         axios.request({
                 method: "POST",
-                url: "http://localhost:3000/users/signin",
+                url: `${this.baseUrl}/users/signin`,
                 data:{
                     username: this.username,
                     password: this.password 
@@ -54,7 +55,7 @@
                 this.dialog = false
                 axios.request({
                 method: "GET",
-                url: "http://localhost:3000/articles/myarticles",
+                url: `${this.baseUrl}/articles/myarticles`,
                 headers: {
                     token: userInfo.data.access_token
                 }

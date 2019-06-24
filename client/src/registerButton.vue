@@ -41,13 +41,14 @@ import axios from "axios"
       dialog: false,
       username: "",
       password: "",
-      email: ""
+      email: "",
+      baseUrl: "http://localhost:3000"
     }),
     methods:{
       register: function(){
         axios.request({
                 method: "POST",
-                url: "http://localhost:3000/users/register",
+                url: `${this.baseUrl}/users/register`,
                 data:{
                     username: this.username,
                     email: this.email,
