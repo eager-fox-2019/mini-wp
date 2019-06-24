@@ -59,9 +59,12 @@ let instanceVue = new Vue({
         passwordRegister : '',
         usernameRegister : ''
       },
-      temp : ''
+      temp : '',
     },
     methods: {
+      getImage(file){
+        console.log(file.target.files)
+      },
         registerFunction(){
           console.log('masuk mana ya?')
           ax({
@@ -172,6 +175,9 @@ let instanceVue = new Vue({
         // findDetail(theId){
         //  
         // },
+        uploadImg(){
+          console.log(this.$ref.image.files[0])
+        },
         submitArticle(){
           console.log('go submit')
           ax({
@@ -183,7 +189,7 @@ let instanceVue = new Vue({
             data : {
               title : this.inputArticle.inputTitle,
               content : this.inputArticle.text,
-              images : this.inputArticle.inputImages
+              // images : this.$ref.image.files[0]
             }
           })
           .then(() => {

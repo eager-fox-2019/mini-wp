@@ -92,20 +92,24 @@
                             </div> -->
 
 
-                            <div  class="form-group">
+                            <!-- <div  class="form-group">
                                 <label for="exampleInputPassword1">images</label>
                                 <input v-model ="inputArticle.inputImages" type="text" class="form-control" id="wi" placeholder="Password">
-                            </div>
+                            </div> -->
 
                             <!-- multer -->
 
 
-                            <!-- <div class="input-group">
-                                <div class="custom-file">
-                                    <input href="image" type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                            <div class="input-group">
+                                <!-- <div class="custom-file">
+                                    <input ref="image" type="file" accept=".jpg, .png, .jpeg" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
                                     <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                                </div> -->
+                                <div class="custom-file">
+                                    <label for="btnImgUpload">Featured Image</label>
+                                    <input class="form-control-file" @change='getImage' type="file" accept=".jpg, .jpeg, .png" id="btnImgUpload">
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- <div class="form-group form-check"> -->
                                 <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"> -->
                                 <!-- <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
