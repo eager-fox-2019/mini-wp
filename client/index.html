@@ -4,126 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="987680761320-rtt80qrlbdevi4a6pb5a163rhrlqoghc.apps.googleusercontent.com">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>    
+    <!-- <link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <!-- <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="987680761320-rtt80qrlbdevi4a6pb5a163rhrlqoghc.apps.googleusercontent.com"> -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <!-- <link rel="stylesheet" href="css/style.css">   -->
+    <!-- <link rel="stylesheet" href="./src/modules/wysiwyg.css"> -->
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
     <title>Mini WP Vue</title>
 </head>
 <body>
 
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #000002">
-            <a v-show="isLogin" class="navbar-brand" href="#" v-on:click="change('Home')"><img src="https://india.resellerclub.com/sites/all/themes/india/img/blog_logo.png" alt="logo" style="height:30px;"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav row" style=" display:flex; justify-content: flex-start; width: 100%" v-show="isLogin">
-                    <!-- <div class="col-6"> -->
-                        <a style="color: blanchedalmond" class="nav-item nav-link" href="#" v-for="menu in navMenu" v-on:click="change(menu.text)"><i v-bind:class="menu.icon" class="mr-1 ml-5"></i> {{ menu.text }}<span class="sr-only">(current)</span></a>
-                    <!-- </div> -->
-                </div>
-                <div class="row" style=" display:flex; justify-content: flex-end; width: 100%">
-                    <!-- <div class="col-6" style="border: 1px green solid;"> -->
-                        <a style="color: blanchedalmond" class="nav-item nav-link" href="#" v-show="isLogin === true" v-on:click="change('Logout')"><i class="fa fa-key"></i> Logout</a>
-                        <a style="color: blanchedalmond" class="nav-item nav-link" href="#" v-show="isLogin === false" v-on:click="change('SignIn')"><i class="fa fa-lock"></i> Sign In</a>
-                        <a style="color: blanchedalmond" class="nav-item nav-link" href="#" v-show="isLogin === false" v-on:click="change('Register')"><i class="fa fa-user-edit"></i> Register</a>
-                        <a style="color: blanchedalmond" class="nav-item nav-link" href="#" v-show="isLogin === false" v-on:click="change('loginGoogle')"><div class="g-signin2" data-onsuccess="onSignIn" style="height: 25px;"></div></a>
-                        
-                    <!-- </div> -->
-                </div>
-            </div>
-        </nav>
-        <div class="container-fluid" v-show="isLogin">
-            <div class="row" style="height : 540px">
-                <div class="col-2 p-0 container-fluid" style="height : 100%; overflow: scroll; width: 100%;">
-                    <ul class="list-group" >
-                        <li class="list-group-item" v-for="list in listMenu">
-                            <button style="border: none" v-on:click="change(list.text)">
-                                <i v-bind:class="list.icon" class="mr-3"></i> {{ list.text }}
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-10" style="height : 540px; overflow: scroll;">
-                    <div id="homeSect" class="row" v-if="selectedButton === 'Home'" style="display: flex; flex-wrap: wrap;">
-                        <div class="col-3 card p-0 m-0 mb-1" style="border: 1px lightgrey solid;" v-for="article in articles">
-                            <img class="card-img-top" v-bind:src="article.img" alt="Card image cap">
-                            <div class="card-body">
-                            <h5 class="card-title">{{ article.title }}</h5>
-                            <p class="card-text">{{ article.text }}</p>
-                            <p class="card-text"><small class="text-muted">{{ article.date }}</small></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="profileSect" class="p-0 m-0" v-else-if="selectedButton === 'Profile'">
-                        <div v-show="isLogin">
-                            <h1 style="color: whitesmoke; text-align: center"> Welcome {{ loggedUser }} ! </h1>
-                        </div>
-                        <div v-show="!isLogin">
-                            <h1 style="color: whitesmoke; text-align: center"> MINI WP APP </h1>
-                        </div>
-                    </div>
-                    <div id="newArticle" class="p-0 m-0" v-else-if="selectedButton === 'New Articles'">
-                        <!-- <form class="mt-5"> -->
-                            <textarea name="editor1" id="editor1" rows="10" cols="80">
-                                This is my textarea to be replaced with CKEditor.
-                            </textarea>
-                            <script>
-                                // Replace the <textarea id="editor1"> with a CKEditor
-                                // instance, using default configuration.
-                                
-                                CKEDITOR.replace( 'editor1' );
-                                
-                            </script>
-                        <!-- </form> -->
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-        <div id="landing" v-show="!isLogin">
-            <div class="row">
-                <div class="col-5">
-                        <div class="card near-moon-gradient form-white mt-3">
-                                <a v-show="!isLogin" class="navbar-brand text-center ml-2 mt-2 mb-0" href="#" v-on:click="change('Home')"><img src="https://india.resellerclub.com/sites/all/themes/india/img/blog_logo.png" alt="logo" style="height:50px;"></a>
-                                <div class="card-body">
-                                    <!-- Form subscription -->
-                                    <form>
-                                        <!-- <h3 class="text-center indigo-text font-bold py-4"><strong><i class="fas fa-user"></i> Login</strong></h3> -->
-                                        <div class="md-form">
-                                            <i class="fa fa-envelope prefix white-text"></i>
-                                            <label for="form35">Email</label>
-                                            <input type="text" id="form35" class="form-control mb-1">
-                                        </div>
-                                        <div class="md-form">
-                                            <i class="fa fa-lock prefix white-text"></i>
-                                            <label for="form25">Password</label>
-                                            <input type="text" id="form25" class="form-control mb-1">
-                                        </div>
-                                        <div class="text-center py-4">
-                                            <button class="btn btn-indigo">Login <i class="fas fa-paper-plane"></i></button>
-                                            
-                                        </div>
-                                    </form>
-                                    <!-- Form subscription -->
-                                </div>
-                            </div>
-                </div>
-            </div>
-        </div>
-                    
+        
     </div>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/12.2.0/classic/ckeditor.js"></script>
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.2.0/classic/ckeditor.js"></script> -->
     <script src="https://kit.fontawesome.com/c890a749a8.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="./js/index.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <!-- <script src="./js/assets/articleCard.js"></script>
+    <script src="./js/assets/navMenu.js"></script> -->
+    <!-- <script src="./src/modules/wysiwyg.js"></script> -->
+    <!-- <script src="./js/index.js"></script> -->
+    <script src="./src/main.js"></script>
 </body>
 </html>

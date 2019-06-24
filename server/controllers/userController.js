@@ -4,20 +4,26 @@ const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 class UserController {
-    static register(req, res) {        
+    
+    static register(req, res) {   
+        console.log('sampe register controller')     
+        // console.log(req)
         const {username, email, password} = req.body
 
         User.create({
             username, email, password
         })
         .then(user=> {
+            console.log('masuk server dan then')
             res.status(201).json(user)
         })
         .catch(err => {
+            console.log(err)
             if (err.errors.email) {
-                res.status(409).json({ err: err.errors.email.reason });
+                console.log('error', )
+                res.status(409).json({ msg: err.errors.email.reason });
             } else if(err.errors.password) {
-                res.status(409).json({ err: err.errors.password.message });
+                res.status(409).json({ msg: err.errors.password.message });
             } else {
                 res.status(500).json(err);
             }
@@ -25,30 +31,35 @@ class UserController {
     }
 
     static login(req, res) {
-        const {email, password} = req.body
-
+        console.log('sampe login controller')
+        // const {email, password} = req.body
+        console.log(req.body)
         User.findOne({
-            email
+            email : req.body.email
         })
         .then(user => {
+            console.log('masuk then', user)
             if(!user) {
-                res.status(400).json({ err: "Username/Password wrong" });
+                res.status(404).json({ err: "Username/Password wrong" });
             } else {
-                if( Helper.comparePassword(password, user.password) ) {
+                if( Helper.comparePassword(req.body.password, user.password) ) {
+                    
                     let access_token = Helper.generateJWT({
                         email: user.email,
                         username: user.username,
                         id: user._id
                     });
 
-                    res.status(200).json({access_token, userId: user._id})
+                    res.status(200).json({access_token, userId: user._id, username : user.username, email: user.email})
                 }else{
-                    res.status(400).json({ err: "Username/Password wrong" });
+                    
+                    res.status(404).json({ err: "Username/Password wrong" });
                 }
             }
         })
         .catch(err => {
-            console.log(err);
+            
+            // console.log(err,'niiiiiiiiiiiiiiiiiiiiiii');
             res.status(500).json(err)
         })
     }

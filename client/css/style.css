@@ -38,12 +38,15 @@ button:hover, a:hover {
 
 #landing {
     background-image: url("https://i.pinimg.com/originals/0e/c5/2e/0ec52e38638f730a8acf6d3417ab9547.jpg");
+    /* background-image: url("https://media.wired.com/photos/593240cc58b0d64bb35d07d0/16:9/w_800,c_limit/whyte-a.gif"); */
+    /* background-image: url("https://media3.giphy.com/media/1Agdw2w4UKtgs/giphy.gif"); */
     background-size: cover;
     background-position: center;    
+    /* zoom: -1; */
     /* background-position-y: 150%; */
     /* background-position-x: -100%; */
     /* border: 1px green solid; */
-    height:540px;
+    height:539px;
 }
 #landing .col-5 {
     margin-left: 120px;
@@ -114,6 +117,22 @@ button:hover, a:hover {
 }
 
 .near-moon-gradient {
-    background-image: linear-gradient(to bottom, #17d8f1 30%, #11093d 100%);
+    background-image: linear-gradient(to bottom, #1bb3c7 10%, #11093d 100%);
 }
 
+/*
+ * Configure the z-index of the editor UI, so when inside a Bootstrap
+ * modal, it will be rendered over the modal.
+ */
+ :root {
+    --ck-z-default: 100;
+    --ck-z-modal: calc( var(--ck-z-default) + 999 );
+}
+
+/*
+ * Override the width of the table set by Bootstrap content styles.
+ * See: https://github.com/ckeditor/ckeditor5-table/issues/154.
+ */
+ .ck-content .table {
+    width: auto;
+}
