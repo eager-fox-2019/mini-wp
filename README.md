@@ -57,6 +57,8 @@ Token is generated from JWT package.
 - route:
   - `POST /home`
 - request
+  - headers
+    - `{ token }`
   - decoded
     - `{id: _id}`
   - body
@@ -85,6 +87,8 @@ Token is generated from JWT package.
 - route:
   - `GET /home`
 - request
+  - headers
+    - `{ token }`
   - decoded
     - `{id: _id}`
   - query
@@ -114,6 +118,8 @@ Token is generated from JWT package.
 - request
   - headers
     - `{ token }`
+  - decoded
+    - `{id: _id}`
 - response
   - `200`: `{ _id: ObjectId('') }`
 - error:
@@ -130,6 +136,8 @@ User can not delete Article that does not belongs to his/her, it is authorized i
 - request
   - headers
     - `{ token }`
+  - decoded
+    - `{id: _id}`
   - body
     - `{ title, content, tag, image }`
 - response

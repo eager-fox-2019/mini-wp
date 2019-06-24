@@ -44,12 +44,14 @@ class UserController{
                 } else {
                     throw {
                         code: 404, 
-                        message: login}
+                        message: login
+                    }
                 }
             } else {
                 throw {
                     code: 404, 
-                    message: login}
+                    message: login
+                }
             }
         })
         .catch(next)
