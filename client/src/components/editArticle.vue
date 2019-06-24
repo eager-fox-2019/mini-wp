@@ -8,7 +8,6 @@
           type="text"
           class="form-control"
           id="titleForm"
-          :placeholder="editSelect.title "
         >
       </div>
       <div class="form-group">
@@ -58,7 +57,11 @@ export default {
   components: {
     PictureInput
   },
-  created() {},
+  created() {
+    this.article.title = this.editSelect.title
+    this.article.content = this.editSelect.content
+
+  },
   mounted() {
   
     var content = this.editSelect.content; // data you fire var editorDiv =
