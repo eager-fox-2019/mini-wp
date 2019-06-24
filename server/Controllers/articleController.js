@@ -5,7 +5,7 @@ class articleControllers{
         console.log(req.decode.id, 'ini keluar?')
         let dec = req.decode.id
         let {title, content, images} = req.body
-        let newArt = new Article({userId : dec ,title, content, created_at : new Date(), author : req.decode.email, images})
+        let newArt = new Article({userId : dec ,title, content, created_at : new Date(), author : req.decode.email, images : req.file.cloudStoragePublicUrl})
         Article.create(newArt)
         .then(created => {
             console.log('masuk', created)

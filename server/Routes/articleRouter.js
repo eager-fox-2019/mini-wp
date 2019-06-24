@@ -1,18 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const articleController = require('../Controllers/articleController')
-const gcsMiddlewares = require('../Middleware/googleSloudStorage')
+// const gcsMiddlewares = require('../Middleware/googleSloudStorage')
 const {Authorization} = require('../Middleware/auth')
-const _multer = require('multer')
-const multer = _multer({
-    storage: _multer.MemoryStorage,
-    limits: {
-        fileSize: 10 * 1024 * 1024, // Maximum file size is 10MB
-    },
-});
+const image = require('../Helpers/googleStorage')
 
-// router.post('/create', multer.single('image') , gcsMiddlewares.sendUploadToGCS, articleController.create)
-router.post('/create', articleController.create)
+router.post('/create', image.multer.single('image') , image.sendUploadToGCS, articleController.create)
+// router.post('/create', articleController.create)
 router.get('/showAll', articleController.show)
 router.get('/findOne/:artId', articleController.findOne)
 router.get('/findOneArticle/:artId', articleController.findOneArticle)
