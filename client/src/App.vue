@@ -44,7 +44,7 @@
                                     </form>
                                     <div style="color: white" class="text-center">
                                         <h6>OR</h6>
-                                        <div class="g-signin2" data-onsuccess="onSignIn" style="margin-left: 50px;"></div>
+                                        <GoogleLogin type="button" class="btn btn-primary mt-2"  :onSuccess="onSuccess" :onFailure="onFailure"> <i class="fab fa-google mr-2"></i> Google SignIn</GoogleLogin>
                                     </div>
                         </div>
                     </section>
@@ -225,7 +225,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12 mb-5 text-truncate">
-                                                <p class="card-text text-truncate">{{post.content}}</p>
+                                                <p class="card-text text-truncate" v-html="post.content"></p>
                                             </div>
                                         </div>
                                         <div style="display: flex;justify-content:flex-end;margin-bottom: -10px;" class="">
@@ -304,6 +304,7 @@
 <script>
 import formAddNewArticle from "./FormAddNewArticle"
 import categoryPage from "./categoryPage"
+import GoogleLogin from 'vue-google-login'
 export default {
     data :  {
         allArticle : [],
@@ -330,17 +331,38 @@ export default {
     },
     components: {
         formAddNewArticle,
-        categoryPage
+        categoryPage,
+         GoogleLogin
         // wysiwyg: vueWysiwyg.default.component,
       },
     methods : {
-        onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-          },
+        onSuccess(googleUser){
+            let id_token = googleUser.getAuthResponse().id_token
+            axios({
+                method: 'post',
+                url: 'http://localhost:3100/user/googlelogin',
+                responseType: 'json',
+                data: {
+                    token : id_token
+                }
+              })
+                .then( ({data}) => {
+                    this.activePage = 'userLogin'
+                    this.activePageInside = 'category'
+                    localStorage.setItem('token', data.token)
+                    localStorage.setItem('userid', data.id)
+                    this.checkLogin()
+                    this.getArticle()
+                    
+                this.article = data
+                })
+                .catch((err)=>{
+                    swal(`${err.response.data.message}`)
+                })
+        },
+        onFailure(err){
+            console.log(err)
+        },
         getImage(event) {
         this.image = event.target.files[0]
         
@@ -363,6 +385,7 @@ export default {
                 
               })
               .then( ({data}) => {
+                  this.getArticle()
                   this.allArticle.push(data)
                   this.userPostOnly.push(data)
                   this.activePageInside = "MyPostOnly"
