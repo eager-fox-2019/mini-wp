@@ -1,5 +1,4 @@
 # mini-wp
-mini-wp
 
 ## Building the JS file for the client
 

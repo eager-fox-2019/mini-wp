@@ -2,7 +2,7 @@ const {Storage} = require('@google-cloud/storage');
 const storage = new Storage({
   keyFilename: './max_service_account.json'
 }); // Creates a client
-const bucketName = 'miniwpphotos';
+const bucketName = process.env.BUCKET;
 
 function getPublicUrl(filename) {
   return `https://storage.googleapis.com/${bucketName}/${filename}`
