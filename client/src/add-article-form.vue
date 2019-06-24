@@ -45,7 +45,7 @@ export default {
             content: "",
             newPost: null,
             newImage: null,
-            baseUrl: "http://localhost:3000",
+            baseUrl: "http://35.240.253.29",
             imageLinkFromGCS: null
         }
     },

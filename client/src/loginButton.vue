@@ -37,7 +37,7 @@
       dialog: false,
       username: "",
       password: "",
-      baseUrl: "http://localhost:3000"
+      baseUrl: "http://35.240.253.29"
     }),
     methods:{
       login: function(){

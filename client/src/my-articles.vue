@@ -157,7 +157,7 @@ export default {
         showEditForm: false,
         selectedId: null,
         selectedIndex: null,
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://35.240.253.29",
         newImage: null,
         imageLinkFromGCS: null
     }

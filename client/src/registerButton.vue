@@ -42,7 +42,7 @@ import axios from "axios"
       username: "",
       password: "",
       email: "",
-      baseUrl: "http://localhost:3000"
+      baseUrl: "http://35.240.253.29"
     }),
     methods:{
       register: function(){
