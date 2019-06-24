@@ -2,8 +2,9 @@ const Post = require('../models/post')
 
 class PostController {
     static create(req, res) {
+        console.log(req.body, '......')
         let { title, content, tags } = req.body
-        tags = tags.split(',')
+        // tags = tags.split(',')
         Post
             .create({
                 title,
@@ -59,6 +60,7 @@ class PostController {
             .find()
             .populate('user')
             .then(posts => {
+                console.log(posts, '===')
                 res.status(200).json(posts)
             })
             .catch(err => {
@@ -71,6 +73,7 @@ class PostController {
             .find({ user: req.decoded._id })
             .populate('user')
             .then(posts => {
+                console.log(posts, '====')
                 res.status(200).json(posts)
             })
             .catch(err => {

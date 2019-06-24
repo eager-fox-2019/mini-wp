@@ -141,6 +141,7 @@ let app = new Vue({
                 }
             })
                 .then(({ data }) => {
+                    // con
                     this.articles = data.filter(el => {
                         el.createdAt = new Date(el.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
                         if (el.title.includes(this.search)) return el
@@ -210,18 +211,19 @@ let app = new Vue({
             this.show = "editArticle";
         },
         createArticle() {
+            console.log('masuk create')
             if (!this.newArticle.title) this.newArticle.title = "Untitled"
-            let formData = new FormData();
-            formData.append('title', this.newArticle.title)
-            formData.append('content', this.newArticle.content)
-            formData.append('image', this.newArticle.image)
-            formData.append('tags', this.newArticle.tags)
             this.show = ""
             this.loading = true
             axios({
                 url: `http://localhost:3000/post`,
                 method: "POST",
-                data: formData,
+                data: {
+                    title: this.newArticle.title,
+                    content: this.newArticle.content,
+                    image: this.newArticle.image,
+                    tags: this.newArticle.tags
+                },
                 headers: {
                     token: localStorage.token
                 }
@@ -282,19 +284,17 @@ let app = new Vue({
         editArticle(id) {
             if (!this.editedArticle.title) this.editedArticle.title = "Untitled"
 
-            let formData = new FormData();
-            formData.append('title', this.editedArticle.title)
-            formData.append('content', this.editedArticle.content)
-            formData.append('image', this.editedArticle.image)
-            formData.append('tags', this.editedArticle.tags)
-
             this.show = ""
-            this.loading = true
 
             axios({
                 url: `http://localhost:3000/post/${id}`,
                 method: "PATCH",
-                data: formData,
+                data: {
+                    title: this.editedArticle.title,
+                    content: this.editedArticle.content,
+                    image: this.editedArticle.image,
+                    tags: this.editedArticle.tags
+                },
                 headers: {
                     token: localStorage.token
                 }
