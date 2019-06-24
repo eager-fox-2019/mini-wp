@@ -19,9 +19,15 @@ class userController {
             password: req.body.password
         })
         try {
-            let saved = await newUser.save()
-            nodemailer(newUser.email)
-            res.json(saved)
+            if (req.body.google) {
+                await newUser.save()
+                nodemailer(newUser.email)
+                userController.login(req, res, next)
+            } else {
+                let saved = await newUser.save()
+                nodemailer(newUser.email)
+                res.json(saved)
+            }
         } catch (error) {
             next(error)
         }
@@ -60,6 +66,51 @@ class userController {
         } catch (error) {
             next(error)
         }
+    }
+
+    static googleLogin(req, res, next) {
+        const {
+            OAuth2Client
+        } = require('google-auth-library');
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+        let googleToken = req.body.googleToken
+
+        async function verify() {
+            const ticket = await client.verifyIdToken({
+                idToken: googleToken,
+                audience: process.env.GOOGLE_CLIENT_ID
+            });
+            const payload = ticket.getPayload();
+            console.log(payload)
+            User.findOne({
+                    email: payload.email
+                })
+                .then((user) => {
+                    if (user) {
+                        let token = jwt.sign({
+                            username: user.username,
+                            email: user.email,
+                            id: user._id
+                        }, process.env.JWT_SECRET)
+                        res.json({
+                            token,
+                            username: user.username,
+                            email: user.email,
+                            id: user._id
+                        })
+                    } else {
+                        req.body.email = payload.email
+                        req.body.password = "password12345"
+                        req.body.username = payload.name
+                        req.body.picture = payload.picture
+                        req.body.google = true
+                        userController.register(req, res, next)
+                    }
+                })
+                .catch(next)
+        }
+        verify()
+            .catch(next);
     }
 
 }

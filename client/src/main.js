@@ -9,7 +9,6 @@ import 'buefy/dist/buefy.css'
 import VueScrollReveal from 'vue-scroll-reveal'
 import Sticky from 'vue-sticky-directive'
 import Quill from 'vue-quill'
-
 Vue.use(Quill)
 Vue.use(require('vue-moment'))
 let router = createRouter()

@@ -4,10 +4,14 @@
       <router-link :to="'/'" class="navbar-item">
         <img src="/static/img/logo-1.png" alt="Buefy">
       </router-link>
-      <a class="navbar-item">
+      <a class="navbar-item" href="https://github.com/dion-michael" target="_blank">
         <b-icon pack="fab" icon="github"></b-icon>
       </a>
-      <a class="navbar-item">
+      <a
+        class="navbar-item"
+        href="https://www.linkedin.com/in/dion-michael-19ba3613b/"
+        target="_blank"
+      >
         <b-icon pack="fab" icon="linkedin"></b-icon>
       </a>
       <a
@@ -93,6 +97,16 @@
                     <a @click="register = false">Login</a>
                   </span>
                 </footer>
+                <footer>
+                  <GoogleLogin
+                    class="button"
+                    :params="params"
+                    :onSuccess="onSuccess"
+                    :onFailure="onFailure"
+                  >
+                    <b-icon pack="fab" icon="google" style="margin-right: 10px"></b-icon>Sign In
+                  </GoogleLogin>
+                </footer>
               </div>
             </form>
             <section>
@@ -115,6 +129,7 @@
 <script>
 import miniwp from "../api/miniwp";
 import Swal from "sweetalert2";
+import GoogleLogin from "vue-google-login";
 export default {
   name: "navbar",
   data() {
@@ -131,12 +146,43 @@ export default {
         message: ""
       },
       isActive: false,
-      loading: false
+      loading: false,
+      params: {
+        client_id:
+          "400113825781-ojq56cp3u9h4hgb5nnuekc3nl878i55g.apps.googleusercontent.com"
+      }
     };
   },
   props: ["islogin"],
   mounted() {},
   methods: {
+    onSuccess(googleUser) {
+      console.log(googleUser);
+      let id_token = googleUser.getAuthResponse().id_token;
+      console.log(googleUser.getAuthResponse());
+      miniwp({
+        url: "/users/google",
+        method: "POST",
+        data: {
+          googleToken: id_token
+        }
+      })
+        .then(({ data }) => {
+          console.log(data);
+          this.showNav = false;
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("email", data.email);
+          this.$emit("clicked");
+        })
+        .catch(err => {
+          this.error = err.response.data;
+          console.log(this.error);
+          this.isActive = true;
+        });
+    },
+    onFailure() {
+      console.log("error");
+    },
     doSomething() {
       if (this.register) {
         this.uploadImg();
@@ -251,6 +297,9 @@ export default {
       });
       console.log(this.imgurl);
     }
+  },
+  components: {
+    GoogleLogin
   }
 };
 </script>

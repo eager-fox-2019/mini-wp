@@ -1,7 +1,7 @@
-.modal-card-foot[data-v-7e3529] {
+.modal-card-foot[data-v-142599] {
   background-color: white;
 }
-#login-logo-container[data-v-7e3529] {
+#login-logo-container[data-v-142599] {
   text-align: center;
 }
 /* LOAD CUSTOM FONT */
@@ -53,32 +53,32 @@ body {
 .hero-background.is-transparent {
   opacity: 0.3;
 }
-.article-content[data-v-133113] {
+.article-content[data-v-0f6c15] {
   padding: 0 auto;
   line-height: 2rem;
 }
-.box[data-v-133113] {
+.box[data-v-0f6c15] {
   border: none;
   box-shadow: none;
 }
-.ql-toolbar[data-v-9b012d] {
+.ql-toolbar[data-v-ccb6af] {
 }
-.box[data-v-ff2193] {
+.box[data-v-00b20e] {
   box-shadow: none;
 }
-.field[data-v-ff2193] {
+.field[data-v-00b20e] {
   /* width: 700px; */
 }
-#section-upload b-field.upload-field[data-v-ff2193] {
+#section-upload b-field.upload-field[data-v-00b20e] {
   object-fit: cover;
 }
-.tags-input-badge[data-v-ff2193] {
+.tags-input-badge[data-v-00b20e] {
   background-color: red;
 }
 .tags-input-root {
     position: relative;
 }
-.box[data-v-6bffc4] {
+.box[data-v-5380b8] {
   box-shadow: none;
 }
 /*! Buefy v0.7.7 | MIT License | github.com/buefy/buefy */ 
