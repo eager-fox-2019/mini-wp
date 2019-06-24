@@ -99,7 +99,7 @@ class ArticleController {
       .catch(next)
   }
 
-  static findTags(req, res, next, next) {
+  static findTags(req, res, next) {
     Article
       .find({})
       .then((articles) => {
