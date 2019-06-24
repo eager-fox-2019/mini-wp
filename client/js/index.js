@@ -1,6 +1,6 @@
 const baseURL= 'http://localhost:3000'
 
- new Vue({
+ var app= new Vue({
   el: '#app',
   data: {
     homepage:true,
@@ -526,4 +526,3 @@ const baseURL= 'http://localhost:3000'
   }
   
 })
-  

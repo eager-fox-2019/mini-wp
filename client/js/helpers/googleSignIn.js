@@ -14,7 +14,7 @@ function onSignIn(googleUser) {
         localStorage.setItem('lastName', data.lastName)
         localStorage.setItem('userId', data.userId)
         localStorage.setItem('token', data.token)
-         this.islogin()
+         app.islogin()
     })
     .catch(error =>{
         console.log('error google sign in client')
