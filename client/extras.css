@@ -1,0 +1,35 @@
+.chip-container {
+    width: 400px;
+    border: 1px solid #ccc;
+    min-height: 34px;
+    display:flex;
+    flex-wrap: wrap;
+    align-content: space-betweens
+    
+    
+  }
+
+  .chip {
+    margin:4px;
+    background: #e0e0e0;
+    padding:0px 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    display:flex;
+    align-items: center
+   
+  }
+
+  i.chip-component {
+    cursor: pointer;
+    opacity: .56;
+    margin-left:8px
+  }
+
+  input.chip-component {
+    flex: 1 1 auto;
+    width:30px;
+    border: none;
+    outline: none;
+    padding:4px
+  }
