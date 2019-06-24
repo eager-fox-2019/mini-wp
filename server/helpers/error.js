@@ -4,17 +4,15 @@ module.exports = (err, req, res, next) => {
     res.status(err.code).json({
       message: err.message
     })
-  }
-  else if (err.name == 'ValidationError') {
+  } else if (err.name == 'ValidationError') {
     let message = ""
-    for(let field in err.errors){
+    for (let field in err.errors) {
       message = err.errors[field].message
     }
     res.status(400).json({
       message
     })
-  }
-  else {
+  } else {
     res.status(500).json({
       message: 'Internal Server Error'
     })

@@ -232,6 +232,7 @@ export default {
         for(let i in data){
           this.articles.push(data[i])
         }
+        this.articles.sort((a, b) => { return new Date(b.created_at) - new Date(a.created_at) })
       })
       .catch((error) => {
         this.errorHandler(error)
