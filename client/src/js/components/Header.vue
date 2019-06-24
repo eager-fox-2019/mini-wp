@@ -102,8 +102,6 @@
 </template>
 
 <script>
-const TAG_PATH = `http://localhost:3000/tags`
-
 export default {
     data() {
         return {

@@ -6,7 +6,7 @@ class TagController{
 
         Tag
         .find()
-        .limit(limit)
+        .limit(Number(limit))
         .then(tags => {
             res.status(200).json(tags)
         })
