@@ -23,7 +23,11 @@ class ArticleController {
   }
 
   static delete(req, res, next) {
-    Articles.findByIdAndDelete(req.params.id)
+    Articles.findById(req.params.id)
+    .then(article => {
+      if (!article) throw { code: 404 }
+      return Articles.deleteOne({ _id: req.params.id })
+    })
     .then(() => res.json({ message: 'success' }))
     .catch(next)
   }
