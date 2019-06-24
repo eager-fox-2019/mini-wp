@@ -55,6 +55,7 @@ export default {
       this.tagsCreated = [];
       this.tags = [];
       this.description ='';
+      this.$emit('set-article');
     },
     generate() {
       axios
