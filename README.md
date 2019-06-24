@@ -1,6 +1,28 @@
 # mini-wp
 mini-wp
 
+## Building the JS file for the client
+
+Make sure you have [webpack CLI](https://www.npmjs.com/package/webpack-cli) installed. Then run the commands:
+
+```bash
+  cd client/
+  npm install
+  webpack
+```
+
+The output file will be at `./dist/bundle.js`.
+
+## Running the server
+
+Run the following commands:
+
+```bash
+  cd server/
+  npm install
+  npm start
+```
+
 ## API Documentation (server)
 | Route          | HTTP Method | Header(s)                | Body                            | Description                                                                                                                |
 |----------------|-------------|--------------------------|---------------------------------|----------------------------------------------------------------------------------------------------------------------------|
