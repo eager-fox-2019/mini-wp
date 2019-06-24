@@ -13,11 +13,13 @@ class PostController {
                 tags
             })
             .then(post => {
+                console.log(post, '----')
                 post.populate('user', err =>{
                     res.status(201).json(post)
                 })
             })
             .catch(err => {
+                console.log(err)
                 res.status(500).json(err)
             })
     }
