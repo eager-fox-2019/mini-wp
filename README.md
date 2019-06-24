@@ -34,4 +34,4 @@ $ node app.js or $ npm run dev
 ```
 
 Access server via `http://localhost:3000`<br>
-Access client via `http://localhost:8080`
+Access client via `http://localhost:1234`
