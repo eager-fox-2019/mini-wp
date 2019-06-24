@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.0.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "dependencies": {
+    "@dymantic/vue-trix-editor": "^0.2.2",
+    "@voerro/vue-tagsinput": "^1.11.2",
+    "animate.css": "^3.7.2",
+    "sweetalert2": "^8.13.0",
+    "vue": "^2.6.10",
+    "vue-hot-reload-api": "^2.3.3",
+    "vue-wordcloud": "^1.1.1",
+    "vue-wysiwyg": "^1.7.2",
+    "vue2-editor": "^2.8.1",
+    "vuewordcloud": "^18.7.11"
+  }
+}
