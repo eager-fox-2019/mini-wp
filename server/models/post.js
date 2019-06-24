@@ -8,7 +8,8 @@ let postSchema = new Schema({
   },
   title: {
     type: String,
-    required: [true, 'Title is required']
+    required: [true, 'Title is required'],
+    maxlength: [40, 'Title max. 40 characters !!!']
   },
   content: {
     type: String,
@@ -19,7 +20,15 @@ let postSchema = new Schema({
     default: new Date()
   },
   image_url: String,
-  tag: Array
+  published: {
+    type:Boolean,
+    default: false
+  },
+  starred: {
+    type:Boolean,
+    default: false
+  },
+  tags: [String]
 },{ timestamps: true })
 
 let Post = mongoose.model('Post', postSchema)

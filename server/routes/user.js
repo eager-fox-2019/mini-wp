@@ -1,10 +1,14 @@
 const router = require("express").Router()
 const user = require('../controllers/user')
+const authenticate = require('../middlewares/authenticate')
+const gcs = require('../middlewares/GCS')
 
-router.post('/register', user.register)
+router.post('/register',gcs.multer.single("image_url"), gcs.sendUploadToGCS, user.register)
 router.post('/login',user.login)
 router.post('/signingoogle', user.GoogleSignIn)
-// router.update('/update/:id', user.update)
-// router.delete('/delete/:id', user.delete)
+
+router.use(authenticate)
+router.get('/me',user.readOne)
+router.patch('/me',gcs.multer.single("image_url"), gcs.sendUploadToGCS,user.update)
 
 module.exports = router

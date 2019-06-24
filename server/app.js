@@ -11,12 +11,11 @@ const port = /* process.env.PORT || */ 3000
 const url = process.env.DATABASE_URL || "mongodb://localhost/miniwp"
 const routes = require('./routes')
 const error = require('./middlewares/error')
-console.log(url);
 
 mongoose.connect(url, {
   useNewUrlParser: true,
+  useFindAndModify: false,
   // useCreateIndex: true,
-  // useFindAndModify: false
 })
   .then(() => {
     console.log('MongoDB connected');

@@ -49,13 +49,23 @@ class UserCont {
       .catch(next)
   }
 
-  static register(req, res, next) {
-    User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
+  static register(req, res, next) {    
+    let exclude = ['image_url', '__v', 'createdAt', 'updatedAt']
+    let obj = {}
+    if(req.file)
+    obj.image_url = req.file.cloudStoragePublicUrl
+    
+    User.schema.eachPath(path => {
+      if (!exclude.includes(path)) {
+        if (req.body[path])
+        obj[path] = req.body[path]
+      }
     })
+    
+    User.create(obj)
       .then(row => {
+        console.log('berhasil');
+        
         res.status(201).json(row)
       })
       .catch(next)
@@ -72,20 +82,67 @@ class UserCont {
             let payload = {
               _id: row._id,
               name: row.name,
-              email: row.email
+              email: row.email,
+              image_url: row.image_url
             }
-            let data = {
-              'access-token': sign(payload, process.env.KUNCI),
-              _id: row._id,
-              name: row.name,
-              email: row.email
-            }
-            res.status(200).json(data)
+            let token = sign(payload, process.env.KUNCI)
+            console.log(token);
+            
+            res.status(200).json({
+              'access-token': token,
+            })
           }
           else next({ code: 422, message: 'Wrong email/password' })
         }
         else
           next({ code: 422, message: 'Wrong email/password' })
+      })
+      .catch(next)
+  }
+
+  static readOne(req,res,next) {
+    User.findById(req.decoded._id)
+    .then(row =>{
+      let user = {
+        _id: row._id,
+        name: row.name,
+        email: row.email,
+        image_url: row.image_url,
+      }
+      console.log(user);
+      
+      res.json(user)
+    })
+    .catch(next)
+  }
+
+  static update(req, res, next) {
+    let obj = {}
+    let exclude = ['image_url', '_id', '__v', 'createdAt', 'updatedAt']
+
+    if (req.file) {
+      obj.image_url = req.file.cloudStoragePublicUrl
+    }
+
+    if (req.method === "PATCH") {
+      User.schema.eachPath(path => {
+        if (!exclude.includes(path)) {
+          if (req.body[path])
+            obj[path] = req.body[path]
+        }
+      })
+    }
+    else {
+      User.schema.eachPath(path => {
+        if (!exclude.includes(path)) {
+          obj[path] = req.body[path]
+        }
+      })
+    }
+
+    User.findByIdAndUpdate(req.decoded._id, obj, { new: true })
+      .then(row => {
+        res.json(row)
       })
       .catch(next)
   }

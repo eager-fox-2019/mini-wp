@@ -13,7 +13,7 @@ const getPublicUrl = (filename) => {
   return `https://storage.googleapis.com/${process.env.CLOUD_BUCKET}/${filename}`
 }
 
-const sendUploadToGCS = (req, res, next) => {
+const sendUploadToGCS = (req, res, next) => {  
   if (!req.file) {
     console.log("masuk return next")
     return next()

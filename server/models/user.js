@@ -44,6 +44,7 @@ let userSchema = new Schema({
       message: 'Password must be more than equal 8 character!'
     }
   },
+  image_url: String
 }, {timestamps: true})
 
 userSchema.pre('save', function (next) {

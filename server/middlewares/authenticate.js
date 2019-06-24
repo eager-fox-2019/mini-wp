@@ -2,7 +2,6 @@ const User = require('../models/user')
 const jwt = require('../helpers/jwt')
 
 module.exports = (req,res,next)=>{
-  console.log(req.headers)
   if(req.headers['access-token']) {
     try {
       req.decoded = jwt.verify(req.headers['access-token'])
