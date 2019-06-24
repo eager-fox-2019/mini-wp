@@ -20,7 +20,7 @@
                         <label for="log-email"><b>Email</b></label><br>
                         <input
                             v-bind:value="userEmailProps"
-                            v-on:input="$emit('userEmail', $event.target.value)"
+                            v-on:input="this.$emit('userEmail', $event.target.value)"
                             type="text" placeholder="Enter your email" name="email" id="log-email" required
                         >
                     </div>
@@ -44,7 +44,7 @@
                         <label for="username"><b>Name</b></label><br>
                         <input
                             v-bind:value="userNameProps"
-                            v-on:input="$emit('input', $event.target.value)"
+                            v-on:input="this.$emit('input', $event.target.value)"
                             type="text" placeholder="Enter your name" name="username" id="username" required
                         >
                     </div>

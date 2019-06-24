@@ -9,10 +9,11 @@
                     @user-register="userRegister"
                     @to-login="toLogin"
                     v-bind:isLoginProps="isLogin"
-                    v-bind:usersignProps="usersignProps"
-                    v-bind:userNameProps="userNameProps"
-                    v-bind:userEmailProps="userEmailProps"
-                    v-bind:userPswProps="userPswProps"
+                    v-bind:usersignProps="usersign"
+                    v-bind:userNameProps="userName"
+                    v-bind:userEmailProps="userEmail"
+                    v-bind:userPswProps="userPsw"
+                    v-on:input="userPsw = $event.target.value"
                 ></navright>
             </nav>
         </header>
@@ -31,18 +32,11 @@
                         @change-search="changeSearch"
                         v-bind:searchTextProps="searchText"
                     ></searchbar>
-                    <div class="container-post">
-                        <div class="articles">
-                            <div class="card align-items-*-center" v-for="post in filteredList" v-bind:key="post.id">
-                                <img class="card-img-top" v-bind:src="post.imgUrl" alt="Image">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ post.title }}</h5>
-                                    <div class="card-text" v-html="shortText(post.content)"></div>
-                                    <button @click="readMore(post._id)" class="btn btn-primary">Read more</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <publishedpage
+                        v-bind:filteredListProps="filteredList"
+                        @short-text="shortText(content)"
+                        @read-more="readMore(id)"
+                    ></publishedpage>
                 </div>
 
                 <div v-show="loadPage === 'privatepost'">
@@ -51,7 +45,12 @@
                         @change-search="changeSearch"
                         v-bind:searchTextProps="searchText"
                     ></searchbar>
-                    <div class="container-post">
+                    <!-- <privatepage
+                        v-bind:filteredListProps="filteredList"
+                        @short-text="shortText(content)"
+                        @read-more="readMore(id)"
+                    ></privatepage> -->
+                    <!-- <div class="container-post">
                         <div class="articles">
                             <div class="card align-items-*-center" v-for="post in privateFilteredList" v-bind:key="post.id">
                                 <img class="card-img-top" v-bind:src="post.imgUrl" alt="Image">
@@ -64,10 +63,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
-                <div v-show="loadPage === 'draft' || loadPage === 'edit-mode'">
+                <!-- <div v-show="loadPage === 'draft' || loadPage === 'edit-mode'">
                     <form style="height: 80%; width:80%" enctype="multipart/form-data">
                         <label for="title"><b>Title</b></label>
                         <input v-model="newTitle" type="text" class="form-control" placeholder="Enter title" name="title" id="title" required><br>
@@ -103,19 +102,24 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </main>
 
 
-        <footer class="page-footer font-small fixed-bottom" style="position: relative; background-color: #22344B; padding: 3rem">
+        <!-- <footer class="page-footer font-small fixed-bottom" style="position: relative; background-color: #22344B; padding: 3rem">
             <foot></foot>
-        </footer>
+        </footer> -->
     </div>
 </template>
 <script>
 import navleft from './components/navleft.vue';
 import navright from './components/navright.vue';
+import sidenav from './components/sidenav.vue';
+import searchbar from './components/searchbar.vue';
+import publishedpage from './components/publishedpage.vue';
+import privatepage from './components/privatepage.vue';
+
 import foot from './components/foot.vue';
 export default {
     data() {
@@ -128,22 +132,24 @@ export default {
             loadPage: 'published',
             listArticles: [],
             listPersonalArticles: [],
-            newTitle: "",
-            newPost: "",
-            newImgUrl: "",
+            // newTitle: "",
+            // newPost: "",
+            // newImgUrl: "",
             onSearch: false,
             searchText: "",
-            selectedArticle: {},
-            uploadImg: "http://www.jaipuriaschoolkanpurroad.in/gorakhpur-website/wp-content/uploads/2016/11/blank-img.jpg"
+            // selectedArticle: {},
+            // uploadImg: "http://www.jaipuriaschoolkanpurroad.in/gorakhpur-website/wp-content/uploads/2016/11/blank-img.jpg"
         }
     },
     components: {
         navleft,
         navright,
-        foot,
+        // foot,
         sidenav,
         searchbar,
-        'editor': Editor
+        publishedpage,
+        privatepage,
+        // 'editor': Editor
     },
     methods:{
         toDraftPage(){
@@ -246,6 +252,229 @@ export default {
                 showConfirmButton: false
             })
         },
+        // Article
+        getArticle(){
+            axios({
+                method: "GET",
+                url: `http://localhost:3000/article`
+            })
+                .then(({data})=>{
+                    data.sort(function(a,b){
+                        return new Date(a.updatedAt) - new Date(b.updatedAt);
+                    });
+                    this.listArticles = data
+                    console.log(data[0])
+                })
+                .catch(err => {
+                    console.log("Error from getArticle: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                })
+        },
+        getPersonalArticle(){
+            axios({
+                method: "GET",
+                url: `http://localhost:3000/article/mypost`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+                .then(({data})=>{
+                    data.sort(function(a,b){
+                        return new Date(b.updatedAt) - new Date(a.updatedAt);
+                    });
+                    this.listPersonalArticles = data
+                })
+                .catch(err => {
+                    console.log("Error from getPersonalArticle: ", err)
+                })
+        },
+        // readURL(e) {
+        //     var files = e.target.files || e.dataTransfer.files;
+        //     if (!files.length) return;
+        //         this.newImgUrl = files[0]
+        //     this.uploadImg = URL.createObjectURL(file);
+        // },
+        // postArticle(){
+        //     let formData = new FormData();
+        //     formData.set("title", this.newTitle);
+        //     formData.append("imgUrl", this.newImgUrl);
+        //     formData.set("content", this.newPost);
+        //     axios({
+        //         method: "POST",
+        //         url: `http://localhost:3000/article/create`,
+        //         data: formData,
+        //         headers: {
+        //             token: localStorage.getItem('token')
+        //         },
+        //         config: { headers: {'Content-Type': 'multipart/form-data' }}
+        //     })
+        //         .then(() => {
+        //             this.getArticle()
+        //             this.getPersonalArticle()
+        //             this.newTitle = ""
+        //             this.newImgUrl = ""
+        //             this.newPost = ""
+        //             this.loadPage = 'published'
+        //         })
+        //         .catch(err => {
+        //             console.log("Error from postArticle: ", err)
+        //         })
+        // },
+        // deleteArticle(id){
+        //     axios({
+        //         method: "DELETE",
+        //         url: `http://localhost:3000/article/${id}`,
+        //         headers: {
+        //             token: localStorage.getItem('token')
+        //         }
+        //     })
+        //         .then(() => {
+        //             console.log("Delete success")
+        //             this.getArticle()
+        //             this.getPersonalArticle()
+        //             this.loadPage = 'published'
+        //         })
+        //         .catch(err => {
+        //             console.log("Error from deleteArticle: ", err)
+        //             Swal.fire({
+        //                 title: 'Error!',
+        //                 text: `${err.response.data.message}`,
+        //                 type: 'error',
+        //                 confirmButtonText: 'OK'
+        //             })
+        //         })
+        // },
+        changeSearch(){
+            if(this.onSearch === false){
+                this.onSearch = true
+            } else {
+                this.onSearch = false
+                this.searchText = ''
+            }
+        },
+        readMore(id){
+            axios({
+                method: "GET",
+                url: `http://localhost:3000/article/read/${id}`
+            })
+                .then(({data})=>{
+                    console.log("Get data:", data)
+                    this.selectedArticle = data
+                    this.loadPage = 'read-more'
+                })
+                .catch(err => {
+                    console.log("Error from readMore: ", err)
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${err.response.data.message}`,
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                })
+        },
+        shortText(text){
+            // return text.split(' ').slice(0,10).join(' ')
+            let data = text.split(' ')
+            let data1 = data.slice(0,10).join(' ')
+            if(data.length > 10){
+                return data1 + ' ...'
+            }
+            return data1
+        },
+        // beforeEdit(id){
+        //     axios({
+        //         method: "GET",
+        //         url: `http://localhost:3000/article/edit/${id}`,
+        //         headers: {
+        //             token: localStorage.getItem('token')
+        //         }
+        //     })
+        //         .then(({data})=>{
+        //             console.log("Get data:", data)
+        //             this.newTitle = data.title
+        //             this.newImgUrl = data.imgUrl
+        //             this.newPost = data.content
+        //             this.selectedArticle = data
+        //             this.loadPage = 'edit-mode'
+        //         })
+        //         .catch(err => {
+        //             console.log("Error from beforeEdit: ", err)
+        //             Swal.fire({
+        //                 title: 'Error!',
+        //                 text: `${err.response.data.message}`,
+        //                 type: 'error',
+        //                 confirmButtonText: 'OK'
+        //             })
+        //         })
+        // },
+        // afterEdit(id){
+        //     axios({
+        //         method: "PATCH",
+        //         url: `http://localhost:3000/article/${this.selectedArticle._id}`,
+        //         data: {
+        //             title: this.newTitle,
+        //             imgUrl: this.newImgUrl,
+        //             content: this.newPost
+        //         },
+        //         headers: {
+        //             token: localStorage.getItem('token')
+        //         }
+        //     })
+        //         .then(() => {
+        //             this.getArticle()
+        //             this.getPersonalArticle()
+        //             this.newTitle = ""
+        //             this.newImgUrl = ""
+        //             this.newPost = ""
+        //             this.loadPage = 'published'
+        //         })
+        //         .catch(err => {
+        //             console.log("Error from afterEdit: ", err)
+        //             Swal.fire({
+        //                 title: 'Error!',
+        //                 text: `${err.response.data.message}`,
+        //                 type: 'error',
+        //                 confirmButtonText: 'OK'
+        //             })
+        //         })
+        // },
+    },
+    created(){
+        if(localStorage.getItem("token")){
+            this.isLogin = true
+            this.usersign = 'logout'
+            this.getPersonalArticle()
+        }
+        axios({
+            method: "GET",
+            url: `http://localhost:3000/article`
+        })
+            .then(({data})=>{
+                this.listArticles = data
+            })
+            .catch(err => {
+                console.log("Error from created")
+                console.log(err)
+            })
+    },
+    computed: {
+        filteredList() {
+            return this.listArticles.filter(post => {
+                let onlist = `${post.title} ${post.content}`
+                return onlist.toLowerCase().includes(this.searchText.toLowerCase())
+            })
+        },
+        privateFilteredList() {
+            return this.listPersonalArticles.filter(post => {
+                let onlist = `${post.title} ${post.content}`
+                return onlist.toLowerCase().includes(this.searchText.toLowerCase())
+            })
+        }
     }
 }
 </script>
@@ -336,6 +565,7 @@ export default {
         background-color: white;
         overflow: auto;
         flex: 2;
+        padding-top: 20px;
     }
 
     .sidenav a {
@@ -395,7 +625,7 @@ export default {
     footer {
         flex-shrink: 0;
         height: 10rem;
-        position: relative;
+        position: absolute;
         padding: 3rem;
         right: 0;
         bottom: 0;
