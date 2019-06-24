@@ -1,0 +1,16 @@
+.hero {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../img//kale-salad.jpg');
+    color: whitesmoke
+}
+h1.title  {
+    color: white;
+    font-family: 'Contrail One',serif;
+}
+p.subtitle {
+    color : white;
+    font-family: 'Roboto Condense',serif;
+}
+a.navbar-item {
+    color : white;
+    font-family: 'Contrail One',serif;
+}
