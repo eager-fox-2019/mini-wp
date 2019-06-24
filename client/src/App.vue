@@ -87,22 +87,14 @@
                             <button @click.prevent="deleteArticle(selectedArticle._id)" class="btn btn-danger">Delete</button>
                         </div>
                     </form>
-                </div>
+                </div> -->
 
                 <div v-show="loadPage === 'read-more'">
-                    <div class="container-post">
-                        <div class="articles">
-                            <div class="card align-items-*-center">
-                                <img class="card-img-top-display" v-bind:src="selectedArticle.imgUrl" alt="Image">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ selectedArticle.title }}</h5>
-                                    <div class="card-text" v-html="selectedArticle.content"></div>
-                                    <button @click.prevent="toPublishedPage" class="btn btn-primary">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+                    <readmore
+                        @to-published-page="toPublishedPage"
+                        v-bind:selectedArticleProps="selectedArticle"
+                    ></readmore>
+                </div>
             </div>
         </main>
 
@@ -119,6 +111,7 @@ import sidenav from './components/sidenav.vue';
 import searchbar from './components/searchbar.vue';
 import publishedpage from './components/publishedpage.vue';
 import privatepage from './components/privatepage.vue';
+import readmore from './components/readmore.vue';
 
 import foot from './components/foot.vue';
 export default {
@@ -137,7 +130,7 @@ export default {
             // newImgUrl: "",
             onSearch: false,
             searchText: "",
-            // selectedArticle: {},
+            selectedArticle: {},
             // uploadImg: "http://www.jaipuriaschoolkanpurroad.in/gorakhpur-website/wp-content/uploads/2016/11/blank-img.jpg"
         }
     },
@@ -149,6 +142,7 @@ export default {
         searchbar,
         publishedpage,
         privatepage,
+        readmore,
         // 'editor': Editor
     },
     methods:{

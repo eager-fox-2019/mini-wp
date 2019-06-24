@@ -145,7 +145,6 @@ nav{
 footer {
     flex-shrink: 0;
     height: 10rem;
-    position: relative;
     padding: 3rem;
     right: 0;
     bottom: 0;
