@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import ax from './helpers/axiosInstance';
-
 export default {
   props: ['article',],
   data() {
@@ -34,9 +32,13 @@ export default {
       this.$emit('edit');
     },
     delete1() {
-      
+      this.alert = 'Loading ...';
+      this.$emit('delete');
+      setTimeout(() => {
+        this.alert = '';
+      }, 3200);
     },
-  }
+  },
 }
 </script>
 

@@ -8,7 +8,7 @@ const Multer = require('multer');
 const multer = Multer({
   storage: Multer.memoryStorage(),
   limits: {
-    fileSize: 4800000
+    fileSize: 4000000
   }
 });
 

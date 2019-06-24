@@ -5,7 +5,7 @@ module.exports = {
     Article.findById(req.params.id)
       .exec()
       .then(article => {
-        if(String(article.owner) === String(req.userData.id)) {
+        if(String(article.author) === String(req.userData.id)) {
           next()
         } else {
           console.log("AUTH FAILED")

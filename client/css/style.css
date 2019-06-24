@@ -201,7 +201,7 @@ nav {
   padding: 0 1rem;
 }
 
-#articletitle {
+#articletitle, #edittitle {
   margin: 0;
   padding: 0.2rem 0.5rem;
   font-family: "Zilla Slab", serif;
@@ -209,13 +209,17 @@ nav {
   background: none;
   color: white;
 }
-#articletitle::placeholder {
+#articletitle::placeholder, #edittitle::placeholder {
   color: #c8c8c8;
 }
 
+#edittitle {
+  padding: 0.4rem 0.5rem;
+}
+
 .viewertitle {
-  margin: 0 0 0.5rem 0;
-  padding: 0.2rem 0.5rem;
+  margin: 0 0 0.3rem 0;
+  padding: 0.3rem 0.5rem 0 0.5rem;
   font-family: "Zilla Slab", serif;
   font-size: 1.8rem;
   background: none;
@@ -344,10 +348,15 @@ nav {
   color: rgba(34, 34, 34, 0.8);
 }
 
+.smallheading {
+  font-size: 0.9rem;
+  color: #d8d8d8;
+}
+
 .taglist {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 0 0.5rem 0;
+  padding: 0.3rem 0 0.5rem 0;
 }
 
 .tagbutton {
@@ -395,8 +404,8 @@ nav {
 .viewerimage {
   display: flex;
   justify-content: center;
-  width: 18rem;
-  height: 12rem;
+  width: 21rem;
+  height: 14rem;
 }
 .viewerimage img {
   max-width: 100%;

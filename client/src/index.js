@@ -6,7 +6,7 @@ import NavComponent from './navcomponent.vue';
 import TipTap from './tiptap.vue';
 import ArticleCard from './articlecard.vue';
 import MyArticle from './myarticle.vue';
-import TiptapViewer from './tiptapviewer.vue'
+import TiptapViewer from './tiptapviewer.vue';
 
 let headers = { 'Authorization': localStorage.getItem('token') };
 
@@ -145,6 +145,16 @@ let app = new Vue({
       this.editSection = true;
       this.editor.title = a.title
       this.editor.tags = a.tags.join(', ')
+    },
+    delete1(a) {
+      let id = a._id;
+      ax.delete(`articles/${id}`, { headers })
+        .then(() => {
+          this.goTo(5);
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
     }
   },
   mounted() {
