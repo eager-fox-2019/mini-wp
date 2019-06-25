@@ -33,22 +33,6 @@
             >
 
             <h6>Tags</h6>
-            <div class="input-group mb-1" style="width: 20em;">
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    placeholder="Article tags" 
-                    aria-label="Article tags" 
-                    aria-describedby="button-addon2"
-                    v-model="tagValue"
-                >
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button"
-                    @click.prevent="clickAddTags" 
-                    id="button-addon2">Add</button>
-                </div>
-            </div>
-
             <div v-show="this.newarticle.tags!==undefined" class="mb-1">
                 <div 
                     v-for="(tag, index) in this.newarticle.tags"

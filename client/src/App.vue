@@ -305,7 +305,6 @@ export default {
         logout: function() {
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
-                console.log('User signed out.');
                 gapi.signin2.render('google-signin-button');
             });
 
@@ -543,6 +542,7 @@ export default {
             this.menus.searchResult=false
         },
         goToHomePage: function() {
+            this.fetchArticles()
             this.menus.login=false
             this.menus.register=false
             this.menus.home=true
