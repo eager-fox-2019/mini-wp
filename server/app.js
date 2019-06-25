@@ -11,7 +11,7 @@ const errorHandler = require('./helpers/error-handler.js');
 
 let local = 'mongodb://localhost/mini-wp'
 let uri = 'mongodb+srv://admin:admin@cluster0-ezblw.gcp.mongodb.net/mini-wp-db?retryWrites=true&w=majority'
-mongoose.connect(local, {useNewUrlParser: true});
+mongoose.connect(uri, {useNewUrlParser: true});
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
