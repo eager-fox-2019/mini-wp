@@ -5,8 +5,13 @@
     </div>
     <div class="cardcontent">
       <div style="font-size: 1.5rem;">{{article.title}}</div>
-      <div>
-        By: {{article.author.email}}<br>
+      <div style="font-size: 0.9rem;">
+        <div style="display:flex; justify-content: space-between">
+          <span>By: {{article.author.email}}</span>
+          <span>Published on:
+            <span class="datestring">{{dateString}}</span>
+          </span>
+        </div>
         <span style="color: #ddd;">Tags: {{article.tags.join(', ')}}</span>
       </div>
     </div>
@@ -15,7 +20,11 @@
 
 <script>
 export default {
-  props: ['article']
+  props: ['article'],
+  computed: {
+    dateString() {
+      return new Date(this.article.created_at).toDateString();
+    }
+  },
 }
 </script>
-

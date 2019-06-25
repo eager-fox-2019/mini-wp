@@ -8,7 +8,10 @@ import ArticleCard from './articlecard.vue';
 import MyArticle from './myarticle.vue';
 import TiptapViewer from './tiptapviewer.vue';
 
-let headers = { 'Authorization': localStorage.getItem('token') };
+function headers() {
+  let token1 = localStorage.getItem('token');
+  return { 'Authorization': token1 };
+};
 
 let app = new Vue({
   el: '#app',
@@ -51,16 +54,14 @@ let app = new Vue({
         this.editor.tags = ''
         this.file = null
       } else if(num === 4) {
-        console.log(headers)
-        ax.get('/articles', { headers })
+        ax.get('/articles', { headers: headers() })
           .then(({data}) => {
             console.log(data)
             this.allArticles = data
           })
           .catch(err => console.log(err))
       } else if(num === 5) {
-        console.log(headers)
-        ax.get('/articles/user', { headers })
+        ax.get('/articles/user', { headers: headers() })
           .then(({data}) => {
             console.log(data)
             this.myArticles = data
@@ -88,7 +89,7 @@ let app = new Vue({
       formData.append('tags', this.tagArray)
       this.alert = 'Loading ...';
 
-      ax.post('articles', formData, { headers })
+      ax.post('articles', formData, { headers: headers() })
         .then(({data}) => {
           console.log(data)
           this.showAlert('Success')
@@ -114,7 +115,7 @@ let app = new Vue({
       this.alert = 'Loading ...';
 
       let id = this.selectedArticle._id
-      ax.patch(`articles/${id}`, data, { headers })
+      ax.patch(`articles/${id}`, data, { headers: headers() })
         .then(({data}) => {
           console.log(data)
           this.showAlert('Updated')
@@ -150,7 +151,7 @@ let app = new Vue({
     },
     delete1(a) {
       let id = a._id;
-      ax.delete(`articles/${id}`, { headers })
+      ax.delete(`articles/${id}`, { headers: headers() })
         .then(() => {
           this.goTo(5);
         })
@@ -161,7 +162,7 @@ let app = new Vue({
   },
   mounted() {
     if (localStorage.getItem('token')) {
-      ax.post('users/check', {}, { headers })
+      ax.post('users/check', {}, { headers: headers() })
         .then(({data}) => {
           console.log(data)
           this.loggedIn = true;
