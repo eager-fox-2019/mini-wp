@@ -1,6 +1,6 @@
-JWT_SECRET=
-GOOGLE_CLIENT_ID=
-CLOUD_BUCKET=
-GCLOUD_PROJECT=
-KEYFILE_PATH=
-MONGO_MINI_WP=
+JWT_SECRET=<secret key for jwt>
+GOOGLE_CLIENT_ID=<google client id>
+CLOUD_BUCKET=<bucket name on google storage>
+GCLOUD_PROJECT=<project id on GCP>
+KEYFILE_PATH=<json key credential path for upload>
+MONGO_MINI_WP=<mongo db url>
