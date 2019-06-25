@@ -1,5 +1,5 @@
-const User = require('../models/user.js')
-const tkHelper = require('../helpers/token.js')
+const User = require('../models/user')
+const tkHelper = require('../helpers/token')
 
 module.exports = (req, res, next) => {
   if(req.headers.authorization) {
