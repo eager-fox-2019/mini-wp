@@ -51,6 +51,7 @@ let app = new Vue({
         this.editor.tags = ''
         this.file = null
       } else if(num === 4) {
+        console.log(headers)
         ax.get('/articles', { headers })
           .then(({data}) => {
             console.log(data)
@@ -58,6 +59,7 @@ let app = new Vue({
           })
           .catch(err => console.log(err))
       } else if(num === 5) {
+        console.log(headers)
         ax.get('/articles/user', { headers })
           .then(({data}) => {
             console.log(data)
