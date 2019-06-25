@@ -121,6 +121,12 @@ export default {
   },
   created() {
     this.loggedInUser = JSON.parse(localStorage.user);
+    this.ax = axios.create({
+      baseURL: serverURL,
+      headers: {
+        token: localStorage.getItem("token")
+      }
+    });
     this.lastsave();
     setTimeout(() => {
       this.load_editor();

@@ -250,7 +250,7 @@ export default {
         if (confirm) {
           this.ax({
             method: "DELETE",
-            url: "http://localhost:3000/articles/" + String(article._id),
+            url: "/articles/" + String(article._id),
             headers: {
               token: localStorage.token
             }

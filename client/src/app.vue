@@ -139,7 +139,7 @@ export default {
       swal("Account Created", "Successfully created an account", "success");
     },
     initAxios() {
-      const serverURL = "http://localhost:3000";
+      const serverURL = "http://35.240.148.150";
       this.ax = axios.create({
         baseURL: serverURL,
         headers: {
