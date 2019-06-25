@@ -8,20 +8,18 @@ const routes = require('./routes/');
 const errorHandler = require('./middleware/errorhandler')
 
 // local mongodb connection
-mongoose.connect('mongodb://localhost/miniwp', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-})
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.log("MongoDB can't connect"))
+// mongoose.connect('mongodb://localhost/miniwp', {
+//   useNewUrlParser: true,
+//   useCreateIndex: true,
+//   useFindAndModify: false,
+// })
+// .then(() => console.log("MongoDB connected"))
+// .catch(err => console.log("MongoDB can't connect"))
 
 // atlas connection
-// mongoose.connect(process.env.ATLAS_URLA, {
-  //   useNewUrlParser: true,
-  //   useCreateIndex: true,
-  //   useFindAndModify: false,
-  // })
+mongoose.connect(process.env.ATLAS_URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, })
+  .then(() => console.log("MongoDB Atlas connected"))
+  .catch(err => console.log("MongoDB Atlas can't connect"))
   
 app.use(cors())
 app.use(express.urlencoded({ extended: false }))
