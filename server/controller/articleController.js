@@ -1,7 +1,17 @@
 const article = require('../models/article')
 
 class articleController{
-    
+    static find(req,res){
+        article
+            .find()
+            .then((data)=>{
+                console.log("get articles")
+                res.status(200).json(data)
+            })
+            .catch((err)=>{
+                res.status(400).json(err)
+            })
+    }
     static findAll(req,res){
         article
             .find({author: req.decoded._id})

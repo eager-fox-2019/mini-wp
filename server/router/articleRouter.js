@@ -8,7 +8,8 @@ const {
 
 'localhost:3000/articles'
 
-router.get('/', articleController.findAll)
+router.get('/', articleController.find)
+router.get('/myArticles', articleController.findAll)
 router.get('/:id', articleController.findOne)
 router.post('/', upload.single('image'), sendUploadToGCS, articleController.create)
 router.patch('/:id', authorization, upload.single('image'), sendUploadToGCS, articleController.update)
