@@ -47,7 +47,8 @@ class articleController{
             content: req.body.content,
             created_at: new Date(),
             image: image,
-            author: req.decoded._id
+            author: req.decoded._id,
+            tags: req.body.tags
         }
         article
             .create(objInput)
