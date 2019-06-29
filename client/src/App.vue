@@ -53,7 +53,8 @@
 </template>
 
 <script>
-const url = `http://localhost:3000`;
+const url = `http://34.87.13.129`;
+
 import navbarHome from "./components/navbarHome.vue";
 import loginPage from "./components/loginPage.vue";
 import registerPage from "./components/registerPage.vue";
@@ -138,6 +139,7 @@ export default {
         }
       })
         .then(result => {
+          console.log(result.data)
           this.articles = result.data;
           this.allTags = this.filterTag(this.articles);
           if (cb) {
@@ -165,7 +167,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error.response.data);
+          console.log(error);
         });
     },
     filterTag(input) {

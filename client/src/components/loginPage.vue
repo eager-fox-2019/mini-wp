@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-const url = `http://localhost:3000`;
+const url = `http://34.87.13.129`;
 export default {
   name: "login-page",
   props: ["islogin"],
@@ -62,7 +62,9 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    console.log(url)
+  },
   methods: {
     clearAll() {
       this.login.email = "";
@@ -84,6 +86,7 @@ export default {
           this.showHome();
         })
         .catch(error => {
+          console.log(error)
           this.error.login = `${error.response.data.message}`;
         });
     },
@@ -105,7 +108,7 @@ export default {
           this.showHome();
         })
         .catch(error => {
-          this.error.login = `${error.response.data.message}`;
+          this.error.login = `${error}`;
         });
     },
     showHome() {

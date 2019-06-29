@@ -10249,7 +10249,7 @@ exports.default = void 0;
 //
 //
 //
-var url = "http://localhost:3000";
+var url = "http://34.87.13.129";
 var _default = {
   name: "login-page",
   props: ["islogin"],
@@ -10267,7 +10267,9 @@ var _default = {
       }
     };
   },
-  created: function created() {},
+  created: function created() {
+    console.log(url);
+  },
   methods: {
     clearAll: function clearAll() {
       this.login.email = "";
@@ -10291,6 +10293,7 @@ var _default = {
 
         _this.showHome();
       }).catch(function (error) {
+        console.log(error);
         _this.error.login = "".concat(error.response.data.message);
       });
     },
@@ -10315,7 +10318,7 @@ var _default = {
 
         _this2.showHome();
       }).catch(function (error) {
-        _this2.error.login = "".concat(error.response.data.message);
+        _this2.error.login = "".concat(error);
       });
     },
     showHome: function showHome() {
@@ -10524,7 +10527,7 @@ exports.default = void 0;
 //
 //
 //
-var url = "http://localhost:3000";
+var url = "http://34.87.13.129";
 var _default = {
   name: "register-page",
   props: ["islogin"],
@@ -10561,7 +10564,7 @@ var _default = {
 
         _this.clearAll();
       }).catch(function (error) {
-        _this.error.register = "".concat(error.response.data);
+        _this.error.register = error.response.data.message;
       });
     }
   }
@@ -10755,7 +10758,7 @@ exports.default = void 0;
 //
 //
 //
-var url = "http://localhost:3000";
+var url = "http://34.87.13.129";
 var _default = {
   name: "allArticle-page",
   props: ["data", "home", "articleStats"],
@@ -11884,7 +11887,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-var url = "http://localhost:3000";
+var url = "http://34.87.13.129";
 var _default = {
   name: "navbar-login",
   props: [],
@@ -12159,7 +12162,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-var url = "http://localhost:3000";
+var url = "http://34.87.13.129";
 var _default = {
   name: "navbar-login",
   props: ["editSelect"],
@@ -12491,7 +12494,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-var url = "http://localhost:3000";
+var url = "http://34.87.13.129";
 var _default = {
   name: "app",
   data: function data() {
@@ -12570,6 +12573,7 @@ var _default = {
           token: localStorage.getItem("token")
         }
       }).then(function (result) {
+        console.log(result.data);
         _this.articles = result.data;
         _this.allTags = _this.filterTag(_this.articles);
 
@@ -12599,7 +12603,7 @@ var _default = {
           cb();
         }
       }).catch(function (error) {
-        console.log(error.response.data);
+        console.log(error);
       });
     },
     filterTag: function filterTag(input) {
@@ -13214,7 +13218,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52340" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60495" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
