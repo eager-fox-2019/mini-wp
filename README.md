@@ -1,5 +1,7 @@
 ## Documentation
 
+DEPLOY: http://miniwp.orvinsavero.com/
+
 ## Register 
 
 - route:
