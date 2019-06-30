@@ -10249,7 +10249,7 @@ exports.default = void 0;
 //
 //
 //
-var url = "http://34.87.13.129";
+var url = "http://localhost:3000";
 var _default = {
   name: "login-page",
   props: ["islogin"],
@@ -10527,7 +10527,7 @@ exports.default = void 0;
 //
 //
 //
-var url = "http://34.87.13.129";
+var url = "http://localhost:3000";
 var _default = {
   name: "register-page",
   props: ["islogin"],
@@ -10758,7 +10758,8 @@ exports.default = void 0;
 //
 //
 //
-var url = "http://34.87.13.129";
+var url = "http://localhost:3000"; //localhost:3000 http://34.87.13.129
+
 var _default = {
   name: "allArticle-page",
   props: ["data", "home", "articleStats"],
@@ -11887,7 +11888,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-var url = "http://34.87.13.129";
+var url = "http://localhost:3000";
 var _default = {
   name: "navbar-login",
   props: [],
@@ -12162,7 +12163,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-var url = "http://34.87.13.129";
+var url = "http://localhost:3000";
 var _default = {
   name: "navbar-login",
   props: ["editSelect"],
@@ -12494,7 +12495,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-var url = "http://34.87.13.129";
+var url = "http://localhost:3000";
 var _default = {
   name: "app",
   data: function data() {
@@ -13218,7 +13219,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60495" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51441" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

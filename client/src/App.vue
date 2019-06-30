@@ -53,7 +53,7 @@
 </template>
 
 <script>
-const url = `http://34.87.13.129`;
+const url = `http://localhost:3000`;
 
 import navbarHome from "./components/navbarHome.vue";
 import loginPage from "./components/loginPage.vue";

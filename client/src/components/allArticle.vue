@@ -43,7 +43,8 @@
 </template>
 
 <script>
-const url = `http://34.87.13.129`;
+const url = `http://localhost:3000`;
+//localhost:3000 http://34.87.13.129
 export default {
   name: "allArticle-page",
   props: ["data", "home", "articleStats"],

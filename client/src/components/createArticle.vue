@@ -42,7 +42,7 @@
 </template>
 
 <script>
-const url = `http://34.87.13.129`;
+const url = `http://localhost:3000`;
 import PictureInput from "vue-picture-input";
 export default {
   name: "navbar-login",

@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-const url = `http://34.87.13.129`;
+const url = `http://localhost:3000`;
 export default {
   name: "login-page",
   props: ["islogin"],
