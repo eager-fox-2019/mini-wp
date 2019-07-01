@@ -48,7 +48,7 @@ class UserControllers {
     })
     .then(user => {
       const token = genToken({ _id: user.id, name: name, email: email })
-      res.json({ token: token, name: user.name })
+      res.json({ token: token, name: user.name, email: user.email })
     })
     .catch(next)
   }
