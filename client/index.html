@@ -1,18 +1,346 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>MiniWP</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="./vueWysiwyg.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
-<body>
-    <div id='app'>
+
+<body style="height: 100%; ">
+    <div id="app" style="height: 100%">
+        <div v-show='islogin === false'
+            style='background-color:rgb(75, 74, 74); height:100%'>
+            <div class='row justify-content-center'>
+                <h1 style='color:white' class='mt-5'>MiniWP</h1>
+                <div class='col-sm-12 row justify-content-center mt-5' v-if='loginPage'>
+                    <form class="form-group" style='color:white'>
+                        login
+                        <label for="exampleInputEmail1">
+                            email
+                        </label>
+                        <input type='text' v-model='email' id="exampleInputEmail1" class="form-control">
+                        <label>
+                            password
+                        </label>
+                        <input class="form-control" type='password' v-model='password'>
+                        <button type="button" class="btn btn-primary m-2" v-on:click.prevent="login">login</button>
+                        <button type="button" class="btn btn-primary m-2"
+                            v-on:click.prevent="registerPage=true;loginPage=false">dont have any account yet</button>
+                    </form>
+                </div>
+                <div class=' col-sm-12 row justify-content-center mt-5' v-if='registerPage'>
+                    <form class="form-group" style='color:white'>
+                        register
+                        <label>
+                            name
+                        </label>
+                        <input class="form-control" type='text' v-model='name'>
+                        <label>
+                            email
+                        </label>
+                        <input class="form-control" type='text' v-model='email'>
+                        <label>
+                            password
+                        </label>
+                        <input class="form-control" type='password' v-model='password'>
+                        <button type="button" class="btn btn-primary m-2"
+                            v-on:click.prevent="registerPage=false;loginPage=true">already have an account</button>
+                        <button type="button" class="btn btn-primary m-2" v-on:click.prevent="register">register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div v-if='islogin' style="height:100%">
+            <div id="banner" class="row bg-dark text-light sticky-top">
+                <div class="col-sm d-flex justify-content-start">
+                    <div id="Logo" class="py-3 px-3 text-light" style="font-size:20px">
+                        My Word press
+                    </div>
+                </div>
+
+                <div class="col-sm d-flex justify-content-end">
+                    <a href="#" id="profile" class="py-3 px-3 text-light" @click='signout'>
+                        <i class="far fa-user-circle"></i>
+                    </a>
+                </div>
+            </div>
+            <div id="body" class="row" style="height: 100%; ">
+
+                <div id="nav" class="col-sm-2  px-0" style="background-color:rgb(248, 248, 248) ">
+                    <div class="card" style="border:none; background-color: white;border-radius: 0">
+                        <button aria-expanded="true" class="card-header btn btn-link text-body" type="button"
+                            id="add_post_button" style="text-align:left; height: 3rem;"
+                            v-on:click.prevent="toShowAndHide('everyonesArticle')">
+                            Read all articles
+                        </button>
+
+                    </div>
+                    <div class="card" style="border:none; background-color: white;border-radius: 0">
+                        <button aria-expanded="true" class="card-header btn btn-link text-body" type="button"
+                            id="add_post_button" style="text-align:left; height: 3rem;"
+                            v-on:click.prevent="toShowAndHide('addArticle')">
+                            Add Post
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="accordion" id="accordionExample">
+                        <div class="card" style="border:none; background-color: white; border-radius: 0">
+
+                            <button v-if='articles.length > 0' data-target="#collapseOne" aria-expanded="true"
+                                aria-controls="collapseOne" class="card-header btn btn-link text-body" type="button"
+                                data-toggle="collapse" id="headingOne" style="text-align:left; height: 3rem;"
+                                v-on:click.prevent="toShowAndHide('allArticles')">
+                                Manage my articles
+                            </button>
+                            <div id="collapseOne" class="collapse show " aria-labelledby="headingOne"
+                                data-parent="#accordionExample">
+                                <div class="card-body p-0" style="background-color:#e7e5e5;">
+                                    <div class="card" style="border:none; background-color: #e7e5e5;border-radius: 0">
+                                        <button style="font-size: small; text-align: left" aria-expanded="true"
+                                            class="card-header btn btn-link text-body" type="button"
+                                            id="add_post_button" style="text-align:left; height: 3rem;"
+                                            v-for="article in articles" v-on:click.prevent="read(article._id)">
+                                            {{article.title}}
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="py-5 mt-3" style="text-align: center; color: #c2c1c1">
+                        <i class="fas fa-quote-left"></i> always be happy <i class="fas fa-quote-right"></i>
+                    </div>
+                </div>
+                <div id="content" class="pt-3 col-sm row justify-content-center" style="height: 100%;">
+                    <div id="allArticles" class="row col-sm-12" style="height: 100%; padding-bottom: 100px;"
+                        v-show="showHide.allArticles">
+                        <div class='col-12'>
+                            <form @submit.prevent='' class="mb-3">
+                                <input type='text' v-model='search' style='width:100%; height:3rem'
+                                    placeholder="search by title">
+                            </form>
+                        </div>
+                        <div class="d-flex justify-content-center col-12" style="height: 100%; overflow-y:scroll">
+                            <div id="listArticle" class="col-sm-9" style="height: 100%;">
+                                <div class="row" v-for="article in filtered">
+                                    <div class="col-sm-12">
+                                        <div class="card my-3 shadow-sm p-3 mb-5 bg-white rounded">
+                                            <div class="card-body pb-1">
+                                                <div id="article heading"
+                                                    class='d-flex flex-wrap justify-content-between'>
+                                                    <h5 class="card-title">{{article.title}}</h5>
+                                                    <h5 style="font-size:medium" class="text-muted">
+                                                        {{article.created_at}}</h5>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="text-center" v-if="article.image">
+                                                    <img style="width:70%" class="my-3" :src="article.image"
+                                                        class="rounded" alt="...">
+                                                </div>
+                                                <span v-html='article.content'></span>
+                                                <div class='d-flex flex-row-reverse'>
+                                                    <a href="#" style="font-size:medium" class="text-muted"
+                                                        v-on:click.prevent="read(article._id)">read</a>
+                                                    <p class="text-muted"> | </p>
+                                                    <a href="#" style="font-size:medium" class="text-muted"
+                                                        v-on:click.prevent='updatePage(article._id)'>edit</a>
+                                                    <p class="text-muted"> | </p>
+                                                    <a href="#" style="font-size:medium" class="text-muted"
+                                                        v-on:click.prevent='deleteArticle(article._id)'>delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="everyonesArticle" class="row col-sm-12" style="height: 100%; padding-bottom: 100px;"
+                        v-show="showHide.everyonesArticle">
+                        <div class='col-12'>
+                            <form @submit.prevent='' class="mb-3">
+                                <input type='text' v-model='search' style='width:100%; height:3rem'
+                                    placeholder="search by title">
+                            </form>
+                        </div>
+                        <div class='col-12'>
+                            <div class='chip m-1 button' v-if='filterTag' @click.prevent='filterByTag()'> <  </div>
+
+                            <div class='chip m-1 button' v-for='tag of allTags' @click.prevent='filterByTag(tag)'>{{tag}}</div>
+                            </div>
+
+                        <div class="d-flex justify-content-center col-12" style="height: 100%; overflow-y:scroll">
+                            <div id="listArticle" class="col-sm-9" style="height: 100%;">
+                                <div class="row" v-for="article in filteredAllArticle">
+                                    <div class="col-sm-12">
+                                        <div class="card my-3 shadow-sm p-3 mb-5 bg-white rounded">
+                                            <div class="card-body pb-1">
+                                                <div id="article heading"
+                                                    class='d-flex flex-wrap justify-content-between'>
+                                                    <h5 class="card-title">{{article.title}}</h5>
+                                                    <h5 style="font-size:medium; color:rgb(156, 156, 156)">
+                                                        {{article.created_at}}</h5>
+                                                </div>
+                                                <div>
+                                                    <div style='color:rgb(156, 156, 156)' v-if='article.author'>
+                                                        {{article.author.name}}
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="text-center" v-if="article.image">
+                                                    <img style="width:70%" class="my-3" :src="article.image"
+                                                        class="rounded" alt="...">
+                                                </div>
+
+                                                <span v-html='article.content'></span>
+                                                <div class='d-flex flex-row-reverse'>
+                                                    <a href="#" style="font-size:medium" class="text-muted"
+                                                        v-on:click.prevent="readAllArticle(article._id)">read</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="addArticle" class="col-sm-12 p-5" style="display: none" v-show="showHide.addArticle"
+                        style='overflow-y: scroll'>
+                        <div class="d-flex flex-column">
+                            <h5>Create New Post</h5>
+                            <form>
+                                <div class="py-3">
+                                </div>
+                                <div class='mb-4'>
+                                    <input id='title' name="title" placeholder="Title" style="width: 50%; height: 3rem"
+                                        autocomplete="off" v-model='newArticle.title'>
+                                </div>
+                                <div class='chip m-1' v-for='tag of newArticle.tags'>{{tag}}<span class="closebtn"
+                                        @click.prevent="removeTags('create')">&times;</span></div>
+                                <div class='mt-2'>
+                                    <label for='tags'>Tags :</label>
+                                    <input v-model='newArticle.newTag' name='tags' 
+                                        placeholder="input tags here" type='text' @keyup.enter='addTags("create")'></input>
+                                </div>
+                                <div class='mt-2'>
+                                    <label for='image'>Cover Image: </label>
+                                    <input name='image' id='imageInput' type="file"
+                                        v-on:change="uploadImage($event)"><br>
+                                </div>
+                                <div class='mt-5'>
+                                    <wysiwyg v-model='newArticle.text'></wysiwyg>
+                                </div>
+                                <button type='button' v-on:click.prevent="addNewArticle">
+                                    Submit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="updateArticlePage" class="col-sm-12 p-5" style="display: none"
+                        v-show="showHide.updateArticlePage">
+                        <div class="d-flex flex-column">
+                            <h5>Edit Your Article</h5>
+                            <form>
+                                <div class="py-3">
+                                </div>
+
+                                <div class='mb-4'>
+                                    <input id='titleUpdate' name="title" placeholder="Title"
+                                        style="width: 50%; height: 3rem" autocomplete="off"
+                                        v-model='updateArticle.title'>
+                                </div>
+                                <div class='chip m-1' v-for='tag of updateArticle.tags'>{{tag}}<span class="closebtn"
+                                        @click.prevent="removeTags('update', tag)">&times;</span></div>
+                                <div class='mt-2'>
+
+                                    <label for='tags'>Tags :</label>
+                                    <input v-model='updateArticle.newTag' name='tags' id='tags'
+                                    placeholder="input tags here" type='text' @keyup.enter.prevent='addTags("update")'></input>
+                                </div>
+
+                                <div class='mt-2'>
+                                    <label for='image'>Cover Image: </label>
+                                    <input name='image' id='imageInputUpdate' type="file"
+                                        v-on:change="uploadImage($event)"><br>
+                                </div>
+                                <div class='mt-5'>
+                                    <wysiwyg v-model='updateArticle.text'></wysiwyg>
+                                </div>
+
+                                <button type="button" v-on:click.prevent="update(updateArticle.id)">
+                                    Submit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="eachArticle" class="col-sm-12 p-3 justify-content-center"
+                        style="height: 100%; padding-bottom:100px; overflow-y:scroll" v-show="showHide.eachArticle">
+                        <div class="pt-4">
+                            <h1>{{selectedArticle.title}}</h1>
+                        </div>
+                        <div v-if='selectedArticle.author'>
+                            <div>{{selectedArticle.author.name}}</div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <!-- if there is image -->
+                        <div class="text-center" v-if="selectedArticle.image">
+                            <img style="width:70%" class="my-3" :src="selectedArticle.image" class="rounded" alt="...">
+                        </div>
+                        <!-- end of conditional -->
+                        <div class='pt-3'>
+                            <span v-html="selectedArticle.content"></span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div style='color:aquamarine'>Tags: </div>
+                        <div class='chip m-1 blunt button' v-for='tag of selectedArticle.tags' @click.prevent=tagFromArticle(tag)>{{tag}}</div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
     </div>
-    <wysiwyg></wysiwyg>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-    <script src='./src/main.js'></script>
+
+
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./vueWysiwyg.js"></script>
+    <script src="./vue.js"></script>
+    <!-- 
+    <script>
+        CKEDITOR.replace('editor1');
+    </script> -->
+
+
 
 </body>
+
 </html>

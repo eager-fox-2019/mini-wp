@@ -4,6 +4,7 @@ class articleController{
     static find(req,res){
         article
             .find()
+            .populate('author')
             .then((data)=>{
                 console.log("get articles")
                 res.status(200).json(data)
@@ -15,6 +16,7 @@ class articleController{
     static findAll(req,res){
         article
             .find({author: req.decoded._id})
+            .populate('author')
             .then((data)=>{
                 console.log("get articles")
                 res.status(200).json(data)

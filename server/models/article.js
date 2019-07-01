@@ -9,7 +9,7 @@ const articleSchema = new Schema({
     content:String,
     created_at:Date,
     image:String,
-    tag:[],
+    tags:[],
     author:{ type: Schema.Types.ObjectId, ref: 'User'}
 })
 
