@@ -18,7 +18,7 @@
         </form>
       </div>
       <div style="display: flex; flex-direction: column; align-items: center; margin-top: 0.8rem; position: relative;">
-        <p style="margin-bottom: 0.7rem; color: #ccc">Or sign in with Google:</p>
+        <!-- <p style="margin-bottom: 0.7rem; color: #ccc">Or sign in with Google:</p> -->
         <!-- <div id="my-signin2"></div> -->
       </div>
     </div>

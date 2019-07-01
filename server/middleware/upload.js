@@ -1,6 +1,6 @@
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage({
-  keyFilename: './max_service_account.json'
+  keyFilename: './max_service_account_2.json'
 }); // Creates a client
 const bucketName = process.env.BUCKET;
 
