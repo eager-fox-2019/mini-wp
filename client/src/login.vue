@@ -52,6 +52,7 @@ export default {
       .then(({ data }) => {
         localStorage.setItem('token', data.token)
         localStorage.setItem('name', data.name)
+        localStorage.setItem('email', data.email)
         this.$emit('loggedIn', 'main')
       })
       .catch(err => { 
@@ -69,6 +70,7 @@ export default {
       .then(({ data }) => {
         localStorage.setItem('token', data.token)
         localStorage.setItem('name', data.name)
+        localStorage.setItem('email', data.email)
         this.$emit('loggedIn', 'main')
       })
       .catch(err => {

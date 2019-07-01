@@ -16,7 +16,7 @@ class UserControllers {
       if (!user || !pwdMatch(req.body.password, user.password)) throw { code: 404, message: `Invalid User/password` }
       
       const token = genToken({ _id: user.id, email: user.email })
-      res.json({ token: token, name: user.name })
+      res.json({ token: token, name: user.name, email: user.email })
     })
     .catch(next)
   }

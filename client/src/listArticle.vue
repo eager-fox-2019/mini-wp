@@ -13,31 +13,23 @@
     </div>
 
     <template v-for="article in filterarticles">
-      <div class="row row-list border-bottom border-secondary p-1" :key="article.id">
-        <div class="col">
-          <a v-on:click.prevent="readArticle(article._id)" href="#">{{ article.title }}</a>
-        </div>
-        <div class="col">
-          <span>{{ article.userId.name }}</span>
-        </div>
-        <div class="col">
-          <span>{{ article.createdAt }}</span>
-        </div>
-        <div class="col">
-          <a v-on:click.prevent="deleteArticle(article._id, article.title)" href="#" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash-alt"></i> delete
-          </a>
-          <a href="#" v-on:click.prevent="editArticle(article)" class="btn btn-primary btn-sm">
-            <i class="fas fa-pen"></i> edit
-          </a>
-        </div>
-      </div>
+      <articleRow :key="article.id" :article="article">
+        <a v-on:click.prevent="deleteArticle(article._id, article.title)" href="#" class="btn btn-danger btn-sm">
+        <i class="fas fa-trash-alt"></i> delete</a>
+        <a href="#" v-on:click.prevent="editArticle(article)" class="btn btn-primary btn-sm">
+        <i class="fas fa-pen"></i> edit</a>
+      </articleRow>
     </template>
   </div>
 </template>
 
 <script>
+import articleRow from './articleRow'
+
 export default {
+  components: {
+    articleRow
+  },
   data() {
     return {
       articles: [],
