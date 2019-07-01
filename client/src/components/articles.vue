@@ -6,7 +6,7 @@
       @keyup.enter="addTag"
       placeholder="Filter Article by Tag"
       class="form-control"
-    >
+    />
     <div v-if="filterStatus.length > 0">
       <div class="my-2 border d-flex align-items-center p-1">
         Filters :
@@ -33,89 +33,14 @@
         :key="article._id"
         class="row mx-3 border-bottom d-flex justify-content-center"
       >
-        <div class="row container-fluid px-0 d-flex justify-content-center">
-          <div
-            class="col-xl-3 col-lg-6 col-md-12 col-sm-12 p-3 d-flex align-items-center justify-content-center"
-          >
-            <div class="card border-0 p-3 m-3 text-white">
-              <img
-                :src="article.picture"
-                :alt="article.title"
-                class="img-thumbnail align-self-center"
-                style="max-width:320px; max-height:240px;"
-              >
-              <a href @click.prevent="readArticle(article)">
-                <div class="card-img-overlay h-100 d-flex flex-column justify-content-end">
-                  <div class="card-text border-0 bg-semitransparent text-center"></div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-8 col-md-12 col-sm-12 p-3">
-            <div class="row container-fluid px-0 mx-0 read">
-              <div class="col-12 m-0 p-0" href @click="readArticle(article)">
-                <div class="m-3">
-                  <h1>{{article.title}}</h1>
-                </div>
-                <small
-                  class="ml-3"
-                >Posted At {{new Date(article.postedAt).toDateString()}} {{new Date(article.postedAt).toLocaleTimeString()}}</small>
-
-                <div class="m-3">
-                  <span v-for="tag in article.tags" :key="tag" class="badge badge-secondary mr-3">
-                    <i class="fa fa-tags mr-1"></i>
-                    {{ tag }}
-                  </span>
-                </div>
-                <div class="m-3 mt-0">
-                  <p>{{article.content.split("").splice(0, 200).join("")}} ...</p>
-                </div>
-              </div>
-            </div>
-            <div
-              v-if="article.author._id == loggedInUser._id"
-              class="m-3 align-self-end d-flex justify-content-around"
-            >
-              <a href @click.prevent="deleteArticle(article)">
-                <i class="fa fa-trash fa-2x delete" aria-hidden="true"></i>
-              </a>
-              <a href @click.prevent="editArticle(article)">
-                <i class="fa fa-pencil-square-o fa-2x edit" aria-hidden="true"></i>
-              </a>
-              <a>
-                <i
-                  class="fa fa-heart fa-2x love text-muted"
-                  aria-hidden="true"
-                >&ensp;{{article.likedby.length}}</i>
-              </a>
-            </div>
-            <div
-              v-if="article.author._id !== loggedInUser._id"
-              class="m-3 align-self-end d-flex justify-content-end align-items-center"
-            >
-              <div class="p-3">
-                <img :src="article.author.picture" class="img rounded-circle border profile">
-                {{ article.author.name}}
-              </div>
-              <div class="p-3 ml-1">
-                <a @click.prevent="like_unlike(article, index)">
-                  <div v-if="checkLike(article.likedby) == true">
-                    <i
-                      class="fa fa-heart fa-2x love text-danger"
-                      aria-hidden="true"
-                    >&ensp;{{article.likedby.length}}</i>
-                  </div>
-                  <div v-if="checkLike(article.likedby) == false">
-                    <i
-                      class="fa fa-heart-o fa-2x love"
-                      aria-hidden="true"
-                    >&ensp;{{article.likedby.length}}</i>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <listview
+          :article="article"
+          :loggedInUser="loggedInUser"
+          @read="readArticle(article)"
+          @edit="editArticle(article)"
+          @delete="deleteArticle(article)"
+          @lu="like_unlike(article, index)"
+        ></listview>
       </div>
     </div>
     <div v-if="articles.length == 0" class="border my-2 p-5 text-center">
@@ -125,8 +50,10 @@
 </template>
 
 <script>
+import listview from "./listview.vue";
 export default {
-  props: ["ax"],
+  props: ["ax", "initAxios"],
+  components: { listview },
   data() {
     return {
       loggedInUser: {},
@@ -138,6 +65,7 @@ export default {
     };
   },
   created() {
+    this.initAxios();
     this.loggedInUser = JSON.parse(localStorage.user);
     this._getAllArticles();
   },
@@ -358,7 +286,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .profile {
   max-width: 50px;
   max-height: 50px;

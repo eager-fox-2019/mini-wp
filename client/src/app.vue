@@ -34,6 +34,7 @@
       @edit="page_editarticle"
       @view="page_detailarticle"
       :ax="ax"
+      :initAxios="initAxios"
     ></articlespage>
 
     <myarticlespage
@@ -41,17 +42,24 @@
       @edit="page_editarticle"
       @view="page_detailarticle"
       :ax="ax"
+      :initAxios="initAxios"
     ></myarticlespage>
 
-    <settingpage v-if="isLogin === true && isOnPage =='setting'" :ax="ax"></settingpage>
+    <settingpage v-if="isLogin === true && isOnPage =='setting'" :initAxios="initAxios" :ax="ax"></settingpage>
 
-    <newarticlepage class="px-5 pt-5" v-if="isLogin === true && isOnPage =='newarticle'" :ax="ax"></newarticlepage>
+    <newarticlepage
+      class="px-5 pt-5"
+      v-if="isLogin === true && isOnPage =='newarticle'"
+      :initAxios="initAxios"
+      :ax="ax"
+    ></newarticlepage>
 
     <editarticlepage
       class="px-5 pt-5"
       v-if="isLogin === true && isOnPage =='editarticle'"
       :selectedArticle="selectedArticle"
       :ax="ax"
+      :initAxios="initAxios"
     ></editarticlepage>
 
     <viewarticlepage
@@ -62,6 +70,7 @@
       v-if="isLogin === true && isOnPage =='detailarticle'"
       :selectedArticle="selectedArticle"
       :ax="ax"
+      :initAxios="initAxios"
     ></viewarticlepage>
   </div>
 </template>

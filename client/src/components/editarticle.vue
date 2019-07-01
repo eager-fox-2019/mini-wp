@@ -9,7 +9,7 @@
             v-model="inputArticle.title"
             placeholder="Article Title"
             class="form-control heading"
-          >
+          />
         </div>
         <div class="col-12">
           <div id="editor"></div>
@@ -27,7 +27,7 @@
                 type="file"
                 class="form-control-file"
                 placeholder="Profile Picture"
-              >
+              />
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@
                 type="text"
                 placeholder="Tag"
                 v-model="inputTag"
-              >
+              />
             </form>
             <div v-if="inputArticle.tags.length > 0">
               <div class="row mx-1">
@@ -110,7 +110,7 @@
 
 <script>
 export default {
-  props: ["selectedArticle", "ax"],
+  props: ["selectedArticle", "ax", "initAxios"],
   data() {
     return {
       inputArticle: {},
@@ -121,12 +121,7 @@ export default {
   },
   created() {
     this.loggedInUser = JSON.parse(localStorage.user);
-    this.ax = axios.create({
-      baseURL: serverURL,
-      headers: {
-        token: localStorage.getItem("token")
-      }
-    });
+    this.initAxios();
     this.lastsave();
     setTimeout(() => {
       this.load_editor();
