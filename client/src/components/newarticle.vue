@@ -93,7 +93,7 @@
 
 <script>
 export default {
-  props: ["ax"],
+  props: ["ax", "initAxios"],
   data() {
     return {
       loggedInUser: {},
@@ -109,6 +109,7 @@ export default {
     };
   },
   created() {
+    this.initAxios()
     this.loggedInUser = JSON.parse(localStorage.getItem("user"));
     this.lastsave();
     setTimeout(() => {
