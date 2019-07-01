@@ -66,7 +66,6 @@ export default {
     };
   },
   created() {
-    this.initAxios();
     this.loggedInUser = JSON.parse(localStorage.user);
     this._getAllArticles();
   },
@@ -289,7 +288,6 @@ export default {
 
 
 <style>
-
 .profile {
   max-width: 50px;
   max-height: 50px;

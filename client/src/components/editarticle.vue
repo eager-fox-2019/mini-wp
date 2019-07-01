@@ -110,7 +110,7 @@
 
 <script>
 export default {
-  props: ["selectedArticle", "ax", "initAxios"],
+  props: ["selectedArticle", "ax"],
   data() {
     return {
       inputArticle: {},

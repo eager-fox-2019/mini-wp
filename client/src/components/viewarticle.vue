@@ -77,7 +77,7 @@
 
 <script>
 export default {
-  props: ["selectedArticle", "ax", "initAxios"],
+  props: ["selectedArticle", "ax"],
   data() {
     return {
       loggedInUser: {},
@@ -85,7 +85,6 @@ export default {
     };
   },
   created() {
-    this.initAxios()
     this.loggedInUser = JSON.parse(localStorage.user);
     let str = this.loggedInUser._id + "_last_read";
     if (this.selectedArticle._id) {

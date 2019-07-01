@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import listview from "./listview.vue";
+
 import axios from "axios";
 import listview from "./listview.vue";
 export default {
@@ -88,7 +88,6 @@ export default {
     };
   },
   created() {
-    this.initAxios()
     this.loggedInUser = JSON.parse(localStorage.user);
     this._getUserArticles();
   },
