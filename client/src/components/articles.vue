@@ -52,8 +52,9 @@
 <script>
 import listview from "./listview.vue";
 export default {
-  props: ["ax", "initAxios"],
   components: { listview },
+  props: ["ax"],
+
   data() {
     return {
       loggedInUser: {},
@@ -286,7 +287,9 @@ export default {
 };
 </script>
 
-<style >
+
+<style>
+
 .profile {
   max-width: 50px;
   max-height: 50px;

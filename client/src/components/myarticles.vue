@@ -25,6 +25,7 @@
             @edit="editArticle(article)"
             @delete="deleteArticle(article)"
           ></listview>
+
         </div>
         <div v-if="articles.length == 0" class="p-5 text-center">
           <h1>NO ARTICLES FOUND</h1>
@@ -73,9 +74,11 @@
 <script>
 import listview from "./listview.vue";
 import axios from "axios";
+import listview from "./listview.vue";
 export default {
-  props: ["ax", "initAxios"],
   components: { listview },
+  props: ["ax"],
+
   data() {
     return {
       loggedInUser: {},

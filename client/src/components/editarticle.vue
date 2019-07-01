@@ -121,7 +121,6 @@ export default {
   },
   created() {
     this.loggedInUser = JSON.parse(localStorage.user);
-    this.initAxios();
     this.lastsave();
     setTimeout(() => {
       this.load_editor();
