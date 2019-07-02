@@ -1,0 +1,5 @@
+client/node_modules
+client/dist
+server/node_modules
+server/.env
+server/max_service_account_2.json
