@@ -11,8 +11,8 @@
 
           <div class="d-flex flex-column justify-content-between" style="height: 500px">
             <div class="row pl-3" style="height: 450px; width: 100%">
-              <div class="col-3"
-                style="background-size: cover; background-repeat: no-repeat; background-position: 50% 50%;"
+              <div class="col-4"
+                style="background-size: 100% 100%; background-repeat: no-repeat"
                 v-bind:style="{ backgroundImage: 'url(' + article.img + ')' }"></div>
               <div class="col" style="overflow: scroll">
                 <div class="card-text" v-html="article.content"></div>
@@ -27,7 +27,7 @@
             </div>
           </div>
         </div>
-        <slot></slot>
+        <slot>
       </div>
     </div>
   </div>
