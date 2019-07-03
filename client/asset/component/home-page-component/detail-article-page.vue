@@ -1,7 +1,7 @@
 <template>
   <div v-if="menu == 'detail'" style="height: 700px">
     <div class="center align-items-center d-flex flex-column" id="article-list" style="height: 100%">
-      <div class="card article" style="width: 70vw; height: 100%">
+      <!-- <div class="card article" style="width: 70vw; height: 100%">
         <div class="row no-gutters d-flex flex-column justify-content-between" style="height: 100%">
           <div class="card-body d-flex flex-column justify-content-between" >
             <div class="row d-flex flex-column p-3" >
@@ -39,22 +39,35 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+      <DetailCard :menu="menu" :article="article" :user="user">
+        <div class="row d-flex justify-content-end">
+          <div class="center pr-3 pl-3" style="width: 100%">
+            <hr>
+          </div>
+          <div class="pr-3" v-if="article.user.email == user.email">
+            <button class="btn btn-success" @click="rendEdit">Edit</button>
+            <button class="btn btn-danger" @click="deleteConfirm">Delete</button>
+          </div>
+          <div class="pr-3" v-else>
+            <p class="card-text">Created by: <strong>{{article.user.name}}</strong></p>
+          </div>
+        </div>
+      </DetailCard>
     </div>
   </div>
 </template>
 
 <script>
+import DetailCard from '../button-&-form-component/detail-card'
 export default {
+  components: {
+    DetailCard
+  },
   props: {
     'menu': String,
     'article': Object,
     'user': Object
-  },
-  data() {
-    return {
-
-    };
   },
   methods: {
     rendEdit() {
@@ -62,12 +75,7 @@ export default {
     },
     deleteConfirm() {
       this.$emit('deleteConfirm')
-    },
-    convertDate (date) {
-      let createdDate = new Date (date)
-      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      return `${days[createdDate.getDay()]}, ${createdDate.toString().slice(4,25)}`
-    },
+    }
   }
 };
 </script>
