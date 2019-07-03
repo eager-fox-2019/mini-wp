@@ -7,14 +7,14 @@ const app = express()
 const route = require('./routes')
 const cors = require('cors')
 const errorMiddleware = require('./middlewares/error.middleware')
-const mongoMiddleware = require('./middlewares/mongo.middleware')
+const connect = require('./middlewares/mongo.middleware')
 const port = process.env.PORT || 3000
 
 /**
  * pre route middleware
  */
+connect()
 app.use(cors())
-app.use(mongoMiddleware)
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 

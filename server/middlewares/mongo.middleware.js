@@ -2,18 +2,16 @@
 const { db_url } = require('../config/mongo.config')
 const mongoose = require('mongoose')
 
-function connect(req, res, next) {
+function connect() {
     mongoose.connect(db_url, {
         useCreateIndex: true,
         useNewUrlParser: true,
         dbName: process.env.DB_NAME
     }, function (error) {
         if (error) {
-            console.log(error)
-            next(error)
+            throw new Error('database ga konek')
         } else {
             console.log('database connected')
-            next()
         }
     })
 }
