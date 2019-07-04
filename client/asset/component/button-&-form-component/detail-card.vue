@@ -14,8 +14,8 @@
               <div class="col-4"
                 style="background-size: 100% 100%; background-repeat: no-repeat"
                 v-bind:style="{ backgroundImage: 'url(' + article.img + ')' }"></div>
-              <div class="col" style="overflow: scroll">
-                <div class="card-text" v-html="article.content"></div>
+              <div class="col ml-1" style="overflow: scroll">
+                <div class="card-text" v-html="article.content">{{article.content}}</div>
               </div>
             </div>
             <p class="card-text">Created at: {{convertDate(article.created_at)}}</p>
@@ -51,5 +51,7 @@ export default {
 </script>
 
 <style>
-
+  ul, ol {
+    padding-left: 25px;
+  }
 </style>

@@ -8,7 +8,7 @@
           <h5 class="card-title">{{article.title}}</h5>
           <div class="row d-flex justify-content-start mb-2" style="height: 1.5em; overflow: hidden">
             <div class="col pr-0" style="overflow: hidden">
-              <div class="card-text" v-html="article.content"></div>
+              <div class="card-text" v-html="article.content">{{article.content}}</div>
             </div>
           </div>
           <p class="card-text">Created at: {{convertDate(article.created_at)}}</p>
@@ -46,5 +46,12 @@ export default {
 </script>
 
 <style>
-
+  .tag-button:hover {
+    background-color: #3C8FC2;
+    color: white;
+    cursor: pointer;
+  }
+  ul, ol {
+    padding-left: 25px;
+  }
 </style>
