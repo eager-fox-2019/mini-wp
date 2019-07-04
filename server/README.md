@@ -16,8 +16,8 @@ Route | HTTP | Header(s) | Body | Params | Description
 ----- | ---- | --------- | ---- | ------- | ----
 /article | GET | token: string (**required**)  | none | none | return all post
 /article | POST | token: string (**required**)  | title: String, content: String | none | Add new article
-/article/:id | PUT | token: string (**required**) | title: String, content: String | none | update an article
-/article/:id | DELETE | token: string (**required**) | none | none | Delete article
+/article/:id | PUT | token: string (**required**) | title: String, content: String | id: String (**required**) | update an article
+/article/:id | DELETE | token: string (**required**) | none | id: String (**required**) | Delete article
 
 ## Usage
 Make sure you have node.js and  npm installed on your computer, and then run these commands:
