@@ -1,0 +1,5 @@
+node_modules
+.env
+.cache
+dist
+hacktiv8-330aa9ae2d2e.json
