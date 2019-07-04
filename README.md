@@ -42,9 +42,9 @@ Route | Method | Request(s) | Response(s) | Description
 `/articles` | POST | **Headers**<br>token: `String`<br>**Body**<br>title: `String`<br>content: `String`<br>created_at: `Date`<br>featured_image: `String`<br>tags: `Array[String]` | **Success**<br>`201` Created<br>**Fail**<br>`500` Internal Server Error | Create article
 `/articles` | GET | `none` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Get all article
 `/articles/myarticle` | GET | `none` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Get all article by authorize user
-`/articles/:id` | PUT | **Headers**<br>id: `String`<br>**Body**<br>title: `String`<br>content: `String`<br>created_at: `Date`<br>featured_image: `String`<br>tags: `Array[String]` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Update one article
-`/articles/:id` | PUT | **Headers**<br>id: `String`<br>**Body**<br>title: `String`<br>content: `String`<br>created_at: `Date`<br>featured_image: `String`<br>tags: `Array[String]` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Update one article
-`/articles/:id` | DELETE | **Headers**<br>id: `String` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Delete an article
+`/articles/:id` | PUT | **Headers**<br>token: `String`<br>**Params**<br>id: `String`<br>**Body**<br>title: `String`<br>content: `String`<br>created_at: `Date`<br>featured_image: `String`<br>tags: `Array[String]` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Update one article
+`/articles/:id` | PUT | **Headers**<br>token: `String`<br>**Params**<br>id: `String`<br>**Body**<br>title: `String`<br>content: `String`<br>created_at: `Date`<br>featured_image: `String`<br>tags: `Array[String]` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Update one article
+`/articles/:id` | DELETE | **Headers**<br>token: `String`<br>**Params**<br>id: `String` | `200` OK<br>**Fail**<br>`401` Authorization Error<br>`500` Internal Server Error | Delete an article
 
 ### Tags Router
 Route | Method | Request(s) | Response(s) | Description
