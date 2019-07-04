@@ -84,8 +84,8 @@ export default {
           }
         }
       },
-      theme: "snow"
-      // formats: ["bold", "underline", "header", "italic", "image"]
+      theme: "snow",
+      formats: ["bold", "underline", "header", "italic", "image"]
     });
     setTimeout(() => {
       if (this.importeddata) {

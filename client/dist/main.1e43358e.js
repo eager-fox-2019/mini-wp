@@ -10263,7 +10263,7 @@ var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = _axios.default.create({
-  baseURL: "http://localhost:3000"
+  baseURL: "http://35.192.210.37:3000"
 });
 },{"axios":"node_modules/axios/index.js"}],"node_modules/sweetalert2/dist/sweetalert2.all.js":[function(require,module,exports) {
 var define;
@@ -32542,8 +32542,8 @@ var _default = {
           }
         }
       },
-      theme: "snow" // formats: ["bold", "underline", "header", "italic", "image"]
-
+      theme: "snow",
+      formats: ["bold", "underline", "header", "italic", "image"]
     });
     setTimeout(function () {
       if (_this3.importeddata) {
@@ -83487,7 +83487,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41421" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40977" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
