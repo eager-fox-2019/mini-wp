@@ -1,0 +1,156 @@
+html, body, nav, #app, .content-wrapper{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+label {
+  font-weight: bold;
+  padding-right: 10px;
+  color: lightgrey;
+}
+
+form{
+  padding: 1em;
+}
+
+#content, #sidebar{
+  min-height: 80%;
+}
+
+header{
+  height: 10%;
+}
+
+footer{
+  float: left;
+  height: 10%;
+  width: 100%;
+  color: gray;
+  background: black;
+  padding: 1em;
+}
+
+footer p{
+  margin: 0;
+  padding-top: 0.5em;
+}
+
+h3 {
+  font-family: sans-serif;
+  color:white;
+  text-align:center;
+}
+
+#toggleSidebar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border:none;
+  outline:none;
+  background-image: url('../img/favicon-32x32.png');
+  margin: 20px;
+  cursor:pointer;
+}
+
+#sidebar, #content {
+  float: left;
+  transition: width .35s;
+}
+
+#sidebar {
+  background:white;
+  width: 30%;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.5);
+  display: flex;
+  flex-flow: column nowrap;
+  overflow: auto;
+}
+
+#sidebar.collapsed {
+  width: 0;
+}
+
+#sidebar.collapsed + #content {
+  width: 100%;
+}
+
+#loginArea{
+  padding-top: 0;
+  margin-bottom: 1em;
+  float: right;
+}
+
+#loginArea form, #loginArea label{
+  margin: 0;
+  color: gray;
+  background: white;
+  border-radius: 0 0 0 10px;
+  padding: 0.5em;
+}
+
+#loginArea span{
+  padding: 0.5em;
+}
+
+#content {
+  background:gray;
+  width: 70%;
+}
+
+#sidebar li{
+  padding-top: 1rem;
+  height: 3rem;
+  list-style: none;
+}
+
+#sidebar li a{
+  color: darkgray;
+}
+
+#sidebar li a:hover{
+  color: black;
+}
+
+#postForm{
+  margin-top: 1rem;
+}
+
+#postArticle{
+  padding: 1rem;
+}
+
+#postArticle button {
+  margin-left: 2px;
+}
+
+#editArticleContainer{
+  padding-top: 1em;
+}
+
+#editArticleContainer button{
+  margin-left: 0.5em;
+}
+
+#articleHeaderContainer{
+  background: lightgrey;
+  margin-top: 1rem;
+}
+
+#articleHeaderContainer div{
+  margin-left: 10px;
+}
+
+.card{
+  margin: 1em;
+}
+
+.card-img-wrapper{
+  width: 20%;
+  padding-right: 1em;
+}
+
+.card-detail{
+  width: 80%;
+}
+
