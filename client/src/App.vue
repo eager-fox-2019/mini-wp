@@ -333,7 +333,7 @@ export default {
         },
         addNewArticle(data){
             console.log("masuk create Data");
-            console.log(data.image);
+            console.log(data.image, "hasil emit");
             
             if(data.image === null  ){
                 console.log("aaaaa");
@@ -344,6 +344,8 @@ export default {
             formData.append('image',  data.image)
             formData.append('content', data.content)
             formData.append('category', data.category)
+            console.log(formData, "ini formData");
+            
             axios({
                 method: 'post',
                 url: 'http://localhost:3100/article',

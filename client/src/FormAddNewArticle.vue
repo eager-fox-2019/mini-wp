@@ -71,6 +71,8 @@ export default {
     methods : {
         getImage(){
             this.image = event.target.files[0]
+            console.log(this.image);
+            
         },
         addNewArticle(){
             this.$emit("newArticle",{

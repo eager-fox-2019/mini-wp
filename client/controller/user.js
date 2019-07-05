@@ -6,18 +6,16 @@ const client = new OAuth2Client(`${process.env.GOOGLESIGNINID}`)
 
 class UserController {
     static register(req, res, next) {
-                console.log(req.body);
-                
         let newUser = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
             password: req.body.password,
-            avatar : "https://image.flaticon.com/icons/png/512/78/78373.png"
+            avatar : req.body.avatar
         }
         User.create(newUser)
             .then((gotData) => {
-                res.json(gotData)
+                res.status(201).json(gotData)
             })
             .catch(next)
 
@@ -56,7 +54,7 @@ class UserController {
                         res.status(200).json({
                             token : userToken,
                             email : gotData.email,
-                            id : gotData.id
+                        id : gotData.id
                         })
 
                     } else {
@@ -70,10 +68,6 @@ class UserController {
     }
 
     static googlelogin(req,res,next){
-        console.log("masuk google login");
-        console.log(req.body);
-        
-        
         let userEmail = ""
         client.verifyIdToken({
             idToken: req.body.token,
