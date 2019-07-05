@@ -1,6 +1,6 @@
 const Article = require('../models/').Article
 const User = require('../models/').User
-const VOICE_API = bash.bashrc.VOICE_API
+const VOICE_API = process.env.VOICE_API
 
 class ControllerArticle {
 	static findAll(req, res, next){
