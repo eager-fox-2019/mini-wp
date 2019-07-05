@@ -34,7 +34,12 @@ class ArticleController {
 
     static update(req, res){
         let { title, text, img, date } = req.body
-        let obj = { title, text, img, date}
+        let obj = {}
+        if(title) obj.title = title
+        if(text) obj.text = text
+        if(img) obj.img = img
+        if(date) obj.date = date
+        
         Article.findByIdAndUpdate(req.params.id, obj)
             .then(data => {
                 res.json({data, message : 'updated'})
@@ -58,11 +63,13 @@ class ArticleController {
     }
 
     static findByUser(req, res){
+        console.log(req.params.userId, '=============')
         Article.find({
             userId : req.params.userId
         })
             .populate('userId')
             .then(data => {
+                console.log(data, '>>>>>>>>>>>>>');
                 res.json(data)
             })
             .catch(err => {

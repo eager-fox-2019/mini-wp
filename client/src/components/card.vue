@@ -10,19 +10,35 @@
           >
         </div>
         <div class="column">
-          <p style="color : black;">
+          <div style="color : black;">
             <small style="color : darkgreen">{{ article.userId.username }}</small>,
             <!--  -->
             <small style="color : peru">{{ refDate(article.date) }}</small>
             <br>
             <a @click="$emit('detail', article)"><strong>{{ article.title }}</strong></a>
             <br>
-            {{ article.text }}
-          </p>
+            <!-- <p :v-html="article.text"></p> -->
+            <!-- {{ article.text }} -->
+          </div>
           <p v-if="page === 'myArticles'">
-            <small><a @click="$emit('action', ['edit', article._id, article])"><i class="fas fa-edit" style="color : darkblue;"> Edit </i></a></small>
+            <small><a @click="isActive = !isActive"><i class="fas fa-edit" style="color : darkblue;"> Edit </i></a></small>
+            <!-- @click="$emit('action', ['edit', article._id, article])" -->
             <small>......</small>
-            <small><a @click="$emit('action', ['delete', article._id, null])"><i class="fas fa-trash" style="color : darkblue;"> Delete </i></a></small>
+            <small><a @click="isActive2 = !isActive2"><i class="fas fa-trash" style="color : darkblue;"> Delete </i></a></small>
+            <!-- @click="$emit('action', ['delete', article._id, null])" -->
+            <b-notification :active.sync="isActive" aria-close-label="Close notification" class="has-text-black is-bordered">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+            </b-notification>
+            <b-notification
+              :active.sync="isActive2"
+              type="is-danger"
+              has-icon
+              aria-close-label="Close notification"
+              role="alert">
+              are you sure to delete this post ?!
+              <br>
+              <a class="button is-small" style="float:right">DELETE</a>
+            </b-notification>
           </p>
         </div>
       </div>
@@ -38,21 +54,12 @@ export default {
   components : {
 
   },
-  props : ['page'], // article from my article && home
+  props : ['page', 'article'], // article from my article && home
   data(){
       return {
-          article : {
-            _id : '13hh2ob5bpp25khv7',
-            userId : {
-            _id : '3223hjkjb124hbo2',
-            username : 'fadlulazmi',
-            email : 'fadlul@mail.com'
-          },
-            date : '06/19/2019',
-            title : 'Theory',
-            text : 'A theory is a contemplative and rational type of abstract or generalizing thinking, or the results of such thinking. Depending on the context, the results might, for example, include generalized explanations of how nature works. The word has its roots in ancient Greek, but in modern use it has taken on several related meanings.',
-            img: 'https://www.onlineuniversities.com/wp-content/uploads/2011/08/research-sm.jpeg'
-          },
+        isActive : false,
+        isActive2 : false,
+
       }
   },
   methods: {
@@ -72,13 +79,20 @@ export default {
         truncated = truncated.substr(0, maxLength) + "...";
       }
       return truncated;
+    },
+    editArticle(){
+
+    },
+    deleteArticle(){
+
     }
   },
   computed : {
       function() {
         this.articleText = this.truncateText(this.articleText, 10)
       }
-  }
+  },
+
 };
 </script>
 

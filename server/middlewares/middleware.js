@@ -8,13 +8,13 @@ module.exports = {
             console.log(req.headers.access_token, 'ini token di middleware')
             const decoded = Helper.verifyJWT(req.headers.access_token);
 
-            req.loggedUser = decoded
-
+            
             console.log(req.loggedUser)
-
-            User.findById(req.loggedUser.id)
-                .then(user => {
-                    if(user){
+            
+            User.findById(decoded.id)
+            .then(user => {
+                if(user){
+                        req.loggedUser = decoded
                         next()
                     } else {
                         res.status(401).json({ msg : 'not authorized'})
@@ -31,7 +31,7 @@ module.exports = {
         Article.findById(req.params.id)
             .populate('userId')
             .then(data => {
-                if(req.loggedUser.id === data.userId._id){
+                if(req.loggedUser.id == data.userId._id){
                     next()
                 } else {
                     res.status(401).json({ msg : 'not authorized'})

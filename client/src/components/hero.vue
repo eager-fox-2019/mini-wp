@@ -77,8 +77,9 @@
       <!-- home -->
       <div class="hero-body needBack"  v-if="isLogin && page === 'home'">
         <div class="container">
-          <div class="columns is-multiline">
-              <card></card>
+          <div class="columns is-multiline" v-for="article in allArticles" :key="article._id">
+              <card :article="article"></card>
+              
               <!-- v-for="(i, article) in allArticles" :key="i" -->
           </div>          
         </div>
@@ -86,8 +87,9 @@
       <!-- my articles -->
       <div class="hero-body needBack"  v-if="isLogin && page === 'myArticles'">
         <div class="container">
-          <div class="columns is-multiline">
-              <card :page="page" :action="actionArticle($event[0],$event[1], $event[2])"></card> 
+          <div class="columns is-multiline" v-for="article in myArticles" :key="article._id">
+              <card :page="page" :article="article"></card> 
+              <!-- :action="actionArticle($event[0],$event[1], $event[2])" -->
               <!-- v-for="(i, article) in myArticles" :key="i" -->
           </div>          
         </div>
@@ -284,11 +286,16 @@ export default {
       this.axios({
         url : `http://localhost:3000/article/${localStorage.getItem('userId')}`,
         method : 'GET',
+        headers : {
+          access_token : localStorage.getItem('access_token')
+        }
       })
         .then(({data}) => {
           this.myArticles = data
         })
-        .catch()
+        .catch(err => {
+          console.log(err);
+        })
     },
     getAllArticles(){
       this.axios({

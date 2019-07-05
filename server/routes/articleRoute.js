@@ -7,6 +7,6 @@ router.use('/', authenticate)
 router.get('/:userId', ArticleController.findByUser)
 router.delete('/:id', authorize, ArticleController.delete)
 router.post('/add', ArticleController.add)
-router.put('/:id', authorize, ArticleController.update)
+router.patch('/:id', authorize, ArticleController.update)
 
 module.exports = router

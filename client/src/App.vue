@@ -2,25 +2,27 @@
   <div>
     <navbar @click="selectPage($event)" :isLogin="isLogin" :page="selected"></navbar>
     
-    <hero :page="selected" :isLogin="isLogin" @submit="submission($event[0], $event[1])" :error="error"></hero>
+    <layout :articles="allArticles" :page="selected" :isLogin="isLogin" @submit="submission($event[0], $event[1])" :error="error"></layout>
+  
     
   </div>
 </template>
 
 <script>
 import navbar from "./components/navbar";
-import hero from "./components/hero.vue";
+import layout from "./components/hero.vue";
 
 export default {
   components: {
     navbar,
-    hero
+    layout
   },
   data() {
     return {
       error : '',
       selected : localStorage.getItem('access_token') ? 'home' : 'login',
       isLogin : localStorage.getItem('access_token') ? true : false,
+      allArticles : []
       
       
     }
@@ -105,12 +107,25 @@ export default {
           this.error = err
         })
     },
+    getAllArticles(){
+      this.axios({
+        url : 'http://localhost:3000/article/',
+        method : 'POST',
+        headers : {
+          access_token : localStorage.getItem('access_token')
+        }
+      })
+        .then(({data}) => {
+          this.allArticles = data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
     
   },
-  created : {
-    function() {
-      
-    }
+  created(){
+    this.getAllArticles()
   }
 };
 </script>
