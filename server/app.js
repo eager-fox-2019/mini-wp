@@ -11,7 +11,7 @@ const route = require('./routes')
 const mongoose = require('mongoose')
 const errorHandler = require('./middlewares/errorHandler')
 
-mongoose.connect(`mongodb://localhost/mini-wp`, {useNewUrlParser: true}, function(err){
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true}, function(err){
     if(err) throw err
     else console.log('success connect to database')
 });

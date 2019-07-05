@@ -25,7 +25,7 @@ Vue.component('preview-article', {
             </div><br>
             <div class="row">
                 <div class="col sm-10 offset-sm-1">
-                    <p v-html="article.content" style="color: black; font-size: 15px"></p>
+                    <p v-html="article.content" style="color: black; font-size: 15px; text-align:center"></p>
                 </div>
             </div>
         </div>
