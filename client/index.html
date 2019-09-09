@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Google Sign in -->
+  <meta name="google-signin-client_id" content="1036560879353-q3uag856la0eg437bfv7o742pafl5bl9.apps.googleusercontent.com">
+  
+  
+  <!-- Bootstarp css-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Fontawesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  <!-- Animate -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+  <!-- Icon Title -->
+  <link rel="shortcut icon" type="image/svg" href="https://static.thenounproject.com/png/19895-200.png" />
+  <!-- css style-->
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <!-- css wysiwg -->
+  <link rel="stylesheet" href="css/wyswig.css">
+  
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <!-- axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js"></script>
+  
+
+
+  <title>SayWords</title>
+  <style>
+    body, #landingImage, html, #homepage, #app{
+        height: 100%;
+        width: 100%
+    }
+
+    #landingImage{
+      background-image: url("https://www.tilburgresearch.nl/media/cache/hero_image_large/localassets/images/articles/90-years-of-connecting-people-knowledge/image.jpg");
+
+      -webkit-background-size: cover;
+
+      -moz-background-size: cover;
+
+      -o-background-size: cover;
+
+      background-size: cover;
+    }
+    #navbarNologin{
+        background-color: transparent
+    }
+    #navbarNologin li{
+        font-size: 20px;
+        font-weight:bold;
+        color: white;
+        margin-top: -5px
+    }
+    .g-signin2{
+        width: 100%;
+        }
+    .g-signin2 > div{
+    margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+    <!-- Home Page -->
+    <div class="homepage" id="homepage" v-if="homepage">
+        <div class="jumbotron" id="landingImage">
+            <div class="row" style="margin-top: 200px">
+                <div class="col-sm-4 offset-sm-1">
+                    <h4>Create your own dream blog!</h4>
+                    <h5>We serve what you need. Be craeative and innovative as your wish.</h5>
+                    <hr>
+                    <button class="btn btn-warning" id="btnRegister" @click="toRegister"><i class="fas fa-arrow-circle-right"></i> Get Started</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NavBar No Login -->
+    <div v-if="navbarNoLogin">
+        <nav class="navbar navbar-expand-lg fixed-top" id="navbarNologin">
+            <!-- Brand/logo -->
+            <a class="navbar-brand" href="#">
+                <a href="#" style="font-size: 40px; color: #eaecfc"><i class="fas fa-blog" style="font-size: 60px; color: #cab6ed"></i> SayWords</a>
+            </a>
+            
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <a class="nav-link" id="toLogin" @click="toLogin" >Login </a>
+                </li>
+                <li>
+                    <a class="nav-link" id="toRegister" @click="toRegister">Register</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Register Page -->
+    <div class="row" id=" registerForm" v-if="registerPage" style="background-color: rgb(19, 153, 153); height: 100%">
+        <div class="col-md-5 text-center" style="margin-top:230px; margin-left: 15px">
+            <a href="#" style="font-size: 25px; color: #eaecfc">Say Whay You Feel With The Words</a>
+            <blockquote class="blockquote" >
+                <p style="color: black; font-size: 15px; margin-left: 10px">“Start writing, no matter what. The water does not flow until the faucet is turned on.”</p>
+                <footer class="blockquote-footer" style="color: black; font-size: 15px; font-weight: bold"> Louis L’Amour</footer>
+            </blockquote>
+        </div>
+        <div class="col-md-5 offset-md-1">
+            <h1 style="text-align: center; margin-top: 100px">Register</h1><hr>
+            <form @submit.prevent="submitRegister">
+                <div class="form-group">
+                    <label for="firstName">First Name: </label>
+                    <input class="form-control" id="firstName"
+                        type="text"
+                        v-model="firstName"
+                        autocomplete="off"
+                        placeholder="First Name"
+                        autofocus
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input class="form-control" id="lastName"
+                        type="text"
+                        v-model="lastName"
+                        autocomplete="off"
+                        placeholder="Last Name"
+                        autofocus
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input class="form-control" id="email"
+                        type="text"
+                        v-model="email"
+                        autocomplete="off"
+                        placeholder="Email"
+                        autofocus
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input class="form-control" id="pwd"
+                        type="password"
+                        v-model="password"
+                        autocomplete="off"
+                        placeholder="Password"
+                        autofocus
+                    >
+                </div>
+                <button type="submit" class="btn btn-warning" @click.prevent="submitRegister">Register</button>
+                <button type="submit" class="btn btn-warning" @click.prevent="onReset">Reset</button>
+          </form> 
+        </div>
+    </div>
+    
+
+      <!-- Login Page -->
+      <div class="row" id="login Form" v-show="loginPage" style="background-color: rgb(19, 153, 153); height: 100%">
+        <div class="col-md-5 text-center" style="margin-top:230px; margin-left: 15px">
+            <a style="font-size: 25px; color: #eaecfc">Say Whay You Feel With The Words</a>
+            <blockquote class="blockquote" >
+                <p style="color: black; font-size: 15px; margin-left: 10px">“Start writing, no matter what. The water does not flow until the faucet is turned on.”</p>
+                <footer class="blockquote-footer" style="color: black; font-size: 15px; font-weight: bold"> Louis L’Amour</footer>
+            </blockquote>
+        </div>
+        <div class="col-md-5 offset-md-1">
+            <form @submit.prevent="submitLogin"  style="margin-top: 30%">
+                <p class="h4 text-center mb-4" style="color: black">Sign in</p>
+                <label for="defaultFormLoginEmailEx" class="grey-text">Your email</label>
+                <input type="email" id="defaultFormLoginEmailEx" class="form-control"
+                    type="text"
+                    v-model="email"
+                    autocomplete="off"
+                    placeholder="Email"
+                    autofocus
+                />
+                <br/>
+                <label for="defaultFormLoginPasswordEx" class="grey-text">Your password</label>
+                <input id="defaultFormLoginPasswordEx" class="form-control"
+                    type="password"
+                    v-model="password"
+                    autocomplete="off"
+                    placeholder="Password"
+                    autofocus
+                />
+                <div class="text-center mt-4">
+                <button class="btn btn-warning" type="submit" >Login</button>
+                </div>
+            </form><hr>
+            <p class="h6 text-center mb-4" style="color: black">Using Another Account:</p>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+      </div>
+      
+    <!-- Navbar Logged In -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="navbarLogin"  v-if="navbarLogin" style="background-color: #715199; height: 55px">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">
+            <a href="#" style="font-size: 20px; color: #eaecfc"><i class="fas fa-blog" style="font-size: 30px; color: #cab6ed"></i> My Blog</a>
+        </a>
+        
+        <!-- Links -->
+        <ul class="navbar-nav ml-auto">
+            <li v-if="firstName != ''" style="margin-top: 10px; color:coral; font-weight:bold"> Welcome, {{firstName}} </li>
+            <li>
+                <a class="nav-link" @click.prevent="toNewPost"><button type="button" class="btn btn-success" style="font-size: 12px; margin-top: 2px"><i class="fas fa-upload"></i> New Post</button> </a>
+            </li>
+            <li>
+                <a class="nav-link" @click.prevent="logout"> <i class="fas fa-power-off" style="font-size: 25px; margin-top: 5px"></i></a>
+            </li>
+        </ul>
+    </nav>
+     <!-- Landing Page -->
+    <div class="row" style="margin-top: 55px;" id="landingPage">
+        <div class="col-sm-2" id="sideNav" v-if="sideNav" style=" height: 100%; background-color: purple">
+            <!-- Side NavBar -->
+            <div class="wrapper">
+                <!-- Sidebar  -->
+                <nav id="sidebar">
+                    <div class="sidebar-header">
+                        <h3>SayWords</h3>
+                    </div>
+        
+                    <ul class="list-unstyled components">
+                        <form class="form-inline" id="formSearchPost" style="margin-left: 20px">
+                            <input v-model="searchValue" class="form-control mr-sm-1" type="text" placeholder="Title" style="width: 170px; margin-bottom: 12px">
+                        </form>
+                        <li class="active">
+                            <a href="#" @click="islogin">Published Article</a>
+                        </li>
+                        <li>
+                            <a href="#" @click="toDraftPost">Draft Article</a>
+                        </li>
+                        <li>
+                            <a href="#" @click="toNewPost">New Article</a>
+                        </li>
+                      
+                    </ul>
+        
+                    <ul class="list-unstyled CTAs">
+                        <li>
+                            <a href="#" class="download">SayWords</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <!-- Page Content  -->
+            <div id="content">     
+                <div v-if="postCardContainer">
+                    <h4 style="text-align: center; color:darkblue; margin-bottom: 15px; text-decoration: underline">Your Published Article</h4>
+                    <card-article-publish v-for="article in filterArticle" :article="article" :key="article.id" @preview="toPreview" @edit="toEdit" @remove="deleteArticle"></card-article-publish>
+                </div>
+                <div v-if="draftContainer" >
+                        <h4 style="text-align: center; color:darkblue; margin-bottom: 15px; text-decoration: underline">Your Draft Article</h4>
+                    <card-article-draft v-for="article in filterArticle" :article="article" :key="article.id" @preview="toPreview" @edit="toEdit" @post="postDraftArticle" @remove="deleteArticle"></card-article-draft>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Page -->
+    <div v-if="previewPage == 'preview'">
+        <preview-article :article="article" @close="islogin"></preview-article>
+    </div>
+
+    <!-- Page Edit/New Post -->
+    <div class="row" style="margin-top: 30px; margin-left: 100px; height: 80px" v-if="editPage == 'newpost' || editPage =='editpost'">
+        <div class="col-sm-9 offset-sm-2">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#" @click.prevent="postArticle"><i class="fas fa-plus"></i> Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" @click.prevent="islogin"><i class="fas fa-times"></i> Close</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>               
+        </div>
+    </div>
+    <div v-if="editPage == 'newpost'">
+        <form-editor-article :article="newArticle" @save="saveArticle"></form-editor-article>
+    </div>
+
+    <div v-if="editPage == 'editpost'">
+        <form-editor-article :article="editedArticle" @save="saveEditArticle"></form-editor-article>
+    </div>
+
+</div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="js/helpers/googleSignIn.js"></script>
+  <script src="assets/components/card-article-publish.js"></script>
+  <script src="assets/components/card-article-draft.js"></script>
+  <script src="assets/components//preview-article.js"></script>
+  <script src="js/wysiwyg.js"></script>
+  <script src="assets/components/form-editor.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.0.min.js"
+    integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+    crossorigin="anonymous">
+  </script>
+  <script src="./js/index.js"></script>
+</body>
+</html>
