@@ -1,0 +1,18 @@
+.footer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background-color: #fff;
+    margin-top: 5em;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 0.7em 24.5em;
+    font-size: 12px;
+
+    &__content {
+
+        text-align: center;
+        padding: 8px 0px;
+    }
+}

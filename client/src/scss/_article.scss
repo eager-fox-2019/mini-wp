@@ -1,0 +1,43 @@
+.article {
+    &--container {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    &--detail {
+        & .container { width: 700px; }
+        & .image__container {
+            max-height: 300px;
+            overflow: hidden;
+            text-align: center;
+        }
+        & .content__container { margin-top: 2em }
+        & .back-btn {
+            cursor: pointer;
+            color: #bdbdbd;
+            margin-bottom: 5px;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        & .user-info { display: flex; }
+        & .circle-name {
+            background-color: #bdbdbd;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 50%;
+
+            height: 35px;
+            align-self: center;
+            margin-right: 1em;
+
+            & span {
+                color: #fff;
+                font-weight: 600;
+            }
+        }
+    }
+    &__container { margin: 3em 8em 1em; }
+}
